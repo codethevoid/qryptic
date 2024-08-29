@@ -1,0 +1,57 @@
+model Plan {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  name        String
+  description String?
+  prices      Price[]
+  isFree      Boolean @default(false)
+  isCustom    Boolean @default(false)
+  isLegacy    Boolean @default(false)
+
+  // limits, these are limits that are enforced base on the plan
+  // and value with 0 means unlitmited (for enterprise if needed)
+  links     Int // links per month as well as qr codes will count as links
+  seats     Int // seats for team members
+  domains   Int // custom domains
+  analytics Int // days of analytics data
+
+  // features, these are features that are enabled/disabled base on the plan
+  aiInsights       Boolean // for ai insights
+  redirects        Boolean // for creating redirects
+  apiAccess        Boolean // for accessing the api
+  bulk             Boolean // for creating multiple links at once with csv
+  qrCustomization  Boolean // for custom branding on qr codes
+  domainRedirector Boolean // when someone types in the root domain for custom domains
+  linkPreviews     Boolean // for customizing the social media cards (title, description, image) (open graph)
+
+  smartRules Boolean // for redirecting based on rules (geo, device, time of day, etc)
+  // passwordProtection Boolean // for password protecting links
+  // linkExpiration     Boolean // for setting an expiration date on links
+  // linkCloaking       Boolean // for hiding the destination URL through rewrites
+
+  rbac         Boolean // role based access control
+  supportLevel String // basic, enhanced, priority, dedicated
+
+  // enterprise features
+  sla         Boolean // service level agreement
+  slaContract String? // link to the sla contract
+  sso         Boolean // for single sign on
+
+  // relations
+  teams Team[]
+}
+
+model Price {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  plan          Plan   @relation(fields: [planId], references: [id])
+  planId        String
+  price         Int
+  interval      String
+  stripePriceId String @unique // stripe price id
+
+  // relations
+  teams Team[]
+}

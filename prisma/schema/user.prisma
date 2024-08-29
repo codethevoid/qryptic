@@ -1,0 +1,35 @@
+model Admin {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  name           String
+  avatar         String
+  email          String @unique
+  phone          String
+  hashedPassword String
+
+  // relations
+  teams Team[]
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  name            String?
+  avatar          String
+  email           String  @unique
+  emailToken      String? // for email verification
+  isEmailVerified Boolean @default(false)
+
+  hashedPassword     String?
+  resetPasswordToken String?
+  twoFactor          Boolean @default(false)
+  twoFactorSecret    String?
+  googleAuth         Boolean @default(false)
+  credentialsAuth    Boolean @default(false)
+
+  // relations
+  defaultTeamId String? // team id
+  teams         TeamMember[]
+}

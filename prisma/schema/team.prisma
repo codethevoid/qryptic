@@ -1,0 +1,42 @@
+model Team {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  createdBy      String // user id
+  name           String
+  slug           String  @unique
+  avatar         String
+  company        String?
+  emailInvoiceTo String?
+
+  stripeCustomerId     String
+  stripeSubscriptionId String?
+  subscriptionStatus   String
+  subscriptionStart    DateTime?
+  subscriptionEnd      DateTime?
+  cancelAtPeriodEnd    Boolean   @default(false)
+  failedInvoiceId      String?
+  plan                 Plan      @relation(fields: [planId], references: [id])
+  planId               String
+  price                Price     @relation(fields: [priceId], references: [id])
+  priceId              String
+
+  // relations
+  members TeamMember[]
+  manager Admin[] // dedicated support manager, only for enterprise plans
+}
+
+enum Role {
+  owner
+  member
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  role      Role     @default(member)
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
