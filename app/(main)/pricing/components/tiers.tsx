@@ -26,9 +26,16 @@ import {
   BrainCog,
   WandSparkles,
   AppWindowMac,
+  Tag,
+  PiggyBank,
+  Ghost,
+  Cog,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { appDomain, protocol } from "@/lib/domains";
 
 type CustomPlan = Plan & {
   prices: Price[];
@@ -61,8 +68,14 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
   return (
     <div className="px-4">
       <MaxWidthWrapper>
+        {/*<div className="mx-auto mb-4 w-fit rounded-full bg-gradient-to-t from-purple-600 to-purple-900 p-[1px]">*/}
+        {/*  <div className="rounded-full bg-gradient-to-t from-background/80 to-card px-3 py-1">*/}
+        {/*    <p className="text-[13px] font-semibold text-purple-400">Plans and pricing</p>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+
         <div className="mb-6">
-          <h1 className="text-center text-3xl font-extrabold tracking-tight">
+          <h1 className="text-center text-4xl font-extrabold tracking-tight">
             Give your business the{" "}
             <span className="bg-gradient-to-r from-fuchsia-500 to-rose-500 bg-clip-text text-transparent">
               edge it deserves
@@ -73,29 +86,48 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
           </p>
         </div>
         <div className="mx-auto mb-8 max-w-[500px]">
-          <Tabs
-            className="w-full"
-            defaultValue={interval}
-            onValueChange={(value: any) => setInterval(value)}
-          >
-            <TabsList className="h-10 w-full rounded-full">
-              <TabsTrigger value="month" className="h-full w-full rounded-full text-[13px]">
-                Pay monthly
-              </TabsTrigger>
-              <TabsTrigger value="year" className="h-full w-full rounded-full text-[13px]">
-                Pay yearly (Save 20%)
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+          {/*<Tabs*/}
+          {/*  className="w-full"*/}
+          {/*  defaultValue={interval}*/}
+          {/*  onValueChange={(value: any) => setInterval(value)}*/}
+          {/*>*/}
+          {/*  <TabsList className="h-10 w-full rounded-full">*/}
+          {/*    <TabsTrigger value="month" className="h-full w-full rounded-full text-[13px]">*/}
+          {/*      Pay monthly*/}
+          {/*    </TabsTrigger>*/}
+          {/*    <TabsTrigger value="year" className="h-full w-full rounded-full text-[13px]">*/}
+          {/*      Pay yearly (Save 20%)*/}
+          {/*    </TabsTrigger>*/}
+          {/*  </TabsList>*/}
+          {/*</Tabs>*/}
+          <div className="flex items-center justify-center space-x-3">
+            <p className="text-sm font-medium">Pay monthly</p>
+            <Switch
+              defaultChecked={true}
+              onCheckedChange={(value) => (value ? setInterval("year") : setInterval("month"))}
+            />
+            <p className="text-sm font-medium">Pay yearly</p>
+          </div>
         </div>
         <div className="grid grid-cols-[1fr_1fr_1fr]">
           {plans.map((plan, index) => (
             <Card
               key={plan.id}
-              className={`w-full rounded-none shadow-none ${index > 0 ? "border-l-0" : ""}`}
+              className={`w-full rounded-none shadow-none ${index > 0 ? "border-l-0" : ""} first-of-type:rounded-tl-md ${index === 2 ? "rounded-tr-md" : undefined}`}
             >
               <CardHeader>
-                <CardTitle>{plan.name}</CardTitle>
+                <div className="relative flex w-full items-center justify-between">
+                  <CardTitle>{plan.name}</CardTitle>
+                  {!plan.isFree && (
+                    <Badge
+                      variant="success"
+                      className={`absolute right-0 flex space-x-1 rounded-full ${interval === "year" ? "scale-100 opacity-100" : "pointer-event-none scale-90 opacity-0"} transition-all`}
+                    >
+                      <Tag size={12} />
+                      <span>Save 20%</span>
+                    </Badge>
+                  )}
+                </div>
                 <CardDescription>{plan.description}</CardDescription>
               </CardHeader>
               <CardContent>
@@ -153,14 +185,16 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                   {plan.apiAccess && (
                     <Feature icon={<AppWindowMac size={16} />} feature="API access (coming soon)" />
                   )}
-                  {plan.qrCustomization && (
-                    <Feature icon={<Bot size={16} />} feature="AI QR generation" />
-                  )}
-                  {plan.aiInsights && (
-                    <Feature icon={<BrainCog size={16} />} feature="AI insights" />
-                  )}
+                  {/*{plan.qrCustomization && (*/}
+                  {/*  <Feature icon={<Bot size={16} />} feature="AI QR generation" />*/}
+                  {/*)}*/}
+                  {plan.ai && <Feature icon={<Bot size={16} />} feature="AI features" />}
                   {plan.smartRules && (
-                    <Feature icon={<WandSparkles size={16} />} feature="Advanced smart rules" />
+                    <Feature
+                      icon={<Cog size={16} />}
+                      feature="
+                    Advanced link controls"
+                    />
                   )}
                   {plan.domainRedirector && (
                     <Feature icon={<Milestone size={16} />} feature="Domain redirector" />
@@ -170,7 +204,7 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
               </CardContent>
             </Card>
           ))}
-          <Card className="col-span-3 rounded-none border-t-0 shadow-none">
+          <Card className="col-span-3 rounded-none rounded-b-md border-t-0 shadow-none">
             <div className="grid grid-cols-2 gap-6 p-12">
               <div>
                 <p className="text-2xl font-extrabold tracking-tight">

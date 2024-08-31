@@ -24,7 +24,7 @@ export const plans: CustomPlan[] = [
     seats: 1,
     domains: 1,
     analytics: 30, // days
-    aiInsights: false,
+    ai: false,
     apiAccess: false,
     bulk: false,
     redirects: false,
@@ -47,7 +47,7 @@ export const plans: CustomPlan[] = [
     analytics: 365, // days
     apiAccess: true,
     bulk: true,
-    aiInsights: true,
+    ai: true,
     redirects: true,
     qrCustomization: true,
     domainRedirector: true,
@@ -66,7 +66,7 @@ export const plans: CustomPlan[] = [
     seats: 20,
     domains: 10,
     analytics: 730, // days
-    aiInsights: true,
+    ai: true,
     apiAccess: true,
     bulk: true,
     redirects: true,

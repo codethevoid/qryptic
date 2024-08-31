@@ -85,3 +85,94 @@ body {
     @apply border-b border-b-border;
   }
 }
+
+.grid-bg {
+  height: 100vh;
+  width: 100%;
+  left: 0;
+  top: 0;
+  position: fixed;
+  z-index: -1;
+}
+
+
+.radial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: -1;
+}
+
+.background-animate {
+  background-size: 800%;
+
+  -webkit-animation: animateBg 8s ease infinite;
+  -moz-animation: animateBg 8s ease infinite;
+  animation: animateBg 8s ease infinite;
+}
+
+
+@keyframes animateBg {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-shadow-dark {
+  -webkit-animation: animateShadowDark 8s ease infinite;
+  -moz-animation: animateShadowDark 8s ease infinite;
+  animation: animateShadowDark 8s ease infinite;
+}
+
+@keyframes animateShadowDark {
+  0% {
+    box-shadow: 0 4px 30px #1e40af;
+  }
+  25% {
+    box-shadow: 0 4px 30px #6b21a8;
+  }
+  50% {
+    box-shadow: 0 4px 30px #9a3412;
+  }
+  75% {
+    box-shadow: 0 4px 30px #6b21a8
+  }
+  100% {
+    box-shadow: 0 4px 30px #1e40af;
+  }
+}
+
+.animate-shadow {
+  -webkit-animation: animateShadow 8s ease infinite;
+  -moz-animation: animateShadow 8s ease infinite;
+  animation: animateShadow 8s ease infinite;
+}
+
+@keyframes animateShadow {
+  0% {
+    box-shadow: 0 4px 30px #bfdbfe;
+  }
+  25% {
+    box-shadow: 0 4px 30px #e9d5ff;
+  }
+  50% {
+    box-shadow: 0 4px 30px #fed7aa;
+  }
+  75% {
+    box-shadow: 0 4px 30px #e9d5ff
+  }
+  100% {
+    box-shadow: 0 4px 30px #bfdbfe;
+  }
+}
+
+#nprogress {
+  position: fixed;
+  z-index: 9999999;
+}

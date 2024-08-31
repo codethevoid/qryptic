@@ -2,6 +2,8 @@ import prisma from "@/db/prisma";
 import { Plan, Price } from "@prisma/client";
 import { PricingTiers } from "@/app/(main)/pricing/components/tiers";
 import { Compare } from "@/app/(main)/pricing/components/compare";
+import { Faq } from "@/app/(main)/pricing/components/faq";
+import { StartNow } from "@/app/(main)/pricing/components/start-now";
 
 type CustomPlan = Plan & {
   prices: Price[];
@@ -15,9 +17,11 @@ const PricingPage = async () => {
   });
 
   return (
-    <div className="flex flex-col space-y-24 py-16">
+    <div className="flex flex-col space-y-24 pb-24 pt-20">
       <PricingTiers plans={plans} />
       <Compare plans={plans} />
+      <Faq />
+      <StartNow />
     </div>
   );
 };

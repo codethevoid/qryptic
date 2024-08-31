@@ -17,18 +17,14 @@ model Plan {
   analytics Int // days of analytics data
 
   // features, these are features that are enabled/disabled base on the plan
-  aiInsights       Boolean // for ai insights
+  ai               Boolean // for doing anything with ai
   redirects        Boolean // for creating redirects
   apiAccess        Boolean // for accessing the api
   bulk             Boolean // for creating multiple links at once with csv
   qrCustomization  Boolean // for custom branding on qr codes
   domainRedirector Boolean // when someone types in the root domain for custom domains
   linkPreviews     Boolean // for customizing the social media cards (title, description, image) (open graph)
-
-  smartRules Boolean // for redirecting based on rules (geo, device, time of day, etc)
-  // passwordProtection Boolean // for password protecting links
-  // linkExpiration     Boolean // for setting an expiration date on links
-  // linkCloaking       Boolean // for hiding the destination URL through rewrites
+  smartRules       Boolean // for redirecting based on rules (geo, device, time of day, etc)
 
   rbac         Boolean // role based access control
   supportLevel String // basic, enhanced, priority, dedicated
