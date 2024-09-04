@@ -17,7 +17,7 @@ const products = [
 
 const resources = [
   { name: "Help center", route: "/help-center" },
-  { name: "Docs", route: "/docs" },
+  // { name: "Docs", route: "/docs" },
   { name: "Guides", route: "/guides" },
   { name: "Pricing", route: "/pricing" },
   { name: "Uptime", route: "/uptime" },

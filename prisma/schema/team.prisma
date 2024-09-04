@@ -2,7 +2,7 @@ model Team {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  createdBy      String // user id
+  createdBy      String // users id
   name           String
   slug           String  @unique
   avatar         String

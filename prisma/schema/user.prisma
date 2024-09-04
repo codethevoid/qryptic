@@ -17,7 +17,7 @@ model User {
   createdAt DateTime @default(now())
 
   name            String?
-  avatar          String
+  image           String?
   email           String  @unique
   emailToken      String? // for email verification
   isEmailVerified Boolean @default(false)
@@ -30,6 +30,6 @@ model User {
   credentialsAuth    Boolean @default(false)
 
   // relations
-  defaultTeamId String? // team id
-  teams         TeamMember[]
+  defaultTeam String? // team slug
+  teams       TeamMember[]
 }

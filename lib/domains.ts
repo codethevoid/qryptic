@@ -2,11 +2,15 @@
 
 // this domain is used for the app (ex: app.example.com)
 export const appDomain =
-  process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_APP_DOMAIN : "app.localhost:3000";
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_APP_DOMAIN
+    : "app.localhost.com:3000";
 
-// this domain is the apex domain, it is used for the app.qryptic.io website (ex: example.com)
-export const apexDomain =
-  process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_APEX_DOMAIN : "localhost:3000";
+// this domain is the root domain
+export const rootDomain =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_ROOT_DOMAIN
+    : "localhost.com:3000";
 
 // this domain is used for the admin.qryptic.io panel (ex: admin.qryptic.io.example.com)
 export const adminDomain =

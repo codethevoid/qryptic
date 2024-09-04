@@ -1,4 +1,4 @@
 export { appMiddleware } from "./app";
 export { linkMiddleware } from "./link";
-export { apexMiddleware } from "./apex";
+export { rootMiddleware } from "./root";
 export { adminMiddleware } from "./admin";

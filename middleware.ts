@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { appMiddleware, linkMiddleware, apexMiddleware, adminMiddleware } from "@/lib/middleware";
-import { appDomain, adminDomain, apexDomain } from "@/lib/domains";
+import { appMiddleware, linkMiddleware, rootMiddleware, adminMiddleware } from "@/lib/middleware";
+import { appDomain, adminDomain, rootDomain } from "@/lib/domains";
 import { detectInvalidPath, parseReq } from "@/lib/middleware/utils";
 
 export const middleware = (req: NextRequest) => {
@@ -18,8 +18,8 @@ export const middleware = (req: NextRequest) => {
     return adminMiddleware(req);
   }
 
-  if (host === apexDomain) {
-    return apexMiddleware(req);
+  if (host === rootDomain) {
+    return rootMiddleware(req);
   }
 
   return linkMiddleware(req);

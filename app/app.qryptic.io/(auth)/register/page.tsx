@@ -1,5 +1,7 @@
+import { LoginForm } from "@/app/app.qryptic.io/(auth)/register/form";
+
 const RegisterPage = () => {
-  return <div></div>;
+  return <LoginForm />;
 };
 
 export default RegisterPage;
