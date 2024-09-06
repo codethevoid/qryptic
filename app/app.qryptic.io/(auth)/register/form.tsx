@@ -9,7 +9,7 @@ import { GoogleIcon } from "@/components/ui/icons/google-icon";
 import NextLink from "next/link";
 import { appDomain, protocol } from "@/lib/domains";
 import { useForm } from "react-hook-form";
-import { registerSchema, RegisterFormValues } from "@/lib/validation/user/register";
+import { registerSchema, RegisterFormValues } from "@/lib/validation/users/register";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Lock } from "lucide-react";
 import { registerUser } from "@/actions/users/register";
@@ -45,7 +45,7 @@ export const LoginForm = () => {
     <div className="flex min-h-screen w-full items-center justify-center px-4 py-10">
       <div className="flex w-full max-w-[420px] flex-col items-center space-y-6">
         <QrypticLogo className="h-[18px]" />
-        <Card className="w-full py-2">
+        <Card className="w-full rounded-xl py-2 shadow-lg">
           <CardHeader>
             <CardTitle className="text-center">Get started with Qryptic</CardTitle>
             <CardDescription className="text-center text-[13px]">

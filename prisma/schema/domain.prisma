@@ -1,0 +1,10 @@
+model Domain {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  domain    String
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    String
+  isDefault Boolean  @default(false)
+
+  // relations
+}

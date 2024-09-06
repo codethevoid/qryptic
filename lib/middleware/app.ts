@@ -5,7 +5,6 @@ import { getUserToken } from "@/lib/middleware/utils";
 export const appMiddleware = async (req: NextRequest) => {
   const { path, fullPath } = parseReq(req);
   const token = await getUserToken(req);
-  console.log("app middleware", token);
 
   // if users is not authenticated and not on login page or register page, redirect to login
   if (!token && path !== "/login" && path !== "/register") {

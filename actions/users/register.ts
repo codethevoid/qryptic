@@ -3,7 +3,7 @@
 import prisma from "@/db/prisma";
 import { nanoid } from "@/utils/nanoid";
 import type { User } from "@prisma/client";
-import { RegisterFormValues } from "@/lib/validation/user/register";
+import { RegisterFormValues } from "@/lib/validation/users/register";
 import bcrypt from "bcrypt";
 import { sendEmail } from "@/utils/send-email";
 import { EmailVerificationEmail } from "@/emails/email-verification";

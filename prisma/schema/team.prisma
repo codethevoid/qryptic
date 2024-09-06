@@ -2,10 +2,10 @@ model Team {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  createdBy      String // users id
+  createdBy      String // user id
   name           String
   slug           String  @unique
-  avatar         String
+  image          String?
   company        String?
   emailInvoiceTo String?
 
@@ -18,17 +18,26 @@ model Team {
   failedInvoiceId      String?
   plan                 Plan      @relation(fields: [planId], references: [id])
   planId               String
-  price                Price     @relation(fields: [priceId], references: [id])
-  priceId              String
+  price                Price?    @relation(fields: [priceId], references: [id])
+  priceId              String?
 
   // relations
-  members TeamMember[]
+  members  TeamMember[]
+  domains  Domain[]
+  links    Link[]
+  events   Event[]
+  invoices Invoice[]
+
+  // support manager for enterprise plans
   manager Admin[] // dedicated support manager, only for enterprise plans
 }
 
 enum Role {
-  owner
-  member
+  super_admin // creator of the account, can transfew ownership ( can only be one )
+  owner // can do anything except for deleting the account and transferring ownership
+  member // create, read, update, delete
+  billing // can only see invoices, billing history, and update payment method
+  viewer // can only read data
 }
 
 model TeamMember {

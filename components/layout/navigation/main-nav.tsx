@@ -285,7 +285,7 @@ const ListItem = ({ title, description, icon, href, className }: ListItemProps) 
       )}
     >
       <div className="flex items-center space-x-2.5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg border bg-gradient-to-tr from-zinc-950 to-zinc-800 transition-all">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg border bg-gradient-to-tr from-zinc-100 to-background transition-all dark:from-zinc-950 dark:to-zinc-800">
           {icon}
         </div>
         <div>

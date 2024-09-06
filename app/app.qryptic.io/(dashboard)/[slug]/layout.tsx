@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
+import { TeamAuth } from "./auth";
 
 const AppLayout = ({ children }: { children: ReactNode }) => {
-  return <div>{children}</div>;
+  return <TeamAuth>{children}</TeamAuth>;
 };
 
 export default AppLayout;

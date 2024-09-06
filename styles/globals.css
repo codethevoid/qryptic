@@ -7,6 +7,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+::selection {
+  background-color: #14b8a61a; /* Custom background color for selection */
+  color: #0d9488; /* Custom text color for selection */
+}
+
+.dark ::selection {
+  background-color: #14b8a61a;
+  color: #14b8a6;
+}
 
 @layer base {
   :root {
@@ -176,3 +185,28 @@ body {
   position: fixed;
   z-index: 9999999;
 }
+
+.fade-enter-active {
+  animation: fadeIn 100ms forwards;
+  animation-delay: 100ms
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.custom-switch-thumb {
+  height: 12px; /* Custom height for the thumb */
+  width: 12px;  /* Custom width for the thumb */
+  transform: translateX(0px); /* Custom translation for the thumb */
+}
+
+.custom-switch-thumb[data-state="checked"] {
+  transform: translateX(9px); /* Custom translation for the thumb when checked */
+}
+

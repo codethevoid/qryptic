@@ -1,0 +1,13 @@
+model Invoice {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  team            Team     @relation(fields: [teamId], references: [id])
+  teamId          String
+  stripeInvoiceId String   @unique
+  number          String? // invoice number
+  amount          Int // amount in cents
+  status          String // draft, open, paid, uncollectible, or void.
+  invoicePdf      String? // pdf url of the invoice
+  date            DateTime
+}

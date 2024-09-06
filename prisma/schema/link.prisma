@@ -1,0 +1,40 @@
+model Link {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  qrCode QrCode?
+
+  // relations
+  team   Team   @relation(fields: [teamId], references: [id])
+  teamId String
+
+  // relations
+  events Event[]
+}
+
+model QrCode {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  // relations
+  link   Link   @relation(fields: [linkId], references: [id])
+  linkId String @unique
+}
+
+enum EventType {
+  click
+  scan
+}
+
+model Event {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  type      EventType
+
+  // relations
+
+  Link   Link   @relation(fields: [linkId], references: [id])
+  linkId String
+  team   Team   @relation(fields: [teamId], references: [id])
+  teamId String
+}

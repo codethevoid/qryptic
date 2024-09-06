@@ -56,7 +56,7 @@ export const Compare = ({ plans }: CompareProps) => {
             >
               <p className="text-sm font-medium">{plan.name}</p>
               <Button
-                className={`rounded-full max-[1100px]:w-full ${index === 1 ? "bg-deepBlue-500 text-white hover:bg-deepBlue-600" : ""}`}
+                className={`rounded-full text-xs max-[1100px]:w-full ${index === 1 ? "bg-deepBlue-500 text-white hover:bg-deepBlue-600" : ""}`}
                 size="sm"
                 variant={plan.isFree ? "outline" : "default"}
               >
@@ -68,7 +68,7 @@ export const Compare = ({ plans }: CompareProps) => {
             className={`compare-grid-item flex items-center border border-b border-r-0 bg-background p-4 max-[1100px]:flex-col max-[1100px]:space-y-2 min-[1100px]:justify-between ${!inView ? "rounded-tr-none" : "rounded-tr-xl"}`}
           >
             <p className="text-sm font-medium">Enterprise</p>
-            <Button size="sm" className="rounded-full max-[1100px]:w-full">
+            <Button size="sm" className="rounded-full text-xs max-[1100px]:w-full">
               Contact sales
             </Button>
           </div>

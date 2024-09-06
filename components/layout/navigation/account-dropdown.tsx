@@ -13,21 +13,20 @@ import { useTheme } from "next-themes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Cog, LogOut, MessageCircleQuestion, Moon, PlusCircle, Sun, ThumbsUp } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { useUser } from "@/lib/hooks/swr/use-user";
+import { useTeam } from "@/lib/hooks/swr/use-team";
+import { Button } from "@/components/ui/button";
+import { CreateTeam } from "@/components/modals/create-team";
+import { useState } from "react";
+import { Upgrade } from "@/components/modals/upgrade/upgrade";
 
-type AccountDropdownProps = {
-  user:
-    | {
-        id: string;
-        email: string;
-        name: string | null;
-        image: string | null;
-        defaultTeam: string | null;
-      }
-    | undefined;
-};
-
-export const AccountDropdown = ({ user }: AccountDropdownProps) => {
+export const AccountDropdown = () => {
   const { resolvedTheme, setTheme } = useTheme();
+  const { user } = useUser();
+  const { team } = useTeam();
+  const [isCreateTeamOpen, setIsCreateTeamOpen] = useState(false);
+  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
+
   return (
     <>
       <DropdownMenu modal={false}>
@@ -44,15 +43,20 @@ export const AccountDropdown = ({ user }: AccountDropdownProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="min-w-[180px]"
+          className="min-w-[240px]"
           onCloseAutoFocus={(e) => e.preventDefault()}
+          sideOffset={7}
         >
           <DropdownMenuLabel>
-            <p className="text-[13px] font-normal">Signed in as</p>
-            <p className="text-[13px] font-normal text-muted-foreground">{user?.email}</p>
+            <p className="max-w-[210px] truncate text-[13px] font-medium">
+              {user?.name || "Signed in as"}
+            </p>
+            <p className="max-w-[210px] truncate text-[13px] font-normal text-muted-foreground">
+              {user?.email}
+            </p>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="space-x-2.5">
+          <DropdownMenuItem className="space-x-2.5" onSelect={() => setIsCreateTeamOpen(true)}>
             <PlusCircle size={16} />
             <span>Create team</span>
           </DropdownMenuItem>
@@ -90,8 +94,20 @@ export const AccountDropdown = ({ user }: AccountDropdownProps) => {
             <LogOut size={16} />
             <span>Sign out</span>
           </DropdownMenuItem>
+          {team?.plan.isFree && ["owner", "super_admin"].includes(team?.user.role) && (
+            <>
+              <DropdownMenuSeparator />
+              <div className="px-2 py-1.5">
+                <Button size="sm" className="w-full" onClick={() => setIsUpgradeOpen(true)}>
+                  Upgrade
+                </Button>
+              </div>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
+      <CreateTeam isOpen={isCreateTeamOpen} setIsOpen={setIsCreateTeamOpen} />
+      <Upgrade isOpen={isUpgradeOpen} setIsOpen={setIsUpgradeOpen} />
     </>
   );
 };

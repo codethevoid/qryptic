@@ -80,10 +80,17 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        heartbeat: {
+          "0%, 100%": { transform: "scale(1)", opacity: "1" },
+          "10%": { transform: "scale(1.12)", opacity: "0.8" }, // Quick pulse (scale up)
+          "20%": { transform: "scale(1.06)", opacity: "1" }, // Back to normal
+          "30%": { transform: "scale(1.1)", opacity: "1" }, // Back to normal
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        heartbeat: "heartbeat 1.5s ease-in-out infinite", // Adjust duration to simulate heartbeat rhythm
       },
       maxWidth: { "screen-lg": "1100px" },
     },
