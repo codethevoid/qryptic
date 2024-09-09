@@ -1,5 +1,5 @@
 const AppHome = () => {
-  return <div>App home (team slug)</div>;
+  return <div className="h-[600px]">App home (team slug)</div>;
 };
 
 export default AppHome;

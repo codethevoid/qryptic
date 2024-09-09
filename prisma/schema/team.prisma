@@ -2,14 +2,16 @@ model Team {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
+  // general details
   createdBy      String // user id
   name           String
   slug           String  @unique
-  image          String?
+  image          String
   company        String?
   emailInvoiceTo String?
 
-  stripeCustomerId     String
+  // subscription and plan details
+  stripeCustomerId     String    @unique
   stripeSubscriptionId String?
   subscriptionStatus   String
   subscriptionStart    DateTime?
@@ -20,6 +22,16 @@ model Team {
   planId               String
   price                Price?    @relation(fields: [priceId], references: [id])
   priceId              String?
+  hasUsedTrial         Boolean   @default(false)
+  trialEndsAt          DateTime?
+
+  // billing details
+  paymentMethodId String?
+  type            String? // card
+  brand           String?
+  last4           String?
+  expMonth        Int?
+  expYear         Int?
 
   // relations
   members  TeamMember[]

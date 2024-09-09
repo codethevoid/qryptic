@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { GoogleIcon } from "@/components/ui/icons/google-icon";
 import NextLink from "next/link";
-import { appDomain, protocol } from "@/lib/domains";
+import { appDomain, protocol } from "@/lib/constants/domains";
 import { useForm } from "react-hook-form";
 import { registerSchema, RegisterFormValues } from "@/lib/validation/users/register";
 import { zodResolver } from "@hookform/resolvers/zod";

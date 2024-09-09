@@ -18,7 +18,7 @@ import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Button } from "@/components/ui/button";
 import { CreateTeam } from "@/components/modals/create-team";
 import { useState } from "react";
-import { Upgrade } from "@/components/modals/upgrade/upgrade";
+import { Upgrade } from "@/components/modals/plans/upgrade/upgrade";
 
 export const AccountDropdown = () => {
   const { resolvedTheme, setTheme } = useTheme();

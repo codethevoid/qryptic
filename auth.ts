@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import prisma from "@/db/prisma";
 import bcrypt from "bcrypt";
-import { rootDomain } from "@/lib/domains";
+import { rootDomain } from "@/lib/constants/domains";
 import type { User } from "@prisma/client";
 
 type AuthUser = Pick<User, "id" | "defaultTeam">;

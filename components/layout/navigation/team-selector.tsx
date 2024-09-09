@@ -3,8 +3,7 @@
 import { useTeams } from "@/lib/hooks/swr/use-teams";
 import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
 import NextLink from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -21,8 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CreateTeam } from "@/components/modals/create-team";
 import { PlanBadge } from "@/components/ui/plan-badge";
-
-type Plan = "Free" | "Pro" | "Business" | "Enterprise";
+import { PlanName } from "@/types/plans";
 
 export const TeamSelector = () => {
   const { teams, isLoading } = useTeams();
@@ -46,11 +44,14 @@ export const TeamSelector = () => {
       <div className="flex items-center space-x-2">
         <NextLink ref={boundary} href={`/${slug}`} passHref className="flex items-center space-x-2">
           <Avatar className="h-5 w-5 border">
-            <AvatarFallback className="h-full w-full bg-gradient-to-r from-green-400 to-blue-400"></AvatarFallback>
+            <AvatarImage src={team.image} alt={team.name} />
+            <AvatarFallback className="bg-transparent">
+              <Skeleton className="h-full w-full" />
+            </AvatarFallback>
           </Avatar>
           <div className="flex items-center space-x-2">
             <p className="max-w-[150px] truncate text-[13px] font-medium">{team?.name}</p>
-            <PlanBadge plan={team?.plan?.name as Plan} />
+            <PlanBadge plan={team?.plan?.name as PlanName} className="py-[1px]" />
           </div>
         </NextLink>
         <DropdownMenu modal={false} open={isOpen} onOpenChange={setIsOpen}>
@@ -87,7 +88,10 @@ export const TeamSelector = () => {
                 >
                   <div className="flex items-center space-x-2">
                     <Avatar className="h-5 w-5 border">
-                      <AvatarFallback className="h-full w-full bg-gradient-to-r from-green-400 to-blue-400"></AvatarFallback>
+                      <AvatarImage src={t.image} alt={t.name} />
+                      <AvatarFallback className="bg-transparent">
+                        <Skeleton className="h-full w-full" />
+                      </AvatarFallback>
                     </Avatar>
                     <p
                       className={`max-w-[200px] truncate text-[13px] ${t.slug === slug ? "font-medium" : "font-normal"}`}

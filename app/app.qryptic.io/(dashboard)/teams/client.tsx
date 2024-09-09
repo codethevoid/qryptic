@@ -4,7 +4,7 @@ import { useTeams } from "@/lib/hooks/swr/use-teams";
 import { Button } from "@/components/ui/button";
 import { ChartArea, Globe, Link, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { AvatarFallback, Avatar } from "@/components/ui/avatar";
+import { AvatarFallback, Avatar, AvatarImage } from "@/components/ui/avatar";
 import { QrypticIcon } from "@/components/logos/qryptic-icon";
 import { CreateTeam } from "@/components/modals/create-team";
 import { useState } from "react";
@@ -13,8 +13,8 @@ import NextLink from "next/link";
 import { NoTeams } from "@/components/empty/no-teams";
 import { TeamSkeleton } from "@/components/skeletons/teams-skeleton";
 import { PlanBadge } from "@/components/ui/plan-badge";
-
-type PlanName = "Free" | "Pro" | "Business" | "Enterprise";
+import { PlanName } from "@/types/plans";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type CustomTeam = Team & {
   plan: Plan;
@@ -64,7 +64,10 @@ export const TeamsProvider = ({ teams }: TeamProviderProps) => {
             <div className="flex justify-between">
               <div className="flex items-center space-x-3">
                 <Avatar className="h-10 w-10 border">
-                  <AvatarFallback className="bg-gradient-to-r from-green-400 to-blue-400"></AvatarFallback>
+                  <AvatarImage src={team.image as string} alt={team.name} />
+                  <AvatarFallback className="bg-transparent">
+                    <Skeleton className="h-full w-full rounded-full" />
+                  </AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="text-sm font-medium">{team.name}</p>

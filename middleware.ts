@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { appMiddleware, linkMiddleware, rootMiddleware, adminMiddleware } from "@/lib/middleware";
-import { appDomain, adminDomain, rootDomain } from "@/lib/domains";
+import { appDomain, adminDomain, rootDomain } from "@/lib/constants/domains";
 import { detectInvalidPath, parseReq } from "@/lib/middleware/utils";
 
 export const middleware = (req: NextRequest) => {

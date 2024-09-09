@@ -42,11 +42,13 @@ model Price {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  plan          Plan   @relation(fields: [planId], references: [id])
-  planId        String
-  price         Int
-  interval      String
-  stripePriceId String @unique // stripe price id
+  plan            Plan    @relation(fields: [planId], references: [id])
+  planId          String
+  price           Int
+  interval        String
+  stripePriceId   String  @unique // stripe price id
+  stripeProductId String // stripe product id
+  isActive        Boolean @default(true) // should always only be two active pices for each plan (monthly and yearly)
 
   // relations
   teams Team[]

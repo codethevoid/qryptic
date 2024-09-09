@@ -7,8 +7,9 @@ import { RegisterFormValues } from "@/lib/validation/users/register";
 import bcrypt from "bcrypt";
 import { sendEmail } from "@/utils/send-email";
 import { EmailVerificationEmail } from "@/emails/email-verification";
-import { protocol, appDomain } from "@/lib/domains";
+import { protocol, appDomain } from "@/lib/constants/domains";
 import { signIn } from "@/auth";
+import { uploadImage } from "@/utils/upload-image";
 
 type RegisterUserResponse = {
   error?: boolean;
@@ -31,11 +32,19 @@ export const registerUser = async (data: RegisterFormValues): Promise<RegisterUs
   const token = nanoid(32);
   const avatar = `https://api.dicebear.com/9.x/lorelei/png?seed=${email}&scale=90&backgroundColor=ffffff`;
 
+  // get buffer from avatar;
+  const img = await fetch(avatar);
+  const buffer = Buffer.from(await img.arrayBuffer());
+  const key = `avatars/${email}/default.png`;
+
+  // upload image to s3
+  const imgLocation = await uploadImage(buffer, key, "image/png");
+
   const user: User = await prisma.user.create({
     data: {
       email,
       hashedPassword: await bcrypt.hash(password, 10),
-      image: avatar,
+      image: imgLocation,
       emailToken: token,
       credentialsAuth: true,
     },

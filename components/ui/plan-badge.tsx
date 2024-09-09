@@ -1,18 +1,22 @@
 import { Badge, BadgeProps } from "@/components/ui/badge";
-
-type Plan = "Free" | "Pro" | "Business" | "Enterprise";
+import { PlanName } from "@/types/plans";
 
 type PlanBadgeProps = {
-  plan: Plan;
+  plan: PlanName;
+  className?: string;
 };
 
-export const PlanBadge = ({ plan }: PlanBadgeProps) => {
-  const variantMap: Record<Plan | string, BadgeProps["variant"]> = {
+export const PlanBadge = ({ plan, className }: PlanBadgeProps) => {
+  const variantMap: Record<PlanName | string, BadgeProps["variant"]> = {
     Free: "neutral",
-    Pro: "primary",
-    Business: "success",
+    Pro: "colorful",
+    Business: "primary",
     Enterprise: "warning",
   };
 
-  return <Badge variant={variantMap[plan || "Free"]}>{plan}</Badge>;
+  return (
+    <Badge variant={variantMap[plan || "Free"]} className={className}>
+      {plan}
+    </Badge>
+  );
 };

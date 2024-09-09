@@ -1,13 +1,13 @@
 import { type Plan } from "@prisma/client";
 import { type Price } from "@prisma/client";
 
-type CustomPrice = Omit<Price, "id" | "createdAt" | "planId">;
+type CustomPrice = Omit<Price, "id" | "createdAt" | "planId" | "isActive">;
 
 type CustomPlan = Omit<Plan, "id" | "createdAt" | "isLegacy" | "isCustom" | "slaContract">;
 
 export const proPrices: CustomPrice[] = [
-  { interval: "month", price: 10, stripePriceId: "price_1PrrXP08CDYCFGXEGhyydBJQ" },
-  { interval: "year", price: 96, stripePriceId: "price_1PrrWt08CDYCFGXEtIFBCgNS" },
+  { interval: "month", price: 10, stripePriceId: "price_1PrrWt08CDYCFGXEtIFBCgNS" },
+  { interval: "year", price: 96, stripePriceId: "price_1PrrXP08CDYCFGXEGhyydBJQ" },
 ];
 
 export const businessPrices: CustomPrice[] = [

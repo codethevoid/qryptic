@@ -1,11 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@/auth";
 import prisma from "@/db/prisma";
-import { Team, TeamMember, Plan } from "@prisma/client";
+import { Team, TeamMember, Plan, Domain } from "@prisma/client";
 
 type CustomTeam = Team & {
   members?: TeamMember[];
   plan: Plan;
+  domains: Domain[];
 };
 
 export const GET = async (req: NextRequest, { params }: { params: { slug: string } }) => {
@@ -15,7 +16,7 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
 
   const team: CustomTeam | null = await prisma.team.findUnique({
     where: { slug },
-    include: { members: true, plan: true },
+    include: { members: true, plan: true, domains: true },
   });
 
   if (!team) return NextResponse.json({ message: "Team not found" }, { status: 404 });
@@ -23,18 +24,40 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
   const teamMember = team.members?.find((member) => member.userId === token.userId);
   if (!teamMember) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
+  // check if plan is has been downgraded and force super_admin or owner to either delete
+  // team member or upgrade plan and we we wont let members view the team
+  const allowedSeats = team.plan.seats;
+  const currentSeats = team.members?.length as number;
+
+  // if plan is free and current seats is greater than allowed seats, we will not allow
+  // any member to view the team other than super admin bc there can only be 1 seat on free plan
+  const isPlanFree = team.plan.isFree;
+  if (isPlanFree && currentSeats > allowedSeats && teamMember.role !== "super_admin") {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  // if plan is not free and current seats is greater than allowed seats, we wil allow
+  // super admin and owner to view the team but not other members
+  if (currentSeats > allowedSeats && !["super_admin", "owner"].includes(teamMember.role)) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   // delete other members list from team
   delete team.members;
 
   return NextResponse.json({
+    id: team.id,
     plan: team.plan,
     slug: team.slug,
     name: team.name,
     image: team.image,
     company: team.company,
     subscriptionStatus: team.subscriptionStatus,
-    user: {
-      role: teamMember.role,
-    },
+    hasUsedTrial: team.hasUsedTrial,
+    trialEndsAt: team.trialEndsAt,
+    hasPaymentMethod: !!team.paymentMethodId,
+    exceededSeats: currentSeats > allowedSeats,
+    exceededDomains: team.domains.length > team.plan.domains,
+    user: { role: teamMember.role },
   });
 };

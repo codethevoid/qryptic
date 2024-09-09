@@ -7,7 +7,7 @@ type CustomPlan = Plan & { prices: Price[] };
 export const GET = async () => {
   const plans: CustomPlan[] = await prisma.plan.findMany({
     where: { isFree: false, isLegacy: false, isCustom: false },
-    include: { prices: true },
+    include: { prices: { where: { isActive: true } } },
     orderBy: { links: "asc" },
   });
 
