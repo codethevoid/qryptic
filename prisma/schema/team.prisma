@@ -22,7 +22,6 @@ model Team {
   planId               String
   price                Price?    @relation(fields: [priceId], references: [id])
   priceId              String?
-  hasUsedTrial         Boolean   @default(false)
   trialEndsAt          DateTime?
 
   // billing details

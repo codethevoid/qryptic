@@ -14,6 +14,7 @@ export const GET = async () => {
       image: true,
       isEmailVerified: true,
       defaultTeam: true,
+      hasUsedTrial: true,
     },
   });
   if (!user) throw new Error("User not found");

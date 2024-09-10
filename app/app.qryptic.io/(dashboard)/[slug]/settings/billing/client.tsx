@@ -20,7 +20,6 @@ export const BillingClient = () => {
         cancelAtPeriodEnd={team?.cancelAtPeriodEnd}
         price={team?.price}
         plan={team?.plan}
-        hasUsedTrial={team?.hasUsedTrial}
         subscriptionStart={team?.subscriptionStart}
         subscriptionEnd={team?.subscriptionEnd}
         trialEndsAt={team?.trialEndsAt}

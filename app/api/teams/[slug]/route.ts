@@ -28,11 +28,11 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
   // team member or upgrade plan and we we wont let members view the team
   const allowedSeats = team.plan.seats;
   const currentSeats = team.members?.length as number;
+  const isFreePlan = team.plan.isFree;
 
   // if plan is free and current seats is greater than allowed seats, we will not allow
   // any member to view the team other than super admin bc there can only be 1 seat on free plan
-  const isPlanFree = team.plan.isFree;
-  if (isPlanFree && currentSeats > allowedSeats && teamMember.role !== "super_admin") {
+  if (isFreePlan && teamMember.role !== "super_admin") {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
@@ -53,7 +53,6 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
     image: team.image,
     company: team.company,
     subscriptionStatus: team.subscriptionStatus,
-    hasUsedTrial: team.hasUsedTrial,
     trialEndsAt: team.trialEndsAt,
     hasPaymentMethod: !!team.paymentMethodId,
     exceededSeats: currentSeats > allowedSeats,

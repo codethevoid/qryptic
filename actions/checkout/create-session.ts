@@ -25,7 +25,7 @@ export const createCheckoutSession = async (
   // get team from server
   const teamFromServer = await prisma.team.findUnique({
     where: { id: team.id },
-    include: { members: true, plan: true },
+    include: { members: { include: { user: true } }, plan: true },
   });
 
   if (!teamFromServer) return { error: true, message: "Team not found" };
@@ -55,7 +55,7 @@ export const createCheckoutSession = async (
   }
 
   // if team has used free trial, create checkout session
-  if (teamFromServer.hasUsedTrial) {
+  if (user.user.hasUsedTrial) {
     // create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: teamFromServer.stripeCustomerId,
@@ -85,11 +85,16 @@ export const createCheckoutSession = async (
     return { error: true, message: "Failed to create subscription" };
   }
 
+  // update user to show that they have used the trial
+  await prisma.user.update({
+    where: { id: user.userId },
+    data: { hasUsedTrial: true },
+  });
+
   // update team in database
   await prisma.team.update({
     where: { id: team.id },
     data: {
-      hasUsedTrial: true,
       subscriptionStatus: subscription.status,
       stripeSubscriptionId: subscription.id,
       subscriptionStart: new Date(subscription.current_period_start * 1000),

@@ -29,7 +29,10 @@ model User {
   googleAuth         Boolean @default(false)
   credentialsAuth    Boolean @default(false)
 
+  // trial status
+  hasUsedTrial Boolean @default(false) // keep track at the user level so they can't keep creating new teams to get more trials
+
   // relations
-  defaultTeam String? // team slug
+  defaultTeam String? // team [slug]
   teams       TeamMember[]
 }

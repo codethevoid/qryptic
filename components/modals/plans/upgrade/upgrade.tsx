@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { mutate } from "swr";
 import { TrialStarted } from "@/components/modals/plans/upgrade/trial-started";
+import { useUser } from "@/lib/hooks/swr/use-user";
 
 type UpgradeProps = {
   isOpen: boolean;
@@ -35,6 +36,7 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
   const [interval, setInterval] = useState<"year" | "month">("year");
   const { plans } = usePlans();
   const { team } = useTeam();
+  const { user } = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -72,10 +74,7 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent
-          className="max-w-[440px] p-0"
-          aria-describedby="Upgrade your plan. Find the plan that works for you. You can change your plan at anytime."
-        >
+        <DialogContent className="max-w-[440px] p-0">
           <DialogHeader>
             <DialogTitle>Upgrade your plan</DialogTitle>
           </DialogHeader>
@@ -138,11 +137,11 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
               onClick={handleUpgrade}
               disabled={isLoading}
               size="sm"
-              className={`rounded-lg text-[13px] ${team?.hasUsedTrial ? "w-[110px]" : "w-[126px]"}`}
+              className={`rounded-lg text-[13px] ${user?.hasUsedTrial ? "w-[110px]" : "w-[126px]"}`}
             >
               {isLoading ? (
                 <LoaderCircle size={14} className="animate-spin" />
-              ) : team?.hasUsedTrial ? (
+              ) : user?.hasUsedTrial ? (
                 "Upgrade plan"
               ) : (
                 "Start 14 day trial"

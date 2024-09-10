@@ -52,6 +52,4 @@ export const subscriptionDeleted = async (subscription: Stripe.Subscription) => 
       await processInvoice(latestInvoice, customer);
     }
   }
-
-  // done
 };

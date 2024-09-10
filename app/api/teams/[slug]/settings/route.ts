@@ -49,7 +49,6 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
     members: team.members,
     invoices: team.invoices,
     trialEndsAt: team.trialEndsAt,
-    hasUsedTrial: team.hasUsedTrial,
     subscriptionStatus: team.subscriptionStatus,
     subscriptionStart: team.subscriptionStart,
     subscriptionEnd: team.subscriptionEnd,

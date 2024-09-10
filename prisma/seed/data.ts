@@ -6,13 +6,33 @@ type CustomPrice = Omit<Price, "id" | "createdAt" | "planId" | "isActive">;
 type CustomPlan = Omit<Plan, "id" | "createdAt" | "isLegacy" | "isCustom" | "slaContract">;
 
 export const proPrices: CustomPrice[] = [
-  { interval: "month", price: 10, stripePriceId: "price_1PrrWt08CDYCFGXEtIFBCgNS" },
-  { interval: "year", price: 96, stripePriceId: "price_1PrrXP08CDYCFGXEGhyydBJQ" },
+  {
+    interval: "month",
+    price: 10,
+    stripePriceId: "price_1PrrWt08CDYCFGXEtIFBCgNS",
+    stripeProductId: "prod_QjKBDVIxzwFecw",
+  },
+  {
+    interval: "year",
+    price: 96,
+    stripePriceId: "price_1PrrXP08CDYCFGXEGhyydBJQ",
+    stripeProductId: "prod_QjKBDVIxzwFecw",
+  },
 ];
 
 export const businessPrices: CustomPrice[] = [
-  { interval: "month", price: 30, stripePriceId: "price_1Prrag08CDYCFGXEPugGOvU7" },
-  { interval: "year", price: 288, stripePriceId: "price_1PrrbG08CDYCFGXEjwW8nVQT" },
+  {
+    interval: "month",
+    price: 30,
+    stripePriceId: "price_1Prrag08CDYCFGXEPugGOvU7",
+    stripeProductId: "prod_QjKFGI4YnmOPAJ",
+  },
+  {
+    interval: "year",
+    price: 288,
+    stripePriceId: "price_1PrrbG08CDYCFGXEjwW8nVQT",
+    stripeProductId: "prod_QjKFGI4YnmOPAJ",
+  },
 ];
 
 export const plans: CustomPlan[] = [

@@ -1,14 +1,9 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useState } from "react";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { CardProvider } from "@/components/modals/add-card/card-provider";
 
 type PaymentMethodProps = {
   paymentMethod: {
@@ -21,12 +16,13 @@ type PaymentMethodProps = {
 };
 
 export const PaymentMethodCard = ({ paymentMethod }: PaymentMethodProps) => {
+  const [isCardProviderOpen, setIsCardProviderOpen] = useState(false);
+
   return (
     <>
       <Card>
         <CardHeader>
           <CardTitle>Payment method info</CardTitle>
-          {/*<CardDescription>Your default payment method for your subscription.</CardDescription>*/}
         </CardHeader>
         <CardContent>
           {!paymentMethod && (
@@ -39,9 +35,16 @@ export const PaymentMethodCard = ({ paymentMethod }: PaymentMethodProps) => {
           )}
         </CardContent>
         <CardFooter className="flex justify-end rounded-b-lg border-t bg-zinc-50 px-6 py-3 dark:bg-zinc-950">
-          <Button size="sm">{paymentMethod ? "Update" : "Add card"}</Button>
+          <Button size="sm" onClick={() => setIsCardProviderOpen(true)}>
+            {paymentMethod ? "Update card" : "Add card"}
+          </Button>
         </CardFooter>
       </Card>
+      <CardProvider
+        isOpen={isCardProviderOpen}
+        hasPaymentMethod={!!paymentMethod}
+        setIsOpen={setIsCardProviderOpen}
+      />
     </>
   );
 };

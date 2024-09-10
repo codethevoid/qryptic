@@ -30,36 +30,44 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
   });
   if (!user) return { error: true, message: "Unauthorized" };
 
-  // check if user can create a team (max 1 team for free plan)
+  // get all teams that user is super admin of and check if they have a free team
   const teams = await prisma.teamMember.findMany({
     where: { userId: token.userId, role: "super_admin" },
-    include: {
-      team: {
-        select: { plan: true },
-      },
-    },
+    include: { team: { include: { plan: true } } },
   });
 
+  // if user has a free team, they can't create another
   const freeTeams = teams.filter((t) => t.team.plan.isFree);
-  if (freeTeams.length >= 1) {
-    return { error: true, message: "You can only have one team on a free plan." };
+  if (freeTeams.length >= 2) {
+    return {
+      error: true,
+      description: `You can only have two teams on a free plan. Either upgrade or delete your existing free teams to create a new one.`,
+    };
   }
 
-  // check if user has active trials without a payment method
-  // if so, they can't create a new team because then they would be able to bypass the payment method requirement
-  const activeTrials = await prisma.team.findMany({
-    where: {
-      createdBy: token.userId,
-      subscriptionStatus: "trialing",
-      paymentMethodId: null,
-    },
-  });
-
+  // check if user has an active trial without a payment method
+  // const activeTrials = teams.filter((t) => {
+  //   const hasPaymentMethod = !!t.team.paymentMethodId;
+  //   const status = t.team.subscriptionStatus;
+  //   return status === "trialing" && !hasPaymentMethod;
+  // });
   // if (activeTrials.length > 0) {
   //   return {
   //     error: true,
-  //     message: `You already have an active trial.`,
-  //     description: `Team ${activeTrials[0].name} is currently on a trial and requires a payment method to be added before creating a new team.`,
+  //     description: `You have an active trial on team ${activeTrials[0].team.name} without a payment method. Please add a payment method before creating another team.`,
+  //   };
+  // }
+
+  // check if any trials are getting cancelled at period end
+  // const trialsGettingCancelled = teams.filter((t) => {
+  //   const status = t.team.subscriptionStatus;
+  //   const cancelAtPeriodEnd = t.team.cancelAtPeriodEnd;
+  //   return status === "trialing" && cancelAtPeriodEnd;
+  // });
+  // if (trialsGettingCancelled.length > 0) {
+  //   return {
+  //     error: true,
+  //     description: `You have an active trial on team ${trialsGettingCancelled[0].team.name} that is getting downgraded to a free plan at the end of the trial period. You can't have more than one free team.`,
   //   };
   // }
 
@@ -69,7 +77,7 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
     where: { isFree: true, isCustom: false, isLegacy: false },
   })) as Plan;
 
-  // generate slug for team and make sure it is url safe
+  // generate [slug] for team and make sure it is url safe
   let isSlugGenerated = false;
   let slug = name
     .toLowerCase()
@@ -86,7 +94,7 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
     return { error: true, message: "Team name contains a restricted word" };
   }
 
-  // check if slug is already in use
+  // check if [slug] is already in use
   while (await prisma.team.findUnique({ where: { slug } })) {
     if (isSlugGenerated) {
       slug = nanoid(8);
@@ -133,7 +141,7 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
     data: { defaultTeam: team.slug },
   });
 
-  // we return the slug so we can update the jwt with the team slug
-  // and so we can redirect the user to the slug
+  // we return the [slug] so we can update the jwt with the team [slug]
+  // and so we can redirect the user to the [slug]
   return { error: false, slug: team.slug };
 };
