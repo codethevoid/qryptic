@@ -86,11 +86,16 @@ const config = {
           "20%": { transform: "scale(1.06)", opacity: "1" }, // Back to normal
           "30%": { transform: "scale(1.1)", opacity: "1" }, // Back to normal
         },
+        "fade-in": {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         heartbeat: "heartbeat 1.5s ease-in-out infinite", // Adjust duration to simulate heartbeat rhythm
+        "fade-in": "fade-in 0.3s ease-out",
       },
       maxWidth: { "screen-lg": "1100px" },
     },

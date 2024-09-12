@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@/auth";
 import prisma from "@/db/prisma";
 import { Team, TeamMember, Plan, Domain } from "@prisma/client";
+import { adminRoles } from "@/lib/constants/roles";
 
 type CustomTeam = Team & {
   members?: TeamMember[];
@@ -32,13 +33,11 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
 
   // if plan is free and current seats is greater than allowed seats, we will not allow
   // any member to view the team other than super admin bc there can only be 1 seat on free plan
-  if (isFreePlan && teamMember.role !== "super_admin") {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
-  // if plan is not free and current seats is greater than allowed seats, we wil allow
-  // super admin and owner to view the team but not other members
-  if (currentSeats > allowedSeats && !["super_admin", "owner"].includes(teamMember.role)) {
+  if (isFreePlan) {
+    if (teamMember.role !== "super_admin") {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+  } else if (currentSeats > allowedSeats && !adminRoles.includes(teamMember.role)) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 

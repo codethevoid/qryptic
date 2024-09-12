@@ -1,9 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CardProvider } from "@/components/modals/add-card/card-provider";
+import { Check, CheckCircle, CircleCheck, CreditCard, Dot } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 type PaymentMethodProps = {
   paymentMethod: {
@@ -13,9 +22,10 @@ type PaymentMethodProps = {
     expMonth: number;
     expYear: number;
   } | null;
+  name: string;
 };
 
-export const PaymentMethodCard = ({ paymentMethod }: PaymentMethodProps) => {
+export const PaymentMethodCard = ({ paymentMethod, name }: PaymentMethodProps) => {
   const [isCardProviderOpen, setIsCardProviderOpen] = useState(false);
 
   return (
@@ -33,6 +43,30 @@ export const PaymentMethodCard = ({ paymentMethod }: PaymentMethodProps) => {
               </p>
             </div>
           )}
+          {paymentMethod && (
+            <div className="flex w-full max-w-[500px] items-center justify-between rounded-lg border px-3 py-2">
+              <div className="flex items-center space-x-2">
+                <CreditCard size={16}></CreditCard>
+                <p className="text-[13px] capitalize">{paymentMethod.brand}</p>
+                <div className="flex items-center">
+                  <div className="flex items-center -space-x-2.5">
+                    <Dot size={14} />
+                    <Dot size={14} />
+                    <Dot size={14} />
+                    <Dot size={14} />
+                  </div>
+                  <p className="text-[13px]">{paymentMethod.last4}</p>
+                </div>
+                <Badge variant="primary" className="items-center space-x-1 px-2 py-0.5">
+                  <CircleCheck size={13} />
+                  <span>Default</span>
+                </Badge>
+              </div>
+              <p className="text-[13px] text-muted-foreground">
+                {`expires ${paymentMethod.expMonth}/${paymentMethod.expYear}`}
+              </p>
+            </div>
+          )}
         </CardContent>
         <CardFooter className="flex justify-end rounded-b-lg border-t bg-zinc-50 px-6 py-3 dark:bg-zinc-950">
           <Button size="sm" onClick={() => setIsCardProviderOpen(true)}>
@@ -44,6 +78,7 @@ export const PaymentMethodCard = ({ paymentMethod }: PaymentMethodProps) => {
         isOpen={isCardProviderOpen}
         hasPaymentMethod={!!paymentMethod}
         setIsOpen={setIsCardProviderOpen}
+        name={name}
       />
     </>
   );

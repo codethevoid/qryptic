@@ -25,11 +25,11 @@ export const subscriptionDeleted = async (subscription: Stripe.Subscription) => 
       cancelAtPeriodEnd: false,
       trialEndsAt: null,
       paymentMethodId: null,
-      type: null,
-      brand: null,
-      last4: null,
-      expMonth: null,
-      expYear: null,
+      paymentMethodType: null,
+      paymentMethodBrand: null,
+      paymentMethodLast4: null,
+      paymentMethodExpMonth: null,
+      paymentMethodExpYear: null,
     },
   });
 

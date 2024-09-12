@@ -23,9 +23,11 @@ export const BillingClient = () => {
         subscriptionStart={team?.subscriptionStart}
         subscriptionEnd={team?.subscriptionEnd}
         trialEndsAt={team?.trialEndsAt}
-        slug={team?.slug}
+        teamName={team?.name}
       />
-      {!team?.plan.isFree && <PaymentMethodCard paymentMethod={team?.paymentMethod} />}
+      {!team?.plan.isFree && (
+        <PaymentMethodCard paymentMethod={team?.paymentMethod} name={team?.name} />
+      )}
     </div>
   );
 };

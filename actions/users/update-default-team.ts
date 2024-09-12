@@ -14,7 +14,6 @@ export const updateDefaultTeam = async (
 ): Promise<UpdateDefaultTeamResponse> => {
   const token = await auth();
   if (!token) return { error: true, message: "Unauthorized" };
-  console.log("updateDefaultTeam -> [slug]", slug);
 
   // if no [slug] is provided, set default team to null
   if (!slug) {

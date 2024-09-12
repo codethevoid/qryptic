@@ -11,7 +11,7 @@ export const paymentFailed = async (invoice: Stripe.Invoice) => {
   await prisma.team.update({
     where: { stripeCustomerId: customer as string },
     data: {
-      subscriptionStatus: subscription.status,
+      subscriptionStatus: "past_due",
       failedInvoiceId: invoice.id,
     },
   });

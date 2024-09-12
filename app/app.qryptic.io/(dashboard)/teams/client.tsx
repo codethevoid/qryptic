@@ -29,7 +29,6 @@ type TeamProviderProps = {
 export const TeamsClient = () => {
   const { teams, error, isLoading } = useTeams();
   const [isCreateTeamOpen, setCreateTeamOpen] = useState(false);
-  console.log(teams);
 
   return (
     <>

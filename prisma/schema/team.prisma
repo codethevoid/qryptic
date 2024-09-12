@@ -11,26 +11,26 @@ model Team {
   emailInvoiceTo String?
 
   // subscription and plan details
-  stripeCustomerId     String    @unique
+  stripeCustomerId     String            @unique
   stripeSubscriptionId String?
-  subscriptionStatus   String
+  subscriptionStatus   SubsrictionStatus
   subscriptionStart    DateTime?
   subscriptionEnd      DateTime?
-  cancelAtPeriodEnd    Boolean   @default(false)
+  cancelAtPeriodEnd    Boolean           @default(false)
   failedInvoiceId      String?
-  plan                 Plan      @relation(fields: [planId], references: [id])
+  plan                 Plan              @relation(fields: [planId], references: [id])
   planId               String
-  price                Price?    @relation(fields: [priceId], references: [id])
+  price                Price?            @relation(fields: [priceId], references: [id])
   priceId              String?
   trialEndsAt          DateTime?
 
   // billing details
-  paymentMethodId String?
-  type            String? // card
-  brand           String?
-  last4           String?
-  expMonth        Int?
-  expYear         Int?
+  paymentMethodId       String? // stripe id
+  paymentMethodType     String? // card
+  paymentMethodBrand    String?
+  paymentMethodLast4    String?
+  paymentMethodExpMonth Int?
+  paymentMethodExpYear  Int?
 
   // relations
   members  TeamMember[]
@@ -59,4 +59,10 @@ model TeamMember {
   teamId    String
   user      User     @relation(fields: [userId], references: [id])
   userId    String
+}
+
+enum SubsrictionStatus {
+  active
+  trialing
+  past_due
 }

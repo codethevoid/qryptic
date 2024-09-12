@@ -18,6 +18,7 @@ export const createCheckoutSession = async (
   price: Price,
   plan: Plan,
   team: Team,
+  path: string,
 ): Promise<CreateSessionResponse> => {
   const token = await auth();
   if (!token) return { error: true, message: "Unauthorized" };
@@ -63,7 +64,7 @@ export const createCheckoutSession = async (
       mode: "subscription",
       line_items: [{ price: price.stripePriceId, quantity: 1 }],
       success_url: `${protocol}${appDomain}/${team.slug}/payment/success`,
-      cancel_url: `${protocol}${appDomain}/${team.slug}`,
+      cancel_url: `${protocol}${appDomain}/${path}`,
     });
 
     if (!session || !session.url) {
@@ -95,7 +96,7 @@ export const createCheckoutSession = async (
   await prisma.team.update({
     where: { id: team.id },
     data: {
-      subscriptionStatus: subscription.status,
+      subscriptionStatus: "trialing",
       stripeSubscriptionId: subscription.id,
       subscriptionStart: new Date(subscription.current_period_start * 1000),
       subscriptionEnd: new Date(subscription.current_period_end * 1000),

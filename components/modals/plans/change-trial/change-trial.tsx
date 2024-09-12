@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { PlanWithPrices } from "@/types/plans";
 import { usePlans } from "@/lib/hooks/swr/use-plans";
-import { useTeam } from "@/lib/hooks/swr/use-team";
 import {
   Dialog,
   DialogBody,

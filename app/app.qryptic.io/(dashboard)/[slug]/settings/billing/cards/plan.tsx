@@ -5,14 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Plan, Price } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
-import { AlertCircle, Info, RefreshCw, TriangleAlert, XCircle } from "lucide-react";
+import { AlertCircle, Info, LoaderCircle, RefreshCw, XCircle } from "lucide-react";
 import { useState } from "react";
 import NextLink from "next/link";
 import { Upgrade } from "@/components/modals/plans/upgrade/upgrade";
 import { ChangeTrial } from "@/components/modals/plans/change-trial/change-trial";
 import { TrialWillEnd } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/billing/cards/alerts/trial-will-end";
 import { ChargesWillStart } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/billing/cards/alerts/charges-will-start";
-import { usePathname } from "next/navigation";
+import { CancelSubscription } from "@/components/modals/plans/cancel";
+import { ResumeSubscription } from "@/components/modals/plans/resume";
+import { CardProvider } from "@/components/modals/add-card/card-provider";
+import { ChangePlan } from "@/components/modals/plans/change-plan/change-plan";
 
 type PlanProps = {
   hasPaymentMethod: boolean;
@@ -23,7 +26,7 @@ type PlanProps = {
   price: Price | null;
   plan: Plan;
   trialEndsAt: Date | null;
-  slug: string;
+  teamName: string;
 };
 
 export const PlanCard = ({
@@ -35,11 +38,22 @@ export const PlanCard = ({
   price,
   plan,
   trialEndsAt,
-  slug,
+  teamName,
 }: PlanProps) => {
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
   const [isChangeTrialOpen, setIsChangeTrialOpen] = useState(false);
-  const path = usePathname();
+  const [isChangePlanOpen, setIsChangePlanOpen] = useState(false);
+  const [isCancelOpen, setIsCancelOpen] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [isCardProviderOpen, setIsCardProviderOpen] = useState(false);
+
+  const CancelButton = ({ label = "Cancel" }: { label?: string }) => {
+    return (
+      <Button size="sm" variant="outline" onClick={() => setIsCancelOpen(true)}>
+        {label}
+      </Button>
+    );
+  };
 
   return (
     <>
@@ -58,7 +72,7 @@ export const PlanCard = ({
           <CardTitle>{plan.name} plan</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2.5">
             {plan.isFree && (
               <p className="text-sm font-medium">Upgrade for increased limits and features.</p>
             )}
@@ -116,15 +130,14 @@ export const PlanCard = ({
               </>
             )}
           </div>
-          {!plan.isFree && (
+          {plan.isFree ? (
+            <p className="mt-1 text-[13px] text-muted-foreground">
+              You are currently on the free plan. Upgrade for increased limits and features.
+            </p>
+          ) : (
             <p className="mt-1.5 text-[13px] text-muted-foreground">
               Current cycle: {format(subscriptionStart as Date, "MMM dd, yyyy")} -{" "}
               {format(subscriptionEnd as Date, "MMM dd, yyyy")}
-            </p>
-          )}
-          {plan.isFree && (
-            <p className="mt-1 text-[13px] text-muted-foreground">
-              You are currently on the free plan. Upgrade for increased limits and features.
             </p>
           )}
         </CardContent>
@@ -150,13 +163,11 @@ export const PlanCard = ({
                     {hasPaymentMethod && (
                       <>
                         {cancelAtPeriodEnd ? (
-                          <Button size="sm" variant="outline">
+                          <Button size="sm" onClick={() => setIsResumeOpen(true)}>
                             Resume plan
                           </Button>
                         ) : (
-                          <Button variant="outline" size="sm">
-                            Cancel
-                          </Button>
+                          <CancelButton />
                         )}
                       </>
                     )}
@@ -170,16 +181,14 @@ export const PlanCard = ({
                 {subscriptionStatus === "active" && (
                   <>
                     {cancelAtPeriodEnd ? (
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" onClick={() => setIsResumeOpen(true)}>
                         Resume plan
                       </Button>
                     ) : (
                       <>
-                        <Button variant="outline" size="sm">
-                          Cancel
-                        </Button>
-                        <Button size="sm" asChild>
-                          <NextLink href={`${path}/change-plan`}>Change plan</NextLink>
+                        <CancelButton />
+                        <Button size="sm" onClick={() => setIsChangePlanOpen(true)}>
+                          Change plan
                         </Button>
                       </>
                     )}
@@ -187,10 +196,10 @@ export const PlanCard = ({
                 )}
                 {subscriptionStatus === "past_due" && (
                   <>
-                    <Button size="sm" variant="outline">
-                      Cancel plan
+                    <CancelButton label="Cancel plan" />
+                    <Button size="sm" onClick={() => setIsCardProviderOpen(true)}>
+                      Update card
                     </Button>
-                    <Button size="sm">Update card</Button>
                   </>
                 )}
               </>
@@ -200,6 +209,19 @@ export const PlanCard = ({
       </Card>
       <Upgrade isOpen={isUpgradeOpen} setIsOpen={setIsUpgradeOpen} />
       <ChangeTrial isOpen={isChangeTrialOpen} setIsOpen={setIsChangeTrialOpen} />
+      <CancelSubscription
+        isOpen={isCancelOpen}
+        setIsOpen={setIsCancelOpen}
+        status={subscriptionStatus}
+      />
+      <ResumeSubscription isOpen={isResumeOpen} setIsOpen={setIsResumeOpen} />
+      <CardProvider
+        isOpen={isCardProviderOpen}
+        hasPaymentMethod={hasPaymentMethod}
+        setIsOpen={setIsCardProviderOpen}
+        name={teamName}
+      />
+      <ChangePlan isOpen={isChangePlanOpen} setIsOpen={setIsChangePlanOpen} />
     </>
   );
 };

@@ -1,39 +1,22 @@
-import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { useParams } from "next/navigation";
-import {
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Dialog,
-  DialogBody,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { DialogContent, DialogHeader, DialogTitle, Dialog } from "@/components/ui/dialog";
+import { CardCapture } from "@/components/modals/add-card/card-capture";
+import { useClientSecret } from "@/lib/hooks/swr/use-client-secret";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
-
-const fetchClientSecret = async (slug: string) => {
-  const res = await fetch(`/api/cards/setup-intent/${slug}`);
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data.clientSecret;
-};
 
 type CardProviderProps = {
   isOpen: boolean;
   hasPaymentMethod: boolean;
   setIsOpen: (open: boolean) => void;
+  name: string;
 };
 
-export const CardProvider = ({ isOpen, setIsOpen, hasPaymentMethod }: CardProviderProps) => {
-  const [clientSecret, setClientSecret] = useState<string>("");
-  const { slug } = useParams();
+export const CardProvider = ({ isOpen, setIsOpen, hasPaymentMethod, name }: CardProviderProps) => {
+  const { clientSecret } = useClientSecret();
 
-  useEffect(() => {
-    if (!slug) return;
-    fetchClientSecret(slug as string).then((data) => setClientSecret(data));
-  }, [slug]);
+  const options = { clientSecret };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -41,9 +24,9 @@ export const CardProvider = ({ isOpen, setIsOpen, hasPaymentMethod }: CardProvid
         <DialogHeader>
           <DialogTitle>{hasPaymentMethod ? "Add a new card" : "Add a card"}</DialogTitle>
         </DialogHeader>
-        <DialogBody>
-          <DialogDescription>This card will be used for future payments.</DialogDescription>
-        </DialogBody>
+        <Elements stripe={stripePromise} options={options}>
+          <CardCapture name={name} clientSecret={clientSecret} setIsOpen={setIsOpen} />
+        </Elements>
       </DialogContent>
     </Dialog>
   );

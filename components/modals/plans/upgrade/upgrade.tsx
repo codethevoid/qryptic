@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { mutate } from "swr";
 import { TrialStarted } from "@/components/modals/plans/upgrade/trial-started";
 import { useUser } from "@/lib/hooks/swr/use-user";
+import { usePathname } from "next/navigation";
 
 type UpgradeProps = {
   isOpen: boolean;
@@ -37,6 +38,7 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
   const { plans } = usePlans();
   const { team } = useTeam();
   const { user } = useUser();
+  const path = usePathname();
   const router = useRouter();
 
   useEffect(() => {
@@ -54,6 +56,7 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
       price,
       selectedPlan as PlanWithPrices,
       team,
+      path,
     );
     if (error) {
       setIsLoading(false);

@@ -59,7 +59,7 @@ export const changeTrial = async (priceId: string, planId: string, teamId: strin
     data: {
       plan: { connect: { id: plan.id } },
       price: { connect: { id: price.id } },
-      subscriptionStatus: subscription.status,
+      subscriptionStatus: "trialing",
       stripeSubscriptionId: subscription.id,
       subscriptionStart: new Date(subscription.current_period_start * 1000),
       subscriptionEnd: new Date(subscription.current_period_end * 1000),

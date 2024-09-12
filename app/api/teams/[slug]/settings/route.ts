@@ -34,7 +34,11 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
   });
 
   if (!team) return NextResponse.json({ message: "Team not found" }, { status: 404 });
-  if (!team.members.find((member) => member.userId === token.userId)) {
+
+  // verify user is part of team and is owner or super admin
+  const teamMember = team.members.find((member) => member.userId === token.userId);
+  if (!teamMember) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  if (!["owner", "super_admin"].includes(teamMember.role)) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
@@ -55,10 +59,11 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
     cancelAtPeriodEnd: team.cancelAtPeriodEnd,
     paymentMethod: team.paymentMethodId
       ? {
-          type: team.type,
-          last4: team.last4,
-          expMonth: team.expMonth,
-          expYear: team.expYear,
+          type: team.paymentMethodType,
+          brand: team.paymentMethodBrand,
+          last4: team.paymentMethodLast4,
+          expMonth: team.paymentMethodExpMonth,
+          expYear: team.paymentMethodExpYear,
         }
       : null,
     usage: {

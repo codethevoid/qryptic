@@ -1,5 +1,6 @@
 import prisma from "@/db/prisma";
 import Stripe from "stripe";
+import { SubscriptionStatus } from "@/types/billing";
 
 export const subscriptionUpdated = async (subscription: Stripe.Subscription) => {
   const customer = subscription.customer as string;
@@ -11,10 +12,7 @@ export const subscriptionUpdated = async (subscription: Stripe.Subscription) => 
     include: { plan: true },
   });
 
-  if (!price) {
-    console.log(`Plan not found for price ${priceId}`);
-    return;
-  }
+  if (!price) return console.log(`Plan not found for price ${priceId}`);
 
   // update team with new plan
   await prisma.team.update({
@@ -23,7 +21,7 @@ export const subscriptionUpdated = async (subscription: Stripe.Subscription) => 
       plan: { connect: { id: price.plan.id } },
       price: { connect: { id: price.id } },
       stripeSubscriptionId: subscription.id,
-      subscriptionStatus: subscription.status,
+      subscriptionStatus: subscription.status as SubscriptionStatus,
       subscriptionStart: new Date(subscription.current_period_start * 1000),
       subscriptionEnd: new Date(subscription.current_period_end * 1000),
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
