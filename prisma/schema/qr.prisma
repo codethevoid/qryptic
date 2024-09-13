@@ -1,0 +1,8 @@
+model QrCode {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  // relations
+  link   Link   @relation(fields: [linkId], references: [id])
+  linkId String @unique
+}

@@ -1,4 +1,7 @@
 import {
+  CompactDialogDescription,
+  CompactDialogHeader,
+  CompactDialogTitle,
   Dialog,
   DialogBody,
   DialogContent,
@@ -78,11 +81,11 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-[440px] p-0">
-          <DialogHeader>
-            <DialogTitle>Upgrade your plan</DialogTitle>
-          </DialogHeader>
+          <CompactDialogHeader>
+            <CompactDialogTitle>Upgrade your plan</CompactDialogTitle>
+            <CompactDialogDescription>Choose the plan that works for you.</CompactDialogDescription>
+          </CompactDialogHeader>
           <DialogBody>
-            <DialogDescription>Choose the plan that works for you.</DialogDescription>
             <Tabs defaultValue={plans[0].name}>
               <TabsList className="w-full border bg-transparent">
                 <TabsTrigger

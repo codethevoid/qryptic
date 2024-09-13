@@ -61,10 +61,18 @@ const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
 );
 DialogHeader.displayName = "DialogHeader";
 
+const CompactDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn("space-y-2 rounded-t-lg border-b bg-zinc-50 p-4 dark:bg-zinc-950", className)}
+    {...props}
+  />
+);
+CompactDialogHeader.displayName = "CompactDialogHeader";
+
 const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex w-full items-center justify-end space-x-2 rounded-b-lg bg-zinc-50 p-4 dark:bg-zinc-950",
+      "flex w-full items-center justify-end space-x-2 rounded-b-lg bg-zinc-50 px-4 py-3 dark:bg-zinc-950",
       className,
     )}
     {...props}
@@ -89,6 +97,18 @@ const DialogTitle = React.forwardRef<
 ));
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
 
+const CompactDialogTitle = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Title
+    ref={ref}
+    className={cn("text-base font-semibold leading-none tracking-tight", className)}
+    {...props}
+  />
+));
+CompactDialogTitle.displayName = DialogPrimitive.Title.displayName;
+
 const DialogDescription = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
@@ -100,6 +120,18 @@ const DialogDescription = React.forwardRef<
   />
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
+
+const CompactDialogDescription = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Description
+    ref={ref}
+    className={cn("text-[13px] text-muted-foreground", className)}
+    {...props}
+  />
+));
+CompactDialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Dialog,
@@ -113,4 +145,7 @@ export {
   DialogTitle,
   DialogDescription,
   DialogBody,
+  CompactDialogHeader,
+  CompactDialogTitle,
+  CompactDialogDescription,
 };

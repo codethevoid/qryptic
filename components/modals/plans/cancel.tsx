@@ -6,6 +6,9 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
+  CompactDialogTitle,
+  CompactDialogDescription,
+  CompactDialogHeader,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { cancelPlan } from "@/actions/plans/cancel";
@@ -28,11 +31,11 @@ export const CancelSubscription = ({ isOpen, setIsOpen, status }: CancelSubscrip
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Cancel subscription</DialogTitle>
-        </DialogHeader>
-        <DialogBody>
-          <DialogDescription>
+        <CompactDialogHeader className="border-b-0 bg-transparent pb-0 pt-6 dark:bg-transparent">
+          <CompactDialogTitle>Cancel subscription</CompactDialogTitle>
+        </CompactDialogHeader>
+        <DialogBody className="pt-4">
+          <CompactDialogDescription>
             Are you sure you want to cancel your subscription? You will lose access to all pro
             features{" "}
             {status === "trialing"
@@ -40,7 +43,7 @@ export const CancelSubscription = ({ isOpen, setIsOpen, status }: CancelSubscrip
               : status === "past_due"
                 ? "immediately."
                 : "at the end of your billing period."}
-          </DialogDescription>
+          </CompactDialogDescription>
         </DialogBody>
         <DialogFooter>
           <Button size="sm" variant="outline" onClick={() => setIsOpen(false)} disabled={isLoading}>

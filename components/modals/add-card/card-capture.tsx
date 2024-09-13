@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { addCard } from "@/actions/cards/add-card";
 import { useTeamSettings } from "@/lib/hooks/swr/use-team-settings";
 import { mutate } from "swr";
+import { Label } from "@/components/ui/label";
 
 type CardCaptureProps = {
   name: string;
@@ -53,10 +54,8 @@ export const CardCapture = ({ name, clientSecret, setIsOpen }: CardCaptureProps)
   return (
     <>
       <DialogBody>
-        <DialogDescription className="text-[13px]">
-          Add a payment method for <span className="font-semibold">{name}</span>
-        </DialogDescription>
-        <div>
+        <div className="space-y-1.5">
+          <Label>Card details</Label>
           <CardElement
             options={{
               style: {
@@ -76,7 +75,7 @@ export const CardCapture = ({ name, clientSecret, setIsOpen }: CardCaptureProps)
               },
             }}
           />
-          {error && <p className="mt-1.5 text-xs text-red-600">{error}</p>}
+          {error && <p className="text-xs text-red-600">{error}</p>}
         </div>
         <p className="text-[13px] text-muted-foreground">
           This card will be used for all future payments. You can change it at any time.

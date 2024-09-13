@@ -2,39 +2,55 @@ model Link {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
+  // link details
+  createdBy   TeamMember @relation(fields: [createdById], references: [id])
+  createdById String
+  name        String
+  destination String
+  slug        String     @unique
+  isArchived  Boolean    @default(false)
+  notes       String?    @db.Text
+
+  // link options
+  isPasswordProtected Boolean   @default(false)
+  passwordHash        String?
+  expires             DateTime?
+  shouldCloak         Boolean   @default(false)
+  shouldIndex         Boolean   @default(false)
+  isBanned            Boolean   @default(false)
+
+  // redirect options
+  ios     String?
+  android String?
+  desktop String?
+  expired String?
+
+  // Custom open graph
+  ogTitle       String?
+  ogDescription String?
+  ogImage       String?
+
+  // qr code
   qrCode QrCode?
 
   // relations
-  team   Team   @relation(fields: [teamId], references: [id])
-  teamId String
-
-  // relations
-  events Event[]
+  team     Team    @relation(fields: [teamId], references: [id])
+  teamId   String
+  domain   Domain  @relation(fields: [domainId], references: [id])
+  domainId String
+  events   Event[]
+  tags     Tag[]
 }
 
-model QrCode {
+model Tag {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  // relations
-  link   Link   @relation(fields: [linkId], references: [id])
-  linkId String @unique
-}
-
-enum EventType {
-  click
-  scan
-}
-
-model Event {
-  id        String    @id @default(cuid())
-  createdAt DateTime  @default(now())
-  type      EventType
+  name  String
+  color String
 
   // relations
-
-  Link   Link   @relation(fields: [linkId], references: [id])
-  linkId String
   team   Team   @relation(fields: [teamId], references: [id])
   teamId String
+  links  Link[]
 }

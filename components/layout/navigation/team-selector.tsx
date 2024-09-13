@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CreateTeam } from "@/components/modals/create-team";
-import { PlanBadge } from "@/components/ui/plan-badge";
+import { PlanBadge } from "@/components/ui/custom/plan-badge";
 import { PlanName } from "@/types/plans";
 
 export const TeamSelector = () => {
@@ -73,7 +73,7 @@ export const TeamSelector = () => {
           >
             <DropdownMenuLabel>
               <div className="flex items-center justify-between">
-                <p className="text-[13px] font-normal text-muted-foreground">My Teams</p>
+                <p className="text-[12px] font-medium text-muted-foreground">My Teams</p>
               </div>
             </DropdownMenuLabel>
             {teams?.map((t: any) => (

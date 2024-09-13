@@ -38,6 +38,7 @@ model Team {
   links    Link[]
   events   Event[]
   invoices Invoice[]
+  tags     Tag[]
 
   // support manager for enterprise plans
   manager Admin[] // dedicated support manager, only for enterprise plans
@@ -59,6 +60,9 @@ model TeamMember {
   teamId    String
   user      User     @relation(fields: [userId], references: [id])
   userId    String
+
+  // relations
+  links Link[]
 }
 
 enum SubsrictionStatus {

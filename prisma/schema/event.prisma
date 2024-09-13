@@ -1,0 +1,29 @@
+enum EventType {
+  click
+  scan
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  // event details
+  type     EventType
+  device   String?
+  os       String?
+  browser  String?
+  ip       String?
+  referrer String?
+  country  String?
+  city     String?
+  state    String?
+  postal   String?
+  lat      Float?
+  lon      Float?
+
+  // relations
+  Link   Link   @relation(fields: [linkId], references: [id])
+  linkId String
+  team   Team   @relation(fields: [teamId], references: [id])
+  teamId String
+}

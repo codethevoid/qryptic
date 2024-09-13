@@ -1,3 +1,10 @@
+enum InvoiceStatus {
+  open
+  paid
+  uncollectible
+  void
+}
+
 model Invoice {
   id              String        @id @default(cuid())
   createdAt       DateTime      @default(now())
@@ -10,11 +17,4 @@ model Invoice {
   status          InvoiceStatus
   invoicePdf      String? // pdf url of the invoice
   date            DateTime
-}
-
-enum InvoiceStatus {
-  open
-  paid
-  uncollectible
-  void
 }

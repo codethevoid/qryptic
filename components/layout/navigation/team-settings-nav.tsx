@@ -48,7 +48,9 @@ export const TeamSettingsNav = () => {
             <Skeleton className="h-full w-full" />
           </AvatarFallback>
         </Avatar>
-        <p className="max-w-[176px] truncate text-xs text-muted-foreground">{team?.name}</p>
+        <p className="max-w-[176px] truncate text-xs font-medium text-muted-foreground">
+          {team?.name}
+        </p>
       </div>
       {linkItems.map((item, i) => (
         <Button

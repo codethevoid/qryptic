@@ -1,7 +1,7 @@
 "use client";
 
 import { useTeamSettings } from "@/lib/hooks/swr/use-team-settings";
-import { Loader } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/loader";
+import { Loader } from "@/components/layout/loader";
 import { PaymentMethodCard } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/billing/cards/payment-method";
 import { PlanCard } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/billing/cards/plan";
 

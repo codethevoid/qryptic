@@ -6,6 +6,9 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
+  CompactDialogHeader,
+  CompactDialogTitle,
+  CompactDialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -27,14 +30,14 @@ export const ResumeSubscription = ({ isOpen, setIsOpen }: CancelSubscriptionProp
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Resume subscription</DialogTitle>
-        </DialogHeader>
-        <DialogBody>
-          <DialogDescription>
+        <CompactDialogHeader className="border-b-0 bg-transparent pb-0 pt-6 dark:bg-transparent">
+          <CompactDialogTitle>Resume subscription</CompactDialogTitle>
+        </CompactDialogHeader>
+        <DialogBody className="pt-4">
+          <CompactDialogDescription>
             Are you sure you want to resume your subscription? You will continue to be billed for
             your subscription like normal.
-          </DialogDescription>
+          </CompactDialogDescription>
         </DialogBody>
         <DialogFooter>
           <Button size="sm" variant="outline" onClick={() => setIsOpen(false)} disabled={isLoading}>

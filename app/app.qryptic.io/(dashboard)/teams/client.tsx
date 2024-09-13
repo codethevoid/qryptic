@@ -12,7 +12,7 @@ import type { Plan, Team, Domain } from "@prisma/client";
 import NextLink from "next/link";
 import { NoTeams } from "@/components/empty/no-teams";
 import { TeamSkeleton } from "@/components/skeletons/teams-skeleton";
-import { PlanBadge } from "@/components/ui/plan-badge";
+import { PlanBadge } from "@/components/ui/custom/plan-badge";
 import { PlanName } from "@/types/plans";
 import { Skeleton } from "@/components/ui/skeleton";
 

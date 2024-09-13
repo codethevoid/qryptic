@@ -1,6 +1,6 @@
 import { PlanWithPrices } from "@/types/plans";
 import { Card } from "@/components/ui/card";
-import { SmallSwitch } from "@/components/ui/small-switch";
+import { SmallSwitch } from "@/components/ui/custom/small-switch";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";

@@ -51,7 +51,7 @@ export const AccountDropdown = () => {
             <p className="max-w-[210px] truncate text-[13px] font-medium">
               {user?.name || "Signed in as"}
             </p>
-            <p className="max-w-[210px] truncate text-[13px] font-normal text-muted-foreground">
+            <p className="max-w-[210px] truncate text-[12px] font-medium text-muted-foreground">
               {user?.email}
             </p>
           </DropdownMenuLabel>

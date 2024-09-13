@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { PlanWithPrices } from "@/types/plans";
 import { usePlans } from "@/lib/hooks/swr/use-plans";
 import {
+  CompactDialogDescription,
+  CompactDialogHeader,
+  CompactDialogTitle,
   Dialog,
   DialogBody,
   DialogContent,
@@ -67,7 +70,6 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
 
     const proration = await previewProration(team.slug, plan.id, price?.id as string);
     setPreview(proration);
-    console.log(proration);
     setIsLoadingPreview(false);
   };
 
@@ -94,11 +96,9 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="max-w-[440px] p-0">
-        <DialogHeader>
-          <DialogTitle>Change plan</DialogTitle>
-        </DialogHeader>
-        <DialogBody>
-          <DialogDescription>
+        <CompactDialogHeader>
+          <CompactDialogTitle>Change plan</CompactDialogTitle>
+          <CompactDialogDescription>
             Select a plan to change your subscription to. Changes will take effect immediately.
             Compare all plans and features{" "}
             <NextLink
@@ -108,7 +108,9 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
             >
               here
             </NextLink>
-          </DialogDescription>
+          </CompactDialogDescription>
+        </CompactDialogHeader>
+        <DialogBody>
           <Tabs defaultValue={selectedPlan?.name}>
             <TabsList className="w-full border bg-transparent">
               <TabsTrigger
@@ -176,7 +178,7 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
                 selectedPlan?.prices.find((price) => price.interval === interval)?.id
             }
             size="sm"
-            className={`rounded-lg text-[13px] transition-[opacity_width_150ms] ${preview ? "w-[210px]" : "w-[101px]"}`}
+            className={`overflow-hidden rounded-lg text-[13px] transition-[opacity_width_150ms] ${preview ? "w-[210px]" : "w-[101px]"}`}
           >
             {isLoading ? (
               <LoaderCircle size={14} className="animate-spin" />

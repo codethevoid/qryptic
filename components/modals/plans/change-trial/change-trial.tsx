@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { PlanWithPrices } from "@/types/plans";
 import { usePlans } from "@/lib/hooks/swr/use-plans";
 import {
+  CompactDialogDescription,
+  CompactDialogHeader,
+  CompactDialogTitle,
   Dialog,
   DialogBody,
   DialogContent,
@@ -63,11 +66,13 @@ export const ChangeTrial = ({ isOpen, setIsOpen }: ChangeTrialProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="max-w-[440px] p-0">
-        <DialogHeader>
-          <DialogTitle>Change plan</DialogTitle>
-        </DialogHeader>
+        <CompactDialogHeader>
+          <CompactDialogTitle>Change plan</CompactDialogTitle>
+          <CompactDialogDescription>
+            Select a plan to change your trial to.
+          </CompactDialogDescription>
+        </CompactDialogHeader>
         <DialogBody>
-          <DialogDescription>Select a plan to change your trial to.</DialogDescription>
           <Tabs defaultValue={selectedPlan?.name}>
             <TabsList className="w-full border bg-transparent">
               <TabsTrigger

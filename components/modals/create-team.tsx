@@ -1,4 +1,7 @@
 import {
+  CompactDialogDescription,
+  CompactDialogHeader,
+  CompactDialogTitle,
   Dialog,
   DialogBody,
   DialogContent,
@@ -68,14 +71,14 @@ export const CreateTeam = ({ isOpen, setIsOpen }: CreateTeamProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="p-0">
-        <DialogHeader>
-          <DialogTitle>Create a new team</DialogTitle>
-        </DialogHeader>
-        <DialogBody>
-          <DialogDescription>
+        <CompactDialogHeader>
+          <CompactDialogTitle>Create a new team</CompactDialogTitle>
+          <CompactDialogDescription>
             A team is a shared workspace where you can organize all your work and collaborate with
             your team members.
-          </DialogDescription>
+          </CompactDialogDescription>
+        </CompactDialogHeader>
+        <DialogBody>
           <div className="space-y-1.5">
             <Label htmlFor="team-name">Team name</Label>
             <Input id="team-name" placeholder="Acme" {...register("name")} />

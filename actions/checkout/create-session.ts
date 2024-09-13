@@ -64,7 +64,7 @@ export const createCheckoutSession = async (
       mode: "subscription",
       line_items: [{ price: price.stripePriceId, quantity: 1 }],
       success_url: `${protocol}${appDomain}/${team.slug}/payment/success`,
-      cancel_url: `${protocol}${appDomain}/${path}`,
+      cancel_url: `${protocol}${appDomain}${path}`,
     });
 
     if (!session || !session.url) {

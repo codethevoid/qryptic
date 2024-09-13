@@ -1,6 +1,15 @@
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { DialogContent, DialogHeader, DialogTitle, Dialog } from "@/components/ui/dialog";
+import {
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Dialog,
+  DialogDescription,
+  CompactDialogDescription,
+  CompactDialogTitle,
+  CompactDialogHeader,
+} from "@/components/ui/dialog";
 import { CardCapture } from "@/components/modals/add-card/card-capture";
 import { useClientSecret } from "@/lib/hooks/swr/use-client-secret";
 
@@ -21,9 +30,14 @@ export const CardProvider = ({ isOpen, setIsOpen, hasPaymentMethod, name }: Card
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{hasPaymentMethod ? "Add a new card" : "Add a card"}</DialogTitle>
-        </DialogHeader>
+        <CompactDialogHeader>
+          <CompactDialogTitle>
+            {hasPaymentMethod ? "Add a new card" : "Add a card"}
+          </CompactDialogTitle>
+          <CompactDialogDescription>
+            Add a payment method for <span className="font-semibold">{name}</span>
+          </CompactDialogDescription>
+        </CompactDialogHeader>
         <Elements stripe={stripePromise} options={options}>
           <CardCapture name={name} clientSecret={clientSecret} setIsOpen={setIsOpen} />
         </Elements>
