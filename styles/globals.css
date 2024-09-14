@@ -210,3 +210,8 @@ body {
   transform: translateX(9px); /* Custom translation for the thumb when checked */
 }
 
+/*textarea {*/
+/*  &::-webkit-resizer {*/
+/*    position: relative;*/
+/*  }*/
+/*}*/

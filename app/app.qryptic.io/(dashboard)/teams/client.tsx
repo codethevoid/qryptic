@@ -88,12 +88,24 @@ export const TeamsProvider = ({ teams }: TeamProviderProps) => {
               <div className="flex items-center space-x-1.5">
                 <ChartArea size={14} className="relative bottom-[1px]" />
                 <p className="text-[13px] text-muted-foreground">
-                  {team._count.events} clicks & scans
+                  {team._count.events !== 0 && `${team._count.events} `}
+                  {team._count.events === 1
+                    ? "event"
+                    : team._count.events === 0
+                      ? "No events"
+                      : "events"}
                 </p>
               </div>
               <div className="flex items-center space-x-1.5">
                 <Link size={14} className="relative bottom-[1px]" />
-                <p className="text-[13px] text-muted-foreground">{team._count.links} links</p>
+                <p className="text-[13px] text-muted-foreground">
+                  {team._count.links !== 0 && `${team._count.links} `}
+                  {team._count.links === 1
+                    ? "link"
+                    : team._count.links === 0
+                      ? "No links"
+                      : "links"}
+                </p>
               </div>
             </div>
           </Card>

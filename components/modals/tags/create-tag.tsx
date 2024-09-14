@@ -26,9 +26,11 @@ import { LoaderCircle } from "lucide-react";
 type CreateTagProps = {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
+  page: number;
+  pageSize: number;
 };
 
-export const CreateTag = ({ isOpen, setIsOpen }: CreateTagProps) => {
+export const CreateTag = ({ isOpen, setIsOpen, page, pageSize }: CreateTagProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const { slug } = useParams();
@@ -49,7 +51,7 @@ export const CreateTag = ({ isOpen, setIsOpen }: CreateTagProps) => {
       return toast.error(message);
     }
 
-    await mutate(`/api/tags/${slug}`);
+    await mutate(`/api/tags/${slug}?page=${page}&pageSize=${pageSize}`);
     toast.success(message);
     setIsOpen(false);
     setIsLoading(false);
