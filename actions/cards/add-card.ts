@@ -33,7 +33,7 @@ export const addCard = async (slug: string, paymentMethodId: string) => {
   await prisma.team.update({
     where: { id: team?.id },
     data: {
-      subscriptionStatus: "active", // optimistic update to prevent user from seeing past due status after updating card
+      subscriptionStatus: team?.subscriptionStatus === "trialing" ? "trialing" : "active", // optimistic update to prevent user from seeing past due status after updating card
       paymentMethodId,
       paymentMethodBrand: brand,
       paymentMethodLast4: last4,

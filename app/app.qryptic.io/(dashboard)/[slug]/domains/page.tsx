@@ -1,5 +1,7 @@
+import { DomainsClient } from "@/app/app.qryptic.io/(dashboard)/[slug]/domains/client";
+
 const DomainsPage = () => {
-  return <div>domains</div>;
+  return <DomainsClient />;
 };
 
 export default DomainsPage;

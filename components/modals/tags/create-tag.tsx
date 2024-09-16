@@ -20,17 +20,15 @@ import { TagColor } from "@/types/colors";
 import { createTag } from "@/actions/tags/create-tag";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
-import { mutate } from "swr";
 import { LoaderCircle } from "lucide-react";
 
 type CreateTagProps = {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  page: number;
-  pageSize: number;
+  mutateTags: () => Promise<void>;
 };
 
-export const CreateTag = ({ isOpen, setIsOpen, page, pageSize }: CreateTagProps) => {
+export const CreateTag = ({ isOpen, setIsOpen, mutateTags }: CreateTagProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const { slug } = useParams();
@@ -51,7 +49,7 @@ export const CreateTag = ({ isOpen, setIsOpen, page, pageSize }: CreateTagProps)
       return toast.error(message);
     }
 
-    await mutate(`/api/tags/${slug}?page=${page}&pageSize=${pageSize}`);
+    await mutateTags();
     toast.success(message);
     setIsOpen(false);
     setIsLoading(false);
@@ -85,7 +83,7 @@ export const CreateTag = ({ isOpen, setIsOpen, page, pageSize }: CreateTagProps)
                   variant={color as TagColor}
                   key={color}
                   onClick={() => setSelectedColor(color)}
-                  className={`w-fit cursor-pointer capitalize outline-1 ring-ring transition-all active:scale-[97%] ${selectedColor === color ? `${borderColorClasses[color as TagColor]} ` : "border-transparent hover:opacity-85"}`}
+                  className={`w-fit cursor-pointer capitalize transition-all active:scale-[97%] ${selectedColor === color ? `${borderColorClasses[color as TagColor]} ` : "border-transparent hover:opacity-85"}`}
                 >
                   {color}
                 </Tag>

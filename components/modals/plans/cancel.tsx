@@ -1,15 +1,3 @@
-import {
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  CompactDialogTitle,
-  CompactDialogDescription,
-  CompactDialogHeader,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { cancelPlan } from "@/actions/plans/cancel";
 import { useState } from "react";
@@ -17,6 +5,14 @@ import { LoaderCircle } from "lucide-react";
 import { mutate } from "swr";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 type CancelSubscriptionProps = {
   isOpen: boolean;
@@ -29,13 +25,11 @@ export const CancelSubscription = ({ isOpen, setIsOpen, status }: CancelSubscrip
   const { slug } = useParams();
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent>
-        <CompactDialogHeader className="border-b-0 bg-transparent pb-0 pt-6 dark:bg-transparent">
-          <CompactDialogTitle>Cancel subscription</CompactDialogTitle>
-        </CompactDialogHeader>
-        <DialogBody className="pt-4">
-          <CompactDialogDescription>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Cancel subscription</AlertDialogTitle>
+          <AlertDialogDescription>
             Are you sure you want to cancel your subscription? You will lose access to all pro
             features{" "}
             {status === "trialing"
@@ -43,10 +37,10 @@ export const CancelSubscription = ({ isOpen, setIsOpen, status }: CancelSubscrip
               : status === "past_due"
                 ? "immediately."
                 : "at the end of your billing period."}
-          </CompactDialogDescription>
-        </DialogBody>
-        <DialogFooter>
-          <Button size="sm" variant="outline" onClick={() => setIsOpen(false)} disabled={isLoading}>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <Button size="sm" variant="outline" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
           <Button
@@ -66,8 +60,8 @@ export const CancelSubscription = ({ isOpen, setIsOpen, status }: CancelSubscrip
           >
             {isLoading ? <LoaderCircle size={14} className="animate-spin" /> : "Cancel plan"}
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };

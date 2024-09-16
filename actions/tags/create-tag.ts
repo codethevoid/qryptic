@@ -18,9 +18,11 @@ export const createTag = async (name: string, color: string, slug: string) => {
 
   if (!colors.includes(color)) return { error: true, message: "Invalid color" };
 
-  if (await prisma.tag.findFirst({ where: { name: name.trim(), teamId: team.id } })) {
-    return { error: true, message: "Tag name already exists" };
-  }
+  const tagExists = await prisma.tag.findFirst({
+    where: { name: { equals: name.trim(), mode: "insensitive" }, teamId: team.id as string },
+  });
+
+  if (tagExists) return { error: true, message: "Tag name already exists" };
 
   // create tag
   await prisma.tag.create({

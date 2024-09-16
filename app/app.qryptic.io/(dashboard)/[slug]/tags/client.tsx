@@ -1,65 +1,81 @@
 "use client";
 
 import { useTags } from "@/lib/hooks/swr/use-tags";
-import { NoTags } from "@/components/empty/no-tags";
-import { useEffect, useMemo, useState } from "react";
+import { NoTags } from "@/components/empty/tags/no-tags";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CreateTag } from "@/components/modals/tags/create-tag";
 import { TagsTable } from "@/components/tables/tags";
-import { TagColor } from "@/types/colors";
 import { Snackbar } from "@/components/snackbar/snackbar";
-import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { SearchInput } from "@/components/ui/custom/search-input";
-
-type CustomTag = {
-  id: string;
-  name: string;
-  color: TagColor;
-  linkCount: number;
-  eventCount: number;
-};
+import { TagWithCounts } from "@/types/tags";
+import { useParams } from "next/navigation";
+import { mutate } from "swr";
+import { scrollToTop } from "@/utils/smooth-scroll";
+import { useDebounce } from "@/lib/hooks/use-debounce";
+import { NoTagsFound } from "@/components/empty/tags/no-tags-found";
+import { TagsSkeleton } from "@/components/skeletons/tags-skeleton";
 
 export const TagsClient = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
   const pageSize = 10;
-  const { tags, totalTags, isLoading, error } = useTags(page, pageSize);
+  const { tags, totalTags, isLoading, error } = useTags(page, pageSize, debouncedSearch);
+  const { slug } = useParams();
+
+  // const isLoading = true;
 
   useEffect(() => {
-    if (totalTags && totalTags !== total) setTotal(totalTags);
+    totalTags !== undefined && setTotal(totalTags);
   }, [totalTags]);
+
+  useEffect(() => {
+    scrollToTop();
+  }, [page]);
+
+  const mutateTags = async () => {
+    await mutate(`/api/tags/${slug}?page=${page}&pageSize=${pageSize}&search=${debouncedSearch}`);
+  };
 
   return (
     <>
       <div className="flex items-center justify-between">
         <p className="text-xl font-bold">Tags</p>
         <div className="flex w-full items-center justify-end space-x-2">
-          <SearchInput placeholder="Search tags" />
-          <Button
-            className="space-x-1.5"
-            size="sm"
-            disabled={isLoading}
-            onClick={() => setIsOpen(true)}
-          >
+          <SearchInput
+            placeholder="Search tags"
+            setSearch={setSearch}
+            search={search}
+            disabled={tags?.length === 0 && debouncedSearch === ""}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+          />
+          <Button className="space-x-1.5" size="sm" onClick={() => setIsOpen(true)}>
             <Plus size={14} />
             <span>Create tag</span>
           </Button>
         </div>
       </div>
       <div className="mt-6">
-        {isLoading ? (
-          <div>loading tags...</div>
+        {isLoading || search !== debouncedSearch ? (
+          <TagsSkeleton />
         ) : error ? (
           "an error occured"
-        ) : tags?.length === 0 ? (
+        ) : tags.length === 0 && debouncedSearch ? (
+          <NoTagsFound setSearch={setSearch} />
+        ) : tags.length === 0 ? (
           <NoTags setIsOpen={setIsOpen} />
         ) : (
-          <TagsTable tags={tags as CustomTag[]} />
+          <TagsTable tags={tags as TagWithCounts[]} mutateTags={mutateTags} />
         )}
       </div>
-      <CreateTag isOpen={isOpen} setIsOpen={setIsOpen} page={page} pageSize={pageSize} />
+      <CreateTag isOpen={isOpen} setIsOpen={setIsOpen} mutateTags={mutateTags} />
       {total > 10 && (
         <Snackbar
           unit="tags"

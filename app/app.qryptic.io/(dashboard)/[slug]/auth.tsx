@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect } from "react";
 import { useTeam } from "@/lib/hooks/swr/use-team";
-import { TeamNotFound } from "@/components/empty/team-not-found";
+import { TeamNotFound } from "@/components/empty/teams/team-not-found";
 import { SplashLoader } from "@/components/layout/splash-loader";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";

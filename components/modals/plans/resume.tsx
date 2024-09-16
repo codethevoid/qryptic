@@ -1,15 +1,11 @@
 import {
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  CompactDialogHeader,
-  CompactDialogTitle,
-  CompactDialogDescription,
-} from "@/components/ui/dialog";
+  AlertDialog,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
@@ -28,18 +24,16 @@ export const ResumeSubscription = ({ isOpen, setIsOpen }: CancelSubscriptionProp
   const { slug } = useParams();
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent>
-        <CompactDialogHeader className="border-b-0 bg-transparent pb-0 pt-6 dark:bg-transparent">
-          <CompactDialogTitle>Resume subscription</CompactDialogTitle>
-        </CompactDialogHeader>
-        <DialogBody className="pt-4">
-          <CompactDialogDescription>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Resume subscription</AlertDialogTitle>
+          <AlertDialogDescription>
             Are you sure you want to resume your subscription? You will continue to be billed for
             your subscription like normal.
-          </CompactDialogDescription>
-        </DialogBody>
-        <DialogFooter>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
           <Button size="sm" variant="outline" onClick={() => setIsOpen(false)} disabled={isLoading}>
             Cancel
           </Button>
@@ -59,8 +53,8 @@ export const ResumeSubscription = ({ isOpen, setIsOpen }: CancelSubscriptionProp
           >
             {isLoading ? <LoaderCircle size={14} className="animate-spin" /> : "Resume plan"}
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };

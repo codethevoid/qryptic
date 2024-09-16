@@ -10,7 +10,7 @@ import { CreateTeam } from "@/components/modals/create-team";
 import { useState } from "react";
 import type { Plan, Team, Domain } from "@prisma/client";
 import NextLink from "next/link";
-import { NoTeams } from "@/components/empty/no-teams";
+import { NoTeams } from "@/components/empty/teams/no-teams";
 import { TeamSkeleton } from "@/components/skeletons/teams-skeleton";
 import { PlanBadge } from "@/components/ui/custom/plan-badge";
 import { PlanName } from "@/types/plans";

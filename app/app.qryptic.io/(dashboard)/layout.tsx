@@ -6,7 +6,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <AppNav />
-      <div className="overflow-x-hidden px-4 py-8">
+      <div className="overflow-x-hidden px-4 pb-24 pt-8">
         <MaxWidthWrapper>{children}</MaxWidthWrapper>
       </div>
     </>

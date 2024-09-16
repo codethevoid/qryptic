@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { safelist } from "./utils/safelist";
 
 const config = {
   darkMode: ["class"],
@@ -8,7 +9,7 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
-  safelist: [{ pattern: /^border-.*/ }],
+  safelist,
   prefix: "",
   theme: {
     container: {
