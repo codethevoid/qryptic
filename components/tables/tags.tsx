@@ -3,23 +3,20 @@ import { TagColor } from "@/types/colors";
 import { ChartArea, Link2, MoreHorizontal, Pencil, Tag, Trash } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { TagWithCounts } from "@/types/tags";
 import { EditTag } from "@/components/modals/tags/edit-tag";
 import { useState } from "react";
 import { DeleteTag } from "@/components/modals/tags/delete-tag";
+import { TooltipTrigger, Tooltip, TooltipContent } from "@/components/ui/tooltip";
+import { useRef, RefObject } from "react";
 
 type TagsTableProps = {
   tags: TagWithCounts[];
   mutateTags: () => Promise<void>;
+  containerRef: RefObject<HTMLDivElement>;
 };
 
-export const TagsTable = ({ tags, mutateTags }: TagsTableProps) => {
+export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedTag, setSelectedTag] = useState<TagWithCounts | undefined>(undefined);
@@ -27,6 +24,11 @@ export const TagsTable = ({ tags, mutateTags }: TagsTableProps) => {
   const handleEdit = (tag: TagWithCounts) => {
     setSelectedTag(tag);
     setIsEditOpen(true);
+  };
+
+  const handleDelete = (tag: TagWithCounts) => {
+    setSelectedTag(tag);
+    setIsDeleteOpen(true);
   };
 
   return (
@@ -60,32 +62,59 @@ export const TagsTable = ({ tags, mutateTags }: TagsTableProps) => {
                   {tag.linkCount === 1 ? "event" : tag.linkCount === 0 ? "No events" : "events"}
                 </span>
               </Badge>
-              <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button size="icon" variant="outline">
-                    <MoreHorizontal size={14} />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    className="space-x-2 text-[13px]"
-                    onSelect={() => handleEdit(tag)}
-                  >
-                    <Pencil size={14} />
-                    <span>Edit tag</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="space-x-2 text-[13px] text-red-600 hover:!bg-red-600/10 hover:!text-red-600"
-                    onClick={() => {
-                      setSelectedTag(tag);
-                      setIsDeleteOpen(true);
-                    }}
-                  >
-                    <Trash size={14} />
-                    <span>Delete</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/*<DropdownMenu modal={false}>*/}
+              {/*  <DropdownMenuTrigger asChild>*/}
+              {/*    <Button size="icon" variant="outline">*/}
+              {/*      <MoreHorizontal size={14} />*/}
+              {/*    </Button>*/}
+              {/*  </DropdownMenuTrigger>*/}
+              {/*  <DropdownMenuContent align="end" onCloseAutoFocus={(e) => e.preventDefault()}>*/}
+              {/*    <DropdownMenuItem*/}
+              {/*      className="space-x-2 text-[13px]"*/}
+              {/*      onSelect={() => handleEdit(tag)}*/}
+              {/*    >*/}
+              {/*      <Pencil size={14} />*/}
+              {/*      <span>Edit tag</span>*/}
+              {/*    </DropdownMenuItem>*/}
+              {/*    <DropdownMenuItem*/}
+              {/*      className="space-x-2 text-[13px] text-red-600 hover:!bg-red-600/10 hover:!text-red-600"*/}
+              {/*      onSelect={() => handleDelete(tag)}*/}
+              {/*    >*/}
+              {/*      <Trash size={14} />*/}
+              {/*      <span>Delete</span>*/}
+              {/*    </DropdownMenuItem>*/}
+              {/*  </DropdownMenuContent>*/}
+              {/*</DropdownMenu>*/}
+              <div className="flex items-center">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="h-[28px] w-[30px] rounded-r-none border-r-0 text-muted-foreground"
+                      onClick={() => handleEdit(tag)}
+                    >
+                      <Pencil size={13} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Edit tag</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="h-[28px] w-[30px] rounded-l-none text-muted-foreground"
+                      onClick={() => handleDelete(tag)}
+                    >
+                      <Trash size={13} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent collisionBoundary={containerRef?.current}>
+                    Delete tag
+                  </TooltipContent>
+                </Tooltip>
+              </div>
             </div>
           </div>
         ))}

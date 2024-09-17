@@ -5,5 +5,5 @@ import { useParams } from "next/navigation";
 export const useDomains = () => {
   const { slug } = useParams();
   const { data, isLoading, error } = useSWR(`/api/domains/${slug}`, fetcher);
-  return { domains: data, isLoading, error };
+  return { domains: data?.domains, isLoading, error };
 };

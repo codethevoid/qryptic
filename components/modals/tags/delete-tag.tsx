@@ -1,5 +1,5 @@
 import { TagWithCounts } from "@/types/tags";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -13,6 +13,7 @@ import { deleteTag } from "@/actions/tags/delete-tag";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
+import { useRef } from "react";
 
 type DeleteTagProps = {
   isOpen: boolean;
@@ -24,6 +25,7 @@ type DeleteTagProps = {
 export const DeleteTag = ({ isOpen, setIsOpen, tag, mutateTags }: DeleteTagProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { slug } = useParams();
+  const actionRef = useRef<HTMLButtonElement>(null);
 
   const handleDelete = async () => {
     setIsLoading(true);
@@ -37,6 +39,10 @@ export const DeleteTag = ({ isOpen, setIsOpen, tag, mutateTags }: DeleteTagProps
     setIsOpen(false);
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (isOpen) actionRef.current?.focus();
+  }, [isOpen]);
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -59,7 +65,7 @@ export const DeleteTag = ({ isOpen, setIsOpen, tag, mutateTags }: DeleteTagProps
             className="w-[88px]"
             disabled={isLoading}
             onClick={handleDelete}
-            autoFocus
+            ref={actionRef}
           >
             {isLoading ? <LoaderCircle size={14} className="animate-spin" /> : "Delete tag"}
           </Button>

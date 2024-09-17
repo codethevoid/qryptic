@@ -2,7 +2,7 @@
 
 import { useTags } from "@/lib/hooks/swr/use-tags";
 import { NoTags } from "@/components/empty/tags/no-tags";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CreateTag } from "@/components/modals/tags/create-tag";
 import { TagsTable } from "@/components/tables/tags";
@@ -16,6 +16,7 @@ import { scrollToTop } from "@/utils/smooth-scroll";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { NoTagsFound } from "@/components/empty/tags/no-tags-found";
 import { TagsSkeleton } from "@/components/skeletons/tags-skeleton";
+import { MaxWidthWrapper } from "@/components/layout/max-width-wrapper";
 
 export const TagsClient = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,8 +27,7 @@ export const TagsClient = () => {
   const pageSize = 10;
   const { tags, totalTags, isLoading, error } = useTags(page, pageSize, debouncedSearch);
   const { slug } = useParams();
-
-  // const isLoading = true;
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     totalTags !== undefined && setTotal(totalTags);
@@ -43,7 +43,7 @@ export const TagsClient = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between" ref={containerRef}>
         <p className="text-xl font-bold">Tags</p>
         <div className="flex w-full items-center justify-end space-x-2">
           <SearchInput
@@ -72,7 +72,11 @@ export const TagsClient = () => {
         ) : tags.length === 0 ? (
           <NoTags setIsOpen={setIsOpen} />
         ) : (
-          <TagsTable tags={tags as TagWithCounts[]} mutateTags={mutateTags} />
+          <TagsTable
+            tags={tags as TagWithCounts[]}
+            mutateTags={mutateTags}
+            containerRef={containerRef}
+          />
         )}
       </div>
       <CreateTag isOpen={isOpen} setIsOpen={setIsOpen} mutateTags={mutateTags} />

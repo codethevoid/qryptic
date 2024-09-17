@@ -68,7 +68,7 @@ export const CreateTeam = ({ isOpen, setIsOpen }: CreateTeamProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="p-0">
+      <DialogContent className="max-w-[440px]">
         <CompactDialogHeader>
           <CompactDialogTitle>Create a new team</CompactDialogTitle>
           <CompactDialogDescription>
@@ -76,7 +76,7 @@ export const CreateTeam = ({ isOpen, setIsOpen }: CreateTeamProps) => {
             your team members.
           </CompactDialogDescription>
         </CompactDialogHeader>
-        <DialogBody>
+        <DialogBody className="max-w-[440px]">
           <div className="space-y-1.5">
             <Label htmlFor="team-name">Team name</Label>
             <Input id="team-name" placeholder="Acme" {...register("name")} />

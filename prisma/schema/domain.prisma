@@ -1,13 +1,14 @@
 model Domain {
   id           String   @id @default(cuid())
   createdAt    DateTime @default(now())
-  domain       String
-  team         Team     @relation(fields: [teamId], references: [id])
-  teamId       String
+  domain       String   @unique
   isDefault    Boolean  @default(false)
   isConfigured Boolean  @default(false)
   rootRedirect String? // link that will be used as the root redirect
+  destination  String? // root domain, non-existing links, expired links
 
   // relations
-  links Link[]
+  team   Team   @relation(fields: [teamId], references: [id])
+  teamId String
+  links  Link[]
 }
