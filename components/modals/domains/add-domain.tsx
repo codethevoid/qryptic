@@ -16,6 +16,7 @@ import NextLink from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useForm } from "react-hook-form";
 
 type AddDomainProps = {
   isOpen: boolean;
