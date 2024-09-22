@@ -9,6 +9,8 @@ import { AddDomain } from "@/components/modals/domains/add-domain";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { NoDomains } from "@/components/empty/domains/no-domains";
 import { useTeam } from "@/lib/hooks/swr/use-team";
+import { mutate } from "swr";
+import { DomainsTable } from "@/components/tables/domains-table";
 
 export const DomainsClient = () => {
   const { domains, isLoading, error } = useDomains();
@@ -17,12 +19,22 @@ export const DomainsClient = () => {
   const debouncedSearch = useDebounce(search, 300);
   const [isAddOpen, setIsAddOpen] = useState(false);
 
+  // pagination
+  const pageSize = 5;
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(1);
+
+  const mutateDomains = async () => {
+    await mutate(`/api/domains/${team.slug}`);
+  };
+
   return (
     <>
       <div className="flex items-center justify-between">
         <p className="text-nowrap text-xl font-bold">Domains</p>
         <div className="flex w-full items-center justify-end space-x-2">
           <SearchInput
+            name="search domains"
             placeholder="Search domains"
             setSearch={setSearch}
             search={search}
@@ -43,10 +55,10 @@ export const DomainsClient = () => {
         ) : domains.length === 0 ? (
           <NoDomains setIsOpen={setIsAddOpen} />
         ) : (
-          "domains found"
+          <DomainsTable domains={domains} mutateDomains={mutateDomains} />
         )}
       </div>
-      <AddDomain isOpen={isAddOpen} setIsOpen={setIsAddOpen} />
+      <AddDomain isOpen={isAddOpen} setIsOpen={setIsAddOpen} mutateDomains={mutateDomains} />
     </>
   );
 };

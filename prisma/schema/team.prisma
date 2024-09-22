@@ -33,12 +33,13 @@ model Team {
   paymentMethodExpYear  Int?
 
   // relations
-  members  TeamMember[]
-  domains  Domain[]
-  links    Link[]
-  events   Event[]
-  invoices Invoice[]
-  tags     Tag[]
+  members        TeamMember[]
+  domains        Domain[]
+  defaultDomains DefaultDomain[]
+  links          Link[]
+  events         Event[]
+  invoices       Invoice[]
+  tags           Tag[]
 
   // support manager for enterprise plans
   manager Admin[] // dedicated support manager, only for enterprise plans

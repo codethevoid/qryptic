@@ -5,7 +5,7 @@ import { NoTags } from "@/components/empty/tags/no-tags";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CreateTag } from "@/components/modals/tags/create-tag";
-import { TagsTable } from "@/components/tables/tags";
+import { TagsTable } from "@/components/tables/tags-table";
 import { Snackbar } from "@/components/snackbar/snackbar";
 import { Plus } from "lucide-react";
 import { SearchInput } from "@/components/ui/custom/search-input";

@@ -20,6 +20,8 @@ const badgeVariants = cva(
         colorful: "border-transparent bg-teal-500/15 text-teal-600 dark:text-teal-500 font-medium",
         pretty:
           "border-transparent bg-fuchsia-500/15 text-fuchsia-600 dark:text-fuchsia-500 font-medium",
+        purple:
+          "border-transparent bg-purple-500/15 text-purple-600 dark:text-purple-500 font-medium",
         default: "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
         secondary:
           "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",

@@ -135,19 +135,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
         path: "/",
-        domain: process.env.NODE_ENV === "production" ? `.${rootDomain}` : ".localhost.com", // omit for localhost
+        domain: process.env.NODE_ENV === "production" ? `.${rootDomain}` : ".localhost.com",
       },
     },
-    pkceCodeVerifier: {
-      name: "authjs.pkce.code_verifier",
-      options: {
-        sameSite: "lax",
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        domain: process.env.NODE_ENV === "production" ? `.${rootDomain}` : ".localhost.com", // omit for localhost
-      },
-    },
+    // pkceCodeVerifier: {
+    //   name: "authjs.pkce.code_verifier",
+    //   options: {
+    //     sameSite: "lax",
+    //     httpOnly: true,
+    //     secure: process.env.NODE_ENV === "production",
+    //     path: "/",
+    //     domain: process.env.NODE_ENV === "production" ? `.${rootDomain}` : ".localhost.com", // omit for localhost
+    //   },
+    // },
   },
   pages: { error: "/login" },
 });

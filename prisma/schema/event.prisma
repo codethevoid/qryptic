@@ -22,8 +22,10 @@ model Event {
   lon      Float?
 
   // relations
-  Link   Link   @relation(fields: [linkId], references: [id])
-  linkId String
-  team   Team   @relation(fields: [teamId], references: [id])
-  teamId String
+  Link     Link   @relation(fields: [linkId], references: [id])
+  linkId   String
+  team     Team   @relation(fields: [teamId], references: [id])
+  teamId   String
+  domain   Domain @relation(fields: [domainId], references: [id])
+  domainId String
 }

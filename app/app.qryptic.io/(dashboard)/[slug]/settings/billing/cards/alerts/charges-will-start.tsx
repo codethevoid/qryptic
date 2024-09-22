@@ -9,7 +9,7 @@ type ChargesWillStartProps = {
 
 export const ChargesWillStart = ({ price, interval, trialEndsAt }: ChargesWillStartProps) => {
   return (
-    <div className="w-full rounded-lg border border-green-300 bg-green-500/5 p-4 shadow dark:border-green-900 dark:bg-green-500/10">
+    <div className="w-full rounded-lg border border-green-300 bg-green-500/5 px-4 py-2 shadow-sm dark:border-green-900 dark:bg-green-500/10">
       <div className="flex items-start space-x-2">
         <RefreshCw
           size={15}

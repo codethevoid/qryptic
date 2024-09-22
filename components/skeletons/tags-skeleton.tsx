@@ -11,9 +11,7 @@ export const TagsSkeleton = () => {
             key={i}
           >
             <div className="flex items-center space-x-2.5">
-              <div className="flex h-[32px] w-[32px] items-center justify-center rounded-full border bg-gradient-to-tr from-accent/10 to-accent shadow-sm">
-                <Tag size={13} />
-              </div>
+              <Skeleton className="h-8 w-8 rounded-full" />
               <Skeleton className="h-[22px] w-20 rounded-full" />
             </div>
             <div className="flex items-center space-x-2.5">

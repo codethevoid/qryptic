@@ -1,7 +1,7 @@
 import prisma from "@/db/prisma";
-import { Team, TeamMember } from "@prisma/client";
+import { Team, TeamMember, Plan, Domain } from "@prisma/client";
 
-type CustomTeam = Pick<Team, "id"> & { members: TeamMember[] };
+type CustomTeam = Team & { members: TeamMember[]; plan: Plan; domains: Domain[] };
 
 type VerifyMemberResponse = {
   isAuthorized: boolean;
@@ -11,7 +11,7 @@ type VerifyMemberResponse = {
 export const verifyMember = async (slug: string, userId: string): Promise<VerifyMemberResponse> => {
   const team: CustomTeam | null = await prisma.team.findUnique({
     where: { slug },
-    select: { members: true, id: true },
+    include: { members: true, plan: true, domains: true },
   });
 
   if (!team) return { isAuthorized: false };

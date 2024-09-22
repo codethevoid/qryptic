@@ -20,6 +20,9 @@ const config = {
       },
     },
     extend: {
+      fontSize: {
+        "13.5": "13.5px", // Custom font size
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -102,7 +105,7 @@ const config = {
       maxWidth: { "screen-lg": "1100px" },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
 } satisfies Config;
 
 export default config;

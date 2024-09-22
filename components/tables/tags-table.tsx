@@ -1,6 +1,6 @@
 import { Tag as TagBadge } from "@/components/ui/custom/tag";
 import { TagColor } from "@/types/colors";
-import { ChartArea, Link2, MoreHorizontal, Pencil, Tag, Trash } from "lucide-react";
+import { ChartArea, Link2, Pencil, Tag, Trash } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TagWithCounts } from "@/types/tags";
@@ -8,7 +8,7 @@ import { EditTag } from "@/components/modals/tags/edit-tag";
 import { useState } from "react";
 import { DeleteTag } from "@/components/modals/tags/delete-tag";
 import { TooltipTrigger, Tooltip, TooltipContent } from "@/components/ui/tooltip";
-import { useRef, RefObject } from "react";
+import { RefObject } from "react";
 
 type TagsTableProps = {
   tags: TagWithCounts[];
@@ -40,7 +40,7 @@ export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) =>
             key={tag.id}
           >
             <div className="flex items-center space-x-2.5">
-              <div className="flex h-[32px] w-[32px] items-center justify-center rounded-full border bg-gradient-to-tr from-accent/10 to-accent shadow-sm">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border bg-gradient-to-tr from-accent/10 to-accent shadow-sm">
                 <Tag size={13} />
               </div>
               <TagBadge className="w-fit text-nowrap" variant={tag.color as TagColor}>
@@ -62,29 +62,6 @@ export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) =>
                   {tag.linkCount === 1 ? "event" : tag.linkCount === 0 ? "No events" : "events"}
                 </span>
               </Badge>
-              {/*<DropdownMenu modal={false}>*/}
-              {/*  <DropdownMenuTrigger asChild>*/}
-              {/*    <Button size="icon" variant="outline">*/}
-              {/*      <MoreHorizontal size={14} />*/}
-              {/*    </Button>*/}
-              {/*  </DropdownMenuTrigger>*/}
-              {/*  <DropdownMenuContent align="end" onCloseAutoFocus={(e) => e.preventDefault()}>*/}
-              {/*    <DropdownMenuItem*/}
-              {/*      className="space-x-2 text-[13px]"*/}
-              {/*      onSelect={() => handleEdit(tag)}*/}
-              {/*    >*/}
-              {/*      <Pencil size={14} />*/}
-              {/*      <span>Edit tag</span>*/}
-              {/*    </DropdownMenuItem>*/}
-              {/*    <DropdownMenuItem*/}
-              {/*      className="space-x-2 text-[13px] text-red-600 hover:!bg-red-600/10 hover:!text-red-600"*/}
-              {/*      onSelect={() => handleDelete(tag)}*/}
-              {/*    >*/}
-              {/*      <Trash size={14} />*/}
-              {/*      <span>Delete</span>*/}
-              {/*    </DropdownMenuItem>*/}
-              {/*  </DropdownMenuContent>*/}
-              {/*</DropdownMenu>*/}
               <div className="flex items-center">
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -104,7 +81,7 @@ export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) =>
                     <Button
                       size="icon"
                       variant="outline"
-                      className="h-[28px] w-[30px] rounded-l-none text-muted-foreground"
+                      className="h-[28px] w-[30px] rounded-l-none text-muted-foreground hover:text-red-600"
                       onClick={() => handleDelete(tag)}
                     >
                       <Trash size={13} />

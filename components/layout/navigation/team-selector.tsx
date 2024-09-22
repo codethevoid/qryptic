@@ -33,9 +33,7 @@ export const TeamSelector = () => {
 
   if (!slug) return null;
 
-  if (isLoading) {
-    return <Skeleton className="h-5 w-5 rounded-full border" />;
-  }
+  if (isLoading) return <Skeleton className="h-5 w-5 rounded-full border" />;
 
   if (!team) return null;
 
@@ -108,7 +106,7 @@ export const TeamSelector = () => {
               onSelect={() => setIsCreateTeamOpen(true)}
             >
               <div className="flex items-center space-x-2 pl-[3px]">
-                <PlusCircle size={15} className="text-deepBlue-500 dark:text-deepBlue-400" />
+                <PlusCircle size={15} />
                 <p className="truncate text-[13px] font-normal">Create team</p>
               </div>
             </DropdownMenuItem>

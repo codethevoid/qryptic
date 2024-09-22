@@ -8,7 +8,7 @@ type TrialWillEndProps = {
 
 export const TrialWillEnd = ({ trialEndsAt, planName }: TrialWillEndProps) => {
   return (
-    <div className="w-full rounded-lg border border-deepBlue-200 bg-deepBlue-500/5 p-4 shadow dark:border-deepBlue-800 dark:bg-deepBlue-500/10">
+    <div className="w-full rounded-lg border border-deepBlue-200 bg-deepBlue-500/5 px-4 py-2 shadow-sm dark:border-deepBlue-800 dark:bg-deepBlue-500/10">
       <div className="flex items-start space-x-2">
         <Info
           size={15}
