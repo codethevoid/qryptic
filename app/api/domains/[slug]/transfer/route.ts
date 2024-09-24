@@ -5,6 +5,7 @@ import { withTeam } from "@/lib/auth/with-team";
 export const POST = withTeam(async ({ req, team }) => {
   try {
     const body = await req.json();
+
     let { name, transferTo, transferLinks } = body;
     if (!name || !transferTo) {
       return NextResponse.json(
@@ -24,46 +25,67 @@ export const POST = withTeam(async ({ req, team }) => {
     // get transferTo team
     const transferToTeam = await prisma.team.findUnique({
       where: { slug: transferTo },
-      include: { plan: true, domains: true },
+      include: { plan: true, domains: { where: { isArchived: false } } },
     });
     if (!transferToTeam) return NextResponse.json({ error: "Team not found" }, { status: 404 });
 
     // check if team has available domain slots
-    if (transferToTeam.domains.length >= transferToTeam.plan.domains) {
+    if (transferToTeam.domains.length >= transferToTeam.plan.domains && !domain.isArchived) {
       return NextResponse.json({ error: "Team has reached max domains" }, { status: 400 });
     }
 
-    // update links and events to new team if transferLinks is true
-    if (transferLinks) {
-      await prisma.link.updateMany({
-        where: { domainId: domain.id },
-        data: { teamId: transferToTeam.id },
-      });
-      await prisma.event.updateMany({
-        where: { domainId: domain.id },
-        data: { teamId: transferToTeam.id },
-      });
-    } else {
-      // delete links and events
-      await prisma.event.deleteMany({ where: { domainId: domain.id } });
-      await prisma.link.deleteMany({ where: { domainId: domain.id } });
-    }
-
-    // update domain teamId
-    await prisma.domain.update({
-      where: { id: domain.id },
-      data: { teamId: transferToTeam.id, isDefault: transferToTeam.domains.length === 0 },
+    // get all links for domain
+    const links = await prisma.link.findMany({
+      where: { domainId: domain.id, tags: { some: {} } },
+      select: { id: true },
     });
 
-    // update default domain if domain is default
-    if (domain.isDefault) {
-      const newDefaultDomain = await prisma.domain.findFirst({
+    await Promise.all(
+      links.map((link) => {
+        return prisma.link.update({
+          where: { id: link.id },
+          data: { tags: { set: [] } }, // Disconnect all tags from each link
+        });
+      }),
+    );
+
+    // update links and events to new team if transferLinks is true
+    if (transferLinks) {
+      await prisma.$transaction([
+        prisma.link.updateMany({
+          where: { domainId: domain.id },
+          data: { teamId: transferToTeam.id },
+        }),
+        prisma.event.updateMany({
+          where: { domainId: domain.id },
+          data: { teamId: transferToTeam.id },
+        }),
+        prisma.domain.update({
+          where: { id: domain.id },
+          data: { teamId: transferToTeam.id, isPrimary: transferToTeam.domains.length === 0 },
+        }),
+      ]);
+    } else {
+      // delete links and events
+      await prisma.$transaction([
+        prisma.event.deleteMany({ where: { domainId: domain.id } }),
+        prisma.link.deleteMany({ where: { domainId: domain.id } }),
+        prisma.domain.update({
+          where: { id: domain.id },
+          data: { teamId: transferToTeam.id, isPrimary: transferToTeam.domains.length === 0 },
+        }),
+      ]);
+    }
+
+    // update default domain if domain was default
+    if (domain.isPrimary) {
+      const newPrimaryDomain = await prisma.domain.findFirst({
         where: { teamId: team.id, NOT: { name } },
       });
-      if (newDefaultDomain) {
+      if (newPrimaryDomain) {
         await prisma.domain.update({
-          where: { id: newDefaultDomain.id },
-          data: { isDefault: true },
+          where: { id: newPrimaryDomain.id },
+          data: { isPrimary: true },
         });
       }
     }

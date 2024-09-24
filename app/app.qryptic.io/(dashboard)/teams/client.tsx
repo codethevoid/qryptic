@@ -46,7 +46,7 @@ export const TeamsClient = () => {
         ) : teams?.length === 0 ? (
           <NoTeams setCreateTeamOpen={setCreateTeamOpen} />
         ) : (
-          <TeamsProvider teams={teams} />
+          <TeamsProvider teams={teams as CustomTeam[]} />
         )}
       </div>
       <CreateTeam isOpen={isCreateTeamOpen} setIsOpen={setCreateTeamOpen} />
@@ -71,7 +71,7 @@ export const TeamsProvider = ({ teams }: TeamProviderProps) => {
                 <div>
                   <p className="text-sm font-medium">{team.name}</p>
                   <p className="text-sm text-muted-foreground">
-                    {team.domains.find((d) => d.isDefault)?.domain ?? "qrypt.co"}
+                    {team.domains.find((d) => d.isPrimary)?.name ?? "qrypt.co"}
                   </p>
                 </div>
               </div>

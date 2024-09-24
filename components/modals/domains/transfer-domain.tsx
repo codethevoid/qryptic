@@ -136,7 +136,7 @@ export const TransferDomain = ({
                     </p>
                   </div>
                 ) : (
-                  <p className="text-[13px] text-muted-foreground">Select a team</p>
+                  <p className="text-muted-foreground">Select a team</p>
                 )}
               </SelectTrigger>
               <SelectContent>
@@ -144,15 +144,7 @@ export const TransferDomain = ({
                   {teams
                     ?.filter((t) => t.slug !== slug)
                     .map((team) => (
-                      <SelectItem
-                        key={team.slug}
-                        value={team.slug}
-                        className={
-                          team.slug === selectedTeam
-                            ? "bg-accent hover:bg-accent dark:bg-accent/90 dark:hover:bg-accent/90"
-                            : "hover:bg-accent/60 dark:hover:bg-accent/40"
-                        }
-                      >
+                      <SelectItem key={team.slug} value={team.slug}>
                         <div className="flex items-center space-x-2">
                           <Avatar className="h-5 w-5 rounded-full border">
                             <AvatarImage src={team.image} alt={team.name} />
@@ -160,11 +152,7 @@ export const TransferDomain = ({
                               <Skeleton className="h-full w-full" />
                             </AvatarFallback>
                           </Avatar>
-                          <p
-                            className={`max-w-[280px] truncate text-[13px] ${selectedTeam === team.slug ? "font-medium" : undefined}`}
-                          >
-                            {team.name}
-                          </p>
+                          <p className={`max-w-[280px] truncate`}>{team.name}</p>
                         </div>
                       </SelectItem>
                     ))}

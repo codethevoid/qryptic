@@ -1,5 +1,7 @@
 import { Domain } from "@prisma/client";
 import {
+  Archive,
+  ArchiveRestore,
   CircleArrowOutUpRight,
   CircleCheck,
   CornerDownRight,
@@ -28,6 +30,10 @@ import {
 import { useParams } from "next/navigation";
 import { RemoveDomain } from "@/components/modals/domains/remove-domain";
 import { TransferDomain } from "@/components/modals/domains/transfer-domain";
+import { SetPrimary } from "@/components/modals/domains/set-primary";
+import { useTeams } from "@/lib/hooks/swr/use-teams";
+import { EditDomain } from "@/components/modals/domains/edit-domain";
+import { ArchiveDomain } from "@/components/modals/domains/archive-domain";
 
 const revalidationInterval = process.env.NODE_ENV === "production" ? 8000 : 100000;
 
@@ -66,11 +72,16 @@ const verifyDomain = async (domain: string, slug: string) => {
 
 export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
   const [isCheckingConfig, setIsCheckingConfig] = useState<Record<string, boolean>>({});
-  const [domainStatus, setDomainStatus] = useState<any>({});
+  const [domainStatus, setDomainStatus] = useState<Record<string, Record<string, any>>>({});
   const [iRemoveOpen, setIsRemoveOpen] = useState(false);
   const [isTransferOpen, setIsTransferOpen] = useState(false);
+  const [isSetPrimaryOpen, setIsSetPrimaryOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isArchiveOpen, setIsArchiveOpen] = useState(false);
+  const [isUnarchiveOpen, setIsUnarchiveOpen] = useState(false);
   const [selectedDomain, setSelectedDomain] = useState<DomainWithLinkCount | null>(null);
   const { slug } = useParams();
+  const { teams } = useTeams();
 
   const checkDomainStatus = async (domain: string) => {
     setIsCheckingConfig((prev) => ({ ...prev, [domain]: true }));
@@ -89,13 +100,12 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
     }, revalidationInterval);
     return () => clearInterval(interval);
   }, [domains]);
-  console.log(domainStatus);
 
   return (
     <>
       <div className="space-y-5">
         {domains
-          .sort((a, b) => (b.isDefault ? 1 : -1))
+          .sort((a, b) => (b.isPrimary ? 1 : -1))
           .map((domain, i) => (
             <div
               className={`space-y-4 rounded-lg border p-4 shadow-sm transition-all`}
@@ -110,7 +120,7 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <p className="text-sm font-medium">{domain.name}</p>
-                        {domain.isDefault && <DefaultDomain />}
+                        {domain.isPrimary && <DefaultDomain />}
                       </div>
                     </div>
                     <div className="flex items-center space-x-2.5 pl-3.5">
@@ -123,56 +133,68 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
                     </div>
                   </div>
                   <div className="flex h-8 items-center space-x-2.5 self-start">
-                    {domainStatus[domain.name] && !isCheckingConfig[domain.name] && (
-                      <>
-                        {domainStatus[domain.name]?.config?.misconfigured ? (
-                          <Badge variant="error" className="space-x-1.5">
-                            <XCircle size={13} />
-                            <span>Invalid config</span>
-                          </Badge>
-                        ) : domainStatus[domain.name]?.verification?.error?.code ===
-                          "missing_txt_record" ? (
-                          <Badge variant="warning" className="space-x-1.5">
-                            <Fingerprint size={13} />
-                            <span>Pending verification</span>
-                          </Badge>
-                        ) : (
-                          <Badge variant="primary" className="space-x-1.5">
-                            <CircleCheck size={13} />
-                            <span>Valid config</span>
-                          </Badge>
-                        )}
-                      </>
-                    )}
-                    {isCheckingConfig[domain.name] && (
+                    {domainStatus[domain.name] &&
+                      !isCheckingConfig[domain.name] &&
+                      !domain.isArchived && (
+                        <>
+                          {domainStatus[domain.name]?.config?.misconfigured ? (
+                            <Badge variant="error" className="space-x-1.5">
+                              <XCircle size={13} />
+                              <span>Invalid config</span>
+                            </Badge>
+                          ) : domainStatus[domain.name]?.verification?.error?.code ===
+                            "missing_txt_record" ? (
+                            <Badge variant="warning" className="space-x-1.5">
+                              <Fingerprint size={13} />
+                              <span>Pending verification</span>
+                            </Badge>
+                          ) : (
+                            <Badge variant="primary" className="space-x-1.5">
+                              <CircleCheck size={13} />
+                              <span>Valid config</span>
+                            </Badge>
+                          )}
+                        </>
+                      )}
+                    {isCheckingConfig[domain.name] && !domain.isArchived && (
                       <Badge variant="neutral" className="space-x-1.5">
                         <LoaderCircle size={13} className="animate-spin" />
                         <span>Validating</span>
                       </Badge>
                     )}
+                    {domain.isArchived && (
+                      <Badge variant="orange" className="space-x-1.5">
+                        <Archive size={13} />
+                        <span>Archived</span>
+                      </Badge>
+                    )}
                     <div className="flex">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            className="h-7 space-x-1.5 rounded-r-none border-r-0 text-muted-foreground"
-                            variant="outline"
-                            size="icon"
-                            disabled={isCheckingConfig[domain.name]}
-                            onClick={() => checkDomainStatus(domain.name)}
-                          >
-                            <RotateCw
-                              size={13}
-                              className={isCheckingConfig[domain.name] ? "animate-spin" : undefined}
-                            />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Revalidate</TooltipContent>
-                      </Tooltip>
+                      {!domain.isArchived && (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              className="h-7 space-x-1.5 rounded-r-none border-r-0 text-muted-foreground"
+                              variant="outline"
+                              size="icon"
+                              disabled={isCheckingConfig[domain.name]}
+                              onClick={() => checkDomainStatus(domain.name)}
+                            >
+                              <RotateCw
+                                size={13}
+                                className={
+                                  isCheckingConfig[domain.name] ? "animate-spin" : undefined
+                                }
+                              />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>Revalidate</TooltipContent>
+                        </Tooltip>
+                      )}
                       <DropdownMenu modal={false}>
                         <DropdownMenuTrigger asChild>
                           <Button
                             size="icon"
-                            className="h-7 rounded-l-none text-muted-foreground"
+                            className={`h-7 text-muted-foreground ${!domain.isArchived ? "rounded-l-none" : undefined}`}
                             variant="outline"
                           >
                             <MoreHorizontal size={13} />
@@ -183,17 +205,31 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
                           align="end"
                           onCloseAutoFocus={(e) => e.preventDefault()}
                         >
-                          <DropdownMenuItem className="space-x-2">
+                          <DropdownMenuItem
+                            className="space-x-2"
+                            onSelect={() => {
+                              setSelectedDomain(domain);
+                              setIsEditOpen(true);
+                            }}
+                          >
                             <Pencil size={13} />
                             <span className="text-[13px]">Edit domain</span>
                           </DropdownMenuItem>
-                          <DropdownMenuItem disabled={domain.isDefault} className="space-x-2">
+                          <DropdownMenuItem
+                            disabled={domain.isPrimary || domain.isArchived}
+                            className="space-x-2"
+                            onSelect={() => {
+                              setSelectedDomain(domain);
+                              setIsSetPrimaryOpen(true);
+                            }}
+                          >
                             <Target size={13} />
-                            <span className="text-[13px]">Set as default</span>
+                            <span className="text-[13px]">Set as primary</span>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
                             className="space-x-2"
+                            disabled={teams?.length === 1}
                             onSelect={() => {
                               setSelectedDomain(domain);
                               setIsTransferOpen(true);
@@ -202,6 +238,29 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
                             <CircleArrowOutUpRight size={13} />
                             <span className="text-[13px]">Transfer</span>
                           </DropdownMenuItem>
+                          {!domain.isArchived ? (
+                            <DropdownMenuItem
+                              className="space-x-2"
+                              onSelect={() => {
+                                setSelectedDomain(domain);
+                                setIsArchiveOpen(true);
+                              }}
+                            >
+                              <Archive size={13} />
+                              <span className="text-[13px]">Archive</span>
+                            </DropdownMenuItem>
+                          ) : (
+                            <DropdownMenuItem
+                              className="space-x-2"
+                              onSelect={() => {
+                                setSelectedDomain(domain);
+                                setIsUnarchiveOpen(true);
+                              }}
+                            >
+                              <ArchiveRestore size={13} />
+                              <span className="text-[13px]">Unarchive</span>
+                            </DropdownMenuItem>
+                          )}
                           <DropdownMenuItem
                             onSelect={() => {
                               setSelectedDomain(domain);
@@ -218,13 +277,18 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
                   </div>
                 </div>
               </div>
-              {domainStatus[domain.name]?.config?.misconfigured ? (
-                <ConfigureDns domain={domain} />
-              ) : domainStatus[domain.name]?.verification?.error?.code === "missing_txt_record" ? (
-                <VerificationDns
-                  message={domainStatus[domain.name]?.verification?.error?.message}
-                />
-              ) : null}
+              {!domain.isArchived && (
+                <>
+                  {domainStatus[domain.name]?.config?.misconfigured ? (
+                    <ConfigureDns domain={domain} />
+                  ) : domainStatus[domain.name]?.verification?.error?.code ===
+                    "missing_txt_record" ? (
+                    <VerificationDns
+                      message={domainStatus[domain.name]?.verification?.error?.message}
+                    />
+                  ) : null}
+                </>
+              )}
             </div>
           ))}
       </div>
@@ -239,6 +303,24 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
         isOpen={isTransferOpen}
         setIsOpen={setIsTransferOpen}
         domainName={selectedDomain?.name}
+      />
+      <SetPrimary
+        isOpen={isSetPrimaryOpen}
+        setIsOpen={setIsSetPrimaryOpen}
+        mutateDomains={mutateDomains}
+        domainName={selectedDomain?.name}
+      />
+      <EditDomain
+        isOpen={isEditOpen}
+        setIsOpen={setIsEditOpen}
+        domain={selectedDomain}
+        mutateDomains={mutateDomains}
+      />
+      <ArchiveDomain
+        isOpen={isArchiveOpen}
+        setIsOpen={setIsArchiveOpen}
+        domainName={selectedDomain?.name}
+        mutateDomains={mutateDomains}
       />
     </>
   );
@@ -330,11 +412,11 @@ const DefaultDomain = () => {
     <Tooltip>
       <TooltipTrigger className="cursor-auto">
         {/*<div className="flex h-[19px] w-[19px] items-center justify-center rounded-full border border-foreground/20 bg-foreground/10 text-foreground">*/}
-        <Target size={13} className="relative top-[1px] text-deepBlue-500 dark:text-deepBlue-400" />
+        <Target size={13} className="relative top-[1px] text-foreground" />
         {/*</div>*/}
       </TooltipTrigger>
       <TooltipContent className="max-w-[200px] text-center">
-        This is the default domain for your team.
+        This is the primary domain for your team.
       </TooltipContent>
     </Tooltip>
   );

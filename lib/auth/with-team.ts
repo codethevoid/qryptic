@@ -33,7 +33,7 @@ export const withTeam = (handler: WithTeamHandler) => {
     });
 
     if (!team) return NextResponse.json({ error: "No team found" }, { status: 404 });
-    if (!team.members?.length) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!team.members?.length) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
     const user = team.members[0];
     team = { id: team.id, slug: team.slug };

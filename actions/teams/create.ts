@@ -91,7 +91,7 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
 
   // check keywords
   if (keywords.some((k) => k.toLowerCase().trim() === slug)) {
-    return { error: true, message: "Team name contains a restricted word" };
+    return { error: true, message: "Team name contains a reserved word" };
   }
 
   // check if [slug] is already in use
@@ -114,6 +114,11 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
   const randNum = Math.floor(Math.random() * 64);
   const key = `gradients/${randNum}.png`;
 
+  // get default domains
+  const defaultDomains = await prisma.domain.findMany({
+    where: { isDefault: true },
+  });
+
   const team = await prisma.team.create({
     data: {
       name,
@@ -123,6 +128,7 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
       stripeCustomerId: customer.id,
       subscriptionStatus: "active",
       image: `https://qryptic.s3.amazonaws.com/${key}`,
+      defaultDomains: { connect: defaultDomains.map((d) => ({ id: d.id })) },
     },
   });
 

@@ -17,26 +17,26 @@ export const DELETE = withTeam(async ({ params, team }) => {
     const removed = await removeDomain(name);
     if (!removed) return NextResponse.json({ error: "Failed to remove domain" }, { status: 500 });
 
-    // check if domain is default domain
-    if (domain.isDefault) {
-      // update team with new default domain
-      const newDefaultDomain = await prisma.domain.findFirst({
-        where: { teamId: team.id, NOT: { name } },
+    // check if domain is primary domain
+    if (domain.isPrimary) {
+      // update team with new primary domain
+      const newPrimaryDomain = await prisma.domain.findFirst({
+        where: { teamId: team.id, isArchived: false, NOT: { name } },
       });
-      if (newDefaultDomain) {
+      if (newPrimaryDomain) {
         await prisma.domain.update({
-          where: { id: newDefaultDomain.id },
-          data: { isDefault: true },
+          where: { id: newPrimaryDomain.id },
+          data: { isPrimary: true },
         });
       }
     }
 
-    // remove all links and event associated with domain
-    await prisma.event.deleteMany({ where: { domainId: domain.id } });
-    await prisma.link.deleteMany({ where: { domainId: domain.id } });
-
-    // remove domain in database
-    await prisma.domain.delete({ where: { name } });
+    // delete events, links, and domain
+    await prisma.$transaction([
+      prisma.event.deleteMany({ where: { domainId: domain.id } }),
+      prisma.link.deleteMany({ where: { domainId: domain.id } }),
+      prisma.domain.delete({ where: { name } }),
+    ]);
 
     return NextResponse.json({ message: "Domain removed" });
   } catch (e) {

@@ -18,7 +18,7 @@ export const POST = withTeam(async ({ req, team }) => {
     // get domains and plan limits
     const { domains, plan } = (await prisma.team.findUnique({
       where: { id: team.id },
-      select: { domains: true, plan: true },
+      select: { domains: { where: { isArchived: false } }, plan: true },
     })) as DomainsAndPlan;
 
     // check if team can add another domain
@@ -46,7 +46,7 @@ export const POST = withTeam(async ({ req, team }) => {
         team: { connect: { id: team.id } },
         name,
         destination: !plan.isFree ? destination?.toLowerCase().trim() || null : null,
-        isDefault: domains.length === 0,
+        isPrimary: domains.length === 0,
         isSubdomain: isSubdomain(name),
       },
     });

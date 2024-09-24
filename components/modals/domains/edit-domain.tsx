@@ -1,38 +1,35 @@
+import { Domain } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
 import {
-  Dialog,
-  CompactDialogHeader,
-  DialogContent,
-  CompactDialogTitle,
   CompactDialogDescription,
-  DialogFooter,
+  CompactDialogHeader,
+  CompactDialogTitle,
+  Dialog,
+  DialogContent,
   DialogBody,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Info, LoaderCircle, Sparkles } from "lucide-react";
-import NextLink from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { useTeam } from "@/lib/hooks/swr/use-team";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
+import { AddDomainFormValues, addDomainSchema } from "@/lib/validation/domains/add";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addDomainSchema, AddDomainFormValues } from "@/lib/validation/domains/add";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
+import { Info, Sparkles } from "lucide-react";
+import { useTeam } from "@/lib/hooks/swr/use-team";
+import { Button } from "@/components/ui/button";
+import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
 import { toast } from "sonner";
 
-type AddDomainProps = {
-  isOpen: boolean;
-  setIsOpen: (value: boolean) => void;
-  mutateDomains: () => Promise<void>;
-};
-
-const addDomain = async (values: AddDomainFormValues, slug: string) => {
+const editDomain = async (name: string, destination: string | undefined, slug: string) => {
   try {
-    const res = await fetch(`/api/domains/${slug}/add`, {
-      method: "POST",
+    // PATCH /api/domains/:slug/edit
+    // body = { destination, name }
+    const res = await fetch(`/api/domains/${slug}/edit`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify({ destination, name }),
     });
 
     if (!res.ok) {
@@ -40,14 +37,23 @@ const addDomain = async (values: AddDomainFormValues, slug: string) => {
       return { error: data.error };
     }
 
-    return { message: "Domain added successfully" };
+    return { message: "Domain edited successfully" };
   } catch (e) {
     console.error(e);
-    return { error: "Failed to add domain" };
+    return { error: "Failed to edit domain" };
   }
 };
 
-export const AddDomain = ({ isOpen, setIsOpen, mutateDomains }: AddDomainProps) => {
+type DomainWithLinkCount = Domain & { _count: { links: number } };
+
+type EditDomainProps = {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  domain: DomainWithLinkCount | null;
+  mutateDomains: () => Promise<void>;
+};
+
+export const EditDomain = ({ isOpen, setIsOpen, domain, mutateDomains }: EditDomainProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { team } = useTeam();
 
@@ -58,55 +64,52 @@ export const AddDomain = ({ isOpen, setIsOpen, mutateDomains }: AddDomainProps) 
     formState: { errors },
   } = useForm<AddDomainFormValues>({
     resolver: zodResolver(addDomainSchema),
+    defaultValues: {
+      name: domain?.name,
+      destination: domain?.destination || "",
+    },
   });
 
-  const onSubmit = async (values: AddDomainFormValues) => {
+  const handleEdit = async (values: AddDomainFormValues) => {
     setIsLoading(true);
-
-    const { error, message } = await addDomain(values, team.slug);
-
+    const { error } = await editDomain(values.name, values.destination, team.slug);
     if (error) {
-      toast.error(error);
       setIsLoading(false);
+      toast.error(error);
       return;
     }
-
-    // mutate domains
     await mutateDomains();
     setIsOpen(false);
     setIsLoading(false);
-    toast.success(message);
+    toast.success("Domain edited successfully");
   };
 
   useEffect(() => {
-    if (isOpen) reset();
+    if (isOpen) {
+      reset({
+        name: domain?.name,
+        destination: domain?.destination || "",
+      });
+      setIsLoading(false);
+    }
   }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="max-w-[440px]">
         <CompactDialogHeader>
-          <CompactDialogTitle>Add a domain</CompactDialogTitle>
-          <CompactDialogDescription>Add a domain for brand consistency.</CompactDialogDescription>
+          <CompactDialogTitle>Edit domain</CompactDialogTitle>
+          <CompactDialogDescription>Edit {domain?.name}</CompactDialogDescription>
         </CompactDialogHeader>
-        <DialogBody className="max-w-[440px]">
+        <DialogBody>
           <div className="space-y-1.5">
             <Label htmlFor="domain-name">Domain</Label>
-            <Input id="domain-name" placeholder="mywebsite.link" {...register("name")} />
-            {errors.name && <p className="text-xs text-red-600">{errors.name.message}</p>}
-            <div className="flex space-x-1.5">
-              <Info size={13} className="relative top-[2px] shrink-0 text-muted-foreground" />
-              <p className="text-xs text-muted-foreground">
-                Don&apos;t know what domain to use?{" "}
-                <NextLink
-                  href="/docs/domains"
-                  target="_blank"
-                  className="text-deepBlue-500 hover:underline dark:text-deepBlue-400"
-                >
-                  Find out
-                </NextLink>
-              </p>
-            </div>
+            <Input
+              id="domain-name"
+              disabled
+              placeholder="links.example.com"
+              {...register("name")}
+            />
           </div>
           <div className="space-y-1.5">
             <div className="flex items-center space-x-2">
@@ -116,8 +119,8 @@ export const AddDomain = ({ isOpen, setIsOpen, mutateDomains }: AddDomainProps) 
               {team?.plan.isFree && <ProTooltip />}
             </div>
             <Input
-              id="domain-destination"
-              placeholder="mywebsite.com"
+              id="default-destination"
+              placeholder="example.com"
               disabled={team?.plan.isFree}
               {...register("destination")}
             />
@@ -134,16 +137,16 @@ export const AddDomain = ({ isOpen, setIsOpen, mutateDomains }: AddDomainProps) 
           </div>
         </DialogBody>
         <DialogFooter>
-          <Button variant="outline" size="sm" disabled={isLoading} onClick={() => setIsOpen(false)}>
+          <Button size="sm" variant="outline" onClick={() => setIsOpen(false)} disabled={isLoading}>
             Cancel
           </Button>
           <Button
             size="sm"
+            onClick={handleSubmit(handleEdit)}
             disabled={isLoading}
             className="w-[74px]"
-            onClick={handleSubmit(onSubmit)}
           >
-            {isLoading ? <LoaderCircle size={14} className="animate-spin" /> : "Confirm"}
+            {isLoading ? <ButtonSpinner /> : "Confirm"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -154,7 +157,7 @@ export const AddDomain = ({ isOpen, setIsOpen, mutateDomains }: AddDomainProps) 
 const ProTooltip = () => {
   return (
     <Tooltip>
-      <TooltipTrigger>
+      <TooltipTrigger tabIndex={-1}>
         <Badge variant="colorful" className="cursor-auto space-x-1.5 hover:bg-teal-500/20">
           <Sparkles size={13} />
           <span>Pro</span>

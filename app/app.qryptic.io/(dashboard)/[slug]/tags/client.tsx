@@ -31,7 +31,10 @@ export const TagsClient = () => {
 
   useEffect(() => {
     totalTags !== undefined && setTotal(totalTags);
-  }, [totalTags]);
+    if (tags?.length === 0 && page > 1) {
+      setPage(page - 1);
+    }
+  }, [tags]);
 
   useEffect(() => {
     scrollToTop();
@@ -50,7 +53,7 @@ export const TagsClient = () => {
             placeholder="Search tags"
             setSearch={setSearch}
             search={search}
-            disabled={tags?.length === 0 && debouncedSearch === ""}
+            // disabled={tags?.length === 0 && debouncedSearch === ""}
             onChange={(e) => {
               setSearch(e.target.value);
               setPage(1);
@@ -80,7 +83,7 @@ export const TagsClient = () => {
         )}
       </div>
       <CreateTag isOpen={isOpen} setIsOpen={setIsOpen} mutateTags={mutateTags} />
-      {total > 10 && (
+      {total > pageSize && (
         <Snackbar
           unit="tags"
           page={page}

@@ -36,8 +36,8 @@ model Link {
   // relations
   team     Team    @relation(fields: [teamId], references: [id])
   teamId   String
-  domain   Domain  @relation(fields: [domainId], references: [id])
-  domainId String
+  domain   Domain? @relation(fields: [domainId], references: [id])
+  domainId String?
   events   Event[]
   tags     Tag[]
 }

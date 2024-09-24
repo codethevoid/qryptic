@@ -15,7 +15,7 @@ export const NoTeams = ({ setCreateTeamOpen }: { setCreateTeamOpen: (value: bool
             Create a team to get started
           </p>
         </div>
-        <Button className="w-full" onClick={() => setCreateTeamOpen(true)}>
+        <Button className="w-full max-w-[200px]" onClick={() => setCreateTeamOpen(true)}>
           Create team
         </Button>
       </div>

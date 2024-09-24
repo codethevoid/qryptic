@@ -2,6 +2,7 @@ model Domain {
   id          String    @id @default(cuid())
   createdAt   DateTime  @default(now())
   name        String    @unique
+  isPrimary   Boolean   @default(false)
   isDefault   Boolean   @default(false)
   isVerified  Boolean   @default(false)
   lastChecked DateTime? // last time the domain was checked
@@ -10,22 +11,11 @@ model Domain {
   isArchived  Boolean   @default(false)
 
   // relations
-  team   Team    @relation(fields: [teamId], references: [id])
-  teamId String
+  team   Team?   @relation(fields: [teamId], references: [id])
+  teamId String?
   links  Link[]
   events Event[]
-}
 
-// the default domains offered by the app
-// users can opt to use these domains (qrypt.co, qrypt.link, etc)
-model DefaultDomain {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  name      String   @unique
-
-  // relations
-  team   Team    @relation(fields: [teamId], references: [id])
-  teamId String
-  links  Link[]
-  events Event[]
+  // for default domains
+  enabledTeams Team[] @relation("EnabledDefaultDomains")
 }

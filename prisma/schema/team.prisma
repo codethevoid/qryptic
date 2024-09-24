@@ -35,7 +35,7 @@ model Team {
   // relations
   members        TeamMember[]
   domains        Domain[]
-  defaultDomains DefaultDomain[]
+  defaultDomains Domain[]     @relation("EnabledDefaultDomains")
   links          Link[]
   events         Event[]
   invoices       Invoice[]

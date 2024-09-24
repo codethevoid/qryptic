@@ -21,6 +21,7 @@ import {
 import { CreateTeam } from "@/components/modals/create-team";
 import { PlanBadge } from "@/components/ui/custom/plan-badge";
 import { PlanName } from "@/types/plans";
+import { CheckIcon } from "@radix-ui/react-icons";
 
 export const TeamSelector = () => {
   const { teams, isLoading } = useTeams();
@@ -97,7 +98,7 @@ export const TeamSelector = () => {
                       {t.name}
                     </p>
                   </div>
-                  {t.slug === slug && <Check size={16} className="text-muted-foreground" />}
+                  {t.slug === slug && <CheckIcon className="h-4 w-4" />}
                 </DropdownMenuItem>
               </NextLink>
             ))}

@@ -26,11 +26,12 @@ export const TeamNotFound = () => {
       return router.push("/teams");
     }
     // make sure user's default team is not accessible before updating
-    const team = teams.find((t: any) => t.slug === user?.defaultTeam);
+    const team = teams?.find((t: any) => t.slug === user?.defaultTeam);
     if (team) return router.push("/teams");
     // if this is showing up, it means the user got booted from their team
     // and their default team is no longer accessible, so we need to update cookie
     setIsLoading(true);
+    if (!teams?.length) return router.push("/teams");
     const { error } = await updateDefaultTeam(teams[0]?.slug || null);
     if (!error) await update({ defaultTeam: teams[0]?.slug || null });
     router.push("/teams");
@@ -49,7 +50,7 @@ export const TeamNotFound = () => {
             to it.
           </p>
         </div>
-        <Button className="w-full" disabled={isLoading} onClick={handleCheck}>
+        <Button className="w-full max-w-[200px]" disabled={isLoading} onClick={handleCheck}>
           {isLoading ? <LoaderCircle size={14} className="animate-spin" /> : "Back to my teams"}
         </Button>
       </div>

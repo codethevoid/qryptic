@@ -28,6 +28,16 @@ const main = async () => {
     }
   }
 
+  // add default domain
+  await prisma.domain.create({
+    data: {
+      name: "qrypt.co",
+      isDefault: true,
+      isSubdomain: false,
+      isVerified: true,
+    },
+  });
+
   console.log("Plans and prices created successfully");
 };
 
