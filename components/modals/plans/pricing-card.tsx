@@ -20,10 +20,10 @@ const getMonthlyPrice = (plan: PlanWithPrices, interval: "month" | "year") => {
 // this will format the analytics data based on the number of days
 const getAnalytics = (days: number) => {
   const years = days >= 365 ? days / 365 : null;
-  if (years) return `${years} year${years > 1 ? "s" : ""}`;
+  if (years) return `${Math.round(years)} year${Math.round(years) > 1 ? "s" : ""}`;
   // if days is greater than 90, divide by 30 to get months
   const months = days >= 90 ? days / 30 : null;
-  if (months) return `${months} months`;
+  if (months) return `${Math.round(months)} months`;
   return `${days} days`;
 };
 

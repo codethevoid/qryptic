@@ -1,5 +1,7 @@
+import { HomeClient } from "@/app/app.qryptic.io/(dashboard)/[slug]/client";
+
 const AppHome = () => {
-  return <div className="h-[600px]">App home (team slug)</div>;
+  return <HomeClient />;
 };
 
 export default AppHome;

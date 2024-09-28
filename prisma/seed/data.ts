@@ -64,7 +64,7 @@ export const plans: CustomPlan[] = [
     links: 1000,
     seats: 5,
     domains: 3,
-    analytics: 365, // days
+    analytics: 366, // days
     apiAccess: true,
     bulk: true,
     ai: true,
@@ -85,7 +85,7 @@ export const plans: CustomPlan[] = [
     links: 5000,
     seats: 20,
     domains: 10,
-    analytics: 730, // days
+    analytics: 1096, // days
     ai: true,
     apiAccess: true,
     bulk: true,

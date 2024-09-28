@@ -9,21 +9,18 @@ const badgeVariants = cva(
     variants: {
       variant: {
         primary:
-          "border-transparent bg-deepBlue-500/15 text-deepBlue-500 dark:text-deepBlue-400 font-medium",
+          "border-deepBlue-500/25 bg-deepBlue-500/15 text-deepBlue-500 dark:text-deepBlue-400 font-medium",
         warning:
-          "border-transparent bg-amber-500/15 text-amber-600 dark:text-amber-500 font-medium",
-        error: "border-transparent bg-red-500/15 text-red-600 dark:text-red-500 font-medium",
+          "border-amber-500/25 bg-amber-500/15 text-amber-600 dark:text-amber-500 font-medium",
+        error: "border-red-500/25 bg-red-500/15 text-red-600 dark:text-red-500 font-medium",
         success:
-          "border-transparent bg-green-500/15 text-green-600 dark:text-green-500 font-medium",
+          "border-green-500/25 bg-green-500/15 text-green-600 dark:text-green-500 font-medium",
         neutral:
-          "border-transparent bg-zinc-500/10 dark:bg-zinc-500/15 text-foreground/80 font-medium",
-        colorful: "border-transparent bg-teal-500/15 text-teal-600 dark:text-teal-500 font-medium",
-        pretty:
-          "border-transparent bg-fuchsia-500/15 text-fuchsia-600 dark:text-fuchsia-500 font-medium",
-        purple:
-          "border-transparent bg-purple-500/15 text-purple-600 dark:text-purple-500 font-medium",
+          "border-zinc-500/25 bg-zinc-500/10 dark:bg-zinc-500/15 text-foreground/80 font-medium",
+        colorful: "border-teal-500/25 bg-teal-500/15 text-teal-600 dark:text-teal-500 font-medium",
         orange:
-          "border-transparent bg-orange-500/15 text-orange-600 dark:text-orange-500 font-medium",
+          "border-orange-500/25 bg-orange-500/15 text-orange-600 dark:text-orange-500 font-medium",
+        // DEFAULT VARIANTS (DO NOT USE)
         default: "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
         secondary:
           "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",

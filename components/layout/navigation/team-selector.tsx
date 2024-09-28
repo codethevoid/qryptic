@@ -50,7 +50,7 @@ export const TeamSelector = () => {
           </Avatar>
           <div className="flex items-center space-x-2">
             <p className="max-w-[150px] truncate text-[13px] font-medium">{team?.name}</p>
-            <PlanBadge plan={team?.plan?.name as PlanName} className="py-[1px]" />
+            <PlanBadge plan={team?.plan?.name as PlanName} className="h-[18px] px-2 text-[11px]" />
           </div>
         </NextLink>
         <DropdownMenu modal={false} open={isOpen} onOpenChange={setIsOpen}>

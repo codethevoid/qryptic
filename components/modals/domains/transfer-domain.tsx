@@ -139,7 +139,7 @@ export const TransferDomain = ({
                   <p className="text-muted-foreground">Select a team</p>
                 )}
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent onCloseAutoFocus={(e) => e.preventDefault()}>
                 <SelectGroup>
                   {teams
                     ?.filter((t) => t.slug !== slug)

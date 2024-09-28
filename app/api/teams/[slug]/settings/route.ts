@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import prisma from "@/db/prisma";
+import { addMonths, startOfMonth } from "date-fns";
 
 export const GET = async (req: NextRequest, { params }: { params: { slug: string } }) => {
   const token = await auth();
   if (!token) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   const { slug } = params;
-
-  const month = new Date().getMonth() + 1;
-  const year = new Date().getFullYear();
 
   const team = await prisma.team.findUnique({
     where: { slug },
@@ -23,8 +21,7 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
           links: {
             where: {
               createdAt: {
-                gte: new Date(`${year}-${month}-01`),
-                lte: new Date(`${year}-${month + 1}-01`),
+                gte: startOfMonth(new Date()),
               },
             },
           },

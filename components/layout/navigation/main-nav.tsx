@@ -167,7 +167,7 @@ export const MainNav = () => {
               <PopoverContent
                 onMouseLeave={handleMouseLeave}
                 onMouseEnter={() => handleMouseEnter("product")}
-                className="w-auto p-2.5"
+                className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_300ms] data-[state=open]:!animate-[enter_300ms]"
                 sideOffset={7}
                 align="start"
                 onCloseAutoFocus={(e) => e.preventDefault()}
@@ -192,7 +192,7 @@ export const MainNav = () => {
               <PopoverContent
                 onMouseEnter={() => handleMouseEnter("solutions")}
                 onMouseLeave={handleMouseLeave}
-                className="w-auto p-2.5"
+                className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_300ms] data-[state=open]:!animate-[enter_300ms]"
                 sideOffset={7}
                 align="start"
                 onCloseAutoFocus={(e) => e.preventDefault()}
@@ -226,7 +226,7 @@ export const MainNav = () => {
               <PopoverContent
                 onMouseEnter={() => handleMouseEnter("resources")}
                 onMouseLeave={handleMouseLeave}
-                className="w-auto p-2.5"
+                className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_300ms] data-[state=open]:!animate-[enter_300ms]"
                 sideOffset={7}
                 align="start"
                 onCloseAutoFocus={(e) => e.preventDefault()}

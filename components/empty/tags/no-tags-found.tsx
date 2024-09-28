@@ -19,7 +19,7 @@ export const NoTagsFound = ({ setSearch }: NoTagsFoundProps) => {
             Try a different search term
           </p>
         </div>
-        <Button className="w-full" onClick={() => setSearch("")}>
+        <Button className="w-full max-w-[200px]" onClick={() => setSearch("")}>
           Clear search
         </Button>
       </div>

@@ -15,7 +15,7 @@ export const NoTags = ({ setIsOpen }: { setIsOpen: (value: boolean) => void }) =
             Create a tag to organize your links
           </p>
         </div>
-        <Button className="w-full" onClick={() => setIsOpen(true)}>
+        <Button className="w-full max-w-[200px]" onClick={() => setIsOpen(true)}>
           Create a tag
         </Button>
       </div>

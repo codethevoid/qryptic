@@ -34,6 +34,7 @@ import { SetPrimary } from "@/components/modals/domains/set-primary";
 import { useTeams } from "@/lib/hooks/swr/use-teams";
 import { EditDomain } from "@/components/modals/domains/edit-domain";
 import { ArchiveDomain } from "@/components/modals/domains/archive-domain";
+import { UnarchiveDomain } from "@/components/modals/domains/unarchive-domain";
 
 const revalidationInterval = process.env.NODE_ENV === "production" ? 8000 : 100000;
 
@@ -71,14 +72,19 @@ const verifyDomain = async (domain: string, slug: string) => {
 };
 
 export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
+  // domain configurations
   const [isCheckingConfig, setIsCheckingConfig] = useState<Record<string, boolean>>({});
   const [domainStatus, setDomainStatus] = useState<Record<string, Record<string, any>>>({});
+
+  // dialogs state
   const [iRemoveOpen, setIsRemoveOpen] = useState(false);
   const [isTransferOpen, setIsTransferOpen] = useState(false);
   const [isSetPrimaryOpen, setIsSetPrimaryOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isUnarchiveOpen, setIsUnarchiveOpen] = useState(false);
+
+  // selected domain (to display in dialogs)
   const [selectedDomain, setSelectedDomain] = useState<DomainWithLinkCount | null>(null);
   const { slug } = useParams();
   const { teams } = useTeams();
@@ -173,7 +179,7 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <Button
-                              className="h-7 space-x-1.5 rounded-r-none border-r-0 text-muted-foreground"
+                              className="h-7 space-x-1.5 rounded-r-none border-r-0 text-muted-foreground active:!scale-100"
                               variant="outline"
                               size="icon"
                               disabled={isCheckingConfig[domain.name]}
@@ -194,7 +200,7 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
                         <DropdownMenuTrigger asChild>
                           <Button
                             size="icon"
-                            className={`h-7 text-muted-foreground ${!domain.isArchived ? "rounded-l-none" : undefined}`}
+                            className={`h-7 text-muted-foreground active:!scale-100 ${!domain.isArchived ? "rounded-l-none" : undefined}`}
                             variant="outline"
                           >
                             <MoreHorizontal size={13} />
@@ -203,6 +209,7 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
                         <DropdownMenuContent
                           className="w-[160px]"
                           align="end"
+                          sideOffset={7}
                           onCloseAutoFocus={(e) => e.preventDefault()}
                         >
                           <DropdownMenuItem
@@ -321,6 +328,12 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
         setIsOpen={setIsArchiveOpen}
         domainName={selectedDomain?.name}
         mutateDomains={mutateDomains}
+      />
+      <UnarchiveDomain
+        isOpen={isUnarchiveOpen}
+        setIsOpen={setIsUnarchiveOpen}
+        mutateDomains={mutateDomains}
+        domainName={selectedDomain?.name}
       />
     </>
   );

@@ -68,7 +68,7 @@ export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) =>
                     <Button
                       size="icon"
                       variant="outline"
-                      className="h-[28px] w-[30px] rounded-r-none border-r-0 text-muted-foreground"
+                      className="h-[28px] w-[30px] rounded-r-none border-r-0 text-muted-foreground active:!scale-100"
                       onClick={() => handleEdit(tag)}
                     >
                       <Pencil size={13} />
@@ -81,7 +81,7 @@ export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) =>
                     <Button
                       size="icon"
                       variant="outline"
-                      className="h-[28px] w-[30px] rounded-l-none text-muted-foreground hover:text-red-600"
+                      className="h-[28px] w-[30px] rounded-l-none text-muted-foreground hover:text-red-600 active:!scale-100"
                       onClick={() => handleDelete(tag)}
                     >
                       <Trash size={13} />

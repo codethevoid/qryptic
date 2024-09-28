@@ -36,7 +36,7 @@ export const AppNav = () => {
             </div>
             <div className="flex items-center space-x-2.5">
               {team?.plan.isFree && ["owner", "super_admin"].includes(team?.user.role) && (
-                <Button size="sm" className="rounded-lg" onClick={() => setIsUpgradeOpen(true)}>
+                <Button size="sm" onClick={() => setIsUpgradeOpen(true)}>
                   Upgrade
                 </Button>
               )}
