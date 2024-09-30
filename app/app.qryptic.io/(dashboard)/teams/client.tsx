@@ -70,7 +70,7 @@ export const TeamsProvider = ({ teams }: TeamProviderProps) => {
                 </Avatar>
                 <div>
                   <p className="text-sm font-medium">{team.name}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-[13px] text-muted-foreground">
                     {team.domains.find((d) => d.isPrimary)?.name ?? "qrypt.co"}
                   </p>
                 </div>

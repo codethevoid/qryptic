@@ -1,7 +1,7 @@
 import { withTeam } from "@/lib/auth/with-team";
 import prisma from "@/db/prisma";
 import { NextResponse } from "next/server";
-import { differenceInDays, subDays, subMonths, addDays, startOfDay } from "date-fns";
+import { differenceInDays, subDays, subMonths, addDays, startOfDay, formatISO } from "date-fns";
 
 export const GET = withTeam(async ({ req, team }) => {
   try {
@@ -9,13 +9,10 @@ export const GET = withTeam(async ({ req, team }) => {
     const to = new Date(url.searchParams.get("to") || "");
     const from = new Date(url.searchParams.get("from") || "");
     const timeFrame = url.searchParams.get("timeFrame") || "fourWeeks";
-    const days = differenceInDays(to, from);
+    // const days = differenceInDays(to, from);
     const prev = getPreviousPeriod(from, to, timeFrame);
 
-    console.log(from, addDays(to, 1));
-    console.log(prev.from, addDays(prev.to, 1));
-
-    const [links, prevLinks, events, prevEvents] = await prisma.$transaction([
+    const [links, prevLinks, events, prevEvents, topLinks] = await prisma.$transaction([
       prisma.link.count({
         where: {
           teamId: team.id,
@@ -41,6 +38,15 @@ export const GET = withTeam(async ({ req, team }) => {
           createdAt: { gte: prev.from, lt: addDays(prev.to, 1) },
         },
         select: { type: true, createdAt: true },
+      }),
+      prisma.link.findMany({
+        where: {
+          teamId: team.id,
+          createdAt: { gte: from, lt: addDays(to, 1) },
+        },
+        include: { events: true },
+        take: 5,
+        orderBy: { events: { _count: "desc" } },
       }),
     ]);
 
@@ -67,6 +73,7 @@ export const GET = withTeam(async ({ req, team }) => {
         ),
       },
       events,
+      topLinks: topLinks.filter((l) => l.events.length > 0),
     });
   } catch (e) {
     console.error(e);
