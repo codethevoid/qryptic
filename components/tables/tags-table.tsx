@@ -59,7 +59,7 @@ export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) =>
                 <ChartArea size={13} />
                 <span>
                   {tag.eventCount !== 0 && tag.eventCount}{" "}
-                  {tag.linkCount === 1 ? "event" : tag.linkCount === 0 ? "No events" : "events"}
+                  {tag.eventCount === 1 ? "event" : tag.eventCount === 0 ? "No events" : "events"}
                 </span>
               </Badge>
               <div className="flex items-center">

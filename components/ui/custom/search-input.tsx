@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { InputHTMLAttributes } from "react";
-import { Search, X, XCircle } from "lucide-react";
+import { Search, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type SearchInputProps = InputHTMLAttributes<HTMLInputElement> & {
@@ -21,10 +21,10 @@ export const SearchInput = ({
   ...props
 }: SearchInputProps) => {
   return (
-    <div className={cn(`relative flex w-full max-w-[300px] items-center`, wrapperClassName)}>
+    <div className={cn(`relative flex w-full max-w-[260px] items-center`, wrapperClassName)}>
       <Search size={14} className="absolute left-2.5 text-muted-foreground" />
       <Input
-        className={cn("h-[32px] w-full pl-8", inputClassName)}
+        className={cn("h-8 w-full pl-8", inputClassName)}
         placeholder={placeholder}
         value={search}
         {...props}

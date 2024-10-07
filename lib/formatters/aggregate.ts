@@ -1,6 +1,8 @@
 import { differenceInDays, format, eachDayOfInterval, eachHourOfInterval } from "date-fns";
 import { DateRange } from "react-day-picker";
 
+type Event = { createdAt: Date; type: "click" | "scan" };
+
 // function that will return an interval key based on the time frame
 const getIntervals = (date: DateRange) => {
   const diffInDays = differenceInDays(date.to as Date, date.from as Date);
@@ -17,10 +19,7 @@ const getIntervals = (date: DateRange) => {
 
 type AggregatedData = { interval: string; clicks: number; scans: number }[];
 
-export const aggregateEvents = (
-  date: DateRange,
-  events: Record<string, any>[] = [],
-): AggregatedData => {
+export const aggregateEvents = (date: DateRange, events: Event[] = []): AggregatedData => {
   const { intervals, key } = getIntervals(date);
 
   const formattedData: AggregatedData = intervals.map((interval) => {
@@ -33,12 +32,15 @@ export const aggregateEvents = (
 
     let clicks = 0;
     let scans = 0;
+    let total = 0;
     for (const event of eventsForInterval) {
       if (event.type === "click") clicks++;
       if (event.type === "scan") scans++;
+      total++;
     }
 
-    return { interval: intervalKey, clicks, scans };
+    return { interval: intervalKey, clicks, scans, total };
   });
+
   return Object.values(formattedData);
 };

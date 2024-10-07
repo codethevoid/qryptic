@@ -133,7 +133,7 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
                       <CornerDownRight size={14} className="text-muted-foreground" />
                       <p className="pl-1 text-[13px] text-muted-foreground">
                         {domain.destination
-                          ? `Redirects to ${domain.destination}`
+                          ? `Redirects to ${domain.destination.replace("http://", "").replace("https://", "")}`
                           : "No destination configured"}
                       </p>
                     </div>

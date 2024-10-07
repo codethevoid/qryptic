@@ -3,7 +3,7 @@ model Domain {
   createdAt   DateTime  @default(now())
   name        String    @unique
   isPrimary   Boolean   @default(false)
-  isDefault   Boolean   @default(false)
+  isDefault   Boolean   @default(false) // default domains provided by qryptic
   isVerified  Boolean   @default(false)
   lastChecked DateTime? // last time the domain was checked
   destination String? // root domain, non-existing links, expired links

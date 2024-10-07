@@ -9,17 +9,17 @@ const badgeVariants = cva(
     variants: {
       variant: {
         primary:
-          "border-deepBlue-500/25 bg-deepBlue-500/15 text-deepBlue-500 dark:text-deepBlue-400 font-medium",
+          "border-transparent bg-deepBlue-500/15 text-deepBlue-500 dark:text-deepBlue-400 font-medium",
         warning:
-          "border-amber-500/20 bg-amber-500/15 text-amber-600 dark:text-amber-500 font-medium",
-        error: "border-red-500/20 bg-red-500/15 text-red-600 dark:text-red-500 font-medium",
+          "border-transparent bg-amber-500/15 text-amber-600 dark:text-amber-500 font-medium",
+        error: "border-transparent bg-red-500/15 text-red-600 dark:text-red-500 font-medium",
         success:
-          "border-green-500/20 bg-green-500/15 text-green-600 dark:text-green-500 font-medium",
+          "border-transparent bg-green-500/15 text-green-600 dark:text-green-500 font-medium",
         neutral:
-          "border-zinc-500/20 bg-zinc-500/10 dark:bg-zinc-500/15 text-foreground/80 font-medium",
-        colorful: "border-teal-500/20 bg-teal-500/15 text-teal-600 dark:text-teal-500 font-medium",
+          "border-transparent bg-zinc-500/10 dark:bg-zinc-500/15 text-foreground/80 font-medium",
+        colorful: "border-transparent bg-teal-500/15 text-teal-600 dark:text-teal-500 font-medium",
         orange:
-          "border-orange-500/20 bg-orange-500/15 text-orange-600 dark:text-orange-500 font-medium",
+          "border-transparent bg-orange-500/15 text-orange-600 dark:text-orange-500 font-medium",
         // DEFAULT VARIANTS (DO NOT USE)
         default: "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
         secondary:

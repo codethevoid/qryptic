@@ -1,7 +1,7 @@
 import { withTeam } from "@/lib/auth/with-team";
 import prisma from "@/db/prisma";
 import { NextResponse } from "next/server";
-import { differenceInDays, subDays, subMonths, addDays, startOfDay, formatISO } from "date-fns";
+import { differenceInDays, subDays, subMonths, addDays } from "date-fns";
 
 export const GET = withTeam(async ({ req, team }) => {
   try {
@@ -10,6 +10,9 @@ export const GET = withTeam(async ({ req, team }) => {
     const from = new Date(url.searchParams.get("from") || "");
     const timeFrame = url.searchParams.get("timeFrame") || "fourWeeks";
     // const days = differenceInDays(to, from);
+    if (!to || !from) {
+      return NextResponse.json({ error: "Missing date parameters" }, { status: 400 });
+    }
     const prev = getPreviousPeriod(from, to, timeFrame);
 
     const [links, prevLinks, events, prevEvents, topLinks] = await prisma.$transaction([
@@ -40,12 +43,18 @@ export const GET = withTeam(async ({ req, team }) => {
         select: { type: true, createdAt: true },
       }),
       prisma.link.findMany({
-        where: {
-          teamId: team.id,
-          createdAt: { gte: from, lt: addDays(to, 1) },
+        where: { teamId: team.id },
+        select: {
+          id: true,
+          slug: true,
+          destination: true,
+          domain: { select: { name: true } },
+          events: {
+            where: { createdAt: { gte: from, lt: addDays(to, 1) } },
+            select: { type: true, createdAt: true },
+          },
         },
-        include: { events: true },
-        take: 5,
+        take: 6,
         orderBy: { events: { _count: "desc" } },
       }),
     ]);
@@ -84,19 +93,11 @@ export const GET = withTeam(async ({ req, team }) => {
 function calcPercentChange(current: number, previous: number) {
   if (current === previous) return 0;
   if (current === 0 && previous > 0) return -100;
-  if (current > 0 && previous === 0) return "Infinity";
+  if (current > 0 && previous === 0) return Infinity.toString();
   return Math.round(((current - previous) / previous) * 100);
 }
 
 function getPreviousPeriod(from: Date, to: Date, timeFrame: string) {
-  const diff = differenceInDays(to, from);
-  if (diff === 0) {
-    return {
-      from: subDays(from, 1),
-      to: subDays(to, 1),
-    };
-  }
-
   if (timeFrame === "monthToDate") {
     return {
       from: subMonths(from, 1),
@@ -108,6 +109,14 @@ function getPreviousPeriod(from: Date, to: Date, timeFrame: string) {
     return {
       from: subMonths(from, 12),
       to: subMonths(to, 12),
+    };
+  }
+
+  const diff = differenceInDays(to, from);
+  if (diff === 0) {
+    return {
+      from: subDays(from, 1),
+      to: subDays(to, 1),
     };
   }
 

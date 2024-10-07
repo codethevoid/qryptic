@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 
 export const useDomains = (page: number, pageSize: number, status: string, search: string) => {
   const { slug } = useParams();
+
   const { data, isLoading, error } = useSWR(
     `/api/domains/${slug}?page=${page}&pageSize=${pageSize}&status=${status}&search=${search}`,
     fetcher,

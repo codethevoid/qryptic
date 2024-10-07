@@ -70,9 +70,9 @@ export const TagsClient = () => {
           <TagsSkeleton />
         ) : error ? (
           "an error occured"
-        ) : tags.length === 0 && debouncedSearch ? (
+        ) : tags?.length === 0 && debouncedSearch ? (
           <NoTagsFound setSearch={setSearch} />
-        ) : tags.length === 0 ? (
+        ) : tags?.length === 0 ? (
           <NoTags setIsOpen={setIsOpen} />
         ) : (
           <TagsTable

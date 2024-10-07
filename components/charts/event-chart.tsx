@@ -1,6 +1,6 @@
 "use client";
 
-import { AreaChart, Area, XAxis, CartesianGrid, YAxis } from "recharts";
+import { AreaChart, Area, XAxis, CartesianGrid } from "recharts";
 import {
   ChartContainer,
   ChartConfig,
@@ -9,14 +9,13 @@ import {
 } from "@/components/ui/chart";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DateRange } from "react-day-picker";
-import { TimeFrame } from "@/types/analytics";
 import { aggregateEvents } from "@/lib/formatters/aggregate";
 import { differenceInDays, format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
 import NextLink from "next/link";
+import { Dashboard } from "@/types/dashboard";
 
 const chartConfig = {
   clicks: {
@@ -30,10 +29,9 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 type EventChartProps = {
-  data: Record<string, any> | null;
+  data: Dashboard | undefined;
   isLoading: boolean;
   date: DateRange | undefined;
-  timeFrame: TimeFrame;
 };
 
 export const EventChart = ({ data, date, isLoading }: EventChartProps) => {
@@ -54,21 +52,21 @@ export const EventChart = ({ data, date, isLoading }: EventChartProps) => {
     return format(new Date(label), "MMM d, yyyy");
   };
 
-  const formatYTick = (num: number) => {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
-    } else if (num >= 1000) {
-      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "k";
-    }
-    return num.toString();
-  };
+  // const formatYTick = (num: number) => {
+  //   if (num >= 1000000) {
+  //     return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+  //   } else if (num >= 1000) {
+  //     return (num / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+  //   }
+  //   return num.toString();
+  // };
 
   return (
-    <div className="col-span-3">
+    <div className="max-[800px]:col-span-5 min-[800px]:col-span-3">
       <Card>
-        <CardHeader className="space-y-0.5">
+        <CardHeader className="space-y-0.5 p-4">
           <div className="flex items-center justify-between">
-            {!isLoading ? (
+            {!isLoading && data ? (
               <CardTitle>
                 {data?.events.length > 0
                   ? `${data?.events.length.toLocaleString("en-us")} events captured`
@@ -101,8 +99,13 @@ export const EventChart = ({ data, date, isLoading }: EventChartProps) => {
             </div>
           )}
         </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig} className="min-h-[360px] w-full">
+        <CardContent className="px-4 pb-4 pt-0">
+          <ChartContainer
+            config={chartConfig}
+            className={
+              "max-h-[327px] min-h-[327px] w-full max-[800px]:max-h-[280px] max-[800px]:min-h-[280px]"
+            }
+          >
             <AreaChart
               data={chartData}
               // margin={{ left: -20, top: 8, right: 12 }}
@@ -116,6 +119,7 @@ export const EventChart = ({ data, date, isLoading }: EventChartProps) => {
                   />
                 }
               />
+
               <XAxis
                 dataKey="interval"
                 axisLine={false}

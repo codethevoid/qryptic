@@ -72,7 +72,7 @@ export const TeamSelector = () => {
           >
             <DropdownMenuLabel>
               <div className="flex items-center justify-between">
-                <p className="text-[12px] font-medium text-muted-foreground">My Teams</p>
+                <p className="text-xs font-medium text-muted-foreground">My Teams</p>
               </div>
             </DropdownMenuLabel>
             {teams?.map((t: any) => (

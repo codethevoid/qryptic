@@ -46,6 +46,19 @@ const daysMap: Record<TimeFrame, number> = {
   custom: 0,
 };
 
+const timeFrameLabels = {
+  today: "Today",
+  sevenDays: "Last 7 days",
+  fourWeeks: "Last 4 weeks",
+  threeMonths: "Last 3 months",
+  twelveMonths: "Last 12 months",
+  threeYears: "Last 3 years",
+  monthToDate: "Month to date",
+  yearToDate: "Year to date",
+  all: "All time",
+  custom: "Custom",
+};
+
 type DateFilterProps = {
   setTimeFrame: (value: TimeFrame) => void;
   timeFrame: TimeFrame;
@@ -100,7 +113,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
       });
       // show a toast message
       return toast.error(`Date range exceeded!`, {
-        description: `The date range selected is greater than the allowed range of ${team?.plan.analytics} days. Upgrade your plan to increase historical data.`,
+        description: `The date range selected is greater than the allowed range of ${team?.plan.isFree ? team.plan.analytics : team.plan.analytics - 1} days. Upgrade your plan to increase historical data.`,
       });
     }
 
@@ -127,28 +140,8 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
               value={timeFrame}
               onValueChange={(value: TimeFrame) => handleTimeFrameChange(value)}
             >
-              <SelectTrigger className="h-8 space-x-2 min-[750px]:rounded-r-none">
-                <span>
-                  {timeFrame === "today"
-                    ? "Today"
-                    : timeFrame === "sevenDays"
-                      ? "Last 7 days"
-                      : timeFrame === "fourWeeks"
-                        ? "Last 4 weeks"
-                        : timeFrame === "threeMonths"
-                          ? "Last 3 months"
-                          : timeFrame === "twelveMonths"
-                            ? "Last 12 months"
-                            : timeFrame === "threeYears"
-                              ? "Last 3 years"
-                              : timeFrame === "monthToDate"
-                                ? "Month to date"
-                                : timeFrame === "yearToDate"
-                                  ? "Year to date"
-                                  : timeFrame === "custom"
-                                    ? "Custom"
-                                    : "All time"}
-                </span>
+              <SelectTrigger className="h-8 space-x-2 min-[700px]:rounded-r-none">
+                <span>{timeFrameLabels[timeFrame]}</span>
               </SelectTrigger>
               <SelectContent onCloseAutoFocus={(e) => e.preventDefault()} align="end">
                 <SelectGroup>
@@ -219,7 +212,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
                 <Button
                   size="sm"
                   variant="outline"
-                  className={`space-x-2 rounded-l-none border-l-0 active:!scale-100 max-[750px]:hidden ${!tempDate && "text-muted-foreground"}`}
+                  className={`space-x-2 rounded-l-none border-l-0 active:!scale-100 max-[700px]:hidden ${!tempDate && "text-muted-foreground"}`}
                 >
                   <CalendarDays size={14} />
                   <span>
@@ -261,18 +254,24 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
               sideOffset={7}
               onCloseAutoFocus={(e) => e.preventDefault()}
             >
-              <DropdownMenuItem className="space-x-2">
-                <Link2 size={13} className="-rotate-45" />
-                <span className="text-[13px]">Link</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="space-x-2">
-                <Globe size={13} />
-                <span className="text-[13px]">Domain</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="space-x-2">
-                <Tag size={13} />
-                <span className="text-[13px]">Tag</span>
-              </DropdownMenuItem>
+              <NextLink href={`/${slug}/links/new`} passHref>
+                <DropdownMenuItem className="space-x-2">
+                  <Link2 size={13} className="-rotate-45" />
+                  <span className="text-[13px]">Link</span>
+                </DropdownMenuItem>
+              </NextLink>
+              <NextLink href={`/${slug}/domains`} passHref>
+                <DropdownMenuItem className="space-x-2">
+                  <Globe size={13} />
+                  <span className="text-[13px]">Domain</span>
+                </DropdownMenuItem>
+              </NextLink>
+              <NextLink href={`/${slug}/tags`} passHref>
+                <DropdownMenuItem className="space-x-2">
+                  <Tag size={13} />
+                  <span className="text-[13px]">Tag</span>
+                </DropdownMenuItem>
+              </NextLink>
               {adminRoles.includes(team?.user?.role) && (
                 <NextLink href={`/${slug}/settings/members`} passHref>
                   <DropdownMenuItem className="space-x-2">

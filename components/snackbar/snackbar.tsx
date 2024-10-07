@@ -2,6 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Plus, LoaderCircle } from "lucide-react";
 import { useState } from "react";
+import NextLink from "next/link";
 
 type SnackbarProps = {
   page: number;
@@ -11,6 +12,7 @@ type SnackbarProps = {
   setIsOpen?: (value: boolean) => void;
   setPage: (page: number) => void;
   isLoading: boolean;
+  link?: string;
 };
 
 export const Snackbar = ({
@@ -21,6 +23,7 @@ export const Snackbar = ({
   setIsOpen,
   setPage,
   isLoading,
+  link,
 }: SnackbarProps) => {
   const [lastAction, setLastAction] = useState<"next" | "prev" | null>(null);
 
@@ -34,7 +37,7 @@ export const Snackbar = ({
   };
 
   return (
-    <div className="fixed bottom-6 left-1/2 flex -translate-x-1/2 items-center space-x-3 rounded-full border bg-background py-2 pl-3.5 pr-2.5 shadow-[0_6px_20px] shadow-foreground/15 dark:shadow-none">
+    <div className="fixed bottom-6 left-1/2 flex -translate-x-1/2 animate-fade-in items-center space-x-3 rounded-full border bg-background py-2 pl-3.5 pr-2.5 shadow-[0_6px_20px] shadow-foreground/15 dark:shadow-none">
       <p className="text-nowrap text-[13px]">
         Showing {pageSize * (page - 1) + 1}-{Math.min(pageSize * page, total)} of {total} {unit}
       </p>
@@ -74,6 +77,13 @@ export const Snackbar = ({
             onClick={() => setIsOpen(true)}
           >
             <Plus size={14} />
+          </Button>
+        )}
+        {link && (
+          <Button disabled={isLoading} size="icon" className="rounded-full" asChild>
+            <NextLink href={link}>
+              <Plus size={14} />
+            </NextLink>
           </Button>
         )}
       </div>

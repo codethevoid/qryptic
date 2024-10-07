@@ -78,8 +78,10 @@ export const DomainsClient = () => {
             }}
             // disabled={domains?.length === 0 && debouncedSearch === "" && status === "active"}
           >
-            <SelectTrigger className="h-8 max-w-[130px] capitalize">{status}</SelectTrigger>
-            <SelectContent onCloseAutoFocus={(e) => e.preventDefault()}>
+            <SelectTrigger className="h-8 w-auto space-x-2 capitalize">
+              <span>{status}</span>
+            </SelectTrigger>
+            <SelectContent onCloseAutoFocus={(e) => e.preventDefault()} align="end">
               <SelectGroup>
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="archived">Archived</SelectItem>

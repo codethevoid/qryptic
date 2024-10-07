@@ -3,17 +3,31 @@
 import NextLink from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Infinity, Link2, MousePointer, MousePointer2, ScanQrCode } from "lucide-react";
+import {
+  Link2,
+  MousePointer,
+  MousePointer2,
+  ScanQrCode,
+  Infinity as InfinityIcon,
+} from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
+import { Dashboard } from "@/types/dashboard";
 
 type MetricsProps = {
   isLoading: boolean;
-  data: Record<string, any> | null;
+  data: Dashboard | undefined;
 };
 
 export const Metrics = ({ data, isLoading }: MetricsProps) => {
   const { slug } = useParams();
+
+  const getVariant = (percentChange: number) => {
+    if (percentChange > 0) return "success";
+    if (percentChange < 0) return "orange";
+    return "neutral";
+  };
+
   return (
     <div className="mt-6 grid grid-cols-3 gap-5 max-[750px]:grid-cols-1 max-[750px]:grid-rows-3">
       <NextLink href={`/${slug}/links`} passHref>
@@ -21,23 +35,15 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <p className="text-sm">Links</p>
-              {!isLoading ? (
+              {!isLoading && data ? (
                 <Badge
                   className="flex h-[18px] px-2 text-[11px]"
-                  variant={
-                    data?.links.percentChange > 0
-                      ? "success"
-                      : data?.links.percentChange === 0
-                        ? "neutral"
-                        : "orange"
-                  }
+                  variant={getVariant(data.links.percentChange)}
                 >
-                  {data?.links.percentChange > 0 || data?.links.percentChange === "Infinity" ? (
+                  {data?.links.percentChange > 0 ? (
                     <span
                       className={
-                        data?.links.percentChange === "Infinity"
-                          ? "relative bottom-[1px]"
-                          : undefined
+                        data.links.percentChange === Infinity ? "relative bottom-[1px]" : undefined
                       }
                     >
                       +
@@ -45,12 +51,12 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
                   ) : (
                     ""
                   )}
-                  {data?.links.percentChange === "Infinity" ? (
-                    <Infinity size={12} className="ml-0.5" />
+                  {data.links.percentChange === Infinity ? (
+                    <InfinityIcon size={12} className="ml-0.5" />
                   ) : (
-                    data?.links.percentChange.toLocaleString("en-us")
+                    data.links.percentChange.toLocaleString("en-us")
                   )}
-                  {data?.links.percentChange !== "Infinity" && "%"}
+                  {data.links.percentChange !== Infinity && "%"}
                 </Badge>
               ) : (
                 <Skeleton className="h-[18px] w-12 rounded-full" />
@@ -59,16 +65,16 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
             <Link2 size={15} className="text-muted-foreground" />
           </div>
           <div className="space-y-0.5">
-            {!isLoading ? (
-              <p className="text-2xl font-bold">{data?.links.count.toLocaleString("en-us")}</p>
+            {!isLoading && data ? (
+              <p className="text-2xl font-bold">{data.links.count.toLocaleString("en-us")}</p>
             ) : (
               <div className="flex h-8 items-center">
                 <Skeleton className="h-7 w-20 rounded-lg" />
               </div>
             )}
-            {!isLoading ? (
+            {!isLoading && data ? (
               <p className="text-xs text-muted-foreground">
-                {data?.links.prevCount.toLocaleString("en-us")} previous period
+                {data.links.prevCount.toLocaleString("en-us")} previous period
               </p>
             ) : (
               <div className="flex h-4 items-center">
@@ -83,23 +89,15 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <p className="text-sm">Clicks</p>
-              {!isLoading ? (
+              {!isLoading && data ? (
                 <Badge
                   className="flex h-[18px] px-2 text-[11px]"
-                  variant={
-                    data?.clicks.percentChange > 0
-                      ? "success"
-                      : data?.clicks.percentChange === 0
-                        ? "neutral"
-                        : "orange"
-                  }
+                  variant={getVariant(data.clicks.percentChange)}
                 >
-                  {data?.clicks.percentChange > 0 || data?.clicks.percentChange === "Infinity" ? (
+                  {data.clicks.percentChange > 0 ? (
                     <span
                       className={
-                        data?.clicks.percentChange === "Infinity"
-                          ? "relative bottom-[1px]"
-                          : undefined
+                        data.clicks.percentChange === Infinity ? "relative bottom-[1px]" : undefined
                       }
                     >
                       +
@@ -107,12 +105,12 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
                   ) : (
                     ""
                   )}
-                  {data?.clicks.percentChange === "Infinity" ? (
-                    <Infinity size={12} className="ml-0.5" />
+                  {data.clicks.percentChange === Infinity ? (
+                    <InfinityIcon size={12} className="ml-0.5" />
                   ) : (
                     data?.clicks.percentChange.toLocaleString("en-us")
                   )}
-                  {data?.clicks.percentChange !== "Infinity" && "%"}
+                  {data.clicks.percentChange !== Infinity && "%"}
                 </Badge>
               ) : (
                 <Skeleton className="h-[18px] w-12 rounded-full" />
@@ -121,16 +119,16 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
             <MousePointer2 size={15} className="text-muted-foreground" />
           </div>
           <div className="space-y-0.5">
-            {!isLoading ? (
-              <p className="text-2xl font-bold">{data?.clicks.count.toLocaleString("en-us")}</p>
+            {!isLoading && data ? (
+              <p className="text-2xl font-bold">{data.clicks.count.toLocaleString("en-us")}</p>
             ) : (
               <div className="flex h-8 items-center">
                 <Skeleton className="h-7 w-20 rounded-lg" />
               </div>
             )}
-            {!isLoading ? (
+            {!isLoading && data ? (
               <p className="text-xs text-muted-foreground">
-                {data?.clicks.prevCount.toLocaleString("en-us")} previous period
+                {data.clicks.prevCount.toLocaleString("en-us")} previous period
               </p>
             ) : (
               <div className="flex h-4 items-center">
@@ -145,23 +143,15 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <p className="text-sm">Scans</p>
-              {!isLoading ? (
+              {!isLoading && data ? (
                 <Badge
                   className="flex h-[18px] px-2 text-[11px]"
-                  variant={
-                    data?.scans.percentChange > 0
-                      ? "success"
-                      : data?.scans.percentChange === 0
-                        ? "neutral"
-                        : "orange"
-                  }
+                  variant={getVariant(data.scans.percentChange)}
                 >
-                  {data?.scans.percentChange > 0 || data?.scans.percentChange === "Infinity" ? (
+                  {data?.scans.percentChange > 0 || data.scans.percentChange === Infinity ? (
                     <span
                       className={
-                        data?.scans.percentChange === "Infinity"
-                          ? "relative bottom-[1px]"
-                          : undefined
+                        data?.scans.percentChange === Infinity ? "relative bottom-[1px]" : undefined
                       }
                     >
                       +
@@ -169,12 +159,12 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
                   ) : (
                     ""
                   )}
-                  {data?.scans.percentChange === "Infinity" ? (
-                    <Infinity size={12} className="ml-0.5" />
+                  {data?.scans.percentChange === Infinity ? (
+                    <InfinityIcon size={12} className="ml-0.5" />
                   ) : (
                     data?.scans.percentChange.toLocaleString("en-us")
                   )}
-                  {data?.scans.percentChange !== "Infinity" && "%"}
+                  {data?.scans.percentChange !== Infinity && "%"}
                 </Badge>
               ) : (
                 <Skeleton className="h-[18px] w-12 rounded-full" />
@@ -183,16 +173,16 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
             <ScanQrCode size={15} className="text-muted-foreground" />
           </div>
           <div className="space-y-0.5">
-            {!isLoading ? (
-              <p className="text-2xl font-bold">{data?.scans.count.toLocaleString("en-us")}</p>
+            {!isLoading && data ? (
+              <p className="text-2xl font-bold">{data.scans.count.toLocaleString("en-us")}</p>
             ) : (
               <div className="flex h-8 items-center">
                 <Skeleton className="h-7 w-20 rounded-lg" />
               </div>
             )}
-            {!isLoading ? (
+            {!isLoading && data ? (
               <p className="text-xs text-muted-foreground">
-                {data?.scans.prevCount.toLocaleString("en-us")} previous period
+                {data.scans.prevCount.toLocaleString("en-us")} previous period
               </p>
             ) : (
               <div className="flex h-4 items-center">
