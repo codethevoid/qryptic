@@ -11,11 +11,10 @@ import {
   Image as ImageIcon,
   Lock,
   Ghost,
-  SearchCheckIcon,
   SearchCheck,
   Stars,
 } from "lucide-react";
-import { FC } from "react";
+import { FC, JSX } from "react";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Badge } from "@/components/ui/badge";
 
@@ -133,12 +132,10 @@ export const NewLinkNav: FC<LinkNavProps> = ({ tab, setTab }) => {
             {item.icon}
             <span>{item.name}</span>
           </span>
-          {item.isPro && team.plan.isFree && (
-            // <Badge variant="colorful" className="flex h-5 w-5 items-center justify-center p-0">
-            //   <Stars size={11} />
-            //   {/*<span className="text-[11px]">Pro</span>*/}
-            // </Badge>
-            <Stars size={13} />
+          {item.isPro && team?.plan.isFree && (
+            <Badge variant="neutral" className="px-1.5 py-0 text-[11px]">
+              Pro
+            </Badge>
           )}
         </Button>
       ))}

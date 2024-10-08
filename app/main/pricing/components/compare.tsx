@@ -132,11 +132,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                !plan.redirects ? (
-                  <Minus size={18} className="text-muted-foreground" />
-                ) : (
-                  "Unlimited"
-                )
+                plan.isFree ? <Minus size={18} className="text-muted-foreground" /> : "Unlimited"
               }
             />
           ))}
@@ -152,7 +148,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                plan.bulk ? (
+                !plan.isFree ? (
                   `${plan.links.toLocaleString("en-us")}/mo`
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
@@ -169,7 +165,7 @@ export const Compare = ({ plans }: CompareProps) => {
             info="Apply custom patterns, colors, and branding (logos)"
           />
           {plans.map((plan: CustomPlan) => (
-            <TableCell key={plan.id} value={plan.qrCustomization ? "Enhanced" : "Limited"} />
+            <TableCell key={plan.id} value={!plan.isFree ? "Enhanced" : "Limited"} />
           ))}
           <TableCell value={"Enhanced"} />
 
@@ -217,7 +213,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                plan.domainRedirector ? (
+                !plan.isFree ? (
                   <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
@@ -253,7 +249,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                plan.apiAccess ? (
+                !plan.isFree ? (
                   <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
@@ -273,7 +269,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                plan.qrCustomization ? (
+                !plan.isFree ? (
                   <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
@@ -293,7 +289,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                plan.ai ? (
+                !plan.isFree ? (
                   <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
@@ -314,7 +310,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                plan.linkPreviews ? (
+                !plan.isFree ? (
                   <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
@@ -334,7 +330,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                plan.smartRules ? (
+                !plan.isFree ? (
                   <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
@@ -354,7 +350,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                plan.smartRules ? (
+                !plan.isFree ? (
                   <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
@@ -374,7 +370,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                plan.smartRules ? (
+                !plan.isFree ? (
                   <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
@@ -394,7 +390,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={
-                plan.smartRules ? (
+                !plan.isFree ? (
                   <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />

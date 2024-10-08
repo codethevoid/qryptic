@@ -2,6 +2,8 @@
 
 import { NewLinkNav } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/nav";
 import { useState } from "react";
+import { LinkPreview } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/preview";
+import { LinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form";
 
 type Tab =
   | "general"
@@ -21,7 +23,8 @@ export const NewLinkClient = () => {
   return (
     <div className="flex space-x-10">
       <NewLinkNav tab={tab} setTab={setTab} />
-      <div className="w-full">new link client</div>
+      <LinkForm tab={tab} />
+      <LinkPreview />
     </div>
   );
 };

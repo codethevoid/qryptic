@@ -76,8 +76,8 @@ export const PricingCard = ({ plan, interval, setInterval }: PricingCardProps) =
             icon={<User size={15} />}
             feature={`${plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
           />
-          {plan.ai && <Feature icon={<Bot size={15} />} feature="AI features" />}
-          {plan.smartRules && <Feature icon={<Cog size={15} />} feature="Advanced link controls" />}
+          <Feature icon={<Bot size={15} />} feature="AI features" />
+          <Feature icon={<Cog size={15} />} feature="Advanced link controls" />
         </div>
       </div>
     </Card>

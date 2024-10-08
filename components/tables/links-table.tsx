@@ -74,15 +74,18 @@ export const LinksTable: FC<LinksTableProps> = ({ links }) => {
           </div>
           <div className="flex shrink-0 items-center space-x-2">
             {link._count.tags === 1 && (
-              <Tag variant={link.tags[0].color} className="flex items-center space-x-1.5">
-                <TagIcon className="max-[800px]:h-[11px] max-[800px]:w-[11px] min-[800px]:h-[12px] min-[800px]:w-[12px]" />
+              <Tag
+                variant={link.tags[0].color}
+                className="flex h-5 items-center space-x-1 text-[11px]"
+              >
+                <TagIcon size={11} />
                 <span className="max-[800px]:hidden">{link.tags[0].name}</span>
                 <span className="min-[800px]:hidden">1</span>
               </Tag>
             )}
             {link._count.tags > 1 && (
-              <Badge variant={"neutral"} className="flex items-center space-x-1.5">
-                <TagIcon size={12} />
+              <Badge variant={"neutral"} className="flex h-5 items-center space-x-1 text-[11px]">
+                <TagIcon size={11} />
                 <span>
                   {link._count.tags}
                   <span className="max-[800px]:hidden"> tags</span>
@@ -90,8 +93,8 @@ export const LinksTable: FC<LinksTableProps> = ({ links }) => {
               </Badge>
             )}
             {link._count.events > 0 && (
-              <Badge variant="neutral" className="flex items-center space-x-1.5">
-                <ChartArea size={12} />
+              <Badge variant="neutral" className="flex h-5 items-center space-x-1 text-[11px]">
+                <ChartArea size={11} />
                 <span>
                   {link._count.events.toLocaleString("en-us")}
                   <span className="max-[800px]:hidden">
@@ -100,7 +103,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links }) => {
                 </span>
               </Badge>
             )}
-            <Avatar className="h-[22px] w-[22px] rounded-full border">
+            <Avatar className="h-5 w-5 rounded-full border">
               <AvatarImage src={link.createdBy.user.image} alt="avatar" />
               <AvatarFallback className="bg-transparent">
                 <Skeleton className="h-full w-full" />
@@ -110,7 +113,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links }) => {
               <DropdownMenuTrigger asChild>
                 <Button
                   size="icon"
-                  variant="outline"
+                  variant="ghost"
                   className="h-7 w-7 active:!scale-100"
                   onClick={(e) => e.preventDefault()}
                 >

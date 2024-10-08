@@ -28,3 +28,15 @@ export type LinksTable = {
     filtered: number;
   };
 };
+
+export type Tab =
+  | "general"
+  | "device"
+  | "utm"
+  | "geo"
+  | "cloaking"
+  | "protection"
+  | "qr"
+  | "expiration"
+  | "cards"
+  | "indexing";

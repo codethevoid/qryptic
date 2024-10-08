@@ -181,21 +181,21 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                     icon={<User size={16} />}
                     feature={`${plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
                   />
-                  {plan.apiAccess && (
+                  {!plan.isFree && (
                     <Feature icon={<AppWindowMac size={16} />} feature="API access (coming soon)" />
                   )}
                   {/*{plan.qrCustomization && (*/}
                   {/*  <Feature icon={<Bot size={16} />} feature="AI QR generation" />*/}
                   {/*)}*/}
-                  {plan.ai && <Feature icon={<Bot size={16} />} feature="AI features" />}
-                  {plan.smartRules && (
+                  {!plan.isFree && <Feature icon={<Bot size={16} />} feature="AI features" />}
+                  {!plan.isFree && (
                     <Feature
                       icon={<Cog size={16} />}
                       feature="
                     Advanced link controls"
                     />
                   )}
-                  {plan.domainRedirector && (
+                  {!plan.isFree && (
                     <Feature icon={<Milestone size={16} />} feature="Domain redirector" />
                   )}
                   <Feature icon={<Headset size={16} />} feature={`${plan.supportLevel} support`} />
