@@ -54,7 +54,7 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
   // if (activeTrials.length > 0) {
   //   return {
   //     error: true,
-  //     description: `You have an active trial on team ${activeTrials[0].team.name} without a payment method. Please add a payment method before creating another team.`,
+  //     description: `You have an active trial on team ${activeTrials[0].team.name} without a payment method. Please create a payment method before creating another team.`,
   //   };
   // }
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { NewLinkNav } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/nav";
-import { LinkPreview } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/preview";
-import { LinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form";
+import { NewLinkNav } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/nav";
+import { LinkPreview } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/preview";
+import { LinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/form";
 import { LinkFormProvider } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
 
 type Tab =

@@ -19,7 +19,7 @@ export const appMiddleware = async (req: NextRequest) => {
 
     // get default team id
     if (path === "/") {
-      // add team [slug] to the query params
+      // create team [slug] to the query params
       const { defaultTeam } = token;
       if (!defaultTeam) {
         // if users does not have a default team, redirect to teams page

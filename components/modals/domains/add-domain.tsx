@@ -43,7 +43,7 @@ const addDomain = async (values: AddDomainFormValues, slug: string) => {
     return { message: "Domain added successfully" };
   } catch (e) {
     console.error(e);
-    return { error: "Failed to add domain" };
+    return { error: "Failed to create domain" };
   }
 };
 

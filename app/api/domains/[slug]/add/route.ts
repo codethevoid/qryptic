@@ -21,7 +21,7 @@ export const POST = withTeam(async ({ req, team }) => {
       select: { domains: { where: { isArchived: false } }, plan: true },
     })) as DomainsAndPlan;
 
-    // check if team can add another domain
+    // check if team can create another domain
     if (domains.length >= plan.domains) {
       return NextResponse.json(
         {
@@ -36,9 +36,10 @@ export const POST = withTeam(async ({ req, team }) => {
       return NextResponse.json({ error: "Domain name is already in use" }, { status: 400 });
     }
 
-    // attempt to add domain to project in vercel
+    // attempt to create domain to project in vercel
     const domainAdded = await addDomainToVercel(name);
-    if (!domainAdded) return NextResponse.json({ error: "Failed to add domain" }, { status: 500 });
+    if (!domainAdded)
+      return NextResponse.json({ error: "Failed to create domain" }, { status: 500 });
 
     // create domain in db
     await prisma.domain.create({
@@ -54,7 +55,7 @@ export const POST = withTeam(async ({ req, team }) => {
     return NextResponse.json({ message: "Domain added successfully" });
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ error: "Failed to add domain" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to create domain" }, { status: 500 });
   }
 });
 

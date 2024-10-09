@@ -9,6 +9,7 @@ export const GET = withTeam(async ({ team, req }) => {
   const pageSize = parseInt(url.searchParams.get("pageSize") || "5", 10);
   const status = url.searchParams.get("status") || "active";
   const search = url.searchParams.get("search") || "";
+  const includeDefault = url.searchParams.get("includeDefault") === "true";
   const skip = (page - 1) * pageSize;
   const take = pageSize;
 
@@ -51,6 +52,17 @@ export const GET = withTeam(async ({ team, req }) => {
         name: { contains: search, mode: "insensitive" },
       },
     });
+  }
+
+  if (includeDefault) {
+    const defaultDomains = await prisma.domain.findMany({
+      where: {
+        enabledTeams: { some: { id: team.id } },
+        isDefault: true,
+        isArchived: false,
+      },
+    });
+    domains = [...defaultDomains, ...domains];
   }
 
   return NextResponse.json({ domains, count });

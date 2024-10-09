@@ -227,7 +227,7 @@ export const Compare = ({ plans }: CompareProps) => {
           <TableCell
             value="UTM builder"
             className="justify-between font-medium"
-            info={"Easily add UTM parameters to your links."}
+            info={"Easily create UTM parameters to your links."}
           />
           {plans.map((plan: CustomPlan, i) => (
             <TableCell

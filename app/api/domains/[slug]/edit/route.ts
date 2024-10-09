@@ -14,7 +14,7 @@ export const PATCH = withTeam(async ({ req, team }) => {
     });
     if (!domain) return NextResponse.json({ error: "Domain not found" }, { status: 404 });
 
-    // check if team can add destination (has to be pro plan)
+    // check if team can create destination (has to be pro plan)
     const teamWithPlan = await prisma.team.findUnique({
       where: { id: team.id },
       select: { plan: true },

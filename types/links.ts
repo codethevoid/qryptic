@@ -47,3 +47,15 @@ export type Opengraph = {
   image: string | "";
   url: string | "";
 };
+
+export type Domain = {
+  id: string;
+  name: string;
+  isPrimary: boolean;
+};
+
+export type Tag = {
+  id: string;
+  name: string;
+  color: TagColor;
+};

@@ -28,7 +28,7 @@ const main = async () => {
     }
   }
 
-  // add default domain
+  // create default domain
   await prisma.domain.create({
     data: {
       name: "qrypt.co",
