@@ -17,18 +17,8 @@ import {
 import { FC, JSX } from "react";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Badge } from "@/components/ui/badge";
-
-type Tab =
-  | "general"
-  | "device"
-  | "utm"
-  | "geo"
-  | "cloaking"
-  | "protection"
-  | "qr"
-  | "expiration"
-  | "cards"
-  | "indexing";
+import { type Tab } from "@/types/links";
+import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
 
 type LinkItem = {
   name: string;
@@ -100,13 +90,9 @@ const linkItems: LinkItem[] = [
   },
 ];
 
-type LinkNavProps = {
-  tab: Tab;
-  setTab: (tab: Tab) => void;
-};
-
-export const NewLinkNav: FC<LinkNavProps> = ({ tab, setTab }) => {
+export const NewLinkNav: FC = () => {
   const { team } = useTeam();
+  const { tab, setTab } = useLinkForm();
   return (
     <div className="flex min-w-[200px] max-w-[200px] flex-col">
       <div className="mb-3 flex items-center space-x-2">

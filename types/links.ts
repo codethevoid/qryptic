@@ -40,3 +40,10 @@ export type Tab =
   | "expiration"
   | "cards"
   | "indexing";
+
+export type Opengraph = {
+  title: string | "";
+  description: string | "";
+  image: string | "";
+  url: string | "";
+};
