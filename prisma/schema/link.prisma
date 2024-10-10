@@ -22,7 +22,6 @@ model Link {
   // redirect options
   ios     String?
   android String?
-  desktop String?
   expired String?
 
   // Custom open graph

@@ -12,14 +12,44 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { RefreshCw, Search, TagIcon, XCircle } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import { TagColor } from "@/types/colors";
+import { Tag } from "@/components/ui/custom/tag";
+import { useParams } from "next/navigation";
+import { useDebounce } from "@/lib/hooks/use-debounce";
+import { generateSlug, checkSlug, isSlugUrlSafe } from "@/lib/links/slug-actions";
 
 export const General = () => {
-  const { tab, setDestination, domain, setDomain, notes, setNotes } = useLinkForm();
+  const { tab, setDestination, domain, setDomain, notes, setNotes, tags, setTags, setSlug, slug } =
+    useLinkForm();
   const { data } = useOptions();
+  const { slug: teamSlug } = useParams();
+  const debouncedSlug = useDebounce(slug, 500);
+  const [isLoadingSlug, setIsLoadingSlug] = useState<boolean>(false);
+  const [slugError, setSlugError] = useState<string>("");
   const [domainSearch, setDomainSearch] = useState<string>("");
   const [isDomainsOpen, setIsDomainsOpen] = useState<boolean>(false);
+  const [tagSearch, setTagSearch] = useState<string>("");
+
+  useEffect(() => {
+    generateSlug(teamSlug as string).then((data) => setSlug(data.slug));
+  }, []);
+
+  useEffect(() => {
+    if (debouncedSlug) {
+      checkSlug(teamSlug as string, debouncedSlug).then((data) => {
+        if (!data.isAvailable) {
+          setSlugError("Slug is not available");
+        } else if (!isSlugUrlSafe(debouncedSlug)) {
+          setSlugError("Slug must be URL safe");
+        } else {
+          setSlugError("");
+        }
+      });
+    }
+  }, [debouncedSlug]);
 
   useEffect(() => {
     if (data) {
@@ -36,6 +66,19 @@ export const General = () => {
     return domains.filter((d) => d.name.includes(domainSearch.toLowerCase().trim()));
   };
 
+  const filterTags = (tags: { id: string; name: string; color: TagColor }[]) => {
+    return tags.filter((t) => t.name.toLowerCase().includes(tagSearch.toLowerCase().trim()));
+  };
+
+  const handleTagChange = (tag: { id: string; name: string; color: TagColor }) => {
+    const isTagInList = tags.some((t) => t.id === tag.id);
+    if (isTagInList) {
+      setTags(tags.filter((t) => t.id !== tag.id));
+    } else {
+      setTags([...tags, tag]);
+    }
+  };
+
   return (
     <div className={cn("space-y-4", tab !== "general" && "hidden")}>
       <div className="space-y-1.5">
@@ -47,7 +90,23 @@ export const General = () => {
         />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="slug">Short link construction</Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="slug">Short link construction</Label>
+          <Button
+            className="h-5 w-5 rounded-md"
+            size="icon"
+            variant="ghost"
+            disabled={isLoadingSlug}
+            onClick={async () => {
+              setIsLoadingSlug(true);
+              const data = await generateSlug(teamSlug as string);
+              setSlug(data.slug);
+              setIsLoadingSlug(false);
+            }}
+          >
+            <RefreshCw size={11} className={`${isLoadingSlug ? "animate-spin" : ""}`} />
+          </Button>
+        </div>
         <div className="flex">
           <Popover open={isDomainsOpen} onOpenChange={setIsDomainsOpen}>
             <PopoverTrigger asChild>
@@ -56,7 +115,9 @@ export const General = () => {
                 className="h-9 w-full max-w-[150px] items-center justify-between space-x-2 rounded-r-none border-r-0 active:!scale-100"
                 size="sm"
               >
-                <span className="max-w-[100px] truncate">{domain?.name}</span>
+                <span className="max-w-[100px] truncate">
+                  {domain?.name || <Skeleton className="h-4 w-20" />}
+                </span>
                 <CaretSortIcon className="h-4 w-4 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -116,12 +177,106 @@ export const General = () => {
               </ScrollArea>
             </PopoverContent>
           </Popover>
-          <Input id="slug" placeholder="Back half (slug)" className="rounded-l-none" />
+          <Input
+            id="slug"
+            placeholder="Back half (slug)"
+            className={cn("rounded-l-none", slugError && "border-red-600")}
+            value={slug}
+            onChange={(e) => setSlug(e.target.value)}
+          />
         </div>
+        {slugError && debouncedSlug && <p className="text-xs text-red-600">{slugError}</p>}
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="tags">Tags</Label>
-        <Input id="tags" placeholder="Select tags" />
+        <div>
+          <Label htmlFor="tags">Tags</Label>
+        </div>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-auto min-h-9 w-full items-center justify-between gap-x-2 active:!scale-100"
+            >
+              <span className={cn("font-normal text-muted-foreground", tags.length && "hidden")}>
+                Select tags
+              </span>
+              <div className={cn("flex flex-wrap gap-1 py-1.5", !tags.length && "hidden")}>
+                {tags.map((tag) => (
+                  <Tag
+                    key={tag.id}
+                    variant={tag.color}
+                    className="cursor-default items-center space-x-1 px-1.5 py-0 text-[11px] transition-all hover:opacity-90"
+                  >
+                    <XCircle
+                      role="button"
+                      className="cursor-pointer"
+                      size={11}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTags(tags.filter((t) => t.id !== tag.id));
+                      }}
+                    />
+                    <span>{tag.name}</span>
+                  </Tag>
+                ))}
+              </div>
+              <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto min-w-[var(--radix-popover-trigger-width)] p-0">
+            <div className="relative flex items-center">
+              <Search size={14} className="absolute left-2.5 text-muted-foreground" />
+              <Input
+                placeholder="Search tags"
+                className="rounded-b-none border-0 border-b pl-8 shadow-none focus-visible:!ring-0"
+                onChange={(e) => setTagSearch(e.target.value)}
+              />
+            </div>
+            <ScrollArea
+              className={cn(
+                "p-1 transition-all",
+                filterTags(data?.tags || []).length >= 5 ? "h-[165.5px] hover:pr-3" : "h-auto",
+              )}
+            >
+              {filterTags(data?.tags || []).map((t) => (
+                <div
+                  role="button"
+                  key={t.id}
+                  className={cn(
+                    "flex h-[31.5px] cursor-default select-none items-center justify-between rounded-md px-2 py-1.5 transition-colors hover:bg-accent dark:hover:bg-accent/90",
+                  )}
+                  onClick={() => handleTagChange(t)}
+                >
+                  <div className="flex items-center space-x-2">
+                    <Tag variant={t.color} className="flex h-5 w-5 items-center justify-center p-0">
+                      <TagIcon className="h-2.5 w-2.5" />
+                    </Tag>
+                    <p
+                      className={cn(
+                        "max-w-[calc(var(--radix-popover-trigger-width)-80px)] truncate text-[13px] transition-all",
+                        tags.some((tag) => tag.id === t.id) && "font-medium",
+                      )}
+                    >
+                      {t.name}
+                    </p>
+                  </div>
+                  <CheckIcon
+                    className={cn(
+                      "h-4 w-4 shrink-0 transition-all",
+                      tags.some((tag) => tag.id === t.id) ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                </div>
+              ))}
+              {filterTags(data?.tags || []).length === 0 && (
+                <div className="flex h-[63px] items-center justify-center text-muted-foreground">
+                  <p className="text-xs">No tags found</p>
+                </div>
+              )}
+            </ScrollArea>
+          </PopoverContent>
+        </Popover>
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="notes">Notes</Label>

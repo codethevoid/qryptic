@@ -1,14 +1,15 @@
 import Image from "next/image";
 import { XIcon } from "@/components/ui/icons/x-icon";
-import { Image as ImageIcon, Pencil, Linkedin, LoaderCircle } from "lucide-react";
+import { Image as ImageIcon, Pencil, Linkedin } from "lucide-react";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tab } from "@/types/links";
-import { FC, useState } from "react";
+import { FC, useEffect } from "react";
 import { FacebookIcon } from "@/components/ui/icons/facebook";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { useOpenGraph } from "@/lib/hooks/swr/use-open-graph";
+import { useDebounce } from "@/lib/hooks/use-debounce";
 
 const formatUrl = (url: string) => {
   try {
@@ -21,17 +22,21 @@ const formatUrl = (url: string) => {
 
 export const LinkPreview: FC = () => {
   const { team } = useTeam();
-  const {
-    title,
-    image,
-    description,
-    isLoadingOpengraph,
-    opengraphError,
-    destination,
-    setTab,
-    debouncedDestination,
-    ogUrl,
-  } = useLinkForm();
+  const { title, image, destination, setTab, ogUrl, setTitle, setImage, setOgUrl, setDescription } =
+    useLinkForm();
+
+  const debouncedDestination = useDebounce(destination, 500);
+
+  const { data, isLoading, error } = useOpenGraph(debouncedDestination);
+
+  useEffect(() => {
+    if (data) {
+      setTitle(data.title);
+      setDescription(data.description);
+      setImage(data.image);
+      setOgUrl(data.url);
+    }
+  }, [data]);
 
   return (
     <div className="w-full max-w-[300px]">
@@ -57,9 +62,9 @@ export const LinkPreview: FC = () => {
           </div>
           <p className="text-xs text-muted-foreground">See how your link will look when shared.</p>
         </div>
-        {isLoadingOpengraph || destination !== debouncedDestination ? (
+        {isLoading || destination !== debouncedDestination ? (
           <LoadingPreview />
-        ) : opengraphError || !title || !image ? (
+        ) : error || !title || !image ? (
           <NoPreview />
         ) : (
           <div className="mt-4 space-y-6">

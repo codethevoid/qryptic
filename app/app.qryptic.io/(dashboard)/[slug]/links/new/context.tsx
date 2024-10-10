@@ -10,7 +10,6 @@ type LinkForm = {
   tab: Tab;
   setTab: (tab: Tab) => void;
   destination: string;
-  debouncedDestination: string;
   setDestination: (destination: string) => void;
   domain: Domain | null;
   setDomain: (domain: Domain) => void;
@@ -27,8 +26,7 @@ type LinkForm = {
   image: string;
   setImage: (image: string) => void;
   ogUrl: string;
-  isLoadingOpengraph: boolean;
-  opengraphError: any;
+  setOgUrl: (ogUrl: string) => void;
 };
 
 const LinkFormContext = createContext<LinkForm | undefined>(undefined);
@@ -39,7 +37,6 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
 
   // General form values
   const [destination, setDestination] = useState<string>("");
-  const debouncedDestination = useDebounce(destination, 500);
   const [domain, setDomain] = useState<Domain | null>(null);
   const [slug, setSlug] = useState<string>("");
   const [tags, setTags] = useState<Tag[]>([]);
@@ -52,17 +49,6 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const [description, setDescription] = useState<string>("");
   const [image, setImage] = useState<string>("");
   const [ogUrl, setOgUrl] = useState<string>("");
-  const { data, isLoading, error } = useOpenGraph(debouncedDestination);
-  console.log(data);
-
-  useEffect(() => {
-    if (data) {
-      setTitle(data.title);
-      setDescription(data.description);
-      setImage(data.image);
-      setOgUrl(data.url);
-    }
-  }, [data]);
 
   return (
     <LinkFormContext.Provider
@@ -70,7 +56,6 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
         tab,
         setTab,
         destination,
-        debouncedDestination,
         setDestination,
         domain,
         setDomain,
@@ -87,8 +72,7 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
         image,
         setImage,
         ogUrl,
-        isLoadingOpengraph: isLoading,
-        opengraphError: error,
+        setOgUrl,
       }}
     >
       {children}

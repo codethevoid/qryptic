@@ -11,8 +11,6 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { TagColor } from "@/types/colors";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tag } from "@/components/ui/custom/tag";
-import { Tag as TagIcon } from "lucide-react";
 
 type Status = "active" | "archived";
 type StatusList = Status[];
