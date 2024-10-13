@@ -5,6 +5,7 @@ import { UpgradeToPro } from "@/components/prompts/upgrade";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
 import { General } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/general";
+import { QrCodeProperties } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/qr-code/qr-code";
 
 export const LinkForm: FC = () => {
   const { team } = useTeam();
@@ -19,6 +20,7 @@ export const LinkForm: FC = () => {
         </div>
       </div>
       <General />
+      <QrCodeProperties />
       <div className={cn("space-y-4", tab !== "device" || (team?.plan.isFree && "hidden"))}></div>
       <UpgradeToPro isProFeature={tabDetails[tab].isPro} />
     </div>

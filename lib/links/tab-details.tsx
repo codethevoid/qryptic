@@ -19,7 +19,7 @@ export const tabDetails: Record<
 > = {
   general: {
     title: "General details",
-    description: "Set the destination url and the domain and slug for the link.",
+    description: "Configure the short link details.",
     icon: <Link2 size={16} />,
     isPro: false,
   },
@@ -55,7 +55,7 @@ export const tabDetails: Record<
   },
   qr: {
     title: "QR code",
-    description: "Generate a QR code for the link.",
+    description: "Customize the QR code appearance.",
     icon: <QrCode size={16} />,
     isPro: false,
   },

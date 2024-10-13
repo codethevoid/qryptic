@@ -216,3 +216,7 @@ body {
 /*    position: relative;*/
 /*  }*/
 /*}*/
+
+image {
+  border-radius: 100%;
+}

@@ -27,6 +27,8 @@ type LinkForm = {
   setImage: (image: string) => void;
   ogUrl: string;
   setOgUrl: (ogUrl: string) => void;
+  qrCodeType: "standard" | "ai" | null;
+  setQrCodeType: (qrCodeType: "standard" | "ai" | null) => void;
 };
 
 const LinkFormContext = createContext<LinkForm | undefined>(undefined);
@@ -43,6 +45,7 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const [notes, setNotes] = useState<string>("");
 
   // QR form values
+  const [qrCodeType, setQrCodeType] = useState<"standard" | "ai" | null>(null);
 
   // Open Graph form values
   const [title, setTitle] = useState<string>("");
@@ -73,6 +76,8 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
         setImage,
         ogUrl,
         setOgUrl,
+        qrCodeType,
+        setQrCodeType,
       }}
     >
       {children}

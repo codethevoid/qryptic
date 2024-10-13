@@ -10,10 +10,21 @@ export const GET = withTeam(async ({ team, req }) => {
       return NextResponse.json({ error: "No URL provided" }, { status: 400 });
     }
 
+    if (urlToFetch.startsWith("mailto:") || urlToFetch.startsWith("tel:")) {
+      const ogData = {
+        title: "",
+        description: "",
+        image: "",
+        url: urlToFetch,
+      };
+      return NextResponse.json({ ...ogData });
+    }
+
     const options = {
       url: urlToFetch,
       onlyGetOpenGraphInfo: true,
     };
+
     const data = await og(options);
 
     if (data.error) {

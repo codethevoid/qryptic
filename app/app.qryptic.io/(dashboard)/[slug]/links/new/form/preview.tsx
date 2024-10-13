@@ -40,7 +40,7 @@ export const LinkPreview: FC = () => {
 
   return (
     <div className="w-full max-w-[300px]">
-      <div className="w-full rounded-lg border p-4 shadow-sm">
+      <div className="w-full rounded-lg border p-4 shadow">
         <div className={`${team?.plan.isFree ? "space-y-0.5" : "space-y-0"}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1.5">

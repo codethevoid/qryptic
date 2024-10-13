@@ -182,7 +182,10 @@ export const General = () => {
             placeholder="Back half (slug)"
             className={cn("rounded-l-none", slugError && "border-red-600")}
             value={slug}
-            onChange={(e) => setSlug(e.target.value)}
+            onChange={(e) => {
+              setSlug(e.target.value);
+              if (!e.target.value) setSlugError("");
+            }}
           />
         </div>
         {slugError && debouncedSlug && <p className="text-xs text-red-600">{slugError}</p>}

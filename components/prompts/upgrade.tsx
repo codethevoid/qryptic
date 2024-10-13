@@ -26,7 +26,7 @@ export const UpgradeToPro: FC<{ isProFeature: boolean }> = ({ isProFeature }) =>
               Upgrade to pro to access this feature
             </p>
           </div>
-          <Button size="sm" onClick={() => setIsOpen(true)}>
+          <Button size="sm" onClick={() => setIsOpen(true)} className="w-[160px]">
             Upgrade to Pro
           </Button>
         </div>
