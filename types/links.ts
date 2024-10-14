@@ -59,3 +59,5 @@ export type Tag = {
   name: string;
   color: TagColor;
 };
+
+export type LogoType = "custom" | "team" | "qryptic" | null;

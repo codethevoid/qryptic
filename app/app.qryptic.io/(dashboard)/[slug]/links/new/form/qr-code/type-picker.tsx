@@ -25,15 +25,15 @@ export const QrCodeTypePicker = () => {
             <Image
               src="https://qryptic.s3.amazonaws.com/main/standard-qr.png"
               alt="Standad QR"
-              width={512}
-              height={512}
+              width={218}
+              height={218}
               quality={100}
-              className="rounded-md"
+              className="h-[218px] w-[218px] rounded-md"
             />
             <div className="space-y-0.5">
               <p className="text-[13px] font-medium">Standard QR code</p>
               <p className="text-xs text-muted-foreground">
-                Customize your QR code pattern, colors, and branding.
+                Customize your QR code colors and add a logo to match your brand.
               </p>
             </div>
           </div>
@@ -46,8 +46,8 @@ export const QrCodeTypePicker = () => {
             <Image
               src="https://qryptic.s3.amazonaws.com/main/qr-ai.png"
               alt="AI QR"
-              width={1024}
-              height={1024}
+              width={768}
+              height={768}
               quality={100}
               className="rounded-md"
             />

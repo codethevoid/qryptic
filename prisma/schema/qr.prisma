@@ -1,8 +1,38 @@
 model QrCode {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // qr code details
+  type       QrType
+  color      String    @default("#000000")
+  logo       String?
+  logoType   LogoType?
+  logoWidth  Float?
+  logoHeight Float?
+  level      Level // the error correction level (L, M, Q, H)
+  image      String? // link to s3 image (only used for ai qr codes)
+  prompt     String?   @db.Text // promp for the qr code (only used for ai qr codes)
 
   // relations
   link   Link   @relation(fields: [linkId], references: [id])
   linkId String @unique
+}
+
+enum QrType {
+  standard
+  ai
+}
+
+enum LogoType {
+  qryptic
+  team
+  custom
+}
+
+enum Level {
+  L
+  M
+  Q
+  H
 }

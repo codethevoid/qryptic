@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, createContext, useContext, ReactNode, useEffect } from "react";
+import { useState, createContext, useContext, ReactNode } from "react";
 import { Tab } from "@/types/links";
-import { useDebounce } from "@/lib/hooks/use-debounce";
-import { useOpenGraph } from "@/lib/hooks/swr/use-open-graph";
 import { type Domain, Tag } from "@/types/links";
+import { type LogoType } from "@/types/links";
 
 type LinkForm = {
   tab: Tab;
@@ -29,6 +28,18 @@ type LinkForm = {
   setOgUrl: (ogUrl: string) => void;
   qrCodeType: "standard" | "ai" | null;
   setQrCodeType: (qrCodeType: "standard" | "ai" | null) => void;
+  logo: string | null;
+  setLogo: (logo: string | null) => void;
+  logoType: LogoType;
+  setLogoType: (logoType: LogoType) => void;
+  color: string;
+  setColor: (color: string) => void;
+  logoDimensions: { width: number; height: number };
+  setLogoDimensions: (logoDimensions: { width: number; height: number }) => void;
+  qrImageURL: string | null;
+  setQrImageURL: (qrImageURL: string | null) => void;
+  prompt: string;
+  setPrompt: (prompt: string) => void;
 };
 
 const LinkFormContext = createContext<LinkForm | undefined>(undefined);
@@ -45,7 +56,16 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const [notes, setNotes] = useState<string>("");
 
   // QR form values
+  const [qrImageURL, setQrImageURL] = useState<string | null>(null);
   const [qrCodeType, setQrCodeType] = useState<"standard" | "ai" | null>(null);
+  const [logo, setLogo] = useState<string | null>(null);
+  const [logoType, setLogoType] = useState<LogoType>(null);
+  const [color, setColor] = useState<string>("#000000");
+  const [logoDimensions, setLogoDimensions] = useState<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
+  const [prompt, setPrompt] = useState<string>("");
 
   // Open Graph form values
   const [title, setTitle] = useState<string>("");
@@ -78,6 +98,18 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
         setOgUrl,
         qrCodeType,
         setQrCodeType,
+        logo,
+        setLogo,
+        logoType,
+        setLogoType,
+        color,
+        setColor,
+        logoDimensions,
+        setLogoDimensions,
+        qrImageURL,
+        setQrImageURL,
+        prompt,
+        setPrompt,
       }}
     >
       {children}

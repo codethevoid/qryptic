@@ -1,9 +1,7 @@
 "use client";
 
-import { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
-import qrCode from "qrcode";
+import { useState, ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
 import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
-import NextImage from "next/image";
 import { QRCodeSVG } from "qrcode.react";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Badge } from "@/components/ui/badge";
@@ -38,22 +36,30 @@ const colorOptions = [
 
 export const StandardQr = () => {
   const { team } = useTeam();
-  const { domain, slug } = useLinkForm();
-  const [color, setColor] = useState<string>("#000000");
-  const [logo, setLogo] = useState<string | null>(null);
-  const [logoDimensions, setLogoDimensions] = useState<{ width: number; height: number }>({
-    width: 0,
-    height: 0,
-  });
+  const {
+    domain,
+    slug,
+    color,
+    setColor,
+    logoType,
+    setLogoType,
+    logo,
+    setLogo,
+    logoDimensions,
+    setLogoDimensions,
+  } = useLinkForm();
+  const qrRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (team) {
       if (team?.plan.isFree) {
         setLogo(qrypticLogo);
-        setLogoDimensions({ width: 36, height: 36 });
+        setLogoDimensions({ width: 34, height: 34 });
+        setLogoType("qryptic");
       } else {
         setLogo(team.image);
-        setLogoDimensions({ width: 36, height: 36 });
+        setLogoDimensions({ width: 34, height: 34 });
+        setLogoType("team");
       }
     }
   }, [team]);
@@ -104,7 +110,7 @@ export const StandardQr = () => {
       const percentDiff = calcPercentDiff(height, width);
       if (percentDiff < 10) {
         // image is basically a square
-        maxSize = 36;
+        maxSize = 34;
       } else if (percentDiff > 10 && percentDiff < 50) {
         // image is a standard rectangle
         maxSize = 48;
@@ -124,13 +130,14 @@ export const StandardQr = () => {
         height: newHeight,
       });
       setLogo(URL.createObjectURL(file));
+      setLogoType("custom");
     };
   };
 
   return (
     <div>
-      <div className="flex w-full items-center justify-center rounded-lg border bg-zinc-50 p-4 shadow dark:bg-zinc-950">
-        <div className="rounded-md p-3 dark:bg-white">
+      <div className="flex w-full items-center justify-center rounded-lg border bg-zinc-50 p-4 shadow-sm dark:bg-zinc-950">
+        <div ref={qrRef} className="rounded-md border bg-white p-3">
           <QRCodeSVG
             value={constructUrl(domain?.name as string, slug)}
             level="H"
@@ -214,11 +221,12 @@ export const StandardQr = () => {
                 variant="outline"
                 className={cn(
                   "flex h-10 w-10 items-center justify-center p-0",
-                  logo === qrypticLogo && "bg-accent/60",
+                  logoType === "qryptic" && "bg-accent/60",
                 )}
                 onClick={() => {
                   setLogo(qrypticLogo);
-                  setLogoDimensions({ width: 36, height: 36 });
+                  setLogoDimensions({ width: 34, height: 34 });
+                  setLogoType("qryptic");
                 }}
               >
                 <QrypticIcon className="h-[18px] w-[18px]" />
@@ -227,12 +235,13 @@ export const StandardQr = () => {
                 variant="outline"
                 className={cn(
                   "flex h-10 w-10 items-center justify-center p-0",
-                  logo === team?.image && "bg-accent/60",
+                  logoType === "team" && "bg-accent/60",
                 )}
                 disabled={team?.plan.isFree}
                 onClick={() => {
                   setLogo(team.image);
-                  setLogoDimensions({ height: 36, width: 36 });
+                  setLogoDimensions({ height: 34, width: 34 });
+                  setLogoType("team");
                 }}
               >
                 <Avatar className="h-5 w-5 rounded-full border">
@@ -253,7 +262,7 @@ export const StandardQr = () => {
                   htmlFor="file"
                   className={cn(
                     "flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border shadow-sm transition-all hover:bg-accent/60 active:scale-[98%]",
-                    logo && logo !== team?.image && logo !== qrypticLogo && "bg-accent/60",
+                    logoType === "custom" && "bg-accent/60",
                     team?.plan.isFree && "pointer-events-none cursor-default opacity-50",
                   )}
                   role="button"
@@ -268,7 +277,11 @@ export const StandardQr = () => {
                   !logo && "bg-accent/60",
                 )}
                 disabled={team?.plan.isFree}
-                onClick={() => setLogo(null)}
+                onClick={() => {
+                  setLogo(null);
+                  setLogoDimensions({ width: 0, height: 0 });
+                  setLogoType(null);
+                }}
               >
                 <X size={18} />
               </Button>
