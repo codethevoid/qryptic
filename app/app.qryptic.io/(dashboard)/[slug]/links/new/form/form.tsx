@@ -4,8 +4,10 @@ import { tabDetails } from "@/lib/links/tab-details";
 import { UpgradeToPro } from "@/components/prompts/upgrade";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
-import { General } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/general";
-import { QrCodeProperties } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/qr-code/qr-code";
+import { General } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/general";
+import { QrCodeProperties } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/qr-code/qr-code";
+import { Utm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/utm";
+import { DeviceTargeting } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/device-targeting";
 
 export const LinkForm: FC = () => {
   const { team } = useTeam();
@@ -21,6 +23,8 @@ export const LinkForm: FC = () => {
       </div>
       <General />
       <QrCodeProperties />
+      <Utm />
+      {!team?.plan.isFree && <DeviceTargeting />}
       <div className={cn("space-y-4", tab !== "device" || (team?.plan.isFree && "hidden"))}></div>
       <UpgradeToPro isProFeature={tabDetails[tab].isPro} />
     </div>

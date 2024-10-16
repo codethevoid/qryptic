@@ -25,13 +25,13 @@ export const tabDetails: Record<
   },
   device: {
     title: "Device targeting",
-    description: "Show the link to specific devices.",
+    description: "Redirect users based on their device.",
     icon: <TabletSmartphone size={16} />,
     isPro: true,
   },
   utm: {
     title: "UTM parameters",
-    description: "Add UTM parameters to the link.",
+    description: "Track your link performance.",
     icon: <Tag size={16} />,
     isPro: false,
   },

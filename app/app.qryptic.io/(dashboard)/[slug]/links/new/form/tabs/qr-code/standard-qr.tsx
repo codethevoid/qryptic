@@ -158,7 +158,7 @@ export const StandardQr = () => {
         <div className="space-y-4">
           <div className="space-y-1.5">
             <p className="text-[13px] font-medium">Custom color</p>
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5">
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
               <div className="flex">
                 <Popover>
                   <PopoverTrigger asChild>
@@ -198,7 +198,7 @@ export const StandardQr = () => {
                     key={c}
                     className={cn(
                       "h-6 w-6 rounded-full border transition-all active:scale-[98%]",
-                      color === c ? "opacity-100" : "opacity-60 hover:opacity-70",
+                      color === c && "ring-1 ring-primary ring-offset-1",
                     )}
                     style={{ backgroundColor: c }}
                     onClick={() => setColor(c)}
@@ -221,7 +221,7 @@ export const StandardQr = () => {
                 variant="outline"
                 className={cn(
                   "flex h-10 w-10 items-center justify-center p-0",
-                  logoType === "qryptic" && "bg-accent/60",
+                  logoType === "qryptic" && "border-primary bg-accent/60",
                 )}
                 onClick={() => {
                   setLogo(qrypticLogo);
@@ -235,7 +235,7 @@ export const StandardQr = () => {
                 variant="outline"
                 className={cn(
                   "flex h-10 w-10 items-center justify-center p-0",
-                  logoType === "team" && "bg-accent/60",
+                  logoType === "team" && "border-primary bg-accent/60",
                 )}
                 disabled={team?.plan.isFree}
                 onClick={() => {
@@ -262,7 +262,7 @@ export const StandardQr = () => {
                   htmlFor="file"
                   className={cn(
                     "flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border shadow-sm transition-all hover:bg-accent/60 active:scale-[98%]",
-                    logoType === "custom" && "bg-accent/60",
+                    logoType === "custom" && "border-primary bg-accent/60",
                     team?.plan.isFree && "pointer-events-none cursor-default opacity-50",
                   )}
                   role="button"
@@ -274,7 +274,7 @@ export const StandardQr = () => {
                 variant="outline"
                 className={cn(
                   "flex h-10 w-10 items-center justify-center p-0",
-                  !logo && "bg-accent/60",
+                  !logo && "border-primary bg-accent/60",
                 )}
                 disabled={team?.plan.isFree}
                 onClick={() => {

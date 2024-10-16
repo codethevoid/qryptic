@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
 import { Domain } from "@/types/links";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { useOptions } from "@/lib/hooks/swr/use-options";
 import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
@@ -22,8 +22,24 @@ import { useDebounce } from "@/lib/hooks/use-debounce";
 import { generateSlug, checkSlug, isSlugUrlSafe } from "@/lib/links/slug-actions";
 
 export const General = () => {
-  const { tab, setDestination, domain, setDomain, notes, setNotes, tags, setTags, setSlug, slug } =
-    useLinkForm();
+  const {
+    tab,
+    setDestination,
+    destination,
+    domain,
+    setDomain,
+    notes,
+    setNotes,
+    tags,
+    setTags,
+    setSlug,
+    slug,
+    setUtmSource,
+    setUtmContent,
+    setUtmTerm,
+    setUtmCampaign,
+    setUtmMedium,
+  } = useLinkForm();
   const { data } = useOptions();
   const { slug: teamSlug } = useParams();
   const debouncedSlug = useDebounce(slug, 500);
@@ -79,6 +95,25 @@ export const General = () => {
     }
   };
 
+  const resetUTM = () => {
+    setUtmSource("");
+    setUtmMedium("");
+    setUtmCampaign("");
+    setUtmTerm("");
+    setUtmContent("");
+  };
+
+  const handleDestinationChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDestination(e.target.value);
+    if (!e.target.value) return resetUTM();
+    const searchParams = new URLSearchParams(e.target.value.split("?")[1]);
+    setUtmSource(searchParams.get("utm_source") || "");
+    setUtmMedium(searchParams.get("utm_medium") || "");
+    setUtmCampaign(searchParams.get("utm_campaign") || "");
+    setUtmTerm(searchParams.get("utm_term") || "");
+    setUtmContent(searchParams.get("utm_content") || "");
+  };
+
   return (
     <div className={cn("space-y-4", tab !== "general" && "hidden")}>
       <div className="space-y-1.5">
@@ -86,7 +121,8 @@ export const General = () => {
         <Input
           id="destination"
           placeholder="https://example.com"
-          onChange={(e) => setDestination(e.target.value)}
+          value={destination}
+          onChange={(e) => handleDestinationChange(e)}
         />
       </div>
       <div className="space-y-1.5">

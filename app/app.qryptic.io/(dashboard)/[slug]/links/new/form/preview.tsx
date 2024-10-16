@@ -25,7 +25,7 @@ export const LinkPreview: FC = () => {
   const { title, image, destination, setTab, ogUrl, setTitle, setImage, setOgUrl, setDescription } =
     useLinkForm();
 
-  const debouncedDestination = useDebounce(destination, 500);
+  const debouncedDestination = useDebounce(destination?.split("?")[0], 500);
 
   const { data, isLoading, error } = useOpenGraph(debouncedDestination);
 
@@ -39,7 +39,7 @@ export const LinkPreview: FC = () => {
   }, [data]);
 
   return (
-    <div className="w-full max-w-[300px]">
+    <div className="w-full min-w-[300px] max-w-[300px]">
       <div className="w-full rounded-lg border p-4 shadow">
         <div className={`${team?.plan.isFree ? "space-y-0.5" : "space-y-0"}`}>
           <div className="flex items-center justify-between">
@@ -62,7 +62,7 @@ export const LinkPreview: FC = () => {
           </div>
           <p className="text-xs text-muted-foreground">See how your link will look when shared.</p>
         </div>
-        {isLoading || destination !== debouncedDestination ? (
+        {isLoading || destination?.split("?")[0] !== debouncedDestination?.split("?")[0] ? (
           <LoadingPreview />
         ) : error || !title || !image ? (
           <NoPreview />

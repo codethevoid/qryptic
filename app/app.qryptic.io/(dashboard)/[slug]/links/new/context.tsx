@@ -36,10 +36,22 @@ type LinkForm = {
   setColor: (color: string) => void;
   logoDimensions: { width: number; height: number };
   setLogoDimensions: (logoDimensions: { width: number; height: number }) => void;
-  qrImageURL: string | null;
-  setQrImageURL: (qrImageURL: string | null) => void;
-  prompt: string;
-  setPrompt: (prompt: string) => void;
+  // qrImageURL: string | null;
+  // setQrImageURL: (qrImageURL: string | null) => void;
+  // prompt: string;
+  // setPrompt: (prompt: string) => void;
+  // generations: { img: string; prompt: string }[];
+  // setGenerations: (generations: { img: string; prompt: string }[]) => void;
+  utmSource: string;
+  setUtmSource: (utmSource: string) => void;
+  utmMedium: string;
+  setUtmMedium: (utmMedium: string) => void;
+  utmCampaign: string;
+  setUtmCampaign: (utmCampaign: string) => void;
+  utmTerm: string;
+  setUtmTerm: (utmTerm: string) => void;
+  utmContent: string;
+  setUtmContent: (utmContent: string) => void;
 };
 
 const LinkFormContext = createContext<LinkForm | undefined>(undefined);
@@ -56,8 +68,9 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const [notes, setNotes] = useState<string>("");
 
   // QR form values
-  const [qrImageURL, setQrImageURL] = useState<string | null>(null);
-  const [qrCodeType, setQrCodeType] = useState<"standard" | "ai" | null>(null);
+  // const [qrImageURL, setQrImageURL] = useState<string | null>(null);
+  // const [generations, setGenerations] = useState<{ img: string; prompt: string }[]>([]);
+  const [qrCodeType, setQrCodeType] = useState<"standard" | "ai" | null>("standard");
   const [logo, setLogo] = useState<string | null>(null);
   const [logoType, setLogoType] = useState<LogoType>(null);
   const [color, setColor] = useState<string>("#000000");
@@ -65,7 +78,14 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
     width: 0,
     height: 0,
   });
-  const [prompt, setPrompt] = useState<string>("");
+  // const [prompt, setPrompt] = useState<string>("");
+
+  // utm form values
+  const [utmSource, setUtmSource] = useState<string>("");
+  const [utmMedium, setUtmMedium] = useState<string>("");
+  const [utmCampaign, setUtmCampaign] = useState<string>("");
+  const [utmTerm, setUtmTerm] = useState<string>("");
+  const [utmContent, setUtmContent] = useState<string>("");
 
   // Open Graph form values
   const [title, setTitle] = useState<string>("");
@@ -106,10 +126,22 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
         setColor,
         logoDimensions,
         setLogoDimensions,
-        qrImageURL,
-        setQrImageURL,
-        prompt,
-        setPrompt,
+        // qrImageURL,
+        // setQrImageURL,
+        // prompt,
+        // setPrompt,
+        // generations,
+        // setGenerations,
+        utmSource,
+        setUtmSource,
+        utmMedium,
+        setUtmMedium,
+        utmCampaign,
+        setUtmCampaign,
+        utmTerm,
+        setUtmTerm,
+        utmContent,
+        setUtmContent,
       }}
     >
       {children}

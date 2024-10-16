@@ -63,7 +63,7 @@ DialogHeader.displayName = "DialogHeader";
 
 const CompactDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("space-y-2 rounded-t-lg border-b bg-zinc-50 p-4 dark:bg-zinc-950", className)}
+    className={cn("space-y-1.5 rounded-t-lg border-b bg-zinc-50 p-4 dark:bg-zinc-950", className)}
     {...props}
   />
 );
