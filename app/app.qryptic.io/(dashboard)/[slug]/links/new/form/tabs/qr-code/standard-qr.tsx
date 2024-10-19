@@ -29,7 +29,7 @@ const colorOptions = [
   "#b6ac00",
   "#48b000",
   "#0072c0",
-  "#9400c2",
+  "#8100c2",
   "#b00078",
   "#7e3f00",
 ];
@@ -108,10 +108,10 @@ export const StandardQr = () => {
       const { width, height } = img;
       let maxSize: number;
       const percentDiff = calcPercentDiff(height, width);
-      if (percentDiff < 10) {
+      if (percentDiff < 20) {
         // image is basically a square
         maxSize = 34;
-      } else if (percentDiff > 10 && percentDiff < 50) {
+      } else if (percentDiff > 20 && percentDiff < 50) {
         // image is a standard rectangle
         maxSize = 48;
       } else {
@@ -158,7 +158,7 @@ export const StandardQr = () => {
         <div className="space-y-4">
           <div className="space-y-1.5">
             <p className="text-[13px] font-medium">Custom color</p>
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
               <div className="flex">
                 <Popover>
                   <PopoverTrigger asChild>

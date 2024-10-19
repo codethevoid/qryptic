@@ -203,9 +203,9 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
             </Select>
             <Popover
               open={isCalendarOpen}
-              onOpenChange={(isOpen: boolean) => {
+              onOpenChange={async (isOpen: boolean) => {
                 setIsCalendarOpen(isOpen);
-                if (!isOpen) handleDateChange();
+                if (!isOpen) await handleDateChange();
               }}
             >
               <PopoverTrigger asChild>

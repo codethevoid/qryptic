@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, createContext, useContext, ReactNode } from "react";
-import { Tab } from "@/types/links";
-import { type Domain, Tag } from "@/types/links";
-import { type LogoType } from "@/types/links";
+import { type Domain, Tag, LogoType, Tab, Country } from "@/types/links";
 
 type LinkForm = {
   tab: Tab;
@@ -24,6 +22,8 @@ type LinkForm = {
   setDescription: (description: string) => void;
   image: string;
   setImage: (image: string) => void;
+  imageFile: File | null;
+  setImageFile: (imageFile: File | null) => void;
   ogUrl: string;
   setOgUrl: (ogUrl: string) => void;
   qrCodeType: "standard" | "ai" | null;
@@ -52,6 +52,20 @@ type LinkForm = {
   setUtmTerm: (utmTerm: string) => void;
   utmContent: string;
   setUtmContent: (utmContent: string) => void;
+  ios: string;
+  setIos: (ios: string) => void;
+  android: string;
+  setAndroid: (android: string) => void;
+  geo: Record<string, Country>;
+  setGeo: (geo: Record<string, Country>) => void;
+  expiresAt: Date | undefined;
+  setExpiresAt: (expires: Date | undefined) => void;
+  expiredDestination: string;
+  setExpiredDestination: (expiredDestination: string) => void;
+  password: string;
+  setPassword: (password: string) => void;
+  shouldCloak: boolean;
+  setShouldCloak: (shouldCloak: boolean) => void;
 };
 
 const LinkFormContext = createContext<LinkForm | undefined>(undefined);
@@ -87,11 +101,32 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const [utmTerm, setUtmTerm] = useState<string>("");
   const [utmContent, setUtmContent] = useState<string>("");
 
+  // device targeting form values
+  const [ios, setIos] = useState<string>("");
+  const [android, setAndroid] = useState<string>("");
+
+  // geo targeting
+  const [geo, setGeo] = useState<Record<string, Country>>({});
+
+  // expiration form values
+  const [expiresAt, setExpiresAt] = useState<Date | undefined>(undefined);
+  const [expiredDestination, setExpiredDestination] = useState<string>("");
+
   // Open Graph form values
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [image, setImage] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [ogUrl, setOgUrl] = useState<string>("");
+
+  // protection
+  const [password, setPassword] = useState<string>("");
+
+  // cloaking
+  const [shouldCloak, setShouldCloak] = useState<boolean>(false);
+
+  // indexing
+  const [shouldIndex, setShouldIndex] = useState<boolean>(false);
 
   return (
     <LinkFormContext.Provider
@@ -142,6 +177,22 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
         setUtmTerm,
         utmContent,
         setUtmContent,
+        ios,
+        setIos,
+        android,
+        setAndroid,
+        geo,
+        setGeo,
+        expiresAt,
+        setExpiresAt,
+        expiredDestination,
+        setExpiredDestination,
+        imageFile,
+        setImageFile,
+        password,
+        setPassword,
+        shouldCloak,
+        setShouldCloak,
       }}
     >
       {children}

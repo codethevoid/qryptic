@@ -12,21 +12,21 @@ model Link {
   notes       String?    @db.Text
 
   // link options
-  isPasswordProtected Boolean   @default(false)
-  passwordHash        String?
-  expires             DateTime?
-  shouldCloak         Boolean   @default(false)
-  shouldIndex         Boolean   @default(false)
-  isBanned            Boolean   @default(false)
+  passwordHash String?
+  expiresAt    DateTime?
+  shouldCloak  Boolean   @default(false)
+  shouldIndex  Boolean   @default(false)
+  isBanned     Boolean   @default(false)
 
   // redirect options
   ios     String?
   android String?
-  expired String?
+  expired String? // used if no default domain redirect is set
+  geo     Json?
 
   // Custom open graph
   ogTitle       String?
-  ogDescription String?
+  ogDescription String? @db.Text
   ogImage       String?
 
   // qr code

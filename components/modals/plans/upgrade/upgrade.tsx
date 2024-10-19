@@ -27,6 +27,7 @@ import { mutate } from "swr";
 import { TrialStarted } from "@/components/modals/plans/upgrade/trial-started";
 import { useUser } from "@/lib/hooks/swr/use-user";
 import { usePathname } from "next/navigation";
+import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
 
 type UpgradeProps = {
   isOpen: boolean;
@@ -143,15 +144,16 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
               onClick={handleUpgrade}
               disabled={isLoading}
               size="sm"
-              className={`rounded-lg text-[13px] ${user?.hasUsedTrial ? "w-[110px]" : "w-[126px]"}`}
+              className={`w-[110px] rounded-lg text-[13px]`}
             >
-              {isLoading ? (
-                <LoaderCircle size={14} className="animate-spin" />
-              ) : user?.hasUsedTrial ? (
-                "Upgrade plan"
-              ) : (
-                "Start 14 day trial"
-              )}
+              {/*{isLoading ? (*/}
+              {/*  <LoaderCircle size={14} className="animate-spin" />*/}
+              {/*) : user?.hasUsedTrial ? (*/}
+              {/*  "Upgrade plan"*/}
+              {/*) : (*/}
+              {/*  "Start 14 day trial"*/}
+              {/*)}*/}
+              {isLoading ? <ButtonSpinner /> : "Upgrade plan"}
             </Button>
           </DialogFooter>
         </DialogContent>

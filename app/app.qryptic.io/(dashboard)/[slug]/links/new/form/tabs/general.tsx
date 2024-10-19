@@ -39,6 +39,11 @@ export const General = () => {
     setUtmTerm,
     setUtmCampaign,
     setUtmMedium,
+    setExpiredDestination,
+    setTitle,
+    setImage,
+    setDescription,
+    setOgUrl,
   } = useLinkForm();
   const { data } = useOptions();
   const { slug: teamSlug } = useParams();
@@ -71,14 +76,17 @@ export const General = () => {
     if (data) {
       if (data.domains?.length === 1) {
         setDomain(data.domains[0]);
+        setExpiredDestination(data.domains[0].destination);
       } else if (data.domains?.length > 1) {
         // find primary domain
-        setDomain(data.domains.find((d: Domain) => d.isPrimary) || data.domains[0]);
+        const primary = data.domains.find((d) => d.isPrimary);
+        setDomain(primary || data.domains[0]);
+        setExpiredDestination(primary?.destination || "");
       }
     }
   }, [data]);
 
-  const filterDomains = (domains: { name: string; id: string; isPrimary: boolean }[]) => {
+  const filterDomains = (domains: Domain[]) => {
     return domains.filter((d) => d.name.includes(domainSearch.toLowerCase().trim()));
   };
 
@@ -103,9 +111,20 @@ export const General = () => {
     setUtmContent("");
   };
 
+  const resetOg = () => {
+    setTitle("");
+    setDescription("");
+    setImage("");
+    setOgUrl("");
+  };
+
   const handleDestinationChange = (e: ChangeEvent<HTMLInputElement>) => {
     setDestination(e.target.value);
-    if (!e.target.value) return resetUTM();
+    if (!e.target.value) {
+      resetUTM();
+      resetOg();
+      return;
+    }
     const searchParams = new URLSearchParams(e.target.value.split("?")[1]);
     setUtmSource(searchParams.get("utm_source") || "");
     setUtmMedium(searchParams.get("utm_medium") || "");
@@ -164,6 +183,7 @@ export const General = () => {
                   placeholder="Search domains"
                   className="rounded-b-none border-0 border-b pl-8 shadow-none focus-visible:!ring-0"
                   onChange={(e) => setDomainSearch(e.target.value)}
+                  value={domainSearch}
                 />
               </div>
               <ScrollArea
@@ -186,6 +206,7 @@ export const General = () => {
                     )}
                     onClick={() => {
                       setDomain(d);
+                      setExpiredDestination(d.destination || "");
                       setIsDomainsOpen(false);
                     }}
                   >

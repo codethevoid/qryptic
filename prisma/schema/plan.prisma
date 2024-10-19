@@ -11,11 +11,10 @@ model Plan {
 
   // limits, these are limits that are enforced base on the plan
   // and value with 0 means unlitmited (for enterprise if needed)
-  links     Int // links per month as well as qr codes will count as links
-  seats     Int // seats for team members
-  domains   Int // custom domains
-  analytics Int // days of analytics data
-
+  links        Int // links per month as well as qr codes will count as links
+  seats        Int // seats for team members
+  domains      Int // custom domains
+  analytics    Int // days of analytics data
   supportLevel String // basic, enhanced, priority, dedicated
 
   // enterprise features

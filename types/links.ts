@@ -38,7 +38,7 @@ export type Tab =
   | "protection"
   | "qr"
   | "expiration"
-  | "cards"
+  | "preview"
   | "indexing";
 
 export type Opengraph = {
@@ -52,6 +52,7 @@ export type Domain = {
   id: string;
   name: string;
   isPrimary: boolean;
+  destination: string;
 };
 
 export type Tag = {
@@ -61,3 +62,5 @@ export type Tag = {
 };
 
 export type LogoType = "custom" | "team" | "qryptic" | null;
+
+export type Country = { country: string; code: string; destination: string };

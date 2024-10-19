@@ -15,7 +15,7 @@ export const GET = withTeam(async ({ team }) => {
           isArchived: false,
           isVerified: true,
         },
-        select: { id: true, name: true, isPrimary: true },
+        select: { id: true, name: true, isPrimary: true, destination: true },
       }),
     ]);
 

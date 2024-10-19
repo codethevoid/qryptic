@@ -268,6 +268,7 @@ export const LinkFilters = ({
                   placeholder="Search domains"
                   className="rounded-b-none border-0 border-b pl-8 shadow-none focus-visible:!ring-0"
                   onChange={(e) => setDomainSearch(e.target.value)}
+                  value={domainSearch}
                 />
               </div>
               <ScrollArea
@@ -355,6 +356,7 @@ export const LinkFilters = ({
                   placeholder="Search tags"
                   className="rounded-b-none border-0 border-b pl-8 shadow-none focus-visible:!ring-0"
                   onChange={(e) => setTagSearch(e.target.value)}
+                  value={tagSearch}
                 />
               </div>
               <ScrollArea

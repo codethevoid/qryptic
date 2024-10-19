@@ -55,56 +55,72 @@ export const createCheckoutSession = async (
     return { error: true, message: "Price not found" };
   }
 
-  // if team has used free trial, create checkout session
-  if (user.user.hasUsedTrial) {
-    // create checkout session
-    const session = await stripe.checkout.sessions.create({
-      customer: teamFromServer.stripeCustomerId,
-      payment_method_types: ["card"],
-      mode: "subscription",
-      line_items: [{ price: price.stripePriceId, quantity: 1 }],
-      success_url: `${protocol}${appDomain}/${team.slug}/payment/success`,
-      cancel_url: `${protocol}${appDomain}${path}`,
-    });
+  // create stripe checkout session
+  const session = await stripe.checkout.sessions.create({
+    customer: teamFromServer.stripeCustomerId,
+    payment_method_types: ["card"],
+    mode: "subscription",
+    line_items: [{ price: price.stripePriceId, quantity: 1 }],
+    success_url: `${protocol}${appDomain}/${team.slug}/payment/success`,
+    cancel_url: `${protocol}${appDomain}${path}`,
+  });
 
-    if (!session || !session.url) {
-      return { error: true, message: "Failed to create session" };
-    }
-
-    return { url: session.url };
+  if (!session || !session.url) {
+    return { error: true, message: "Failed to create session" };
   }
+
+  return { url: session.url };
+
+  // if team has used free trial, create checkout session
+  // if (user.user.hasUsedTrial) {
+  //   // create checkout session
+  //   const session = await stripe.checkout.sessions.create({
+  //     customer: teamFromServer.stripeCustomerId,
+  //     payment_method_types: ["card"],
+  //     mode: "subscription",
+  //     line_items: [{ price: price.stripePriceId, quantity: 1 }],
+  //     success_url: `${protocol}${appDomain}/${team.slug}/payment/success`,
+  //     cancel_url: `${protocol}${appDomain}${path}`,
+  //   });
+  //
+  //   if (!session || !session.url) {
+  //     return { error: true, message: "Failed to create session" };
+  //   }
+  //
+  //   return { url: session.url };
+  // }
 
   // if team has not used free trial, create trial subscription
-  const subscription = await stripe.subscriptions.create({
-    customer: teamFromServer.stripeCustomerId,
-    items: [{ price: price.stripePriceId }],
-    trial_period_days: 14,
-    trial_settings: { end_behavior: { missing_payment_method: "cancel" } },
-  });
-
-  if (!subscription) {
-    return { error: true, message: "Failed to create subscription" };
-  }
-
-  // update user to show that they have used the trial
-  await prisma.user.update({
-    where: { id: user.userId },
-    data: { hasUsedTrial: true },
-  });
-
-  // update team in database
-  await prisma.team.update({
-    where: { id: team.id },
-    data: {
-      subscriptionStatus: "trialing",
-      stripeSubscriptionId: subscription.id,
-      subscriptionStart: new Date(subscription.current_period_start * 1000),
-      subscriptionEnd: new Date(subscription.current_period_end * 1000),
-      trialEndsAt: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null,
-      plan: { connect: { id: plan.id } },
-      price: { connect: { id: price.id } },
-    },
-  });
-
-  return { message: "Trial created successfully" };
+  // const subscription = await stripe.subscriptions.create({
+  //   customer: teamFromServer.stripeCustomerId,
+  //   items: [{ price: price.stripePriceId }],
+  //   trial_period_days: 14,
+  //   trial_settings: { end_behavior: { missing_payment_method: "cancel" } },
+  // });
+  //
+  // if (!subscription) {
+  //   return { error: true, message: "Failed to create subscription" };
+  // }
+  //
+  // // update user to show that they have used the trial
+  // await prisma.user.update({
+  //   where: { id: user.userId },
+  //   data: { hasUsedTrial: true },
+  // });
+  //
+  // // update team in database
+  // await prisma.team.update({
+  //   where: { id: team.id },
+  //   data: {
+  //     subscriptionStatus: "trialing",
+  //     stripeSubscriptionId: subscription.id,
+  //     subscriptionStart: new Date(subscription.current_period_start * 1000),
+  //     subscriptionEnd: new Date(subscription.current_period_end * 1000),
+  //     trialEndsAt: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null,
+  //     plan: { connect: { id: plan.id } },
+  //     price: { connect: { id: price.id } },
+  //   },
+  // });
+  //
+  // return { message: "Trial created successfully" };
 };

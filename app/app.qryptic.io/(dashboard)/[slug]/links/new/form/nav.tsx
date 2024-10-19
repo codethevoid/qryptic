@@ -65,8 +65,8 @@ const linkItems: LinkItem[] = [
     isPro: true,
   },
   {
-    name: "Custom cards",
-    value: "cards",
+    name: "Preview",
+    value: "preview",
     icon: <ImageIcon size={14} />,
     isPro: true,
   },

@@ -1,11 +1,11 @@
 import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
 import { useParams } from "next/navigation";
-import { TagColor } from "@/types/colors";
+import { type Tag, Domain } from "@/types/links";
 
 type Options = {
-  tags: { id: string; name: string; color: TagColor }[];
-  domains: { id: string; name: string; isPrimary: boolean }[];
+  tags: Tag[];
+  domains: Domain[];
 };
 
 export const useOptions = () => {

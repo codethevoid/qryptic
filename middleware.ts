@@ -3,7 +3,7 @@ import { appMiddleware, linkMiddleware, rootMiddleware, adminMiddleware } from "
 import { appDomain, adminDomain, rootDomain } from "@/lib/constants/domains";
 import { detectInvalidPath, parseReq } from "@/lib/middleware/utils";
 
-export const middleware = (req: NextRequest) => {
+export const middleware = async (req: NextRequest) => {
   const { host, path } = parseReq(req);
 
   if (detectInvalidPath(path)) {

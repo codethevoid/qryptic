@@ -13,6 +13,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
 import { Dashboard } from "@/types/dashboard";
+import NumberFlow from "@number-flow/react";
 
 type MetricsProps = {
   isLoading: boolean;
@@ -68,6 +69,7 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
             {!isLoading && data ? (
               <p className="text-2xl font-bold">{data.links.count.toLocaleString("en-us")}</p>
             ) : (
+              // <NumberFlow value={data.links.count} />
               <div className="flex h-8 items-center">
                 <Skeleton className="h-7 w-20 rounded-lg" />
               </div>

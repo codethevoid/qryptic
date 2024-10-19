@@ -25,7 +25,7 @@ export const tabDetails: Record<
   },
   device: {
     title: "Device targeting",
-    description: "Redirect users based on their device.",
+    description: "Redirect users based on device.",
     icon: <TabletSmartphone size={16} />,
     isPro: true,
   },
@@ -37,7 +37,7 @@ export const tabDetails: Record<
   },
   geo: {
     title: "Geo targeting",
-    description: "Show the link to specific countries.",
+    description: "Redirect users based on location.",
     icon: <Earth size={16} />,
     isPro: true,
   },
@@ -65,7 +65,7 @@ export const tabDetails: Record<
     icon: <Clock size={16} />,
     isPro: true,
   },
-  cards: {
+  preview: {
     title: "Social media cards",
     description: "Customize the link preview.",
     icon: <ImageIcon size={16} />,

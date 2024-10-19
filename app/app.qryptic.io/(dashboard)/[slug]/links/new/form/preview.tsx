@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
 import { useOpenGraph } from "@/lib/hooks/swr/use-open-graph";
 import { useDebounce } from "@/lib/hooks/use-debounce";
+import { cn } from "@/lib/utils";
 
 const formatUrl = (url: string) => {
   try {
@@ -39,7 +40,7 @@ export const LinkPreview: FC = () => {
   }, [data]);
 
   return (
-    <div className="w-full min-w-[300px] max-w-[300px]">
+    <div className="min-w-[300px] max-w-[300px]">
       <div className="w-full rounded-lg border p-4 shadow">
         <div className={`${team?.plan.isFree ? "space-y-0.5" : "space-y-0"}`}>
           <div className="flex items-center justify-between">
@@ -55,7 +56,7 @@ export const LinkPreview: FC = () => {
               size="icon"
               variant="ghost"
               className="flex h-5 w-5 rounded-md text-muted-foreground"
-              onClick={() => setTab("cards")}
+              onClick={() => setTab("preview")}
             >
               <Pencil size={12} />
             </Button>
@@ -64,7 +65,7 @@ export const LinkPreview: FC = () => {
         </div>
         {isLoading || destination?.split("?")[0] !== debouncedDestination?.split("?")[0] ? (
           <LoadingPreview />
-        ) : error || !title || !image ? (
+        ) : error || !image ? (
           <NoPreview />
         ) : (
           <div className="mt-4 space-y-6">
@@ -94,9 +95,11 @@ const XPreview = ({ image, title, url }: { image: string; title: string; url: st
             alt={title}
             className="h-full w-full rounded-lg object-cover"
           />
-          <div className="absolute bottom-2 left-2 rounded-sm bg-black/70 px-1 py-0.5">
-            <p className="max-w-[232px] truncate text-xs text-white">{title}</p>
-          </div>
+          {title && (
+            <div className="absolute bottom-2 left-2 rounded-sm bg-black/70 px-1 py-0.5">
+              <p className="max-w-[232px] truncate text-xs text-white">{title}</p>
+            </div>
+          )}
         </div>
         <p className="ml-0.5 line-clamp-1 text-xs text-muted-foreground">From {formatUrl(url)}</p>
       </div>
@@ -121,9 +124,12 @@ const FacebookPreview = ({ image, title, url }: { image: string; title: string; 
             className="h-full w-full object-cover"
           />
         </div>
-        <div className="space-y-0.5 border-t bg-zinc-50 p-2 dark:bg-zinc-900/50">
+        <div className={cn("border-t bg-zinc-50 p-2 dark:bg-zinc-900/50", title && "space-y-0.5")}>
           <p className="line-clamp-1 text-xs text-muted-foreground">{formatUrl(url)}</p>
           <p className="line-clamp-2 text-[12.5px] font-medium leading-snug">{title}</p>
+          {/*<p className="line-clamp-2 text-xs text-muted-foreground">*/}
+          {/*  {description || "No description"}*/}
+          {/*</p>*/}
         </div>
       </div>
     </div>

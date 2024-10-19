@@ -8,13 +8,18 @@ import { General } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/
 import { QrCodeProperties } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/qr-code/qr-code";
 import { Utm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/utm";
 import { DeviceTargeting } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/device-targeting";
+import { GeoTargeting } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/geo-targeting";
+import { Expiration } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/expiration";
+import { Preview } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/preview";
+import { Protection } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/protection";
+import { Cloak } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/cloak";
 
 export const LinkForm: FC = () => {
   const { team } = useTeam();
   const { tab } = useLinkForm();
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       <div className="mb-4 space-y-1">
         <div className="space-y-0.5">
           <p className="text-sm font-medium">{tabDetails[tab].title}</p>
@@ -25,7 +30,11 @@ export const LinkForm: FC = () => {
       <QrCodeProperties />
       <Utm />
       {!team?.plan.isFree && <DeviceTargeting />}
-      <div className={cn("space-y-4", tab !== "device" || (team?.plan.isFree && "hidden"))}></div>
+      {!team?.plan.isFree && <GeoTargeting />}
+      {!team?.plan.isFree && <Expiration />}
+      {!team?.plan.isFree && <Preview />}
+      {!team?.plan.isFree && <Protection />}
+      {!team?.plan.isFree && <Cloak />}
       <UpgradeToPro isProFeature={tabDetails[tab].isPro} />
     </div>
   );
