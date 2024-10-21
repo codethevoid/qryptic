@@ -13,6 +13,7 @@ import {
   Ghost,
   SearchCheck,
   Stars,
+  Shield,
 } from "lucide-react";
 import { FC, JSX } from "react";
 import { useTeam } from "@/lib/hooks/swr/use-team";
@@ -73,7 +74,7 @@ const linkItems: LinkItem[] = [
   {
     name: "Protection",
     value: "protection",
-    icon: <Lock size={14} />,
+    icon: <Shield size={14} />,
     isPro: true,
   },
   {

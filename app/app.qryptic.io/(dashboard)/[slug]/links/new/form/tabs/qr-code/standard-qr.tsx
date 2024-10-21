@@ -14,12 +14,11 @@ import { QrypticIcon } from "@/components/logos/qryptic-icon";
 import { X, Image as ImageIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
+import { qrypticLogo } from "@/lib/constants/images";
 
 const constructUrl = (domain: string, slug: string) => {
   return `https://${domain}/${slug}?qr=1`;
 };
-
-const qrypticLogo = "https://qryptic.s3.amazonaws.com/logos/qryptic-qr-icon.png";
 
 // black, red, orange, yellow, green, blue, purple, pink, brown, gray
 const colorOptions = [
@@ -47,6 +46,8 @@ export const StandardQr = () => {
     setLogo,
     logoDimensions,
     setLogoDimensions,
+    setLogoFile,
+    setLogoFileType,
   } = useLinkForm();
   const qrRef = useRef<HTMLDivElement>(null);
 
@@ -95,12 +96,6 @@ export const StandardQr = () => {
       });
     }
 
-    if (!file.type.includes("image")) {
-      return toast.error("Invalid file type.", {
-        description: "Please upload an image file.",
-      });
-    }
-
     // get image dimensions
     const img = new Image();
     img.src = URL.createObjectURL(file);
@@ -132,6 +127,13 @@ export const StandardQr = () => {
       setLogo(URL.createObjectURL(file));
       setLogoType("custom");
     };
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setLogoFile(reader.result as string);
+      setLogoFileType(file.type);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -227,6 +229,8 @@ export const StandardQr = () => {
                   setLogo(qrypticLogo);
                   setLogoDimensions({ width: 34, height: 34 });
                   setLogoType("qryptic");
+                  setLogoFile(null);
+                  setLogoFileType(null);
                 }}
               >
                 <QrypticIcon className="h-[18px] w-[18px]" />
@@ -242,6 +246,8 @@ export const StandardQr = () => {
                   setLogo(team.image);
                   setLogoDimensions({ height: 34, width: 34 });
                   setLogoType("team");
+                  setLogoFileType(null);
+                  setLogoFile(null);
                 }}
               >
                 <Avatar className="h-5 w-5 rounded-full border">
@@ -252,7 +258,7 @@ export const StandardQr = () => {
                 <input
                   id="file"
                   type="file"
-                  accept={".png,.jpg,.jpeg"}
+                  accept={"image/png, image/jpeg, image/jpg"}
                   hidden
                   onChange={(e) => handleImageUpload(e)}
                   disabled={team?.plan.isFree}
@@ -281,6 +287,8 @@ export const StandardQr = () => {
                   setLogo(null);
                   setLogoDimensions({ width: 0, height: 0 });
                   setLogoType(null);
+                  setLogoFile(null);
+                  setLogoFileType(null);
                 }}
               >
                 <X size={18} />

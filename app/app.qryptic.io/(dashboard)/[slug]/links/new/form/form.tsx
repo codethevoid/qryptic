@@ -13,6 +13,7 @@ import { Expiration } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/fo
 import { Preview } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/preview";
 import { Protection } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/protection";
 import { Cloak } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/cloak";
+import { Indexing } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/tabs/indexing";
 
 export const LinkForm: FC = () => {
   const { team } = useTeam();
@@ -35,6 +36,7 @@ export const LinkForm: FC = () => {
       {!team?.plan.isFree && <Preview />}
       {!team?.plan.isFree && <Protection />}
       {!team?.plan.isFree && <Cloak />}
+      {!team?.plan.isFree && <Indexing />}
       <UpgradeToPro isProFeature={tabDetails[tab].isPro} />
     </div>
   );

@@ -30,14 +30,16 @@ export const Snackbar = ({
   const handleNext = () => {
     setLastAction("next");
     setPage(page + 1);
+    window?.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handlePrev = () => {
     setLastAction("prev");
     setPage(page - 1);
+    window?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <div className="fixed bottom-6 left-1/2 flex -translate-x-1/2 animate-fade-in items-center space-x-3 rounded-full border bg-background py-2 pl-3.5 pr-2.5 shadow-[0_6px_20px] shadow-foreground/15 dark:shadow-none">
+    <div className="fixed bottom-6 left-1/2 flex -translate-x-1/2 items-center space-x-3 rounded-full border bg-background py-2 pl-3.5 pr-2.5 shadow-[0_6px_20px] shadow-foreground/15 dark:shadow-none">
       <p className="text-nowrap text-[13px]">
         Showing {pageSize * (page - 1) + 1}-{Math.min(pageSize * page, total)} of {total} {unit}
       </p>

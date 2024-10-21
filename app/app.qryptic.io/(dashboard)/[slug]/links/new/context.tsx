@@ -1,76 +1,18 @@
 "use client";
 
-import { useState, createContext, useContext, ReactNode } from "react";
-import { type Domain, Tag, LogoType, Tab, Country } from "@/types/links";
-
-type LinkForm = {
-  tab: Tab;
-  setTab: (tab: Tab) => void;
-  destination: string;
-  setDestination: (destination: string) => void;
-  domain: Domain | null;
-  setDomain: (domain: Domain) => void;
-  tags: Tag[];
-  setTags: (tags: Tag[]) => void;
-  slug: string;
-  setSlug: (slug: string) => void;
-  notes: string;
-  setNotes: (notes: string) => void;
-  title: string;
-  setTitle: (title: string) => void;
-  description: string;
-  setDescription: (description: string) => void;
-  image: string;
-  setImage: (image: string) => void;
-  imageFile: File | null;
-  setImageFile: (imageFile: File | null) => void;
-  ogUrl: string;
-  setOgUrl: (ogUrl: string) => void;
-  qrCodeType: "standard" | "ai" | null;
-  setQrCodeType: (qrCodeType: "standard" | "ai" | null) => void;
-  logo: string | null;
-  setLogo: (logo: string | null) => void;
-  logoType: LogoType;
-  setLogoType: (logoType: LogoType) => void;
-  color: string;
-  setColor: (color: string) => void;
-  logoDimensions: { width: number; height: number };
-  setLogoDimensions: (logoDimensions: { width: number; height: number }) => void;
-  // qrImageURL: string | null;
-  // setQrImageURL: (qrImageURL: string | null) => void;
-  // prompt: string;
-  // setPrompt: (prompt: string) => void;
-  // generations: { img: string; prompt: string }[];
-  // setGenerations: (generations: { img: string; prompt: string }[]) => void;
-  utmSource: string;
-  setUtmSource: (utmSource: string) => void;
-  utmMedium: string;
-  setUtmMedium: (utmMedium: string) => void;
-  utmCampaign: string;
-  setUtmCampaign: (utmCampaign: string) => void;
-  utmTerm: string;
-  setUtmTerm: (utmTerm: string) => void;
-  utmContent: string;
-  setUtmContent: (utmContent: string) => void;
-  ios: string;
-  setIos: (ios: string) => void;
-  android: string;
-  setAndroid: (android: string) => void;
-  geo: Record<string, Country>;
-  setGeo: (geo: Record<string, Country>) => void;
-  expiresAt: Date | undefined;
-  setExpiresAt: (expires: Date | undefined) => void;
-  expiredDestination: string;
-  setExpiredDestination: (expiredDestination: string) => void;
-  password: string;
-  setPassword: (password: string) => void;
-  shouldCloak: boolean;
-  setShouldCloak: (shouldCloak: boolean) => void;
-};
+import { useState, createContext, useContext, ReactNode, useEffect } from "react";
+import { type Domain, Tag, LogoType, Tab, Country, LinkForm } from "@/types/links";
+import { useParams } from "next/navigation";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const LinkFormContext = createContext<LinkForm | undefined>(undefined);
 
 export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
+  const { slug: teamSlug, id } = useParams();
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [mode, setMode] = useState<"create" | "edit">("create");
   // Tab state
   const [tab, setTab] = useState<Tab>("general");
 
@@ -87,6 +29,8 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const [qrCodeType, setQrCodeType] = useState<"standard" | "ai" | null>("standard");
   const [logo, setLogo] = useState<string | null>(null);
   const [logoType, setLogoType] = useState<LogoType>(null);
+  const [logoFile, setLogoFile] = useState<string | null>(null);
+  const [logoFileType, setLogoFileType] = useState<string | null>(null);
   const [color, setColor] = useState<string>("#000000");
   const [logoDimensions, setLogoDimensions] = useState<{ width: number; height: number }>({
     width: 0,
@@ -116,7 +60,8 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [image, setImage] = useState<string>("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<string | null>(null);
+  const [imageType, setImageType] = useState<string | null>("");
   const [ogUrl, setOgUrl] = useState<string>("");
 
   // protection
@@ -126,7 +71,64 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const [shouldCloak, setShouldCloak] = useState<boolean>(false);
 
   // indexing
-  const [shouldIndex, setShouldIndex] = useState<boolean>(false);
+  const [shouldIndex, setShouldIndex] = useState<boolean>(true);
+
+  const submitForm = async (): Promise<any> => {
+    if (!destination) return toast.error("Destination is required");
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`/api/links/${teamSlug}/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          destination,
+          domain,
+          slug,
+          tags,
+          notes,
+          qrCodeType,
+          logo,
+          logoType,
+          logoFile,
+          logoFileType,
+          color,
+          logoDimensions,
+          ios,
+          android,
+          geo,
+          expiresAt,
+          expiredDestination,
+          title,
+          description,
+          image,
+          imageFile,
+          imageType,
+          password,
+          shouldCloak,
+          shouldIndex,
+        }),
+      });
+
+      setIsSubmitting(false);
+      if (!res.ok) {
+        const { error } = await res.json();
+        return toast.error(error);
+      }
+
+      // push to the new link
+      router.push(`/${teamSlug}/links`);
+      toast.success("Link created successfully");
+    } catch (e) {
+      console.error(e);
+      return { error: "Internal server error" };
+    }
+  };
+
+  const editForm = async (id: string): Promise<any> => {};
+
+  useEffect(() => {
+    if (id) setMode("edit");
+  }, []);
 
   return (
     <LinkFormContext.Provider
@@ -193,6 +195,19 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
         setPassword,
         shouldCloak,
         setShouldCloak,
+        shouldIndex,
+        setShouldIndex,
+        imageType,
+        setImageType,
+        logoFile,
+        setLogoFile,
+        logoFileType,
+        setLogoFileType,
+        submitForm,
+        isSubmitting,
+        setIsSubmitting,
+        mode,
+        setMode,
       }}
     >
       {children}

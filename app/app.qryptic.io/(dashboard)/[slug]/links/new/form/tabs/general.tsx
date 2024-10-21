@@ -44,6 +44,8 @@ export const General = () => {
     setImage,
     setDescription,
     setOgUrl,
+    setImageFile,
+    setImageType,
   } = useLinkForm();
   const { data } = useOptions();
   const { slug: teamSlug } = useParams();
@@ -116,6 +118,8 @@ export const General = () => {
     setDescription("");
     setImage("");
     setOgUrl("");
+    setImageFile(null);
+    setImageType(null);
   };
 
   const handleDestinationChange = (e: ChangeEvent<HTMLInputElement>) => {

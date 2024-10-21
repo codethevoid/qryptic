@@ -8,6 +8,7 @@ import {
   Lock,
   QrCode,
   SearchCheck,
+  Shield,
   TabletSmartphone,
   Tag,
 } from "lucide-react";
@@ -50,7 +51,7 @@ export const tabDetails: Record<
   protection: {
     title: "Password protection",
     description: "Protect the link with a password.",
-    icon: <Lock size={16} />,
+    icon: <Shield size={16} />,
     isPro: true,
   },
   qr: {

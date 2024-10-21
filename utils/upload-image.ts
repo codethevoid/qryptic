@@ -16,4 +16,6 @@ export const uploadImage = async (buffer: Buffer, key: string, type: string) => 
   } catch (e) {
     console.log(e);
   }
+
+  return null;
 };

@@ -11,6 +11,7 @@ import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/c
 import { useOpenGraph } from "@/lib/hooks/swr/use-open-graph";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { cn } from "@/lib/utils";
+import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
 
 const formatUrl = (url: string) => {
   try {
@@ -23,8 +24,21 @@ const formatUrl = (url: string) => {
 
 export const LinkPreview: FC = () => {
   const { team } = useTeam();
-  const { title, image, destination, setTab, ogUrl, setTitle, setImage, setOgUrl, setDescription } =
-    useLinkForm();
+  const {
+    title,
+    image,
+    destination,
+    setTab,
+    ogUrl,
+    setTitle,
+    setImage,
+    setOgUrl,
+    setDescription,
+    setImageFile,
+    setImageType,
+    isSubmitting,
+    submitForm,
+  } = useLinkForm();
 
   const debouncedDestination = useDebounce(destination?.split("?")[0], 500);
 
@@ -36,44 +50,50 @@ export const LinkPreview: FC = () => {
       setDescription(data.description);
       setImage(data.image);
       setOgUrl(data.url);
+      setImageFile(null);
+      setImageType(null);
     }
   }, [data]);
 
   return (
-    <div className="min-w-[300px] max-w-[300px]">
-      <div className="w-full rounded-lg border p-4 shadow">
-        <div className={`${team?.plan.isFree ? "space-y-0.5" : "space-y-0"}`}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-1.5">
-              <p className="text-[13px] font-medium">Link Preview</p>
-              {team?.plan.isFree && (
-                <Badge variant="neutral" className="px-1.5 py-0 text-[11px]">
-                  Pro
-                </Badge>
-              )}
+    <div className="space-y-4">
+      <div className="min-w-[300px] max-w-[300px]">
+        <div className="w-full rounded-lg border p-4 shadow">
+          <div className={`${team?.plan.isFree ? "space-y-0.5" : "space-y-0"}`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-1.5">
+                <p className="text-[13px] font-medium">Link Preview</p>
+                {team?.plan.isFree && (
+                  <Badge variant="neutral" className="px-1.5 py-0 text-[11px]">
+                    Pro
+                  </Badge>
+                )}
+              </div>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="flex h-5 w-5 rounded-md text-muted-foreground"
+                onClick={() => setTab("preview")}
+              >
+                <Pencil size={12} />
+              </Button>
             </div>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="flex h-5 w-5 rounded-md text-muted-foreground"
-              onClick={() => setTab("preview")}
-            >
-              <Pencil size={12} />
-            </Button>
+            <p className="text-xs text-muted-foreground">
+              See how your link will look when shared.
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground">See how your link will look when shared.</p>
+          {isLoading || destination?.split("?")[0] !== debouncedDestination?.split("?")[0] ? (
+            <LoadingPreview />
+          ) : error || !image ? (
+            <NoPreview />
+          ) : (
+            <div className="mt-4 space-y-6">
+              <XPreview title={title} image={image} url={ogUrl || debouncedDestination} />
+              <FacebookPreview title={title} image={image} url={ogUrl || debouncedDestination} />
+              <LinkedInPreview title={title} image={image} url={ogUrl || debouncedDestination} />
+            </div>
+          )}
         </div>
-        {isLoading || destination?.split("?")[0] !== debouncedDestination?.split("?")[0] ? (
-          <LoadingPreview />
-        ) : error || !image ? (
-          <NoPreview />
-        ) : (
-          <div className="mt-4 space-y-6">
-            <XPreview title={title} image={image} url={ogUrl || debouncedDestination} />
-            <FacebookPreview title={title} image={image} url={ogUrl || debouncedDestination} />
-            <LinkedInPreview title={title} image={image} url={ogUrl || debouncedDestination} />
-          </div>
-        )}
       </div>
     </div>
   );

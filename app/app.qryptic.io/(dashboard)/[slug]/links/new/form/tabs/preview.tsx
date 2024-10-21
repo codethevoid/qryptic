@@ -9,6 +9,7 @@ import { ImageIcon, UploadCloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 export const Preview = () => {
   const {
@@ -21,22 +22,31 @@ export const Preview = () => {
     setDescription,
     destination,
     setImageFile,
+    setImageType,
+    submitForm,
+    isSubmitting,
   } = useLinkForm();
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 2 * 1024 * 1024; // 2MB
     if (file.size > maxSize) {
-      alert("Image size must be less than 5MB");
-      return;
+      return toast.error("Image size cannot exceed 2MB");
     }
 
     // create blob url
     const blob = URL.createObjectURL(file);
     setImage(blob);
-    setImageFile(file);
+    setImageType(file.type);
+    // convert image to base64 so we can send it to the server
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImageFile(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -45,7 +55,7 @@ export const Preview = () => {
         ref={hiddenFileInput}
         id="og-image"
         type="file"
-        accept="image/png, image/jpeg"
+        accept="image/png, image/jpeg, image/jpg"
         className="hidden"
         onChange={handleImageChange}
       />

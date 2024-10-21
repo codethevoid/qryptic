@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Plus, TableProperties } from "lucide-react";
 import NextLink from "next/link";
 import { useParams } from "next/navigation";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import {
   Select,
   SelectContent,
@@ -46,6 +45,8 @@ export const LinksClient: FC = () => {
   // totals
   const [totals, setTotals] = useState<Totals>(initialTotals);
   const { slug } = useParams();
+
+  const [isNewLinkOpen, setIsNewLinkOpen] = useState(false);
 
   const { data, isLoading, error, mutate } = useLinks({
     status,
@@ -105,16 +106,16 @@ export const LinksClient: FC = () => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <div>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button size="icon" variant="outline">
-                  <TableProperties size={13} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Upload CSV</TooltipContent>
-            </Tooltip>
-          </div>
+          {/*<div>*/}
+          {/*  <Tooltip>*/}
+          {/*    <TooltipTrigger asChild>*/}
+          {/*      <Button size="icon" variant="outline">*/}
+          {/*        <TableProperties size={13} />*/}
+          {/*      </Button>*/}
+          {/*    </TooltipTrigger>*/}
+          {/*    <TooltipContent>Upload CSV</TooltipContent>*/}
+          {/*  </Tooltip>*/}
+          {/*</div>*/}
           <Button size="sm" className="space-x-1.5" asChild>
             <NextLink href={`/${slug}/links/new`} passHref>
               <Plus size={14} />
@@ -158,9 +159,11 @@ export const LinksClient: FC = () => {
           unit={"links"}
           setPage={setPage}
           isLoading={isLoading}
+          // setIsOpen={setIsNewLinkOpen}
           link={`/${slug}/links/new`}
         />
       )}
+      {/*<NewLink isOpen={isNewLinkOpen} setIsOpen={setIsNewLinkOpen} />*/}
     </>
   );
 };

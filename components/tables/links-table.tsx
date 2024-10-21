@@ -38,7 +38,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links }) => {
     <div className="rounded-lg border">
       {links.map((link: TableLink, i: number) => (
         <NextLink
-          href={`/${slug}/links/${link.id}`}
+          href={`/${slug}/links/edit/${link.id}`}
           key={link.id}
           className={cn(
             "flex cursor-default items-center justify-between space-x-4 px-3 py-2.5 transition-colors hover:bg-accent/40 dark:hover:bg-accent/30",
