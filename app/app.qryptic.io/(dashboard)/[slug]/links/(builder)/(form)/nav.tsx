@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -19,7 +21,7 @@ import { FC, JSX } from "react";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Badge } from "@/components/ui/badge";
 import { type Tab } from "@/types/links";
-import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 
 type LinkItem = {
   name: string;

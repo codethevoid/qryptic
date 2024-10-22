@@ -1,6 +1,6 @@
 "use client";
 
-import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

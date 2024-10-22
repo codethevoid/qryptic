@@ -1,6 +1,6 @@
 "use client";
 
-import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";

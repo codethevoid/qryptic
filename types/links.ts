@@ -139,8 +139,13 @@ export type LinkForm = {
   isSubmitting: boolean;
   setIsSubmitting: (isSubmitting: boolean) => void;
   submitForm: () => Promise<any>;
-  mode: "create" | "edit";
-  setMode: (mode: "create" | "edit") => void;
+  editForm: () => Promise<any>;
+  existingLink: any | null;
+  setExistingLink: (existingLink: any | null) => void;
+  isPasswordProtected: boolean;
+  setIsPasswordProtected: (isPasswordProtected: boolean) => void;
+  shouldDisablePassword: boolean;
+  setShouldDisablePassword: (shouldDisablePassword: boolean) => void;
 };
 
 export type CreateLinkBody = {
@@ -169,4 +174,33 @@ export type CreateLinkBody = {
   shouldCloak: boolean;
   shouldIndex: boolean;
   password: string;
+};
+
+export type EditLinkBody = {
+  destination: string;
+  domain: Domain;
+  slug: string;
+  tags: Tag[];
+  notes: string;
+  qrCodeType: "standard";
+  logo: string | null;
+  logoType: LogoType;
+  logoFile: string | null;
+  logoFileType: "image/png" | "image/jpeg" | "image/jpg" | null;
+  color: string;
+  logoDimensions: { width: number; height: number };
+  ios: string;
+  android: string;
+  geo: Record<string, { country: string; code: string; destination: string }>;
+  expiresAt: Date | undefined;
+  expiredDestination: string;
+  title: string;
+  description: string;
+  image: string | null;
+  imageFile: string | null;
+  imageType: "image/png" | "image/jpeg" | "image/jpg" | null;
+  shouldCloak: boolean;
+  shouldIndex: boolean;
+  password: string;
+  shouldDisablePassword: boolean;
 };

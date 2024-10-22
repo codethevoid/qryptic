@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 import { Domain } from "@/types/links";
 import { ChangeEvent, useEffect } from "react";
 import { useOptions } from "@/lib/hooks/swr/use-options";
@@ -21,7 +21,7 @@ import { useParams } from "next/navigation";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { generateSlug, checkSlug, isSlugUrlSafe } from "@/lib/links/slug-actions";
 
-export const General = () => {
+export const General = ({ mode }: { mode: "new" | "edit" }) => {
   const {
     tab,
     setDestination,
@@ -46,6 +46,7 @@ export const General = () => {
     setOgUrl,
     setImageFile,
     setImageType,
+    existingLink,
   } = useLinkForm();
   const { data } = useOptions();
   const { slug: teamSlug } = useParams();
@@ -57,10 +58,14 @@ export const General = () => {
   const [tagSearch, setTagSearch] = useState<string>("");
 
   useEffect(() => {
+    if (mode === "edit") return;
     generateSlug(teamSlug as string).then((data) => setSlug(data.slug));
   }, []);
 
   useEffect(() => {
+    if (debouncedSlug === existingLink?.slug) {
+      return setSlugError("");
+    }
     if (debouncedSlug) {
       checkSlug(teamSlug as string, debouncedSlug).then((data) => {
         if (!data.isAvailable) {
@@ -75,6 +80,7 @@ export const General = () => {
   }, [debouncedSlug]);
 
   useEffect(() => {
+    if (mode === "edit") return;
     if (data) {
       if (data.domains?.length === 1) {
         setDomain(data.domains[0]);
@@ -241,7 +247,10 @@ export const General = () => {
           <Input
             id="slug"
             placeholder="Back half (slug)"
-            className={cn("rounded-l-none", slugError && "border-red-600")}
+            className={cn(
+              "rounded-l-none",
+              slugError && existingLink?.slug !== slug && "border-red-600",
+            )}
             value={slug}
             onChange={(e) => {
               setSlug(e.target.value);
@@ -249,7 +258,9 @@ export const General = () => {
             }}
           />
         </div>
-        {slugError && debouncedSlug && <p className="text-xs text-red-600">{slugError}</p>}
+        {slugError && debouncedSlug && existingLink?.slug !== slug && (
+          <p className="text-xs text-red-600">{slugError}</p>
+        )}
       </div>
       <div className="space-y-1.5">
         <div>

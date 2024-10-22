@@ -1,23 +1,23 @@
 "use client";
 
-import { NewLinkNav } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/nav";
-import { LinkPreview } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/preview";
-import { LinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/form/form";
-import { LinkFormProvider } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { NewLinkNav } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/nav";
+import { LinkPreview } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/preview";
+import { LinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/form";
 import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
-import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
 import { useRouter } from "next/navigation";
+import { LinkFormProvider } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 
 export const NewLinkClient = () => {
   return (
     <LinkFormProvider>
       <div className="flex space-x-10">
         <NewLinkNav />
-        <LinkForm />
-        <LinkPreview />
+        <LinkForm mode="new" />
+        <LinkPreview mode="new" />
       </div>
       <NewLinkSnackbar />
     </LinkFormProvider>
@@ -30,7 +30,7 @@ const NewLinkSnackbar = () => {
   const router = useRouter();
   return (
     <div className="fixed bottom-6 left-1/2 flex w-auto -translate-x-1/2 items-center justify-between space-x-3 rounded-full border bg-background py-2 pl-3.5 pr-2.5 shadow-[0_6px_20px] shadow-foreground/15 dark:shadow-none">
-      <p className="text-nowrap text-[13px] text-muted-foreground">New short link</p>
+      <p className="text-nowrap text-[13px]">New short link</p>
       <Separator orientation="vertical" className="h-5 bg-border" />
       <div className="flex items-center space-x-1.5">
         {/*<Button size="icon" variant="outline" className="rounded-full">*/}

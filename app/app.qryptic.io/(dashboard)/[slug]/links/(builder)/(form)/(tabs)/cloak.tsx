@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { useIframe } from "@/lib/hooks/swr/use-iframe";
 import { SmallSwitch } from "@/components/ui/custom/small-switch";
@@ -22,7 +22,7 @@ export const Cloak = () => {
   return (
     <div className={cn("space-y-4", tab !== "cloaking" && "hidden")}>
       {!destination ? (
-        <div className="flex h-40 w-full items-center justify-center rounded-lg border bg-zinc-50 p-4 shadow-sm dark:bg-zinc-950">
+        <div className="flex h-48 w-full items-center justify-center rounded-lg border bg-zinc-50 p-4 shadow-sm dark:bg-zinc-950">
           <div className="space-y-4">
             <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-lg border bg-gradient-to-tr from-white to-white dark:from-accent/10 dark:to-accent">
               <Flag size={15} />
@@ -57,7 +57,7 @@ export const Cloak = () => {
           </div>
         </div>
       ) : (
-        <div className="flex h-40 w-full items-center justify-center rounded-lg border bg-zinc-50 p-4 shadow-sm dark:bg-zinc-950">
+        <div className="flex h-48 w-full items-center justify-center rounded-lg border bg-zinc-50 p-4 shadow-sm dark:bg-zinc-950">
           <div className="space-y-4">
             <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-lg border bg-gradient-to-tr from-white to-white dark:from-accent/10 dark:to-accent">
               <ShieldX size={15} />

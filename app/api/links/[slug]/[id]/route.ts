@@ -8,6 +8,7 @@ export const GET = withTeam(async ({ team, params }) => {
 
     const link = await prisma.link.findUnique({
       where: { id, teamId: team.id },
+      include: { domain: true, tags: true, qrCode: true },
     });
 
     if (!link) {

@@ -30,12 +30,10 @@ export const Snackbar = ({
   const handleNext = () => {
     setLastAction("next");
     setPage(page + 1);
-    window?.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handlePrev = () => {
     setLastAction("prev");
     setPage(page - 1);
-    window?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

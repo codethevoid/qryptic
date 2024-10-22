@@ -1,4 +1,5 @@
 import { uploadImage } from "@/utils/upload-image";
+import { nanoid } from "@/utils/nanoid";
 
 type UploadQrLogo = {
   imageFile: string;
@@ -19,7 +20,7 @@ export const uploadQrLogo = async ({
   const buffer = Buffer.from(base64, "base64");
   if (buffer.length > maxSize) return { error: "Image size is too large" };
   // upload image to s3
-  const key = `qr/logos/${team.slug}/${slug}.png`;
+  const key = `qr-codes/logos/${team.slug}/${slug}/${nanoid(16)}`;
   const location = await uploadImage(buffer, key, imageType);
   return { location: location || undefined };
 };

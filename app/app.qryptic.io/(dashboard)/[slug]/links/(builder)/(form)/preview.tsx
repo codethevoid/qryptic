@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { XIcon } from "@/components/ui/icons/x-icon";
 import { Image as ImageIcon, Pencil, Linkedin } from "lucide-react";
@@ -7,11 +9,10 @@ import { Button } from "@/components/ui/button";
 import { FC, useEffect } from "react";
 import { FacebookIcon } from "@/components/ui/icons/facebook";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 import { useOpenGraph } from "@/lib/hooks/swr/use-open-graph";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { cn } from "@/lib/utils";
-import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
 
 const formatUrl = (url: string) => {
   try {
@@ -22,7 +23,7 @@ const formatUrl = (url: string) => {
   }
 };
 
-export const LinkPreview: FC = () => {
+export const LinkPreview: FC<{ mode: "new" | "edit" }> = ({ mode }) => {
   const { team } = useTeam();
   const {
     title,
@@ -36,8 +37,7 @@ export const LinkPreview: FC = () => {
     setDescription,
     setImageFile,
     setImageType,
-    isSubmitting,
-    submitForm,
+    existingLink,
   } = useLinkForm();
 
   const debouncedDestination = useDebounce(destination?.split("?")[0], 500);
@@ -45,7 +45,7 @@ export const LinkPreview: FC = () => {
   const { data, isLoading, error } = useOpenGraph(debouncedDestination);
 
   useEffect(() => {
-    if (data) {
+    if (data && existingLink?.destination !== debouncedDestination) {
       setTitle(data.title);
       setDescription(data.description);
       setImage(data.image);

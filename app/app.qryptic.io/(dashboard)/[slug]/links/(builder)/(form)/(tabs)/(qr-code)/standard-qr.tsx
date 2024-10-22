@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
-import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
+import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 import { QRCodeSVG } from "qrcode.react";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +33,7 @@ const colorOptions = [
   "#7e3f00",
 ];
 
-export const StandardQr = () => {
+export const StandardQr = ({ mode }: { mode: "new" | "edit" }) => {
   const { team } = useTeam();
   const {
     domain,
@@ -52,6 +52,7 @@ export const StandardQr = () => {
   const qrRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (mode === "edit") return;
     if (team) {
       if (team?.plan.isFree) {
         setLogo(qrypticLogo);

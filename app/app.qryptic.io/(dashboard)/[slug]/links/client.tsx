@@ -71,6 +71,10 @@ export const LinksClient: FC = () => {
     setPage(1);
   }, [debouncedSearch, status, domains, tags]);
 
+  useEffect(() => {
+    window?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [page]);
+
   const activeFilters = () => {
     const numSearch = search.length ? 1 : 0;
     return status.length + numSearch + domains.length + tags.length;

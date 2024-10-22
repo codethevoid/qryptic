@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, createContext, useContext, ReactNode, useEffect } from "react";
+import { useState, createContext, useContext, ReactNode } from "react";
 import { type Domain, Tag, LogoType, Tab, Country, LinkForm } from "@/types/links";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
@@ -12,18 +12,18 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const { slug: teamSlug, id } = useParams();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [mode, setMode] = useState<"create" | "edit">("create");
+  const [existingLink, setExistingLink] = useState<any | null>(null);
   // Tab state
   const [tab, setTab] = useState<Tab>("general");
 
-  // General form values
+  // General (form) values
   const [destination, setDestination] = useState<string>("");
   const [domain, setDomain] = useState<Domain | null>(null);
   const [slug, setSlug] = useState<string>("");
   const [tags, setTags] = useState<Tag[]>([]);
   const [notes, setNotes] = useState<string>("");
 
-  // QR form values
+  // QR (form) values
   // const [qrImageURL, setQrImageURL] = useState<string | null>(null);
   // const [generations, setGenerations] = useState<{ img: string; prompt: string }[]>([]);
   const [qrCodeType, setQrCodeType] = useState<"standard" | "ai" | null>("standard");
@@ -38,25 +38,25 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   });
   // const [prompt, setPrompt] = useState<string>("");
 
-  // utm form values
+  // utm (form) values
   const [utmSource, setUtmSource] = useState<string>("");
   const [utmMedium, setUtmMedium] = useState<string>("");
   const [utmCampaign, setUtmCampaign] = useState<string>("");
   const [utmTerm, setUtmTerm] = useState<string>("");
   const [utmContent, setUtmContent] = useState<string>("");
 
-  // device targeting form values
+  // device targeting (form) values
   const [ios, setIos] = useState<string>("");
   const [android, setAndroid] = useState<string>("");
 
   // geo targeting
   const [geo, setGeo] = useState<Record<string, Country>>({});
 
-  // expiration form values
+  // expiration (form) values
   const [expiresAt, setExpiresAt] = useState<Date | undefined>(undefined);
   const [expiredDestination, setExpiredDestination] = useState<string>("");
 
-  // Open Graph form values
+  // Open Graph (form) values
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [image, setImage] = useState<string>("");
@@ -66,6 +66,8 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
 
   // protection
   const [password, setPassword] = useState<string>("");
+  const [isPasswordProtected, setIsPasswordProtected] = useState<boolean>(false);
+  const [shouldDisablePassword, setShouldDisablePassword] = useState<boolean>(false);
 
   // cloaking
   const [shouldCloak, setShouldCloak] = useState<boolean>(false);
@@ -120,15 +122,65 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
       toast.success("Link created successfully");
     } catch (e) {
       console.error(e);
-      return { error: "Internal server error" };
+      toast.error("An error occured");
     }
   };
 
-  const editForm = async (id: string): Promise<any> => {};
+  const editForm = async (): Promise<any> => {
+    if (!destination) return toast.error("Destination is required");
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`/api/links/${teamSlug}/edit/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          destination,
+          domain,
+          slug,
+          tags,
+          notes,
+          qrCodeType,
+          logo,
+          logoType,
+          logoFile,
+          logoFileType,
+          color,
+          logoDimensions,
+          ios,
+          android,
+          geo,
+          expiresAt,
+          expiredDestination,
+          title,
+          description,
+          image,
+          imageFile,
+          imageType,
+          password,
+          shouldCloak,
+          shouldIndex,
+          shouldDisablePassword,
+        }),
+      });
 
-  useEffect(() => {
-    if (id) setMode("edit");
-  }, []);
+      if (!res.ok) {
+        setIsSubmitting(false);
+        const { error } = await res.json();
+        toast.error(error);
+        return false;
+      }
+
+      // mutate the link to update the link details
+      setPassword("");
+      setIsSubmitting(false);
+      toast.success("Link updated successfully");
+      return true;
+    } catch (e) {
+      console.error(e);
+      toast.error("An error occured");
+      return false;
+    }
+  };
 
   return (
     <LinkFormContext.Provider
@@ -204,10 +256,15 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
         logoFileType,
         setLogoFileType,
         submitForm,
+        editForm,
         isSubmitting,
         setIsSubmitting,
-        mode,
-        setMode,
+        existingLink,
+        setExistingLink,
+        isPasswordProtected,
+        setIsPasswordProtected,
+        shouldDisablePassword,
+        setShouldDisablePassword,
       }}
     >
       {children}

@@ -1,16 +1,17 @@
 "use client";
 
-import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/new/context";
+import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 import { cn } from "@/lib/utils";
 import { SmallSwitch } from "@/components/ui/custom/small-switch";
 import { useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { shortDomain } from "@/lib/constants/domains";
 
-export const Indexing = () => {
+export const Indexing = ({ mode }: { mode: "new" | "edit" }) => {
   const { tab, shouldIndex, setShouldIndex, domain } = useLinkForm();
 
   useEffect(() => {
+    if (mode === "edit") return;
     if (domain?.name === shortDomain) {
       setShouldIndex(true);
     } else {
