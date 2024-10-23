@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import prisma from "@/db/prisma";
-import { adminRoles } from "@/lib/constants/roles";
+import { adminRoles } from "@/utils/roles";
 
 export const GET = async () => {
   const token = await auth();

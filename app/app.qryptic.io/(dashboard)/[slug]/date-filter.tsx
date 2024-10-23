@@ -24,7 +24,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { adminRoles } from "@/lib/constants/roles";
+import { adminRoles } from "@/utils/roles";
 import NextLink from "next/link";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { useParams } from "next/navigation";

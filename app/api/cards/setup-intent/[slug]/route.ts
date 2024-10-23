@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/utils/stripe";
 import { withTeam } from "@/lib/auth/with-team";
-import { adminRoles } from "@/lib/constants/roles";
+import { adminRoles } from "@/utils/roles";
 import prisma from "@/db/prisma";
 
 export const GET = withTeam(async ({ team, user }) => {

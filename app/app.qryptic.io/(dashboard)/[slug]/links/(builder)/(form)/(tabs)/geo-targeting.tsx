@@ -9,7 +9,7 @@ import { CornerDownRight, Pencil, Search, Signpost, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRef, useState } from "react";
-import { countries } from "@/utils/countries";
+import { countries } from "@/utils/countries/countries";
 import { Country } from "@/types/links";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";

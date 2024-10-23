@@ -14,7 +14,7 @@ import { QrypticIcon } from "@/components/logos/qryptic-icon";
 import { X, Image as ImageIcon } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
-import { qrypticLogo } from "@/lib/constants/images";
+import { qrypticLogo } from "@/utils/qryptic/images";
 
 const constructUrl = (domain: string, slug: string) => {
   return `https://${domain}/${slug}?qr=1`;

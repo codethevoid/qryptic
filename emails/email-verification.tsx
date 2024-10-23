@@ -10,7 +10,7 @@ import {
   Text,
   Tailwind,
 } from "@react-email/components";
-import { protocol, appDomain } from "@/lib/constants/domains";
+import { protocol, appDomain } from "@/utils/qryptic/domains";
 
 export const EmailVerificationEmail = (token: string) => (
   <Html>

@@ -13,7 +13,7 @@ export const POST = withTeam(async ({ req, team }) => {
     const body = await req.json();
     let { name, destination } = body;
     if (!name) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-    name = name.toLowerCase().trim();
+    name = name.toLowerCase().replace("www.", "").trim();
 
     // get domains and plan limits
     const { domains, plan } = (await prisma.team.findUnique({

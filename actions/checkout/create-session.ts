@@ -4,7 +4,7 @@ import { stripe } from "@/utils/stripe";
 import prisma from "@/db/prisma";
 import { Price, Team, Plan } from "@prisma/client";
 import { auth } from "@/auth";
-import { appDomain, protocol } from "@/lib/constants/domains";
+import { appDomain, protocol } from "@/utils/qryptic/domains";
 
 type CreateSessionResponse = {
   error?: boolean;

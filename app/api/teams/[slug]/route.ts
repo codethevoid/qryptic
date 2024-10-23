@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@/auth";
 import prisma from "@/db/prisma";
 import { Team, TeamMember, Plan, Domain } from "@prisma/client";
-import { adminRoles } from "@/lib/constants/roles";
+import { adminRoles } from "@/utils/roles";
 
 type CustomTeam = Team & {
   members?: TeamMember[];

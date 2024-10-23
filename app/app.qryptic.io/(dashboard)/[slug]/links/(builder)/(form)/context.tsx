@@ -172,6 +172,7 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
 
       // mutate the link to update the link details
       setPassword("");
+      setShouldDisablePassword(false);
       setIsSubmitting(false);
       toast.success("Link updated successfully");
       return true;

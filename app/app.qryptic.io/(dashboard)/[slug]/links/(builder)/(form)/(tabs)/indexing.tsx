@@ -5,19 +5,10 @@ import { cn } from "@/lib/utils";
 import { SmallSwitch } from "@/components/ui/custom/small-switch";
 import { useEffect } from "react";
 import { Label } from "@/components/ui/label";
-import { shortDomain } from "@/lib/constants/domains";
+import { shortDomain } from "@/utils/qryptic/domains";
 
 export const Indexing = ({ mode }: { mode: "new" | "edit" }) => {
   const { tab, shouldIndex, setShouldIndex, domain } = useLinkForm();
-
-  useEffect(() => {
-    if (mode === "edit") return;
-    if (domain?.name === shortDomain) {
-      setShouldIndex(true);
-    } else {
-      setShouldIndex(false);
-    }
-  }, [domain]);
 
   return (
     <div className={cn("space-y-4", tab !== "indexing" && "hidden")}>

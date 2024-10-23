@@ -7,7 +7,7 @@ import { nanoid } from "@/utils/nanoid";
 import bcrypt from "bcrypt";
 import { uploadPreviewImage } from "@/lib/links/upload-preview-image";
 import { uploadQrLogo } from "@/lib/links/upload-qr-logo";
-import { shortDomain } from "@/lib/constants/domains";
+import { shortDomain } from "@/utils/qryptic/domains";
 
 export const PATCH = withTeam(async ({ team, req, params }) => {
   try {
@@ -82,6 +82,14 @@ export const PATCH = withTeam(async ({ team, req, params }) => {
       if (data.location) logo = data.location;
     }
 
+    // get team plan
+    const teamPlan = await prisma.team.findUnique({
+      where: { id: team.id },
+      select: { plan: { select: { isFree: true } } },
+    });
+
+    shouldIndex = teamPlan?.plan.isFree && domain.name === shortDomain ? true : shouldIndex;
+
     // update link
     const link = await prisma.link.update({
       where: { id: params.id },
@@ -89,13 +97,14 @@ export const PATCH = withTeam(async ({ team, req, params }) => {
         destination: constructURL(destination),
         slug,
         notes,
-        passwordHash: shouldDisablePassword ? null : password,
+        ...(shouldDisablePassword && { passwordHash: null }),
+        ...(password && !shouldDisablePassword && { passwordHash: password }),
         expiresAt: expiresAt ? new Date(expiresAt) : null,
         shouldCloak,
-        shouldIndex: domain.name === shortDomain ? true : shouldIndex,
+        shouldIndex,
         ios,
         android,
-        expired: expiredDestination || domain.destination || `https://${shortDomain}/expired`,
+        expired: expiredDestination || domain.destination,
         geo,
         ogTitle: title,
         ogDescription: description,

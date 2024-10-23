@@ -46,6 +46,7 @@ export type Opengraph = {
   description: string | "";
   image: string | "";
   url: string | "";
+  noUrlToFetch?: boolean;
 };
 
 export type Domain = {
@@ -203,4 +204,21 @@ export type EditLinkBody = {
   shouldIndex: boolean;
   password: string;
   shouldDisablePassword: boolean;
+};
+
+export type MiddlewareLink = {
+  id: string;
+  teamId: string;
+  destination: string;
+  passwordHash: string | null;
+  expiresAt: Date | null;
+  shouldCloak: boolean;
+  shouldIndex: boolean;
+  isBanned: boolean;
+  ios: string | null;
+  android: string | null;
+  expired: string | null;
+  geo: Record<string, { country: string; code: string; destination: string }> | null;
+  domain: { id: string; destination: string };
+  isPasswordProtected: boolean;
 };

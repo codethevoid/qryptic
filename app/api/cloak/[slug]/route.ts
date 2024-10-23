@@ -17,7 +17,7 @@ export const GET = withTeam(async ({ req }) => {
     const url = req.nextUrl;
     const urlToFetch = url.searchParams.get("url") || "";
     if (!urlToFetch) {
-      return NextResponse.json({ error: "No URL provided" }, { status: 400 });
+      return NextResponse.json({ isCloakable: false });
     }
 
     const { isDeepLink, destination } = constructURL(urlToFetch);

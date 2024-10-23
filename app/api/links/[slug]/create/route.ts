@@ -5,19 +5,10 @@ import { checkUsage } from "@/app/api/links/[slug]/create/check-usage";
 import { nanoid } from "@/utils/nanoid";
 import bcrypt from "bcrypt";
 import { Domain, CreateLinkBody } from "@/types/links";
-import { shortDomain } from "@/lib/constants/domains";
+import { shortDomain } from "@/utils/qryptic/domains";
 import { uploadPreviewImage } from "@/lib/links/upload-preview-image";
 import { uploadQrLogo } from "@/lib/links/upload-qr-logo";
-
-const deepLinks = ["mailto:", "sms:", "tel:"];
-const constructURL = (destination: string) => {
-  if (deepLinks.some((link) => destination.startsWith(link))) {
-    return destination;
-  }
-
-  if (destination.startsWith("http")) return destination;
-  return `https://${destination}`;
-};
+import { constructURL } from "@/utils/construct-url";
 
 export const POST = withTeam(async ({ team, req, user }) => {
   try {
@@ -25,6 +16,11 @@ export const POST = withTeam(async ({ team, req, user }) => {
     if (isOverLimit) {
       return NextResponse.json({ error: "You have reached your link limit" }, { status: 400 });
     }
+
+    const teamPlan = await prisma.team.findUnique({
+      where: { id: team.id },
+      select: { plan: { select: { isFree: true } } },
+    });
 
     const body = await req.json();
     let {
@@ -103,6 +99,8 @@ export const POST = withTeam(async ({ team, req, user }) => {
       if (data.location) logo = data.location;
     }
 
+    shouldIndex = teamPlan?.plan.isFree && domain.name === shortDomain ? true : shouldIndex;
+
     // create link
     const link = await prisma.link.create({
       data: {
@@ -114,10 +112,10 @@ export const POST = withTeam(async ({ team, req, user }) => {
         passwordHash: password,
         expiresAt: expiresAt ? new Date(expiresAt) : null,
         shouldCloak,
-        shouldIndex: domain.name === shortDomain ? true : shouldIndex,
+        shouldIndex,
         ios: ios,
         android: android,
-        expired: expiredDestination || domain.destination || `https://${shortDomain}/expired`,
+        expired: expiredDestination || domain.destination,
         geo,
         ogTitle: title,
         ogDescription: description,

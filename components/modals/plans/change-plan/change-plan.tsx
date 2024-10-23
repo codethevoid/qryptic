@@ -13,7 +13,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PricingCard } from "@/components/modals/plans/pricing-card";
 import NextLink from "next/link";
-import { protocol, rootDomain } from "@/lib/constants/domains";
+import { protocol, rootDomain } from "@/utils/qryptic/domains";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
 import { useTeamSettings } from "@/lib/hooks/swr/use-team-settings";

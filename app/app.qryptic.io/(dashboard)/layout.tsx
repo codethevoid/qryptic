@@ -1,6 +1,9 @@
 import { ReactNode } from "react";
 import { AppNav } from "@/components/layout/navigation/app-nav";
 import { MaxWidthWrapper } from "@/components/layout/max-width-wrapper";
+import { constructMetadata } from "@/utils/construct-metadata";
+
+export const metadata = constructMetadata({});
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (

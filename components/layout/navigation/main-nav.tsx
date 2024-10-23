@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { MaxWidthWrapper } from "@/components/layout/max-width-wrapper";
 import { QrypticLogo } from "@/components/logos/qryptic-logo";
-import { appDomain, protocol } from "@/lib/constants/domains";
+import { appDomain, protocol } from "@/utils/qryptic/domains";
 import { useTheme } from "next-themes";
 import {
   Book,

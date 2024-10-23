@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { appDomain, protocol } from "@/lib/constants/domains";
+import { appDomain, protocol } from "@/utils/qryptic/domains";
 import { parseReq } from "@/lib/middleware/utils";
 
 export const rootMiddleware = async (req: NextRequest) => {

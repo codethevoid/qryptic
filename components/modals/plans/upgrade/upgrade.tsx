@@ -18,7 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePlans } from "@/lib/hooks/swr/use-plans";
 import { PlanWithPrices } from "@/types/plans";
 import { PricingCard } from "@/components/modals/plans/pricing-card";
-import { protocol, rootDomain } from "@/lib/constants/domains";
+import { protocol, rootDomain } from "@/utils/qryptic/domains";
 import { createCheckoutSession } from "@/actions/checkout/create-session";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { toast } from "sonner";

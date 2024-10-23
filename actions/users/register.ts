@@ -7,7 +7,7 @@ import { RegisterFormValues } from "@/lib/validation/users/register";
 import bcrypt from "bcrypt";
 import { sendEmail } from "@/utils/send-email";
 import { EmailVerificationEmail } from "@/emails/email-verification";
-import { protocol, appDomain } from "@/lib/constants/domains";
+import { protocol, appDomain } from "@/utils/qryptic/domains";
 import { signIn } from "@/auth";
 import { uploadImage } from "@/utils/upload-image";
 

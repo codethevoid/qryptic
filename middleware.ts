@@ -1,24 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { appMiddleware, linkMiddleware, rootMiddleware, adminMiddleware } from "@/lib/middleware";
-import { appDomain, adminDomain, rootDomain } from "@/lib/constants/domains";
+import { appDomain, adminDomain, rootDomain } from "@/utils/qryptic/domains";
 import { detectInvalidPath, parseReq } from "@/lib/middleware/utils";
 
 export const middleware = async (req: NextRequest) => {
-  const { host, path } = parseReq(req);
+  const { domain, path, fullPath, searchParams } = parseReq(req);
 
   if (detectInvalidPath(path)) {
     return NextResponse.rewrite(new URL("/not-found", req.url));
   }
 
-  if (host === appDomain) {
+  if (domain === appDomain) {
     return appMiddleware(req);
   }
 
-  if (host === adminDomain) {
+  if (domain === adminDomain) {
     return adminMiddleware(req);
   }
 
-  if (host === rootDomain) {
+  if (domain === rootDomain) {
     return rootMiddleware(req);
   }
 

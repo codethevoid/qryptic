@@ -143,7 +143,7 @@ export const Expiration = () => {
         <Input
           id="expired-destination"
           placeholder="example.com (optional)"
-          value={expiredDestination}
+          value={expiredDestination || ""}
           onChange={(e) => setExpiredDestination(e.target.value)}
         />
         <div className="flex space-x-1.5">

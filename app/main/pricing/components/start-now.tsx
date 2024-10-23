@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { MaxWidthWrapper } from "@/components/layout/max-width-wrapper";
 
-import { appDomain, protocol } from "@/lib/constants/domains";
+import { appDomain, protocol } from "@/utils/qryptic/domains";
 
 export const StartNow = () => {
   return (

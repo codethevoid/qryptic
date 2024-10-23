@@ -1,4 +1,5 @@
 // This file contains all the predefined domains for the app
+export const appName = process.env.NEXT_PUBLIC_APP_NAME;
 
 // this domain is used for the app (ex: app.example.com)
 export const appDomain =
@@ -19,8 +20,7 @@ export const adminDomain =
     : "admin.localhost:3000";
 
 // this domain is used for default short links (ex: qrypt.co/abc123)
-export const shortDomain =
-  process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_SHORT_DOMAIN : "qrypt.co:3000";
+export const shortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN;
 
 // this is the protocol used for the app (http or https) (for local development, it will always be http)
 export const protocol = process.env.NODE_ENV === "production" ? "https://" : "http://";

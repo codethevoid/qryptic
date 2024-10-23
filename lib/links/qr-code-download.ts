@@ -17,7 +17,66 @@ export const downloadSVG = (svg: SVGSVGElement, filename: string) => {
 
 export const downloadPNG = (
   svg: SVGSVGElement,
+  logo: string | null,
+  logoDimensions: { height: number; width: number },
   filename: string,
   height: number,
   width: number,
-) => {};
+) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+
+  // Serialize the SVG to string
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+  const url = URL.createObjectURL(svgBlob);
+
+  // Create an image from the SVG
+  const img = new Image();
+  img.crossOrigin = ""; // Ensure cross-origin images are handled properly
+  img.src = url;
+
+  img.onload = () => {
+    // Draw the QR code (SVG) on the canvas
+    ctx?.drawImage(img, 0, 0, width, height);
+
+    // If there's a logo, draw it in the center of the QR code
+    if (logo) {
+      const logoImg = new Image();
+      logoImg.crossOrigin = ""; // Handle cross-origin for the logo image
+      logoImg.src = logo;
+
+      logoImg.onload = () => {
+        // Calculate the center position for the logo
+        const logoX = (canvas.width - logoDimensions.width) / 2;
+        const logoY = (canvas.height - logoDimensions.height) / 2;
+
+        // Draw the logo in the center of the QR code
+        ctx?.drawImage(logoImg, logoX, logoY, logoDimensions.width, logoDimensions.height);
+
+        // Convert the canvas to a PNG and trigger download
+        canvas.toBlob((blob) => {
+          if (blob) {
+            downloadBlob(blob, filename);
+          }
+        });
+      };
+    } else {
+      // If there's no logo, directly download the QR code as PNG
+      canvas.toBlob((blob) => {
+        if (blob) {
+          downloadBlob(blob, filename);
+        }
+      });
+    }
+
+    // Revoke the object URL to free memory
+    URL.revokeObjectURL(url);
+  };
+
+  img.onerror = () => {
+    console.error("Failed to load QR code as an image.");
+  };
+};

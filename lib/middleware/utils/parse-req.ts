@@ -1,13 +1,20 @@
 import { NextRequest } from "next/server";
+import { shortDomain } from "@/utils/qryptic/domains";
 
 export const parseReq = (req: NextRequest) => {
   // this is the domain (ex: example.com, app.example.com, etc)
-  let host: string | null = req.headers.get("host") ?? null;
+  let domain: string | null = req.headers.get("host") as string;
   // remove www. from the host
-  host = host?.replace("www.", "") ?? null;
+  domain = domain?.replace("www.", "").toLowerCase();
+
+  // For development, we want to use the short domain
+  if (domain === "qrypt.co:3000" || domain.endsWith(".vercel.app")) {
+    domain = shortDomain as string;
+  }
 
   // this is the path starting with the first forward slash after the domain (ex: /path/to/page)
   const path = req.nextUrl.pathname;
+  const slug = path.split("/")[1]; // slug will be the unique identifier for short links
 
   // this is an object containing all the search params (ex: ?key=value&key2=value2)
   // but we convert this to a string for easier use
@@ -15,5 +22,5 @@ export const parseReq = (req: NextRequest) => {
   const searchParamsString = searchParams.length > 0 ? `?${searchParams}` : "";
   const fullPath = `${path}${searchParamsString}`;
 
-  return { host, path, fullPath, searchParams: searchParamsString };
+  return { domain, path, fullPath, searchParams: searchParamsString, slug };
 };
