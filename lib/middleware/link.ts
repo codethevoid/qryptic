@@ -105,10 +105,10 @@ export const linkMiddleware = async (req: NextRequest) => {
     isPasswordProtected,
   } = link;
 
-  // check if the request is from a bot and rewrite to the proxy page
-  const isBot = detectBot(req);
-  if (isBot && shouldProxy && !isPasswordProtected) {
-    return NextResponse.rewrite(new URL(`/${domain}/${slug}/proxy`, req.url), {
+  // if the link is password protected, redirect to the password page
+  if (isPasswordProtected) {
+    // we will rewrite this so it can keep the domain in the URL along with the slug
+    return NextResponse.rewrite(new URL(`/${domain}/${slug}/password`, req.url), {
       headers: {
         ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
         ...qrypticHeaders,
@@ -155,10 +155,10 @@ export const linkMiddleware = async (req: NextRequest) => {
     });
   }
 
-  // if the link is password protected, redirect to the password page
-  if (isPasswordProtected) {
-    // we will rewrite this so it can keep the domain in the URL along with the slug
-    return NextResponse.rewrite(new URL(`/${domain}/${slug}/password`, req.url), {
+  // check if the request is from a bot and rewrite to the proxy page
+  const isBot = detectBot(req);
+  if (isBot && shouldProxy) {
+    return NextResponse.rewrite(new URL(`/${domain}/${slug}/proxy`, req.url), {
       headers: {
         ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
         ...qrypticHeaders,
