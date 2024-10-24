@@ -6,6 +6,7 @@ import { MiddlewareLink } from "@/types/links";
 import { constructURL } from "@/utils/construct-url";
 import { waitUntil } from "@vercel/functions";
 import { recordEvent } from "@/lib/middleware/utils/record-event";
+import { detectBot } from "@/lib/middleware/utils/detect-bot";
 
 const baseURL = `${protocol}${rootDomain}`;
 
@@ -15,9 +16,11 @@ export const linkMiddleware = async (req: NextRequest) => {
 
   if (!slug) {
     // look up domain in database
-    // if domain exists, redirect to default destination
     const res = await fetch(`${baseURL}/api/links/middleware/domain/${domain}`, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.QRYPTIC_API_KEY}`,
+      },
     });
     // get domain data (default destination)
     if (res.ok) {
@@ -38,15 +41,32 @@ export const linkMiddleware = async (req: NextRequest) => {
           ...qrypticHeaders,
         },
       });
+    } else {
+      // this request should not fail, because if the domain did not exist
+      // it would not have been able to reach this middleware in the first place
+      // redirect to home page if this request fails for some reason
+      return NextResponse.redirect(`${protocol}${rootDomain}`, {
+        headers: { "x-robots-tag": "googlebot: noindex", ...qrypticHeaders },
+      });
     }
   }
 
   // if slug is provided, look up the link in the database
-  const res = await fetch(`${baseURL}/api/links/middleware/${slug}`);
+  const res = await fetch(`${baseURL}/api/links/middleware/${slug}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.QRYPTIC_API_KEY}`,
+    },
+  });
 
   // if the link does not exist or fails to fetch, check if the domain exists and redirect
   if (!res.ok) {
-    const domainRes = await fetch(`${baseURL}/api/links/middleware/domain/${domain}`);
+    const domainRes = await fetch(`${baseURL}/api/links/middleware/domain/${domain}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.QRYPTIC_API_KEY}`,
+      },
+    });
     if (domainRes.ok) {
       const data = await domainRes.json();
       const domainData = data.domainData;
@@ -75,6 +95,7 @@ export const linkMiddleware = async (req: NextRequest) => {
     expiresAt,
     shouldCloak,
     shouldIndex,
+    shouldProxy,
     isBanned,
     ios,
     android,
@@ -84,9 +105,19 @@ export const linkMiddleware = async (req: NextRequest) => {
     isPasswordProtected,
   } = link;
 
+  // check if the request is from a bot and rewrite to the proxy page
+  const isBot = detectBot(req);
+  if (isBot && shouldProxy && !isPasswordProtected) {
+    return NextResponse.rewrite(new URL(`/${domain}/${slug}/proxy`, req.url), {
+      headers: {
+        ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
+        ...qrypticHeaders,
+      },
+    });
+  }
+
   // check if link is banned
   if (isBanned) {
-    // rewrite to banned page
     return NextResponse.rewrite(new URL(`/${domain}/${slug}/banned`, req.url), {
       headers: {
         ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
@@ -95,19 +126,8 @@ export const linkMiddleware = async (req: NextRequest) => {
     });
   }
 
-  // if the link is password protected, redirect to the password page
-  if (isPasswordProtected) {
-    // we will rewrite this so it can keep the domain in the URL along with the slug
-    return NextResponse.rewrite(new URL(`/${domain}/${slug}/password`, req.url), {
-      headers: {
-        ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
-        ...qrypticHeaders,
-      },
-    });
-  }
-
   // if the link is expired, redirect to the expired page
-  if (expiresAt && expiresAt < new Date()) {
+  if (expiresAt && new Date(expiresAt).getTime() < new Date().getTime()) {
     // first we check for expiration URL on the link level
     if (expired) {
       return NextResponse.redirect(constructURL(expired), {
@@ -135,12 +155,23 @@ export const linkMiddleware = async (req: NextRequest) => {
     });
   }
 
+  // if the link is password protected, redirect to the password page
+  if (isPasswordProtected) {
+    // we will rewrite this so it can keep the domain in the URL along with the slug
+    return NextResponse.rewrite(new URL(`/${domain}/${slug}/password`, req.url), {
+      headers: {
+        ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
+        ...qrypticHeaders,
+      },
+    });
+  }
+
   // if the link is geo-targeted, check if the user's country is in the list and redirect accordingly
   const country = req.geo?.country;
   if (country && geo && geo[country]) {
     const { destination: geoDestination } = geo[country];
     // record event
-    console.log("recording event");
+    waitUntil(recordEvent({ req, linkId: id, finalUrl: constructURL(geoDestination) }));
     // redirect to geo destination
     if (shouldCloak) {
       // rewrite to cloaked URL
@@ -162,7 +193,7 @@ export const linkMiddleware = async (req: NextRequest) => {
   // check for ios or android destination
   if (ios && userAgent(req)?.os.name === "iOS") {
     // record event
-    console.log("recording event");
+    waitUntil(recordEvent({ req, linkId: id, finalUrl: constructURL(ios) }));
     // redirect to ios destination
     return NextResponse.redirect(constructURL(ios), {
       headers: {
@@ -172,7 +203,7 @@ export const linkMiddleware = async (req: NextRequest) => {
     });
   } else if (android && userAgent(req)?.os.name === "Android") {
     // record event
-    console.log("recording event");
+    waitUntil(recordEvent({ req, linkId: id, finalUrl: constructURL(android) }));
     // redirect to android destination
     return NextResponse.redirect(constructURL(android), {
       headers: {
@@ -185,7 +216,7 @@ export const linkMiddleware = async (req: NextRequest) => {
   // check for cloaked link
   if (shouldCloak) {
     // record events
-    console.log("recording event");
+    waitUntil(recordEvent({ req, linkId: id, finalUrl: destination }));
     // rewrite to cloaked URL
     return NextResponse.rewrite(new URL(`/${domain}/${slug}/cloaked`, req.url), {
       headers: {
@@ -196,7 +227,7 @@ export const linkMiddleware = async (req: NextRequest) => {
   }
 
   // record event and redirect to destination
-  waitUntil(recordEvent(req, id));
+  waitUntil(recordEvent({ req, linkId: id, finalUrl: destination }));
   return NextResponse.redirect(destination, {
     headers: {
       ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),

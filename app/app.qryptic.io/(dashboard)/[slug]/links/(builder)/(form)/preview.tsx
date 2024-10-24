@@ -38,6 +38,7 @@ export const LinkPreview: FC<{ mode: "new" | "edit" }> = ({ mode }) => {
     setImageFile,
     setImageType,
     existingLink,
+    setInitialOgData,
   } = useLinkForm();
 
   const debouncedDestination = useDebounce(destination?.split("?")[0], 500);
@@ -45,11 +46,21 @@ export const LinkPreview: FC<{ mode: "new" | "edit" }> = ({ mode }) => {
   const { data, isLoading, error } = useOpenGraph(debouncedDestination);
 
   useEffect(() => {
-    if (data && existingLink?.destination !== debouncedDestination) {
-      setTitle(data.title);
-      setDescription(data.description);
-      setImage(data.image);
-      setOgUrl(data.url);
+    if (data) {
+      // keep track of the initial OG data from the destination URL
+      // in order to know if we need to proxy the open graph data
+      setInitialOgData({
+        title: data.title,
+        description: data.description,
+        image: data.image,
+      });
+      // If the destination has changed, update the form fields
+      if (existingLink?.destination !== destination) {
+        setTitle(data.title);
+        setDescription(data.description);
+        setImage(data.image);
+        setOgUrl(data.url);
+      }
       setImageFile(null);
       setImageType(null);
     }

@@ -306,6 +306,7 @@ export const General = ({ mode }: { mode: "new" | "edit" }) => {
                 placeholder="Search tags"
                 className="rounded-b-none border-0 border-b pl-8 shadow-none focus-visible:!ring-0"
                 onChange={(e) => setTagSearch(e.target.value)}
+                value={tagSearch}
               />
             </div>
             <ScrollArea

@@ -10,6 +10,15 @@ import { shortDomain } from "@/utils/qryptic/domains";
 export const Indexing = ({ mode }: { mode: "new" | "edit" }) => {
   const { tab, shouldIndex, setShouldIndex, domain } = useLinkForm();
 
+  useEffect(() => {
+    if (mode === "new") {
+      // index Qryptic short domain by default
+      if (domain?.name === shortDomain) {
+        setShouldIndex(true);
+      }
+    }
+  }, [domain]);
+
   return (
     <div className={cn("space-y-4", tab !== "indexing" && "hidden")}>
       <div className="flex space-x-2">

@@ -1,29 +1,37 @@
 import { userAgent } from "next/server";
-import { isQr } from "@/lib/middleware/utils/is-qr";
-import { isBot } from "@/lib/middleware/utils/is-bot";
+import { detectEventType } from "@/lib/middleware/utils/detect-event-type";
+import { detectBot } from "@/lib/middleware/utils/detect-bot";
 import { NextRequest } from "next/server";
 import { geolocation, ipAddress } from "@vercel/functions";
-import { countries } from "@/utils/countries/countries";
-import { euCountries } from "@/utils/countries/eu-countries";
-import prisma from "@/db/prisma";
 import { protocol, rootDomain } from "@/utils/qryptic/domains";
 
-export const recordEvent = async (req: NextRequest, linkId: string) => {
+type Props = {
+  req: NextRequest;
+  linkId: string;
+  finalUrl: string;
+};
+
+export const recordEvent = async ({ req, linkId, finalUrl }: Props): Promise<void> => {
   const ua = userAgent(req);
-  const eventType = isQr(req) ? "scan" : "click";
-  const isBotRequest = isBot(req);
+  const eventType = detectEventType(req);
+  const isBotRequest = detectBot(req);
   const ip = ipAddress(req);
-  const location = geolocation(req);
+  const geo = geolocation(req);
+  const referrer = req.headers.get("referer");
+  const continent = req.headers.get("x-vercel-ip-continent");
 
   // we will not track bot requests
-  if (isBotRequest) return null;
+  if (isBotRequest) return;
 
   // record event
   try {
     const res = await fetch(`${protocol}${rootDomain}/api/events/record`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ linkId, ua, eventType, ip, location }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.QRYPTIC_API_KEY}`,
+      },
+      body: JSON.stringify({ linkId, ua, eventType, ip, geo, referrer, continent, finalUrl }),
     });
   } catch (e) {
     console.error(e);

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { withTeam } from "@/lib/auth/with-team";
 import og from "open-graph-scraper";
 
-export const GET = withTeam(async ({ team, req }) => {
+export const GET = withTeam(async ({ req }) => {
   try {
     const url = req.nextUrl;
     const urlToFetch = url.searchParams.get("url");

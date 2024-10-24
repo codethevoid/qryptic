@@ -1,8 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db/prisma";
 
+const isAuthorized = (req: NextRequest) => {
+  const bearer = req.headers.get("authorization");
+  const token = bearer?.split(" ")[1];
+  return token === process.env.QRYPTIC_API_KEY;
+};
+
 export const GET = async (req: NextRequest, { params }: { params: { domain: string } }) => {
   try {
+    if (!isAuthorized(req)) {
+      console.error("Unauthorized request");
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const { domain } = params;
     if (!domain) {
       return NextResponse.json({ error: "Domain is required" }, { status: 400 });

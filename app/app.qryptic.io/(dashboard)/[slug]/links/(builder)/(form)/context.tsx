@@ -57,6 +57,15 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const [expiredDestination, setExpiredDestination] = useState<string>("");
 
   // Open Graph (form) values
+  const [initialOgData, setInitialOgData] = useState<{
+    title: string;
+    description: string;
+    image: string;
+  }>({
+    title: "",
+    description: "",
+    image: "",
+  });
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [image, setImage] = useState<string>("");
@@ -73,11 +82,25 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const [shouldCloak, setShouldCloak] = useState<boolean>(false);
 
   // indexing
-  const [shouldIndex, setShouldIndex] = useState<boolean>(true);
+  const [shouldIndex, setShouldIndex] = useState<boolean>(false);
+
+  const shouldProxy = () => {
+    // If all fields are empty, don't proxy
+    if (!title && !description && !image) return false;
+
+    // Check if any of the fields have changed, including if they've been cleared
+    const titleChanged = initialOgData.title !== (title || "");
+    const descriptionChanged = initialOgData.description !== (description || "");
+    const imageChanged = initialOgData.image !== (image || "");
+
+    // If any of the fields have changed, we should proxy the link
+    return titleChanged || descriptionChanged || imageChanged;
+  };
 
   const submitForm = async (): Promise<any> => {
     if (!destination) return toast.error("Destination is required");
     setIsSubmitting(true);
+
     try {
       const res = await fetch(`/api/links/${teamSlug}/create`, {
         method: "POST",
@@ -108,6 +131,7 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
           password,
           shouldCloak,
           shouldIndex,
+          shouldProxy: shouldProxy(),
         }),
       });
 
@@ -129,6 +153,7 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
   const editForm = async (): Promise<any> => {
     if (!destination) return toast.error("Destination is required");
     setIsSubmitting(true);
+
     try {
       const res = await fetch(`/api/links/${teamSlug}/edit/${id}`, {
         method: "PATCH",
@@ -159,6 +184,7 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
           password,
           shouldCloak,
           shouldIndex,
+          shouldProxy: shouldProxy(),
           shouldDisablePassword,
         }),
       });
@@ -266,6 +292,8 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
         setIsPasswordProtected,
         shouldDisablePassword,
         setShouldDisablePassword,
+        initialOgData,
+        setInitialOgData,
       }}
     >
       {children}

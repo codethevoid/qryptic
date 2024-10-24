@@ -96,12 +96,12 @@ export const PlanCard = ({
                     {hasPaymentMethod && !cancelAtPeriodEnd ? (
                       <Badge variant="success" className="space-x-1">
                         <RefreshCw size={13} />
-                        <span>Renews {format(trialEndsAt as Date, "MMM, dd yyyy")}</span>
+                        <span>Renews {format(trialEndsAt as Date, "MMM dd, yyyy")}</span>
                       </Badge>
                     ) : (
                       <Badge variant="primary" className="space-x-1">
                         <Info size={13} />
-                        <span>Trial ends {format(trialEndsAt as Date, "MMM, dd yyyy")}</span>
+                        <span>Trial ends {format(trialEndsAt as Date, "MMM dd, yyyy")}</span>
                       </Badge>
                     )}
                   </>
@@ -111,12 +111,12 @@ export const PlanCard = ({
                     {cancelAtPeriodEnd ? (
                       <Badge variant="error" className="space-x-1">
                         <XCircle size={13} />
-                        <span>Cancels {format(subscriptionEnd as Date, "MMM, dd yyyy")}</span>
+                        <span>Cancels {format(subscriptionEnd as Date, "MMM dd, yyyy")}</span>
                       </Badge>
                     ) : (
                       <Badge variant="success" className="space-x-1">
                         <RefreshCw size={13} />
-                        <span>Renews {format(subscriptionEnd as Date, "MMM, dd yyyy")}</span>
+                        <span>Renews {format(subscriptionEnd as Date, "MMM dd, yyyy")}</span>
                       </Badge>
                     )}
                   </>

@@ -8,18 +8,28 @@ model Event {
   createdAt DateTime @default(now())
 
   // event details
-  type     EventType
-  device   String?
-  os       String?
-  browser  String?
-  ip       String?
-  referrer String?
-  country  String?
-  city     String?
-  state    String?
-  postal   String?
-  lat      Float?
-  lon      Float?
+  destination          String
+  type                 EventType
+  ip                   String
+  continent            String
+  country              String
+  region               String
+  countryRegion        String
+  city                 String
+  latitude             String
+  longitude            String
+  userAgent            String
+  browser              String
+  browserVersion       String
+  deviceType           String
+  deviceModel          String
+  deviceVendor         String
+  browserEngine        String
+  browserEngineVersion String
+  os                   String
+  osVersion            String
+  cpu                  String
+  referrer             String
 
   // relations
   Link     Link   @relation(fields: [linkId], references: [id])

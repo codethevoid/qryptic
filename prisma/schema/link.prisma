@@ -16,6 +16,7 @@ model Link {
   expiresAt    DateTime?
   shouldCloak  Boolean   @default(false)
   shouldIndex  Boolean   @default(false)
+  shouldProxy  Boolean   @default(false)
   isBanned     Boolean   @default(false)
 
   // redirect options
@@ -35,8 +36,8 @@ model Link {
   // relations
   team     Team    @relation(fields: [teamId], references: [id])
   teamId   String
-  domain   Domain? @relation(fields: [domainId], references: [id])
-  domainId String?
+  domain   Domain  @relation(fields: [domainId], references: [id])
+  domainId String
   events   Event[]
   tags     Tag[]
 }

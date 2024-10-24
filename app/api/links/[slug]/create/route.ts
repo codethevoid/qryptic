@@ -17,11 +17,6 @@ export const POST = withTeam(async ({ team, req, user }) => {
       return NextResponse.json({ error: "You have reached your link limit" }, { status: 400 });
     }
 
-    const teamPlan = await prisma.team.findUnique({
-      where: { id: team.id },
-      select: { plan: { select: { isFree: true } } },
-    });
-
     const body = await req.json();
     let {
       destination,
@@ -49,6 +44,7 @@ export const POST = withTeam(async ({ team, req, user }) => {
       password,
       shouldCloak,
       shouldIndex,
+      shouldProxy,
     } = body as CreateLinkBody;
 
     if (!destination) {
@@ -69,7 +65,6 @@ export const POST = withTeam(async ({ team, req, user }) => {
           isPrimary: true,
         },
       })) as Domain;
-      shouldIndex = true;
     }
 
     // check if slug exists and if it is taken
@@ -99,7 +94,7 @@ export const POST = withTeam(async ({ team, req, user }) => {
       if (data.location) logo = data.location;
     }
 
-    shouldIndex = teamPlan?.plan.isFree && domain.name === shortDomain ? true : shouldIndex;
+    shouldIndex = domain.name === shortDomain ? true : shouldIndex;
 
     // create link
     const link = await prisma.link.create({
@@ -113,8 +108,9 @@ export const POST = withTeam(async ({ team, req, user }) => {
         expiresAt: expiresAt ? new Date(expiresAt) : null,
         shouldCloak,
         shouldIndex,
-        ios: ios,
-        android: android,
+        shouldProxy,
+        ios,
+        android,
         expired: expiredDestination || domain.destination,
         geo,
         ogTitle: title,

@@ -1,12 +1,12 @@
-import prisma from "@/db/prisma";
-import { constructMetadata } from "@/utils/construct-metadata";
 import { Metadata } from "next";
+import { constructMetadata } from "@/utils/construct-metadata";
+import prisma from "@/db/prisma";
 
-export const generateMetadata = async ({
-  params,
-}: {
+type Props = {
   params: { slug: string };
-}): Promise<Metadata> => {
+};
+
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const link = await prisma.link.findUnique({
     where: { slug: params.slug },
     select: {
@@ -18,6 +18,7 @@ export const generateMetadata = async ({
     },
   });
 
+  // If the link is not found, return not found metadata
   if (!link) {
     return constructMetadata({
       title: "Qryptic | Link not found",
@@ -35,13 +36,8 @@ export const generateMetadata = async ({
   });
 };
 
-const CloakedPage = async ({ params }: { params: { slug: string } }) => {
-  const link = await prisma.link.findUnique({
-    where: { slug: params.slug },
-    select: { destination: true },
-  });
-
-  return <iframe className="h-screen w-screen border-none" src={link?.destination} />;
+const ProxyPage = ({ params }: Props) => {
+  return <div>proxy page</div>;
 };
 
-export default CloakedPage;
+export default ProxyPage;

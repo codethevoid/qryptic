@@ -147,6 +147,8 @@ export type LinkForm = {
   setIsPasswordProtected: (isPasswordProtected: boolean) => void;
   shouldDisablePassword: boolean;
   setShouldDisablePassword: (shouldDisablePassword: boolean) => void;
+  initialOgData: { title: string; description: string; image: string };
+  setInitialOgData: (initialOgData: { title: string; description: string; image: string }) => void;
 };
 
 export type CreateLinkBody = {
@@ -175,6 +177,7 @@ export type CreateLinkBody = {
   shouldCloak: boolean;
   shouldIndex: boolean;
   password: string;
+  shouldProxy: boolean;
 };
 
 export type EditLinkBody = {
@@ -204,6 +207,7 @@ export type EditLinkBody = {
   shouldIndex: boolean;
   password: string;
   shouldDisablePassword: boolean;
+  shouldProxy: boolean;
 };
 
 export type MiddlewareLink = {
@@ -214,6 +218,7 @@ export type MiddlewareLink = {
   expiresAt: Date | null;
   shouldCloak: boolean;
   shouldIndex: boolean;
+  shouldProxy: boolean;
   isBanned: boolean;
   ios: string | null;
   android: string | null;

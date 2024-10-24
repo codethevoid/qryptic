@@ -38,6 +38,7 @@ export const PATCH = withTeam(async ({ team, req, params }) => {
       password,
       shouldCloak,
       shouldIndex,
+      shouldProxy,
       shouldDisablePassword,
     } = body as EditLinkBody;
 
@@ -82,13 +83,7 @@ export const PATCH = withTeam(async ({ team, req, params }) => {
       if (data.location) logo = data.location;
     }
 
-    // get team plan
-    const teamPlan = await prisma.team.findUnique({
-      where: { id: team.id },
-      select: { plan: { select: { isFree: true } } },
-    });
-
-    shouldIndex = teamPlan?.plan.isFree && domain.name === shortDomain ? true : shouldIndex;
+    shouldIndex = domain.name === shortDomain ? true : shouldIndex;
 
     // update link
     const link = await prisma.link.update({
@@ -102,6 +97,7 @@ export const PATCH = withTeam(async ({ team, req, params }) => {
         expiresAt: expiresAt ? new Date(expiresAt) : null,
         shouldCloak,
         shouldIndex,
+        shouldProxy,
         ios,
         android,
         expired: expiredDestination || domain.destination,

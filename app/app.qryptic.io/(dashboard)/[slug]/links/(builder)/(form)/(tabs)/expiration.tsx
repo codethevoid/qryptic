@@ -79,7 +79,7 @@ export const Expiration = () => {
                   }}
                   defaultMonth={expiresAt || startOfToday()}
                   selected={expiresAt}
-                  disabled={(date) => date <= startOfToday()}
+                  // disabled={(date) => date <= startOfToday()}
                   // className="border-r border-dashed"
                 />
                 {/*<div className="flex space-x-0.5 p-3">*/}

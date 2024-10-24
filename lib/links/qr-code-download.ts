@@ -35,7 +35,7 @@ export const downloadPNG = (
 
   // Create an image from the SVG
   const img = new Image();
-  img.crossOrigin = ""; // Ensure cross-origin images are handled properly
+  img.crossOrigin = "anonymous"; // Ensure cross-origin images are handled properly
   img.src = url;
 
   img.onload = () => {
@@ -45,7 +45,7 @@ export const downloadPNG = (
     // If there's a logo, draw it in the center of the QR code
     if (logo) {
       const logoImg = new Image();
-      logoImg.crossOrigin = ""; // Handle cross-origin for the logo image
+      logoImg.crossOrigin = "anonymous"; // Handle cross-origin for the logo image
       logoImg.src = logo;
 
       logoImg.onload = () => {
