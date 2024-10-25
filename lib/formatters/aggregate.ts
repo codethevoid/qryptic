@@ -1,15 +1,29 @@
-import { differenceInDays, format, eachDayOfInterval, eachHourOfInterval } from "date-fns";
+import {
+  differenceInDays,
+  format,
+  eachDayOfInterval,
+  eachHourOfInterval,
+  isToday,
+  addDays,
+} from "date-fns";
 import { DateRange } from "react-day-picker";
 
 type Event = { createdAt: Date; type: "click" | "scan" };
 
 // function that will return an interval key based on the time frame
 const getIntervals = (date: DateRange) => {
+  if (!date.from || !date.to) return { intervals: [], key: "" };
   const diffInDays = differenceInDays(date.to as Date, date.from as Date);
   // const diffInMonths = differenceInMonths(date.to as Date, date.from as Date);
   // group hourly for one day
+  // if the day is in the past, we want to show all hours
+
   if (diffInDays === 0) {
-    const hours = eachHourOfInterval({ start: date.from as Date, end: new Date() });
+    const isTodaysDate = isToday(date.from as Date);
+    const hours = eachHourOfInterval({
+      start: date.from as Date,
+      end: isTodaysDate ? new Date() : date.to.setHours(23, 59, 59, 999),
+    });
     return { intervals: hours, key: "h a" };
   }
   // group everything else by day

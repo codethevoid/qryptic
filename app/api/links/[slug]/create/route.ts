@@ -51,6 +51,21 @@ export const POST = withTeam(async ({ team, req, user }) => {
       return NextResponse.json({ error: "Destination is required" }, { status: 400 });
     }
 
+    const teamWithPlan = await prisma.team.findUnique({
+      where: { id: team.id },
+      select: { plan: { select: { isFree: true } } },
+    });
+
+    if (teamWithPlan?.plan.isFree) {
+      // we will not allow free teams to create slugs that are less than 3 characters
+      if (slug.length < 3) {
+        return NextResponse.json(
+          { error: "Upgrade to a paid plan to create slugs less than 3 characters" },
+          { status: 400 },
+        );
+      }
+    }
+
     if (!domain) {
       // get default domain for qryptic
       domain = (await prisma.domain.findFirst({

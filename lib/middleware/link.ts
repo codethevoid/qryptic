@@ -7,6 +7,7 @@ import { constructURL } from "@/utils/construct-url";
 import { waitUntil } from "@vercel/functions";
 import { recordEvent } from "@/lib/middleware/utils/record-event";
 import { detectBot } from "@/lib/middleware/utils/detect-bot";
+import { isPasswordCorrect } from "@/lib/middleware/utils/is-password-correct";
 
 const baseURL = `${protocol}${rootDomain}`;
 
@@ -83,6 +84,11 @@ export const linkMiddleware = async (req: NextRequest) => {
           ...qrypticHeaders,
         },
       });
+    } else {
+      // if the domain does not exist, redirect to home page
+      return NextResponse.redirect(`${protocol}${rootDomain}`, {
+        headers: { "x-robots-tag": "googlebot: noindex", ...qrypticHeaders },
+      });
     }
   }
 
@@ -105,17 +111,6 @@ export const linkMiddleware = async (req: NextRequest) => {
     isPasswordProtected,
   } = link;
 
-  // if the link is password protected, redirect to the password page
-  if (isPasswordProtected) {
-    // we will rewrite this so it can keep the domain in the URL along with the slug
-    return NextResponse.rewrite(new URL(`/${domain}/${slug}/password`, req.url), {
-      headers: {
-        ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
-        ...qrypticHeaders,
-      },
-    });
-  }
-
   // check if link is banned
   if (isBanned) {
     return NextResponse.rewrite(new URL(`/${domain}/${slug}/banned`, req.url), {
@@ -124,6 +119,24 @@ export const linkMiddleware = async (req: NextRequest) => {
         ...qrypticHeaders,
       },
     });
+  }
+
+  // if the link is password protected, redirect to the password page
+  if (isPasswordProtected) {
+    const password = req.nextUrl.searchParams.get("password");
+    // if no password is provided or the password is incorrect, redirect to the password page
+    if (!password || !(await isPasswordCorrect(password, slug))) {
+      // we will rewrite this so it can keep the domain in the URL along with the slug
+      return NextResponse.rewrite(new URL(`/${domain}/${slug}/password`, req.url), {
+        headers: {
+          ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
+          ...qrypticHeaders,
+        },
+      });
+    } else {
+      // if password is correct, clear the password from search params and continue
+      req.nextUrl.searchParams.delete("password");
+    }
   }
 
   // if the link is expired, redirect to the expired page
@@ -173,15 +186,6 @@ export const linkMiddleware = async (req: NextRequest) => {
     // record event
     waitUntil(recordEvent({ req, linkId: id, finalUrl: constructURL(geoDestination) }));
     // redirect to geo destination
-    if (shouldCloak) {
-      // rewrite to cloaked URL
-      return NextResponse.rewrite(new URL(`/${domain}/${slug}/cloaked`, req.url), {
-        headers: {
-          ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
-          ...qrypticHeaders,
-        },
-      });
-    }
     return NextResponse.redirect(constructURL(geoDestination), {
       headers: {
         ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),

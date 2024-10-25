@@ -26,6 +26,10 @@ const chartConfig = {
     label: "Scans",
     color: "hsl(var(--chart-2))",
   },
+  total: {
+    label: "Total",
+    color: "hsl(var(--chart-3))",
+  },
 } satisfies ChartConfig;
 
 type EventChartProps = {

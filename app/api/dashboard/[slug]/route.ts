@@ -15,6 +15,11 @@ export const GET = withTeam(async ({ req, team }) => {
     }
     const prev = getPreviousPeriod(from, to, timeFrame);
 
+    // get time in utc
+    // from.setUTCHours(0, 0, 0, 0);
+    // to.setUTCHours(0, 0, 0, 0);
+    // console.log(from, to);
+
     const [links, prevLinks, events, prevEvents, topLinks] = await prisma.$transaction([
       prisma.link.count({
         where: {

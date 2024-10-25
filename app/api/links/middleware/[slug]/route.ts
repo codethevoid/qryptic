@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db/prisma";
 import { MiddlewareLink } from "@/types/links";
-
-const isAuthorized = (req: NextRequest) => {
-  const bearer = req.headers.get("authorization");
-  const token = bearer?.split(" ")[1];
-  return token === process.env.QRYPTIC_API_KEY;
-};
+import { isAuthorized } from "@/app/api/links/middleware/is-authorized";
 
 export const GET = async (req: NextRequest, { params }: { params: { slug: string } }) => {
   try {
@@ -29,6 +24,7 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
         expiresAt: true,
         shouldCloak: true,
         shouldIndex: true,
+        shouldProxy: true,
         isBanned: true,
         ios: true,
         android: true,
@@ -43,7 +39,6 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
     }
 
     link.isPasswordProtected = !!link.passwordHash;
-    if (link.isPasswordProtected) link.destination = "";
 
     return NextResponse.json({ link });
   } catch (e) {

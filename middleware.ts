@@ -4,7 +4,7 @@ import { appDomain, adminDomain, rootDomain } from "@/utils/qryptic/domains";
 import { detectInvalidPath, parseReq } from "@/lib/middleware/utils";
 
 export const middleware = async (req: NextRequest) => {
-  const { domain, path, fullPath, searchParams } = parseReq(req);
+  const { domain, path } = parseReq(req);
 
   if (detectInvalidPath(path)) {
     return NextResponse.rewrite(new URL("/not-found", req.url));

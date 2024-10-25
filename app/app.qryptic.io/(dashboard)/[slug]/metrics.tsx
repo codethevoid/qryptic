@@ -3,17 +3,10 @@
 import NextLink from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Link2,
-  MousePointer,
-  MousePointer2,
-  ScanQrCode,
-  Infinity as InfinityIcon,
-} from "lucide-react";
+import { Link2, MousePointer2, ScanQrCode, Infinity as InfinityIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
 import { Dashboard } from "@/types/dashboard";
-import NumberFlow from "@number-flow/react";
 
 type MetricsProps = {
   isLoading: boolean;

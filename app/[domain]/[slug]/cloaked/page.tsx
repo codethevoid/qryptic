@@ -1,12 +1,13 @@
 import prisma from "@/db/prisma";
 import { constructMetadata } from "@/utils/construct-metadata";
+import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 
-export const generateMetadata = async ({
-  params,
-}: {
+type Props = {
   params: { slug: string };
-}): Promise<Metadata> => {
+};
+
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const link = await prisma.link.findUnique({
     where: { slug: params.slug },
     select: {
@@ -14,34 +15,35 @@ export const generateMetadata = async ({
       ogDescription: true,
       ogImage: true,
       shouldIndex: true,
+      destination: true,
       domain: { select: { name: true } },
     },
   });
 
-  if (!link) {
-    return constructMetadata({
-      title: "Qryptic | Link not found",
-      description: "The link you are looking for does not exist",
-      noIndex: true,
-    });
-  }
+  if (!link) return notFound();
 
   return constructMetadata({
     title: link.ogTitle || "",
     description: link.ogDescription || "",
     image: link.ogImage || "",
-    icons: `https://www.google.com/s2/favicons?sz=64&domain_url=${link.domain.name}`,
-    noIndex: !link.shouldIndex,
+    icons: `https://www.google.com/s2/favicons?sz=64&domain_url=${link.destination}`,
+    noIndex: true,
   });
 };
 
-const CloakedPage = async ({ params }: { params: { slug: string } }) => {
+const CloakedPage = async ({ params }: Props) => {
   const link = await prisma.link.findUnique({
     where: { slug: params.slug },
-    select: { destination: true },
+    select: { destination: true, shouldCloak: true },
   });
 
-  return <iframe className="h-screen w-screen border-none" src={link?.destination} />;
+  // if no link found
+  if (!link) return notFound();
+
+  // if link should not be cloaked
+  if (!link.shouldCloak) redirect(link.destination);
+
+  return <iframe className="h-screen w-screen border-none" src={link.destination} />;
 };
 
 export default CloakedPage;
