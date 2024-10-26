@@ -12,9 +12,9 @@ import { Performers } from "@/app/app.qryptic.io/(dashboard)/[slug]/performers";
 
 export const HomeClient = () => {
   const today = startOfToday();
-  const [timeFrame, setTimeFrame] = useState<TimeFrame>("fourWeeks");
+  const [timeFrame, setTimeFrame] = useState<TimeFrame>("today");
   const [date, setDate] = useState<DateRange | undefined>({
-    from: subDays(today, 27), // 4 weeks by default
+    from: subDays(today, 0), // today by default
     to: today,
   });
 
@@ -34,7 +34,7 @@ export const HomeClient = () => {
           />
           <Metrics isLoading={isLoading} data={data} />
           <div className="mt-5 grid grid-cols-5 gap-5">
-            <EventChart data={data} isLoading={isLoading} date={date} />
+            <EventChart data={data} isLoading={isLoading} date={date} timeFrame={timeFrame} />
             <Performers isLoading={isLoading} data={data} date={date} />
           </div>
         </>

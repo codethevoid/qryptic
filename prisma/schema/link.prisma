@@ -30,6 +30,13 @@ model Link {
   ogDescription String? @db.Text
   ogImage       String?
 
+  // utm
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmTerm     String?
+  utmContent  String?
+
   // qr code
   qrCode QrCode?
 

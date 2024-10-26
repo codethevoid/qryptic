@@ -40,12 +40,17 @@ export const PATCH = withTeam(async ({ team, req, params }) => {
       shouldIndex,
       shouldProxy,
       shouldDisablePassword,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      utmTerm,
+      utmContent,
     } = body as EditLinkBody;
 
     // make sure link belongs to team
     const isAllowedToEdit = await prisma.link.findUnique({
       where: { id: params.id, teamId: team.id },
-      select: { id: true },
+      select: { id: true, destination: true },
     });
 
     if (!isAllowedToEdit) {
@@ -66,6 +71,14 @@ export const PATCH = withTeam(async ({ team, req, params }) => {
       if (slug.length < 3) {
         return NextResponse.json(
           { error: "Upgrade to a paid plan to create slugs less than 3 characters" },
+          { status: 400 },
+        );
+      }
+
+      // we will not allow free teams to edit destination URLs (redirects)
+      if (isAllowedToEdit.destination !== destination) {
+        return NextResponse.json(
+          { error: "Upgrade to a paid plan to edit destination URLs (redirects)" },
           { status: 400 },
         );
       }
@@ -117,6 +130,11 @@ export const PATCH = withTeam(async ({ team, req, params }) => {
         android,
         expired: expiredDestination || domain.destination,
         geo,
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        utmTerm,
+        utmContent,
         ogTitle: title,
         ogDescription: description,
         ogImage: image,

@@ -8,15 +8,7 @@ import {
 import { CalendarDays, ChevronDown, Globe, Link2, Lock, Tag, User } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import {
-  differenceInDays,
-  format,
-  startOfMonth,
-  startOfToday,
-  startOfYear,
-  subDays,
-  subMonths,
-} from "date-fns";
+import { differenceInDays, format, startOfToday, subDays } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import {
   DropdownMenu,
@@ -32,32 +24,7 @@ import { DateRange } from "react-day-picker";
 import { toast } from "sonner";
 import { useState } from "react";
 import { TimeFrame } from "@/types/analytics";
-
-const daysMap: Record<TimeFrame, number> = {
-  today: 0,
-  sevenDays: 6,
-  fourWeeks: 27,
-  threeMonths: differenceInDays(startOfToday(), subMonths(startOfToday(), 3)) - 1,
-  twelveMonths: differenceInDays(startOfToday(), subMonths(startOfToday(), 12)) - 1,
-  threeYears: differenceInDays(startOfToday(), subMonths(startOfToday(), 36)) - 1,
-  monthToDate: differenceInDays(startOfToday(), startOfMonth(new Date())),
-  yearToDate: differenceInDays(startOfToday(), startOfYear(new Date())),
-  all: 0,
-  custom: 0,
-};
-
-const timeFrameLabels = {
-  today: "Today",
-  sevenDays: "Last 7 days",
-  fourWeeks: "Last 4 weeks",
-  threeMonths: "Last 3 months",
-  twelveMonths: "Last 12 months",
-  threeYears: "Last 3 years",
-  monthToDate: "Month to date",
-  yearToDate: "Year to date",
-  all: "All time",
-  custom: "Custom",
-};
+import { timeFrameLabels, daysMap } from "@/lib/analytics/maps";
 
 type DateFilterProps = {
   setTimeFrame: (value: TimeFrame) => void;
@@ -85,7 +52,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
     });
   };
 
-  const handleDateChange = async () => {
+  const handleDateChange = () => {
     // check if the date range is invalid
     const isInvalidDate = !tempDate || !tempDate.from || !tempDate.to;
     if (isInvalidDate) {
@@ -147,6 +114,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
                 <SelectGroup>
                   {timeFrame === "custom" && <SelectItem value="custom">Custom</SelectItem>}
                   <SelectItem value="today">Today</SelectItem>
+                  {/*<SelectItem value="twentyFourHours">Last 24 hours</SelectItem>*/}
                   <SelectItem value="sevenDays">Last 7 days</SelectItem>
                   <SelectItem value="fourWeeks">Last 4 weeks</SelectItem>
                   <SelectItem value="threeMonths" disabled={team?.plan.isFree}>
@@ -205,7 +173,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
               open={isCalendarOpen}
               onOpenChange={async (isOpen: boolean) => {
                 setIsCalendarOpen(isOpen);
-                if (!isOpen) await handleDateChange();
+                if (!isOpen) handleDateChange();
               }}
             >
               <PopoverTrigger asChild>

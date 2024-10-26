@@ -16,7 +16,6 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
       ogImage: true,
       shouldIndex: true,
       destination: true,
-      domain: { select: { name: true } },
     },
   });
 
@@ -43,7 +42,7 @@ const CloakedPage = async ({ params }: Props) => {
   // if link should not be cloaked
   if (!link.shouldCloak) redirect(link.destination);
 
-  return <iframe className="h-screen w-screen border-none" src={link.destination} />;
+  return <iframe className="min-h-screen w-screen border-none" src={link.destination} />;
 };
 
 export default CloakedPage;

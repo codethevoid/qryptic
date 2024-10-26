@@ -1,17 +1,11 @@
-import {
-  differenceInDays,
-  format,
-  eachDayOfInterval,
-  eachHourOfInterval,
-  isToday,
-  addDays,
-} from "date-fns";
+import { differenceInDays, format, eachDayOfInterval, eachHourOfInterval, isToday } from "date-fns";
 import { DateRange } from "react-day-picker";
+import { TimeFrame } from "@/types/analytics";
 
 type Event = { createdAt: Date; type: "click" | "scan" };
 
 // function that will return an interval key based on the time frame
-const getIntervals = (date: DateRange) => {
+const getIntervals = (date: DateRange, timeFrame?: TimeFrame) => {
   if (!date.from || !date.to) return { intervals: [], key: "" };
   const diffInDays = differenceInDays(date.to as Date, date.from as Date);
   // const diffInMonths = differenceInMonths(date.to as Date, date.from as Date);
@@ -33,8 +27,12 @@ const getIntervals = (date: DateRange) => {
 
 type AggregatedData = { interval: string; clicks: number; scans: number }[];
 
-export const aggregateEvents = (date: DateRange, events: Event[] = []): AggregatedData => {
-  const { intervals, key } = getIntervals(date);
+export const aggregateEvents = (
+  date: DateRange,
+  events: Event[] = [],
+  timeFrame?: TimeFrame,
+): AggregatedData => {
+  const { intervals, key } = getIntervals(date, timeFrame);
 
   const formattedData: AggregatedData = intervals.map((interval) => {
     const intervalKey = format(interval, key);

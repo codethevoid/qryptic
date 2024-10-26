@@ -8,6 +8,9 @@ model Event {
   createdAt DateTime @default(now())
 
   // event details
+  slug                 String
+  domainName           String
+  shortUrl             String
   destination          String
   type                 EventType
   ip                   String
@@ -30,9 +33,20 @@ model Event {
   osVersion            String
   cpu                  String
   referrer             String
+  referrerDomain       String
+
+  // we keep track of the UTM params on event level
+  // instead of relying on the link's UTM params
+  // this is because the link's UTM params can be changed
+  // and we want to keep track of the original UTM params
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmTerm     String?
+  utmContent  String?
 
   // relations
-  Link     Link   @relation(fields: [linkId], references: [id])
+  link     Link   @relation(fields: [linkId], references: [id])
   linkId   String
   team     Team   @relation(fields: [teamId], references: [id])
   teamId   String

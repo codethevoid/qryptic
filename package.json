@@ -46,6 +46,7 @@
     "@types/qrcode": "^1.5.5",
     "@types/ws": "^8.5.12",
     "@vercel/functions": "^1.4.2",
+    "aicommits": "^1.11.0",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

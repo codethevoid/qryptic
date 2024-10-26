@@ -64,7 +64,6 @@ export const LinksClient: FC = () => {
       setDomainOptions(data.domains);
       setTagOptions(data.tags);
     }
-    console.log(data);
   }, [data]);
 
   useEffect(() => {

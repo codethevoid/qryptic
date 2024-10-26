@@ -45,6 +45,11 @@ export const POST = withTeam(async ({ team, req, user }) => {
       shouldCloak,
       shouldIndex,
       shouldProxy,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      utmTerm,
+      utmContent,
     } = body as CreateLinkBody;
 
     if (!destination) {
@@ -128,6 +133,11 @@ export const POST = withTeam(async ({ team, req, user }) => {
         android,
         expired: expiredDestination || domain.destination,
         geo,
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        utmTerm,
+        utmContent,
         ogTitle: title,
         ogDescription: description,
         ogImage: image,

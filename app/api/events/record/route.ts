@@ -3,6 +3,15 @@ import prisma from "@/db/prisma";
 import { type UserAgent, Continent, Geo } from "@/types/events";
 import { euCountries } from "@/utils/countries/eu-countries";
 
+const getDomain = (url: string) => {
+  try {
+    const domain = new URL(url).hostname;
+    return domain.replace("www.", "");
+  } catch {
+    return "direct";
+  }
+};
+
 const localhostGeoData = {
   city: "Dayton",
   country: "US",
@@ -45,12 +54,20 @@ export const POST = async (req: NextRequest) => {
 
     const link = await prisma.link.findUnique({
       where: { id: linkId },
-      select: { teamId: true, domainId: true },
+      select: { teamId: true, domain: { select: { id: true, name: true } }, slug: true },
     });
 
     if (!link) {
       return NextResponse.json({ error: "Link not found" }, { status: 404 });
     }
+
+    // get search params from finalUrl
+    const searchParams = new URLSearchParams(finalUrl.split("?")[1]);
+    const utmSource = searchParams.get("utm_source");
+    const utmMedium = searchParams.get("utm_medium");
+    const utmCampaign = searchParams.get("utm_campaign");
+    const utmTerm = searchParams.get("utm_term");
+    const utmContent = searchParams.get("utm_content");
 
     const isEU = euCountries.includes(geo?.country);
 
@@ -64,7 +81,10 @@ export const POST = async (req: NextRequest) => {
     const eventData = {
       linkId,
       teamId: link.teamId,
-      domainId: link.domainId,
+      domainId: link.domain.id,
+      shortUrl: `${link.domain.name}/${link.slug}`,
+      slug: link.slug,
+      domainName: link.domain.name,
       destination: finalUrl,
       type: eventType || "click",
       ip: !isEU && ip ? ip : "unknown",
@@ -87,6 +107,12 @@ export const POST = async (req: NextRequest) => {
       osVersion: ua.os.version || "unknown",
       cpu: ua.cpu.architecture || "unknown",
       referrer: referrer || "direct",
+      referrerDomain: referrer ? getDomain(referrer) : "direct",
+      utmSource: utmSource || null,
+      utmMedium: utmMedium || null,
+      utmCampaign: utmCampaign || null,
+      utmTerm: utmTerm || null,
+      utmContent: utmContent || null,
     };
 
     await prisma.event.create({ data: eventData });

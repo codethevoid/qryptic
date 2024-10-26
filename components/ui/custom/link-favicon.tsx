@@ -36,7 +36,7 @@ export const LinkFavicon: FC<LinkFaviconProps> = ({ link }) => {
     >
       {!isError ? (
         <Image
-          src={`https://www.google.com/s2/favicons?sz=64&domain_url=${link.destination.replace("http://", "").replace("https://", "")}`}
+          src={`https://www.google.com/s2/favicons?sz=64&domain_url=${link.destination}`}
           alt={link.destination}
           className="h-5 w-5 rounded-full"
           height={64}

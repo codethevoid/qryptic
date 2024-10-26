@@ -132,6 +132,11 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
           shouldCloak,
           shouldIndex,
           shouldProxy: shouldProxy(),
+          utmSource,
+          utmMedium,
+          utmCampaign,
+          utmTerm,
+          utmContent,
         }),
       });
 
@@ -186,6 +191,11 @@ export const LinkFormProvider = ({ children }: { children: ReactNode }) => {
           shouldIndex,
           shouldProxy: shouldProxy(),
           shouldDisablePassword,
+          utmSource,
+          utmMedium,
+          utmCampaign,
+          utmTerm,
+          utmContent,
         }),
       });
 

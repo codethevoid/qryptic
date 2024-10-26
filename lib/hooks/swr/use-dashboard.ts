@@ -5,6 +5,7 @@ import { Dashboard } from "@/types/dashboard";
 
 export const useDashboard = (from: Date, to: Date, timeFrame: string) => {
   const { slug } = useParams();
+
   const { data, isLoading, error } = useSWR<Dashboard>(
     `/api/dashboard/${slug}?from=${from}&to=${to}&timeFrame=${timeFrame}`,
     fetcher,

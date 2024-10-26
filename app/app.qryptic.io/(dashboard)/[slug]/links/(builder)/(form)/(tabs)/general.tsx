@@ -20,6 +20,7 @@ import { Tag } from "@/components/ui/custom/tag";
 import { useParams } from "next/navigation";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { generateSlug, checkSlug, isSlugUrlSafe } from "@/lib/links/slug-actions";
+import { useTeam } from "@/lib/hooks/swr/use-team";
 
 export const General = ({ mode }: { mode: "new" | "edit" }) => {
   const {
@@ -50,6 +51,7 @@ export const General = ({ mode }: { mode: "new" | "edit" }) => {
   } = useLinkForm();
   const { data } = useOptions();
   const { slug: teamSlug } = useParams();
+  const { team } = useTeam();
   const debouncedSlug = useDebounce(slug, 500);
   const [isLoadingSlug, setIsLoadingSlug] = useState<boolean>(false);
   const [slugError, setSlugError] = useState<string>("");
@@ -152,6 +154,7 @@ export const General = ({ mode }: { mode: "new" | "edit" }) => {
           placeholder="https://example.com"
           value={destination}
           onChange={(e) => handleDestinationChange(e)}
+          disabled={mode === "edit" && team?.plan.isFree}
         />
       </div>
       <div className="space-y-1.5">

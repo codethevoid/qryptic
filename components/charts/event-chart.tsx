@@ -16,6 +16,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
 import NextLink from "next/link";
 import { Dashboard } from "@/types/dashboard";
+import { TimeFrame } from "@/types/analytics";
+import { useMemo } from "react";
 
 const chartConfig = {
   clicks: {
@@ -36,11 +38,15 @@ type EventChartProps = {
   data: Dashboard | undefined;
   isLoading: boolean;
   date: DateRange | undefined;
+  timeFrame?: TimeFrame;
 };
 
-export const EventChart = ({ data, date, isLoading }: EventChartProps) => {
+export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps) => {
   const { slug } = useParams();
-  const chartData = aggregateEvents(date as DateRange, data?.events);
+
+  const chartData = useMemo(() => {
+    return aggregateEvents(date as DateRange, data?.events, timeFrame);
+  }, [date, data, timeFrame]);
 
   const formatTick = (tick: string) => {
     const diff = differenceInDays(date?.to as Date, date?.from as Date);

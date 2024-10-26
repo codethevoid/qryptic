@@ -178,6 +178,11 @@ export type CreateLinkBody = {
   shouldIndex: boolean;
   password: string;
   shouldProxy: boolean;
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmTerm: string;
+  utmContent: string;
 };
 
 export type EditLinkBody = {
@@ -208,6 +213,11 @@ export type EditLinkBody = {
   password: string;
   shouldDisablePassword: boolean;
   shouldProxy: boolean;
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmTerm: string;
+  utmContent: string;
 };
 
 export type MiddlewareLink = {
