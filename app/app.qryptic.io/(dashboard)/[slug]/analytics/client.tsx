@@ -72,7 +72,7 @@ export const AnalyticsClient = () => {
       </div>
       <div className="mt-6 space-y-6">
         <AnalyticsChart events={data} date={date} isLoading={isLoading} />
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-6 max-[800px]:grid-cols-1">
           <LinksData
             events={data}
             isLoading={isLoading}

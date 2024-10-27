@@ -21,6 +21,7 @@ export const EditLinkProviderClient = () => {
 
 const EditLinkClient = () => {
   const { data, isLoading, error, mutate } = useLink();
+  console.log(data);
   const {
     setDestination,
     setDomain,
@@ -53,7 +54,8 @@ const EditLinkClient = () => {
 
   const setSearchParams = () => {
     // get utm values
-    const searchParams = new URLSearchParams(data.link.destination?.split("?")[1]);
+    if (!data?.destination) return;
+    const searchParams = new URLSearchParams(data.destination?.split("?")[1]);
     setUtmSource(searchParams.get("utm_source") || "");
     setUtmMedium(searchParams.get("utm_medium") || "");
     setUtmCampaign(searchParams.get("utm_campaign") || "");
@@ -64,32 +66,32 @@ const EditLinkClient = () => {
   useEffect(() => {
     console.log(data);
     if (data) {
-      setExistingLink(data.link);
-      setDestination(data.link.destination);
-      setDomain(data.link.domain);
-      setSlug(data.link.slug);
-      setTags(data.link.tags);
-      setNotes(data.link.notes);
-      setQrCodeType(data.link.qrCode.type);
-      setLogo(data.link.qrCode.logo);
-      setLogoType(data.link.qrCode.logoType);
-      setColor(data.link.qrCode.color);
+      setExistingLink(data);
+      setDestination(data.destination);
+      setDomain(data.domain);
+      setSlug(data.slug);
+      setTags(data.tags);
+      setNotes(data.notes);
+      setQrCodeType(data.qrCode.type);
+      setLogo(data.qrCode.logo);
+      setLogoType(data.qrCode.logoType);
+      setColor(data.qrCode.color);
       setLogoDimensions({
-        width: data.link.qrCode.logoWidth,
-        height: data.link.qrCode.logoHeight,
+        width: data.qrCode.logoWidth,
+        height: data.qrCode.logoHeight,
       });
       setSearchParams();
-      setIos(data.link.ios);
-      setAndroid(data.link.android);
-      setGeo(data.link.geo);
-      setTitle(data.link.ogTitle);
-      setDescription(data.link.ogDescription);
-      setImage(data.link.ogImage);
-      setExpiresAt(data.link.expiresAt);
-      setExpiredDestination(data.link.expired);
-      setShouldCloak(data.link.shouldCloak);
-      setShouldIndex(data.link.shouldIndex);
-      setIsPasswordProtected(!!data.link.passwordHash);
+      setIos(data.ios);
+      setAndroid(data.android);
+      setGeo(data.geo);
+      setTitle(data.ogTitle);
+      setDescription(data.ogDescription);
+      setImage(data.ogImage);
+      setExpiresAt(data.expiresAt);
+      setExpiredDestination(data.expired);
+      setShouldCloak(data.shouldCloak);
+      setShouldIndex(data.shouldIndex);
+      setIsPasswordProtected(!!data.passwordHash);
     }
   }, [data]);
 

@@ -6,8 +6,13 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, QrCode } from "lucide-react";
 import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
 import { DownloadQrCode } from "@/components/modals/links/download-qr-code";
+import { type Link } from "@/types/links";
 
-export const EditLinkSnackbar = ({ mutate }: { mutate: () => Promise<void> }) => {
+export const EditLinkSnackbar = ({
+  mutate,
+}: {
+  mutate: () => Promise<void | Link | undefined>;
+}) => {
   const { slug } = useParams();
   const { editForm, isSubmitting, destination } = useLinkForm();
   const router = useRouter();

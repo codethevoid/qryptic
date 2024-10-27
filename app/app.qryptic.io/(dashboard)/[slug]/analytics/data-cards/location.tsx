@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 import { useMemo, useState } from "react";
 import { type Event } from "@/types/analytics";
-import { Earth, Flag, FlagIcon, Link2, LocateFixed, Map, MapPin } from "lucide-react";
+import { Map } from "lucide-react";
 import { groupBy } from "@/lib/formatters/group-by";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ProgressNumTab } from "@/components/charts/progress-num-tab";

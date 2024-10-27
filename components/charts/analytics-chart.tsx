@@ -85,10 +85,10 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
   return (
     <div className="overflow-hidden rounded-lg border shadow">
       <div className="w-full border-b bg-zinc-50 dark:bg-zinc-950">
-        <div className="flex w-full max-w-96">
+        <div className="flex w-full min-[700px]:max-w-[440px]">
           <div
             className={cn(
-              "relative w-full justify-center space-y-0.5 border-r p-4 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900/60",
+              "relative w-full justify-center space-y-0.5 border-r p-4 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900/60 max-[700px]:p-3",
             )}
             role="button"
             onClick={() => handleAreaChange("events")}
@@ -98,7 +98,9 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
               <p className="text-[13px] text-muted-foreground">Events</p>
             </div>
             {!isLoading ? (
-              <p className="text-xl font-bold">{events?.length.toLocaleString("en-us")}</p>
+              <p className="text-lg font-bold min-[700px]:text-xl">
+                {events?.length.toLocaleString("en-us")}
+              </p>
             ) : (
               <div className="flex h-7 items-end">
                 <Skeleton className="h-6 w-20" />
@@ -113,7 +115,7 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
           </div>
           <div
             className={cn(
-              "relative w-full space-y-0.5 border-r p-4 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900/60",
+              "relative w-full space-y-0.5 border-r p-4 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900/60 max-[700px]:p-3",
               // areas.includes("clicks") && "bg-zinc-100 dark:bg-zinc-900/60",
             )}
             role="button"
@@ -124,7 +126,7 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
               <p className="text-[13px] text-muted-foreground">Clicks</p>
             </div>
             {!isLoading ? (
-              <p className="text-xl font-bold">
+              <p className="text-lg font-bold min-[700px]:text-xl">
                 {events?.filter((e: any) => e.type === "click").length.toLocaleString("en-us")}
               </p>
             ) : (
@@ -140,7 +142,7 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
             />
           </div>
           <div
-            className="relative w-full justify-center space-y-0.5 border-r p-4 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900/60"
+            className="relative w-full justify-center space-y-0.5 p-4 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900/60 max-[700px]:p-3 min-[700px]:border-r"
             role="button"
             onClick={() => handleAreaChange("scans")}
           >
@@ -149,7 +151,7 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
               <p className="text-[13px] text-muted-foreground">Scans</p>
             </div>
             {!isLoading ? (
-              <p className="text-xl font-bold">
+              <p className="text-lg font-bold min-[700px]:text-xl">
                 {events?.filter((e: any) => e.type === "scan").length.toLocaleString("en-us")}
               </p>
             ) : (
@@ -166,8 +168,11 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
           </div>
         </div>
       </div>
-      <div className="p-8 pl-6">
-        <ChartContainer config={chartConfig} className={"max-h-[400px] w-full"}>
+      <div className="p-8 pl-6 max-[700px]:p-4 max-[700px]:pl-1 max-[700px]:pt-6">
+        <ChartContainer
+          config={chartConfig}
+          className={"max-h-[400px] w-full max-[700px]:min-h-[260px]"}
+        >
           <AreaChart data={chartData} margin={{ left: -20, top: 8, right: 12 }}>
             <ChartTooltip
               cursor={false}

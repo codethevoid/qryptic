@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const constructMetadata = ({
-  title = `${appName} | Deliver digital experiences at scale`,
+  title = `${appName} | Deliver Digital Experiences at Scale`,
   description = `${appName} | Modernize the way your business delivers impactful marketing campaigns. Easily track, manage, and optimize every campaign, empowering your team to create data-driven strategies and deliver seamless digital experiences at scale.`,
   image = "",
   icons = [
