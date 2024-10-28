@@ -13,39 +13,13 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { useUser } from "@/lib/hooks/swr/use-user";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { useState } from "react";
-import { Upgrade } from "@/components/modals/plans/upgrade/upgrade";
-
-const roles = [
-  {
-    value: "owner",
-    label: "Owner",
-    description: "Full access to the entire team",
-  },
-  {
-    value: "member",
-    label: "Member",
-    description: "Create and edit links",
-  },
-];
+import { AddMember } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/members/components/add-member";
 
 export const MembersClient = () => {
   const { data: team, isLoading, error } = useTeamSettings();
   const { user } = useUser();
-  const [role, setRole] = useState<"owner" | "member" | undefined>(undefined);
   const [tab, setTab] = useState<"members" | "invites">("members");
-  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
 
   if (isLoading) return <Loader />;
 
@@ -53,76 +27,7 @@ export const MembersClient = () => {
 
   return (
     <>
-      <Card>
-        <div className="flex justify-between">
-          <CardHeader>
-            <CardTitle>Add a teammate</CardTitle>
-            <CardDescription className="text-[13px]">Invite a member to your team</CardDescription>
-          </CardHeader>
-          <div className="p-6">
-            <Button size="sm" variant="outline" className="space-x-2" disabled={team?.plan.isFree}>
-              <Link2 size={14} />
-              <span>Invite link</span>
-            </Button>
-          </div>
-        </div>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="Email" disabled={team?.plan.isFree} />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Role</Label>
-              <Select
-                value={role}
-                onValueChange={(value: "owner" | "member") => setRole(value)}
-                disabled={team?.plan.isFree}
-              >
-                <SelectTrigger className={cn("font-normal", !role && "text-muted-foreground")}>
-                  {role ? role.split("")[0].toUpperCase() + role.slice(1) : "Select role..."}
-                </SelectTrigger>
-                <SelectContent onCloseAutoFocus={(e) => e.preventDefault()}>
-                  {roles.map((item) => (
-                    <SelectItem value={item.value} key={item.value}>
-                      <div>
-                        <p className="text-[13px]">{item.label}</p>
-                        <p className="text-xs text-muted-foreground">{item.description}</p>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between rounded-b-lg border-t bg-zinc-50 px-6 py-3 dark:bg-zinc-950">
-          {team?.plan.isFree ? (
-            <p className="text-[13px] text-muted-foreground">Upgrade to add team members</p>
-          ) : (
-            <p className="text-[13px] text-muted-foreground">
-              Learn more about{" "}
-              <a href="#" className="text-deepBlue-500 hover:underline dark:text-deepBlue-400">
-                members
-              </a>
-            </p>
-          )}
-          {team?.plan.isFree ? (
-            <Button size="sm" onClick={() => setIsUpgradeOpen(true)}>
-              Upgrade
-            </Button>
-          ) : (
-            <Button size="sm">Invite</Button>
-          )}
-        </CardFooter>
-      </Card>
-      {/*<div className="flex items-center justify-between">*/}
-      {/*  <p className="text-lg font-bold">Members</p>*/}
-      {/*  <Button size="sm" className="space-x-2">*/}
-      {/*    <Link2 size={14} />*/}
-      {/*    <span>Invite link</span>*/}
-      {/*  </Button>*/}
-      {/*</div>*/}
+      <AddMember />
       <div className="mt-5">
         <div className="rounded-lg border">
           {team?.members.map((member, i) => (
@@ -173,7 +78,6 @@ export const MembersClient = () => {
           ))}
         </div>
       </div>
-      <Upgrade isOpen={isUpgradeOpen} setIsOpen={setIsUpgradeOpen} />
     </>
   );
 };
