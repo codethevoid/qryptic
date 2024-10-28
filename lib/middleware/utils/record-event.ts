@@ -1,3 +1,4 @@
+import "server-only";
 import { userAgent } from "next/server";
 import { detectEventType } from "@/lib/middleware/utils/detect-event-type";
 import { detectBot } from "@/lib/middleware/utils/detect-bot";

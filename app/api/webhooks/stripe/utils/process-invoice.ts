@@ -3,6 +3,8 @@ import Stripe from "stripe";
 import { InvoiceStatus } from "@/types/billing";
 
 export const processInvoice = async (invoice: Stripe.Invoice, customer: string) => {
+  if (invoice.status === "draft") return;
+
   // create or update invoice in db
   await prisma.invoice.upsert({
     where: { stripeInvoiceId: invoice.id },

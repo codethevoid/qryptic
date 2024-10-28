@@ -1,3 +1,4 @@
+import "server-only";
 import { NextRequest, userAgent } from "next/server";
 
 export const detectBot = (req: NextRequest) => {

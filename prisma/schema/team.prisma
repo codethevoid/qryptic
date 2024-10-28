@@ -11,16 +11,16 @@ model Team {
   emailInvoiceTo String?
 
   // subscription and plan details
-  stripeCustomerId     String            @unique
+  stripeCustomerId     String             @unique
   stripeSubscriptionId String?
-  subscriptionStatus   SubsrictionStatus
+  subscriptionStatus   SubscriptionStatus @default(active)
   subscriptionStart    DateTime?
   subscriptionEnd      DateTime?
-  cancelAtPeriodEnd    Boolean           @default(false)
+  cancelAtPeriodEnd    Boolean            @default(false)
   failedInvoiceId      String?
-  plan                 Plan              @relation(fields: [planId], references: [id])
+  plan                 Plan               @relation(fields: [planId], references: [id])
   planId               String
-  price                Price?            @relation(fields: [priceId], references: [id])
+  price                Price?             @relation(fields: [priceId], references: [id])
   priceId              String?
   trialEndsAt          DateTime?
 
@@ -34,6 +34,7 @@ model Team {
 
   // relations
   members        TeamMember[]
+  invites        Invite[]
   domains        Domain[]
   defaultDomains Domain[]     @relation("EnabledDefaultDomains")
   links          Link[]
@@ -47,7 +48,7 @@ model Team {
 
 enum Role {
   super_admin // creator of the account, can transfew ownership ( can only be one )
-  owner // can do anything except for deleting the account and transferring ownership
+  owner // this is the top role, can do anything (ignore super_addmin)
   member // create, read, update, delete
   billing // can only see invoices, billing history, and update payment method
   viewer // can only read data
@@ -66,8 +67,22 @@ model TeamMember {
   links Link[]
 }
 
-enum SubsrictionStatus {
+model Invite {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  email     String
+  role      Role
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    String
+}
+
+enum SubscriptionStatus {
   active
   trialing
   past_due
+  canceled
+  unpaid
+  incomplete
+  incomplete_expired
+  paused
 }

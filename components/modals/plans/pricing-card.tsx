@@ -1,18 +1,18 @@
-import { PlanWithPrices } from "@/types/plans";
 import { Card } from "@/components/ui/card";
 import { SmallSwitch } from "@/components/ui/custom/small-switch";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { Bot, ChartArea, Cog, Globe, Link, QrCode, User } from "lucide-react";
+import { type Plan } from "@/lib/hooks/swr/use-plans";
 
 type PricingCardProps = {
-  plan: PlanWithPrices;
+  plan: Plan;
   interval: "year" | "month";
   setInterval: (interval: "year" | "month") => void;
 };
 
-const getMonthlyPrice = (plan: PlanWithPrices, interval: "month" | "year") => {
+const getMonthlyPrice = (plan: Plan, interval: "month" | "year") => {
   const price = plan.prices.find((price) => price.interval === interval)?.price as number;
   return interval === "month" ? price : price / 12;
 };
@@ -76,7 +76,7 @@ export const PricingCard = ({ plan, interval, setInterval }: PricingCardProps) =
             icon={<User size={15} />}
             feature={`${plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
           />
-          <Feature icon={<Bot size={15} />} feature="AI features" />
+          {/*<Feature icon={<Bot size={15} />} feature="AI features" />*/}
           <Feature icon={<Cog size={15} />} feature="Advanced link controls" />
         </div>
       </div>

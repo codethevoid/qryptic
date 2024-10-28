@@ -1,3 +1,4 @@
+import "server-only";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3 } from "@/utils/s3";
 

@@ -12,7 +12,7 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
       </div>
       <div className="flex space-x-10">
         <TeamSettingsNav />
-        <div className="w-full">{children}</div>
+        <div className="w-full min-w-0">{children}</div>
       </div>
     </div>
   );

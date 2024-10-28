@@ -13,7 +13,7 @@ export const GET = withTeam(async ({ team, req }) => {
   const skip = (page - 1) * pageSize;
   const take = pageSize;
 
-  let domains: Domain[] = [];
+  let domains = [];
   let count = 0;
 
   if (status === "active" || status === "archived") {
@@ -41,7 +41,18 @@ export const GET = withTeam(async ({ team, req }) => {
         teamId: team.id,
         name: { contains: search, mode: "insensitive" },
       },
-      include: { _count: { select: { links: true } } },
+      select: {
+        id: true,
+        createdAt: true,
+        name: true,
+        isPrimary: true,
+        isDefault: true,
+        isVerified: true,
+        destination: true,
+        isSubdomain: true,
+        isArchived: true,
+        _count: { select: { links: true } },
+      },
       skip,
       take,
     });

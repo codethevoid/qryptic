@@ -1,31 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CardProvider } from "@/components/modals/add-card/card-provider";
-import { Check, CheckCircle, CircleCheck, CreditCard, Dot } from "lucide-react";
+import { CircleCheck, CreditCard, Dot } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { TeamSettings } from "@/lib/hooks/swr/use-team-settings";
 
 type PaymentMethodProps = {
-  paymentMethod: {
-    type: string;
-    brand: string;
-    last4: string;
-    expMonth: number;
-    expYear: number;
-  } | null;
+  paymentMethod: TeamSettings["paymentMethod"] | undefined;
   name: string;
 };
 
-export const PaymentMethodCard = ({ paymentMethod, name }: PaymentMethodProps) => {
+export const PaymentMethodCard = ({ paymentMethod, name: teamName }: PaymentMethodProps) => {
   const [isCardProviderOpen, setIsCardProviderOpen] = useState(false);
 
   return (
@@ -46,7 +34,7 @@ export const PaymentMethodCard = ({ paymentMethod, name }: PaymentMethodProps) =
           {paymentMethod && (
             <div className="flex w-full max-w-[500px] items-center justify-between rounded-lg border px-3 py-2">
               <div className="flex items-center space-x-2">
-                <CreditCard size={16}></CreditCard>
+                <CreditCard size={16} />
                 <p className="text-[13px] capitalize">{paymentMethod.brand}</p>
                 <div className="flex items-center">
                   <div className="flex items-center -space-x-2.5">
@@ -78,7 +66,7 @@ export const PaymentMethodCard = ({ paymentMethod, name }: PaymentMethodProps) =
         isOpen={isCardProviderOpen}
         hasPaymentMethod={!!paymentMethod}
         setIsOpen={setIsCardProviderOpen}
-        name={name}
+        name={teamName}
       />
     </>
   );

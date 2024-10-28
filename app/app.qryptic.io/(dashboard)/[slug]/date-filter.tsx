@@ -68,7 +68,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
     // subtract from date from today to get the number of days
     const days = differenceInDays(today, fromDate as Date) + 1;
     // check if the days is greater than the plan max days
-    if (days > team?.plan.analytics) {
+    if (days > (team?.plan.analytics as number)) {
       // if it is greater, set date back to the previous date range ( timeframe)
       setDate({
         from: subDays(today, daysMap[timeFrame]),
@@ -80,7 +80,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
       });
       // show a toast message
       return toast.error(`Date range exceeded!`, {
-        description: `The date range selected is greater than the allowed range of ${team?.plan.isFree ? team.plan.analytics : team.plan.analytics - 1} days. Upgrade your plan to increase historical data.`,
+        description: `The date range selected is greater than the allowed range of ${team?.plan.isFree ? team.plan.analytics : (team?.plan.analytics as number) - 1} days. Upgrade your plan to increase historical data.`,
       });
     }
 
@@ -129,7 +129,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
                       <span>Last 12 months</span>
                     </div>
                   </SelectItem>
-                  {team?.plan.analytics >= 1096 && (
+                  {(team?.plan.analytics as number) >= 1096 && (
                     <SelectItem value="threeYears">Last 3 years</SelectItem>
                   )}
                   {team?.plan.isFree && (
@@ -152,7 +152,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
                       <span>Year to date</span>
                     </div>
                   </SelectItem>
-                  {team?.plan.analytics < 1096 && !team?.plan.isFree && (
+                  {(team?.plan.analytics as number) < 1096 && !team?.plan.isFree && (
                     <SelectItem value="threeYears" disabled>
                       <div className="flex items-center space-x-2">
                         <Lock size={13} />
@@ -240,7 +240,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
                   <span className="text-[13px]">Tag</span>
                 </DropdownMenuItem>
               </NextLink>
-              {adminRoles.includes(team?.user?.role) && (
+              {adminRoles.includes(team?.user?.role as string) && (
                 <NextLink href={`/${slug}/settings/members`} passHref>
                   <DropdownMenuItem className="space-x-2">
                     <User size={13} />

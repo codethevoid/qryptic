@@ -1,4 +1,3 @@
-import { Domain } from "@prisma/client";
 import {
   Archive,
   ArchiveRestore,
@@ -35,13 +34,12 @@ import { useTeams } from "@/lib/hooks/swr/use-teams";
 import { EditDomain } from "@/components/modals/domains/edit-domain";
 import { ArchiveDomain } from "@/components/modals/domains/archive-domain";
 import { UnarchiveDomain } from "@/components/modals/domains/unarchive-domain";
+import { type Domain } from "@/lib/hooks/swr/use-domains";
 
 const revalidationInterval = process.env.NODE_ENV === "production" ? 8000 : 100000;
 
-type DomainWithLinkCount = Domain & { _count: { links: number } };
-
 type DomainsTableProps = {
-  domains: DomainWithLinkCount[];
+  domains: Domain[];
   mutateDomains: () => Promise<void>;
 };
 
@@ -85,7 +83,7 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
   const [isUnarchiveOpen, setIsUnarchiveOpen] = useState(false);
 
   // selected domain (to display in dialogs)
-  const [selectedDomain, setSelectedDomain] = useState<DomainWithLinkCount | null>(null);
+  const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null);
   const { slug } = useParams();
   const { teams } = useTeams();
 
@@ -349,7 +347,7 @@ const extractSubdomain = (domain: string): string | null => {
   return match ? match[1] : null;
 };
 
-const ConfigureDns = ({ domain }: { domain: DomainWithLinkCount }) => {
+const ConfigureDns = ({ domain }: { domain: Domain }) => {
   return (
     <div className="w-full space-y-2">
       <p className="text-13.5">Set the following record on your DNS provider to continue:</p>

@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Snackbar } from "@/components/snackbar/snackbar";
 import { DomainsSkeleton } from "@/components/skeletons/domains-skeleton";
+import { type Domain } from "@/lib/hooks/swr/use-domains";
 
 export const DomainsClient = () => {
   const { team } = useTeam();
@@ -50,7 +51,7 @@ export const DomainsClient = () => {
 
   const mutateDomains = async () => {
     await mutate(
-      `/api/domains/${team.slug}?page=${page}&pageSize=${pageSize}&status=${status}&search=${debouncedSearch}`,
+      `/api/domains/${team?.slug}?page=${page}&pageSize=${pageSize}&status=${status}&search=${debouncedSearch}`,
     );
   };
 
@@ -100,7 +101,7 @@ export const DomainsClient = () => {
           <DomainsSkeleton />
         ) : error ? (
           "an error occurred"
-        ) : domains.length === 0 ? (
+        ) : domains?.length === 0 ? (
           <NoDomains
             setIsOpen={setIsAddOpen}
             status={status}
@@ -109,7 +110,7 @@ export const DomainsClient = () => {
             setSearch={setSearch}
           />
         ) : (
-          <DomainsTable domains={domains} mutateDomains={mutateDomains} />
+          <DomainsTable domains={domains as Domain[]} mutateDomains={mutateDomains} />
         )}
       </div>
       <AddDomain isOpen={isAddOpen} setIsOpen={setIsAddOpen} mutateDomains={mutateDomains} />

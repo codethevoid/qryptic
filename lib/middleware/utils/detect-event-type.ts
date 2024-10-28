@@ -1,3 +1,4 @@
+import "server-only";
 import { NextRequest } from "next/server";
 
 export const detectEventType = (req: NextRequest) => {

@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { CreateTeam } from "@/components/modals/create-team";
 import { useState } from "react";
 import { Upgrade } from "@/components/modals/plans/upgrade/upgrade";
+import { adminRoles } from "@/utils/roles";
 
 export const AccountDropdown = () => {
   const { resolvedTheme, setTheme } = useTheme();
@@ -94,12 +95,12 @@ export const AccountDropdown = () => {
             <LogOut size={16} />
             <span>Sign out</span>
           </DropdownMenuItem>
-          {team?.plan.isFree && ["owner", "super_admin"].includes(team?.user.role) && (
+          {team?.plan.isFree && adminRoles.includes(team?.user.role) && (
             <>
               <DropdownMenuSeparator />
               <div className="px-2 py-1.5">
                 <Button size="sm" className="w-full" onClick={() => setIsUpgradeOpen(true)}>
-                  Upgrade
+                  Upgrade plan
                 </Button>
               </div>
             </>

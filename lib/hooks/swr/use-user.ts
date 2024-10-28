@@ -1,13 +1,17 @@
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
-import type { User } from "@prisma/client";
 
-type CustomUser = Pick<
-  User,
-  "id" | "email" | "name" | "image" | "defaultTeam" | "isEmailVerified" | "hasUsedTrial"
->;
+type User = {
+  id: string;
+  email: string;
+  name: string | null;
+  image: string;
+  defaultTeam: string;
+  isEmailVerified: boolean;
+  hasUsedTrial: boolean;
+};
 
 export const useUser = () => {
-  const { data, error, isLoading } = useSWR<CustomUser>("/api/me", fetcher);
+  const { data, error, isLoading } = useSWR<User>("/api/me", fetcher);
   return { user: data, error, isLoading };
 };

@@ -6,11 +6,13 @@ import { PaymentMethodCard } from "@/app/app.qryptic.io/(dashboard)/[slug]/setti
 import { PlanCard } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/billing/cards/plan";
 
 export const BillingClient = () => {
-  const { settings: team, isLoading, error } = useTeamSettings();
+  const { data: team, isLoading, error } = useTeamSettings();
 
   if (isLoading) return <Loader />;
 
   if (error) return <div>Failed to load team settings</div>;
+
+  if (!team) return <div>Team not found</div>;
 
   return (
     <div className="flex flex-col space-y-6">
@@ -26,7 +28,7 @@ export const BillingClient = () => {
         teamName={team?.name}
       />
       {!team?.plan.isFree && (
-        <PaymentMethodCard paymentMethod={team?.paymentMethod} name={team?.name} />
+        <PaymentMethodCard paymentMethod={team?.paymentMethod} name={team?.name as string} />
       )}
     </div>
   );

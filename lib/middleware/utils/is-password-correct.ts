@@ -1,3 +1,4 @@
+import "server-only";
 import { rootDomain, protocol } from "@/utils/qryptic/domains";
 
 const baseURL = `${protocol}${rootDomain}`;

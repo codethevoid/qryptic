@@ -1,3 +1,4 @@
+import "server-only";
 import { uploadImage } from "@/utils/upload-image";
 import { nanoid } from "@/utils/nanoid";
 

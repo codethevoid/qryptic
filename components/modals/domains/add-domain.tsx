@@ -63,7 +63,7 @@ export const AddDomain = ({ isOpen, setIsOpen, mutateDomains }: AddDomainProps) 
   const onSubmit = async (values: AddDomainFormValues) => {
     setIsLoading(true);
 
-    const { error, message } = await addDomain(values, team.slug);
+    const { error, message } = await addDomain(values, team?.slug as string);
 
     if (error) {
       toast.error(error);

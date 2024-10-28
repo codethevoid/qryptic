@@ -1,72 +1,110 @@
-import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 import prisma from "@/db/prisma";
-import { addMonths, startOfMonth } from "date-fns";
+import { startOfMonth } from "date-fns";
+import { withTeamOwner } from "@/lib/auth/with-team-owner";
 
-export const GET = async (req: NextRequest, { params }: { params: { slug: string } }) => {
-  const token = await auth();
-  if (!token) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  const { slug } = params;
-
-  const team = await prisma.team.findUnique({
-    where: { slug },
-    include: {
-      plan: true,
-      price: true,
-      members: true,
-      invoices: true,
-      _count: {
-        select: {
-          domains: true,
-          links: {
-            where: {
-              createdAt: {
-                gte: startOfMonth(new Date()),
-              },
-            },
+export const GET = withTeamOwner(async ({ team: teamInfo }) => {
+  try {
+    const team = await prisma.team.findUnique({
+      where: { id: teamInfo.id },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        image: true,
+        company: true,
+        emailInvoiceTo: true,
+        subscriptionStatus: true,
+        subscriptionStart: true,
+        subscriptionEnd: true,
+        cancelAtPeriodEnd: true,
+        paymentMethodType: true,
+        paymentMethodBrand: true,
+        paymentMethodLast4: true,
+        paymentMethodExpMonth: true,
+        paymentMethodExpYear: true,
+        trialEndsAt: true,
+        invoices: {
+          select: {
+            id: true,
+            amount: true,
+            status: true,
+            date: true,
+            number: true,
+            invoicePdf: true,
+          },
+        },
+        plan: {
+          select: {
+            id: true,
+            isLegacy: true,
+            name: true,
+            links: true,
+            domains: true,
+            seats: true,
+            isFree: true,
+          },
+        },
+        price: { select: { id: true, price: true, interval: true } },
+        members: {
+          select: {
+            id: true,
+            role: true,
+            user: { select: { id: true, email: true, name: true, image: true } },
+          },
+        },
+        invites: {
+          select: {
+            id: true,
+            email: true,
+            role: true,
+          },
+        },
+        _count: {
+          select: {
+            domains: true,
+            members: true,
+            links: { where: { createdAt: { gte: startOfMonth(new Date()) } } },
           },
         },
       },
-    },
-  });
+    });
 
-  if (!team) return NextResponse.json({ message: "Team not found" }, { status: 404 });
+    if (!team) return NextResponse.json({ error: "Team not found" }, { status: 404 });
 
-  // verify user is part of team and is owner or super admin
-  const teamMember = team.members.find((member) => member.userId === token.userId);
-  if (!teamMember) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  if (!["owner", "super_admin"].includes(teamMember.role)) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({
+      id: team.id,
+      name: team.name,
+      slug: team.slug,
+      image: team.image,
+      company: team.company || "",
+      emailInvoiceTo: team.emailInvoiceTo || "",
+      plan: team.plan,
+      price: team.price,
+      members: team.members,
+      invoices: team.invoices,
+      subscriptionStatus: team.subscriptionStatus,
+      subscriptionStart: team.subscriptionStart,
+      subscriptionEnd: team.subscriptionEnd,
+      cancelAtPeriodEnd: team.cancelAtPeriodEnd,
+      trialEndsAt: team.trialEndsAt,
+      paymentMethod: team.paymentMethodType
+        ? {
+            type: team.paymentMethodType,
+            brand: team.paymentMethodBrand,
+            last4: team.paymentMethodLast4,
+            expMonth: team.paymentMethodExpMonth,
+            expYear: team.paymentMethodExpYear,
+          }
+        : null,
+      usage: {
+        links: team._count.links,
+        domains: team._count.domains,
+        members: team._count.members,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
-
-  return NextResponse.json({
-    id: team.id,
-    name: team.name,
-    slug: team.slug,
-    image: team.image,
-    company: team.company,
-    plan: team.plan,
-    price: team.price,
-    members: team.members,
-    invoices: team.invoices,
-    trialEndsAt: team.trialEndsAt,
-    subscriptionStatus: team.subscriptionStatus,
-    subscriptionStart: team.subscriptionStart,
-    subscriptionEnd: team.subscriptionEnd,
-    cancelAtPeriodEnd: team.cancelAtPeriodEnd,
-    paymentMethod: team.paymentMethodId
-      ? {
-          type: team.paymentMethodType,
-          brand: team.paymentMethodBrand,
-          last4: team.paymentMethodLast4,
-          expMonth: team.paymentMethodExpMonth,
-          expYear: team.paymentMethodExpYear,
-        }
-      : null,
-    usage: {
-      links: team._count.links,
-      domains: team._count.domains,
-      members: team.members.length,
-    },
-  });
-};
+});

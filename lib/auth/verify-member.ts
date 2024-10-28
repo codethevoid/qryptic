@@ -1,3 +1,5 @@
+import "server-only";
+
 import prisma from "@/db/prisma";
 import { Team, TeamMember, Plan, Domain } from "@prisma/client";
 

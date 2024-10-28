@@ -13,6 +13,7 @@ import { Upgrade } from "@/components/modals/plans/upgrade/upgrade";
 import { useState } from "react";
 import { NavLinks } from "@/components/layout/navigation/nav-links";
 import { useInView } from "react-intersection-observer";
+import { adminRoles } from "@/utils/roles";
 
 export const AppNav = () => {
   const { slug } = useParams();
@@ -35,7 +36,7 @@ export const AppNav = () => {
               <TeamSelector />
             </div>
             <div className="flex items-center space-x-2.5">
-              {team?.plan.isFree && ["owner", "super_admin"].includes(team?.user.role) && (
+              {team?.plan.isFree && adminRoles.includes(team?.user.role) && (
                 <Button size="sm" onClick={() => setIsUpgradeOpen(true)}>
                   Upgrade
                 </Button>

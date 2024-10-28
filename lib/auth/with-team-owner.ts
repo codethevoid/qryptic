@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 
 type CustomTeam = Pick<Team, "id" | "slug"> & { members?: TeamMember[] };
 
-type WithTeamHandler = {
+type WithTeamOwnerHandler = {
   ({
     req,
     params,
@@ -20,7 +20,7 @@ type WithTeamHandler = {
   }): Promise<NextResponse>;
 };
 
-export const withTeam = (handler: WithTeamHandler) => {
+export const withTeamOwner = (handler: WithTeamOwnerHandler) => {
   return async (req: NextRequest, { params = {} }: { params: Record<string, string> }) => {
     const token = await auth();
     if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -30,7 +30,16 @@ export const withTeam = (handler: WithTeamHandler) => {
 
     let team: CustomTeam | null = await prisma.team.findUnique({
       where: { slug },
-      select: { id: true, slug: true, members: { where: { userId: token.userId as string } } },
+      select: {
+        id: true,
+        slug: true,
+        members: {
+          where: {
+            userId: token.userId as string,
+            role: "owner",
+          },
+        },
+      },
     });
 
     if (!team) return NextResponse.json({ error: "No team found" }, { status: 404 });

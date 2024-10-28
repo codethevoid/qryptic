@@ -13,10 +13,8 @@ import {
 import { useEffect, useState } from "react";
 import NextLink from "next/link";
 import { Button } from "@/components/ui/button";
-import { LoaderCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePlans } from "@/lib/hooks/swr/use-plans";
-import { PlanWithPrices } from "@/types/plans";
 import { PricingCard } from "@/components/modals/plans/pricing-card";
 import { protocol, rootDomain } from "@/utils/qryptic/domains";
 import { createCheckoutSession } from "@/actions/checkout/create-session";
@@ -25,9 +23,10 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { mutate } from "swr";
 import { TrialStarted } from "@/components/modals/plans/upgrade/trial-started";
-import { useUser } from "@/lib/hooks/swr/use-user";
 import { usePathname } from "next/navigation";
 import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
+import { type Team } from "@/lib/hooks/swr/use-team";
+import { type Plan } from "@/lib/hooks/swr/use-plans";
 
 type UpgradeProps = {
   isOpen: boolean;
@@ -37,11 +36,10 @@ type UpgradeProps = {
 export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
   const [isTrialStartedOpen, setIsTrialStartedOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<PlanWithPrices | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [interval, setInterval] = useState<"year" | "month">("year");
   const { plans } = usePlans();
   const { team } = useTeam();
-  const { user } = useUser();
   const path = usePathname();
   const router = useRouter();
 
@@ -53,13 +51,13 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
   if (!plans) return null;
 
   const handleUpgrade = async () => {
-    const price = selectedPlan?.prices.find((price) => price.interval === interval);
+    const price = (selectedPlan as Plan)?.prices.find((price) => price.interval === interval);
     if (!price) return;
     setIsLoading(true);
     const { error, url, message } = await createCheckoutSession(
       price,
-      selectedPlan as PlanWithPrices,
-      team,
+      selectedPlan as Plan,
+      team as Team,
       path,
     );
     if (error) {
@@ -69,8 +67,8 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
 
     if (url) return router.push(url);
 
-    await mutate(`/api/teams/${team.slug}`);
-    await mutate(`/api/teams/${team.slug}/settings`);
+    await mutate(`/api/teams/${team?.slug as string}`);
+    await mutate(`/api/teams/${team?.slug as string}/settings`);
     setIsLoading(false);
     setSelectedPlan(null);
     toast.success(message);
@@ -91,7 +89,7 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
               <TabsList className="w-full border bg-transparent">
                 <TabsTrigger
                   className="w-full data-[state=active]:bg-zinc-100 data-[state=active]:shadow-none dark:data-[state=active]:bg-zinc-900"
-                  value={plans[0].name}
+                  value={plans[0]?.name}
                   onClick={() => setSelectedPlan(plans[0])}
                 >
                   Pro
@@ -106,14 +104,14 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
               </TabsList>
               <TabsContent value={plans[0].name} className="mt-4">
                 <PricingCard
-                  plan={plans[0] as PlanWithPrices}
+                  plan={plans[0] as Plan}
                   interval={interval}
                   setInterval={setInterval}
                 />
               </TabsContent>
               <TabsContent value={plans[1].name} className="mt-4">
                 <PricingCard
-                  plan={plans[1] as PlanWithPrices}
+                  plan={plans[1] as Plan}
                   interval={interval}
                   setInterval={setInterval}
                 />

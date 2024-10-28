@@ -45,7 +45,6 @@ export const AnalyticsClient = () => {
     os,
     deviceType,
   });
-  console.log(data);
 
   return (
     <>

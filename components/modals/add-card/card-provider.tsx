@@ -39,7 +39,7 @@ export const CardProvider = ({ isOpen, setIsOpen, hasPaymentMethod, name }: Card
           </CompactDialogDescription>
         </CompactDialogHeader>
         <Elements stripe={stripePromise} options={options}>
-          <CardCapture name={name} clientSecret={clientSecret} setIsOpen={setIsOpen} />
+          <CardCapture clientSecret={clientSecret as string} setIsOpen={setIsOpen} />
         </Elements>
       </DialogContent>
     </Dialog>

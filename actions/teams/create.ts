@@ -137,7 +137,7 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
     data: {
       userId: token.userId,
       teamId: team.id,
-      role: "super_admin",
+      role: "owner",
     },
   });
 

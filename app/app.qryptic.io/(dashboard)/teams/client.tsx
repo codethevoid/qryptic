@@ -2,29 +2,20 @@
 
 import { useTeams } from "@/lib/hooks/swr/use-teams";
 import { Button } from "@/components/ui/button";
-import { ChartArea, Globe, Link, Users } from "lucide-react";
+import { ChartArea, Globe, Link, Link2, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { AvatarFallback, Avatar, AvatarImage } from "@/components/ui/avatar";
 import { QrypticIcon } from "@/components/logos/qryptic-icon";
 import { CreateTeam } from "@/components/modals/create-team";
 import { useState } from "react";
-import type { Plan, Team, Domain } from "@prisma/client";
 import NextLink from "next/link";
 import { NoTeams } from "@/components/empty/teams/no-teams";
 import { TeamSkeleton } from "@/components/skeletons/teams-skeleton";
 import { PlanBadge } from "@/components/ui/custom/plan-badge";
 import { PlanName } from "@/types/plans";
 import { Skeleton } from "@/components/ui/skeleton";
-
-type CustomTeam = Team & {
-  plan: Plan;
-  domains: Domain[];
-  _count: { events: number; links: number };
-};
-
-type TeamProviderProps = {
-  teams: CustomTeam[];
-};
+import { appDomain, shortDomain } from "@/utils/qryptic/domains";
+import { type Team } from "@/lib/hooks/swr/use-teams";
 
 export const TeamsClient = () => {
   const { teams, error, isLoading } = useTeams();
@@ -46,7 +37,7 @@ export const TeamsClient = () => {
         ) : teams?.length === 0 ? (
           <NoTeams setCreateTeamOpen={setCreateTeamOpen} />
         ) : (
-          <TeamsProvider teams={teams as CustomTeam[]} />
+          <TeamsProvider teams={teams as Team[]} />
         )}
       </div>
       <CreateTeam isOpen={isCreateTeamOpen} setIsOpen={setCreateTeamOpen} />
@@ -54,7 +45,7 @@ export const TeamsClient = () => {
   );
 };
 
-export const TeamsProvider = ({ teams }: TeamProviderProps) => {
+export const TeamsProvider = ({ teams }: { teams: Team[] }) => {
   return (
     <div className="grid grid-cols-3 gap-4">
       {teams.map((team, i) => (
@@ -71,7 +62,7 @@ export const TeamsProvider = ({ teams }: TeamProviderProps) => {
                 <div>
                   <p className="text-sm font-medium">{team.name}</p>
                   <p className="text-[13px] text-muted-foreground">
-                    {team.domains.find((d) => d.isPrimary)?.name ?? "qrypt.co"}
+                    {team.domains.find((d) => d.isPrimary)?.name ?? shortDomain}
                   </p>
                 </div>
               </div>
@@ -82,9 +73,22 @@ export const TeamsProvider = ({ teams }: TeamProviderProps) => {
             <div className="flex w-fit items-center space-x-1.5 rounded-full bg-accent/70 px-3.5 py-1">
               <QrypticIcon className="h-2.5" />
               {/*<Link2 size={14} className="-rotate-45" />*/}
-              <p className="text-[13px]">qryptic.io/{team.slug}</p>
+              <p className="text-[13px]">
+                {appDomain}/{team.slug}
+              </p>
             </div>
             <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-1.5">
+                <Link2 size={14} className="relative bottom-[1px]" />
+                <p className="text-[13px] text-muted-foreground">
+                  {team._count.links !== 0 && `${team._count.links} `}
+                  {team._count.links === 1
+                    ? "link"
+                    : team._count.links === 0
+                      ? "No links"
+                      : "links"}
+                </p>
+              </div>
               <div className="flex items-center space-x-1.5">
                 <ChartArea size={14} className="relative bottom-[1px]" />
                 <p className="text-[13px] text-muted-foreground">
@@ -94,17 +98,6 @@ export const TeamsProvider = ({ teams }: TeamProviderProps) => {
                     : team._count.events === 0
                       ? "No events"
                       : "events"}
-                </p>
-              </div>
-              <div className="flex items-center space-x-1.5">
-                <Link size={14} className="relative bottom-[1px]" />
-                <p className="text-[13px] text-muted-foreground">
-                  {team._count.links !== 0 && `${team._count.links} `}
-                  {team._count.links === 1
-                    ? "link"
-                    : team._count.links === 0
-                      ? "No links"
-                      : "links"}
                 </p>
               </div>
             </div>

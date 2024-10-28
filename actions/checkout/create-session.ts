@@ -2,9 +2,10 @@
 
 import { stripe } from "@/utils/stripe";
 import prisma from "@/db/prisma";
-import { Price, Team, Plan } from "@prisma/client";
 import { auth } from "@/auth";
 import { appDomain, protocol } from "@/utils/qryptic/domains";
+import { type Team } from "@/lib/hooks/swr/use-team";
+import { type Plan } from "@/lib/hooks/swr/use-plans";
 
 type CreateSessionResponse = {
   error?: boolean;
@@ -15,7 +16,7 @@ type CreateSessionResponse = {
 const allowedRoles = ["owner", "super_admin"];
 
 export const createCheckoutSession = async (
-  price: Price,
+  price: Plan["prices"][0],
   plan: Plan,
   team: Team,
   path: string,

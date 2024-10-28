@@ -1,3 +1,4 @@
+import "server-only";
 import { NextResponse, NextRequest } from "next/server";
 import { parseReq } from "@/lib/middleware/utils";
 import { getUserToken } from "@/lib/middleware/utils";

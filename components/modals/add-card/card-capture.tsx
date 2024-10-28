@@ -12,18 +12,17 @@ import { mutate } from "swr";
 import { Label } from "@/components/ui/label";
 
 type CardCaptureProps = {
-  name: string;
   clientSecret: string;
   setIsOpen: (open: boolean) => void;
 };
 
-export const CardCapture = ({ name, clientSecret, setIsOpen }: CardCaptureProps) => {
+export const CardCapture = ({ clientSecret, setIsOpen }: CardCaptureProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { resolvedTheme } = useTheme();
-  const { settings: team } = useTeamSettings();
+  const { data: team } = useTeamSettings();
 
   const onSubmit = async () => {
     if (!stripe || !elements) return;
@@ -41,11 +40,14 @@ export const CardCapture = ({ name, clientSecret, setIsOpen }: CardCaptureProps)
       return setError(error.message as string);
     }
 
-    const { error: resError } = await addCard(team.slug, setupIntent.payment_method as string);
+    const { error: resError } = await addCard(
+      team?.slug as string,
+      setupIntent.payment_method as string,
+    );
     if (resError) return setIsLoading(false);
-    await mutate(`/api/teams/${team.slug}`);
-    await mutate(`/api/teams/${team.slug}/settings`);
-    await mutate(`/api/cards/setup-intent/${team.slug}`);
+    await mutate(`/api/teams/${team?.slug}`);
+    await mutate(`/api/teams/${team?.slug}/settings`);
+    await mutate(`/api/cards/setup-intent/${team?.slug}`);
     toast.success("Card added successfully");
     setIsOpen(false);
     setIsLoading(false);

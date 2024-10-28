@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PlanWithPrices } from "@/types/plans";
+import { type Plan } from "@/lib/hooks/swr/use-plans";
 import { usePlans } from "@/lib/hooks/swr/use-plans";
 import {
   CompactDialogDescription,
@@ -31,16 +31,16 @@ type ChangeTrialProps = {
 
 export const ChangeTrial = ({ isOpen, setIsOpen }: ChangeTrialProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<PlanWithPrices | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [interval, setInterval] = useState<"year" | "month">("year");
   const { plans } = usePlans();
-  const { settings: team } = useTeamSettings();
+  const { data: team } = useTeamSettings();
 
   useEffect(() => {
     if (isOpen && plans && team) {
       const currPlan = plans.find((plan) => plan.id === team?.plan.id);
       setSelectedPlan(currPlan || plans[0]);
-      setInterval(team?.price.interval || "year");
+      setInterval(team?.price?.interval || "year");
     }
   }, [isOpen, plans, team]);
 
@@ -48,7 +48,11 @@ export const ChangeTrial = ({ isOpen, setIsOpen }: ChangeTrialProps) => {
     if (!selectedPlan) return;
     setIsLoading(true);
     const price = selectedPlan.prices.find((price) => price.interval === interval);
-    const { error, message } = await changeTrial(price?.id as string, selectedPlan.id, team?.id);
+    const { error, message } = await changeTrial(
+      price?.id as string,
+      selectedPlan.id,
+      team?.id as string,
+    );
     if (error) {
       setIsLoading(false);
       return toast.error(message);
@@ -61,7 +65,7 @@ export const ChangeTrial = ({ isOpen, setIsOpen }: ChangeTrialProps) => {
     setIsOpen(false);
   };
 
-  if (!plans || team?.plan.isFree || team.subscriptionStatus !== "trialing") return null;
+  if (!plans || team?.plan.isFree || team?.subscriptionStatus !== "trialing") return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -91,18 +95,10 @@ export const ChangeTrial = ({ isOpen, setIsOpen }: ChangeTrialProps) => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value={plans[0].name} className="mt-4">
-              <PricingCard
-                plan={plans[0] as PlanWithPrices}
-                interval={interval}
-                setInterval={setInterval}
-              />
+              <PricingCard plan={plans[0] as Plan} interval={interval} setInterval={setInterval} />
             </TabsContent>
             <TabsContent value={plans[1].name} className="mt-4">
-              <PricingCard
-                plan={plans[1] as PlanWithPrices}
-                interval={interval}
-                setInterval={setInterval}
-              />
+              <PricingCard plan={plans[1] as Plan} interval={interval} setInterval={setInterval} />
             </TabsContent>
           </Tabs>
           <p className="text-[13px] text-muted-foreground">
@@ -129,7 +125,7 @@ export const ChangeTrial = ({ isOpen, setIsOpen }: ChangeTrialProps) => {
           <Button
             disabled={
               isLoading ||
-              team?.price.id ===
+              team?.price?.id ===
                 selectedPlan?.prices.find((price) => price.interval === interval)?.id
             }
             size="sm"
@@ -138,7 +134,7 @@ export const ChangeTrial = ({ isOpen, setIsOpen }: ChangeTrialProps) => {
           >
             {isLoading ? (
               <LoaderCircle size={14} className="animate-spin" />
-            ) : team?.price.id ===
+            ) : team?.price?.id ===
               selectedPlan?.prices.find((price) => price.interval === interval)?.id ? (
               "Current plan"
             ) : (

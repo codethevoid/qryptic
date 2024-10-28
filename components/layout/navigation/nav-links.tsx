@@ -75,7 +75,9 @@ export const NavLinks = ({ inView }: { inView: boolean }) => {
             style={indicatorStyle}
           ></div>
           {linkItems
-            .filter((item) => (!item?.roles ? item : item.roles.includes(team?.user.role)))
+            .filter((item) =>
+              !item?.roles ? item : item.roles.includes(team?.user.role as string),
+            )
             .map((item, index) => (
               <Button
                 key={item.title}

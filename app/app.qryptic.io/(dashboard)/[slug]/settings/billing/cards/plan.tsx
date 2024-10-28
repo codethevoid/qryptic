@@ -16,6 +16,7 @@ import { CancelSubscription } from "@/components/modals/plans/cancel";
 import { ResumeSubscription } from "@/components/modals/plans/resume";
 import { CardProvider } from "@/components/modals/add-card/card-provider";
 import { ChangePlan } from "@/components/modals/plans/change-plan/change-plan";
+import { type TeamSettings } from "@/lib/hooks/swr/use-team-settings";
 
 type PlanProps = {
   hasPaymentMethod: boolean;
@@ -23,8 +24,8 @@ type PlanProps = {
   subscriptionStart: Date | null;
   subscriptionEnd: Date | null;
   cancelAtPeriodEnd: boolean;
-  price: Price | null;
-  plan: Plan;
+  price: { price: number; interval: "year" | "month" } | null;
+  plan: TeamSettings["plan"];
   trialEndsAt: Date | null;
   teamName: string;
 };

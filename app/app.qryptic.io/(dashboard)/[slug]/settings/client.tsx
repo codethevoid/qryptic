@@ -4,7 +4,7 @@ import { useTeamSettings } from "@/lib/hooks/swr/use-team-settings";
 import { Loader } from "@/components/layout/loader";
 
 export const GeneralSettingsClient = () => {
-  const { settings: team, isLoading, error } = useTeamSettings();
+  const { data: team, isLoading, error } = useTeamSettings();
 
   if (isLoading) return <Loader />;
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PlanWithPrices } from "@/types/plans";
+import { type Plan } from "@/lib/hooks/swr/use-plans";
 import { usePlans } from "@/lib/hooks/swr/use-plans";
 import {
   CompactDialogDescription,
@@ -32,17 +32,17 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingPreview, setIsLoadingPreview] = useState(false);
   const [preview, setPreview] = useState<any>(null);
-  const [selectedPlan, setSelectedPlan] = useState<PlanWithPrices | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [interval, setInterval] = useState<"year" | "month">("year");
   const { plans } = usePlans();
-  const { settings: team } = useTeamSettings();
+  const { data: team } = useTeamSettings();
 
   const handleChange = async () => {
     setIsLoading(true);
-    if (!selectedPlan) return setIsLoading(false);
+    if (!selectedPlan || !team) return setIsLoading(false);
     const price = selectedPlan?.prices.find((price) => price.interval === interval);
     if (!price) return setIsLoading(false);
-    if (price.id === team?.price.id) return setIsLoading(false);
+    if (price.id === team?.price?.id) return setIsLoading(false);
     const { error, message } = await confirmPlanChange(team?.slug, selectedPlan?.id, price.id);
     if (error) {
       toast.error(message);
@@ -55,17 +55,17 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
     setIsLoading(false);
   };
 
-  const handlePreview = async (plan: PlanWithPrices) => {
+  const handlePreview = async (plan: Plan) => {
     setSelectedPlan(plan);
     setIsLoadingPreview(true);
     const price = plan.prices.find((price) => price.interval === interval);
-    if (price?.id === team?.price.id) {
+    if (price?.id === team?.price?.id) {
       setIsLoadingPreview(false);
       setPreview(null);
       return;
     }
 
-    const proration = await previewProration(team.slug, plan.id, price?.id as string);
+    const proration = await previewProration(team?.slug as string, plan.id, price?.id as string);
     setPreview(proration);
     setIsLoadingPreview(false);
   };
@@ -81,14 +81,14 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
     if (isOpen && plans && team) {
       setPreview(null);
       const currPlan = plans.find((plan) => plan.id === team?.plan.id);
-      const currPrice = currPlan?.prices.find((price) => price.id === team?.price.id);
+      const currPrice = currPlan?.prices.find((price) => price.id === team?.price?.id);
       setSelectedPlan(currPlan || plans[0]);
-      setInterval(team?.price.interval || "year");
+      setInterval(team?.price?.interval || "year");
       if (!currPrice) handlePreview(plans[0]);
     }
   }, [isOpen, plans, team]);
 
-  if (!plans || team?.plan.isFree || team.subscriptionStatus !== "active") return null;
+  if (!plans || team?.plan.isFree || team?.subscriptionStatus !== "active") return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -126,18 +126,10 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value={plans[0].name} className="mt-4">
-              <PricingCard
-                plan={plans[0] as PlanWithPrices}
-                interval={interval}
-                setInterval={setInterval}
-              />
+              <PricingCard plan={plans[0] as Plan} interval={interval} setInterval={setInterval} />
             </TabsContent>
             <TabsContent value={plans[1].name} className="mt-4">
-              <PricingCard
-                plan={plans[1] as PlanWithPrices}
-                interval={interval}
-                setInterval={setInterval}
-              />
+              <PricingCard plan={plans[1] as Plan} interval={interval} setInterval={setInterval} />
             </TabsContent>
           </Tabs>
           <div className="flex items-center justify-between px-0.5">
@@ -171,7 +163,7 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
             disabled={
               isLoading ||
               isLoadingPreview ||
-              team?.price.id ===
+              team?.price?.id ===
                 selectedPlan?.prices.find((price) => price.interval === interval)?.id
             }
             size="sm"
@@ -179,7 +171,7 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
           >
             {isLoading ? (
               <LoaderCircle size={14} className="animate-spin" />
-            ) : team?.price.id ===
+            ) : team?.price?.id ===
               selectedPlan?.prices.find((price) => price.interval === interval)?.id ? (
               <span className="animate-fade-in">Current plan</span>
             ) : (

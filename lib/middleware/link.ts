@@ -1,3 +1,4 @@
+import "server-only";
 import { NextRequest, NextResponse, userAgent } from "next/server";
 import { parseReq } from "@/lib/middleware/utils";
 import { protocol, rootDomain } from "@/utils/qryptic/domains";

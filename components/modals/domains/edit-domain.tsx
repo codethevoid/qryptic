@@ -1,4 +1,3 @@
-import { Domain } from "@prisma/client";
 import { useEffect, useState } from "react";
 import {
   CompactDialogDescription,
@@ -21,6 +20,7 @@ import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Button } from "@/components/ui/button";
 import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
 import { toast } from "sonner";
+import { type Domain } from "@/lib/hooks/swr/use-domains";
 
 const editDomain = async (name: string, destination: string | undefined, slug: string) => {
   try {
@@ -44,12 +44,10 @@ const editDomain = async (name: string, destination: string | undefined, slug: s
   }
 };
 
-type DomainWithLinkCount = Domain & { _count: { links: number } };
-
 type EditDomainProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  domain: DomainWithLinkCount | null;
+  domain: Domain | null;
   mutateDomains: () => Promise<void>;
 };
 
@@ -72,7 +70,7 @@ export const EditDomain = ({ isOpen, setIsOpen, domain, mutateDomains }: EditDom
 
   const handleEdit = async (values: AddDomainFormValues) => {
     setIsLoading(true);
-    const { error } = await editDomain(values.name, values.destination, team.slug);
+    const { error } = await editDomain(values.name, values.destination, team?.slug as string);
     if (error) {
       setIsLoading(false);
       toast.error(error);
