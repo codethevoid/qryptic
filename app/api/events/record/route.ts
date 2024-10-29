@@ -52,6 +52,13 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ error: "Link ID and final URL are required" }, { status: 400 });
     }
 
+    // check for local dev
+    if (process.env.NODE_ENV === "development") {
+      geo = localhostGeoData;
+      ip = "127.0.0.1";
+      continent = "NA";
+    }
+
     const link = await prisma.link.findUnique({
       where: { id: linkId },
       select: { teamId: true, domain: { select: { id: true, name: true } }, slug: true },
@@ -70,13 +77,7 @@ export const POST = async (req: NextRequest) => {
     const utmContent = searchParams.get("utm_content");
 
     const isEU = euCountries.includes(geo?.country);
-
-    // check for local dev
-    if (process.env.NODE_ENV === "development") {
-      geo = localhostGeoData;
-      ip = "127.0.0.1";
-      continent = "NA";
-    }
+    ip = !isEU && typeof ip === "string" && ip.trim().length > 0 ? ip : "unknown";
 
     const eventData = {
       linkId,
@@ -87,7 +88,7 @@ export const POST = async (req: NextRequest) => {
       domainName: link.domain.name,
       destination: finalUrl,
       type: eventType || "click",
-      ip: !isEU && ip ? ip : "unknown",
+      ip,
       continent: continent || "unknown",
       country: geo?.country || "unknown",
       region: geo?.region || "unknown",

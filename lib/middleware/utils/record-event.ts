@@ -5,6 +5,7 @@ import { detectBot } from "@/lib/middleware/utils/detect-bot";
 import { NextRequest } from "next/server";
 import { geolocation, ipAddress } from "@vercel/functions";
 import { protocol, rootDomain } from "@/utils/qryptic/domains";
+import { redis } from "@/lib/upstash/redis";
 
 type Props = {
   req: NextRequest;
@@ -24,6 +25,10 @@ export const recordEvent = async ({ req, linkId, finalUrl }: Props): Promise<voi
   // we will not track bot requests
   if (isBotRequest) return;
 
+  const key = `event:${linkId}:${ip}`;
+  const exists = await redis.exists(key);
+  if (exists) return;
+
   // record event
   try {
     const res = await fetch(`${protocol}${rootDomain}/api/events/record`, {
@@ -34,6 +39,11 @@ export const recordEvent = async ({ req, linkId, finalUrl }: Props): Promise<voi
       },
       body: JSON.stringify({ linkId, ua, eventType, ip, geo, referrer, continent, finalUrl }),
     });
+
+    if (!res.ok) return;
+
+    // set key in upstash to prevent duplicate events for next 5 minutes
+    await redis.set(key, "1", { ex: 300 });
   } catch (e) {
     console.error(e);
   }

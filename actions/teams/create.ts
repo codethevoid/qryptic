@@ -119,6 +119,12 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
     where: { isDefault: true },
   });
 
+  // create invite token
+  // let inviteToken = nanoid(32);
+  // while (await prisma.team.findUnique({ where: { inviteToken } })) {
+  //   inviteToken = nanoid(32);
+  // }
+
   const team = await prisma.team.create({
     data: {
       name,

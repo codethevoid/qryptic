@@ -16,7 +16,7 @@ export const TeamAuth = ({ children }: { children: ReactNode }) => {
     // if no team is returned, means the user is not part of this team
     // so we can return error page instead of redirecting
     if (!team) return;
-    if (!isLoading && !["super_admin", "owner"].includes(team?.user.role)) {
+    if (!isLoading && team?.user.role !== "owner") {
       if (path.includes("/settings")) router.push(`/${team?.slug || ""}`);
     }
   }, [isLoading, team, path, router]);

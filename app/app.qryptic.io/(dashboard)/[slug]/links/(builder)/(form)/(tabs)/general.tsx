@@ -180,7 +180,7 @@ export const General = ({ mode }: { mode: "new" | "edit" }) => {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="h-9 w-full max-w-[150px] items-center justify-between space-x-2 rounded-r-none border-r-0 active:!scale-100"
+                className="h-9 w-full max-w-[150px] items-center justify-between space-x-2 rounded-r-none border-r-0 font-normal active:!scale-100"
                 size="sm"
               >
                 <span className="max-w-[100px] truncate">

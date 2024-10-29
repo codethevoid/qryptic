@@ -3,7 +3,7 @@ import prisma from "@/db/prisma";
 import { MiddlewareLink } from "@/types/links";
 import { isAuthorized } from "@/app/api/links/middleware/is-authorized";
 
-export const GET = async (req: NextRequest, { params }: { params: { slug: string } }) => {
+export const POST = async (req: NextRequest, { params }: { params: { slug: string } }) => {
   try {
     if (!isAuthorized(req)) {
       console.error("Unauthorized request");
@@ -14,8 +14,18 @@ export const GET = async (req: NextRequest, { params }: { params: { slug: string
       return NextResponse.json({ error: "Slug is required" }, { status: 400 });
     }
 
+    // get domain from request body
+    // we need to check if the domain and slug match
+    // so people can't just use other peoples domains for their links
+    const body = await req.json();
+    const { domain } = body;
+
+    if (!domain) {
+      return NextResponse.json({ error: "Domain is required" }, { status: 400 });
+    }
+
     const link = (await prisma.link.findUnique({
-      where: { slug },
+      where: { slug, domain: { name: { equals: domain } } },
       select: {
         id: true,
         teamId: true,

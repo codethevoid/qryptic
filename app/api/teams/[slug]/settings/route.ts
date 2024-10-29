@@ -82,6 +82,7 @@ export const GET = withTeamOwner(async ({ team: teamInfo }) => {
       plan: team.plan,
       price: team.price,
       members: team.members,
+      invites: team.invites,
       invoices: team.invoices,
       subscriptionStatus: team.subscriptionStatus,
       subscriptionStart: team.subscriptionStart,

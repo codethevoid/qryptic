@@ -32,6 +32,9 @@ model Team {
   paymentMethodExpMonth Int?
   paymentMethodExpYear  Int?
 
+  // invite link (can be reset)
+  inviteToken String @unique @default(cuid())
+
   // relations
   members        TeamMember[]
   invites        Invite[]

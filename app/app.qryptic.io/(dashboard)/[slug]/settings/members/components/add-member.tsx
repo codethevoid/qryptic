@@ -20,9 +20,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const inviteSchema = z.object({
-  email: z.string().email(),
-  role: z.string(),
+  email: z.string().email({ message: "Please enter a valid email" }),
+  // role: z.union([z.literal("owner"), z.literal("member")], { message: "Please select a role" }),
+  role: z.preprocess(
+    (val) => (val === undefined ? null : val),
+    z
+      .union([z.literal("owner"), z.literal("member")])
+      .nullable()
+      .refine((val) => val !== null, {
+        message: "Please select a role",
+      }),
+  ),
 });
+
+type InviteFormValues = z.infer<typeof inviteSchema>;
 
 const roles = [
   {
@@ -46,18 +57,15 @@ export const AddMember = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+    setValue,
+  } = useForm<InviteFormValues>({
     resolver: zodResolver(inviteSchema),
-    values: {
-      role,
-    },
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: InviteFormValues) => {
+    console.log(values);
     console.log("submit", errors);
   };
-
-  console.log(errors);
 
   return (
     <>
@@ -85,12 +93,16 @@ export const AddMember = () => {
                 disabled={team?.plan.isFree}
                 {...register("email")}
               />
+              {errors.email && <p className="text-xs text-red-600">{errors.email.message}</p>}
             </div>
             <div className="space-y-1.5">
               <Label>Role</Label>
               <Select
                 value={role}
-                onValueChange={(value: "owner" | "member") => setRole(value)}
+                onValueChange={(value: "owner" | "member") => {
+                  setRole(value);
+                  setValue("role", value as "owner" | "member");
+                }}
                 disabled={team?.plan.isFree}
               >
                 <SelectTrigger className={cn("font-normal", !role && "text-muted-foreground")}>
@@ -107,6 +119,7 @@ export const AddMember = () => {
                   ))}
                 </SelectContent>
               </Select>
+              {errors.role && <p className="text-xs text-red-600">{errors.role.message}</p>}
             </div>
           </div>
         </CardContent>

@@ -55,10 +55,13 @@ export const linkMiddleware = async (req: NextRequest) => {
 
   // if slug is provided, look up the link in the database
   const res = await fetch(`${baseURL}/api/links/middleware/${slug}`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${process.env.QRYPTIC_API_KEY}`,
+      // send domain in the body to check if the link belongs to the domain
     },
+    body: JSON.stringify({ domain }),
   });
 
   // if the link does not exist or fails to fetch, check if the domain exists and redirect
