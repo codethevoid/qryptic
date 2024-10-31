@@ -9,6 +9,7 @@ export type TeamSettings = {
   image: string;
   company: string;
   emailInvoiceTo: string;
+  inviteToken: string;
   subscriptionStatus:
     | "trialing"
     | "active"
@@ -58,7 +59,10 @@ export type TeamSettings = {
 
 export const useTeamSettings = () => {
   const { slug } = useParams();
-  const { data, isLoading, error } = useSWR<TeamSettings>(`/api/teams/${slug}/settings`, fetcher);
+  const { data, isLoading, error, mutate } = useSWR<TeamSettings>(
+    `/api/teams/${slug}/settings`,
+    fetcher,
+  );
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, mutate };
 };

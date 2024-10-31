@@ -59,7 +59,7 @@ export const linkMiddleware = async (req: NextRequest) => {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${process.env.QRYPTIC_API_KEY}`,
-      // send domain in the body to check if the link belongs to the domain
+      // create domain in the body to check if the link belongs to the domain
     },
     body: JSON.stringify({ domain }),
   });

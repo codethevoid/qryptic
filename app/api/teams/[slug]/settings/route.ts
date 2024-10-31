@@ -24,6 +24,7 @@ export const GET = withTeamOwner(async ({ team: teamInfo }) => {
         paymentMethodExpMonth: true,
         paymentMethodExpYear: true,
         trialEndsAt: true,
+        inviteToken: true,
         invoices: {
           select: {
             id: true,
@@ -89,6 +90,7 @@ export const GET = withTeamOwner(async ({ team: teamInfo }) => {
       subscriptionEnd: team.subscriptionEnd,
       cancelAtPeriodEnd: team.cancelAtPeriodEnd,
       trialEndsAt: team.trialEndsAt,
+      inviteToken: team.inviteToken,
       paymentMethod: team.paymentMethodType
         ? {
             type: team.paymentMethodType,

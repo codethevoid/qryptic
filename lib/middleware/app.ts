@@ -2,6 +2,8 @@ import "server-only";
 import { NextResponse, NextRequest } from "next/server";
 import { parseReq } from "@/lib/middleware/utils";
 import { getUserToken } from "@/lib/middleware/utils";
+import { redis } from "@/lib/upstash/redis";
+import { qrypticHeaders } from "@/utils/qryptic/qryptic-headers";
 
 export const appMiddleware = async (req: NextRequest) => {
   const { path, fullPath } = parseReq(req);
@@ -18,15 +20,16 @@ export const appMiddleware = async (req: NextRequest) => {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
-    // get default team id
     if (path === "/") {
-      // create team [slug] to the query params
-      const { defaultTeam } = token;
+      // attempt to get default team from redis
+      const defaultTeam = await redis.get(`user:${token.userId}:defaultTeam`);
+      // if no default team, means they don't have any teams
+      // redirect to teams page
       if (!defaultTeam) {
-        // if users does not have a default team, redirect to teams page
-        // so they can create a team
         return NextResponse.redirect(new URL("/teams", req.url));
       }
+
+      // redirect to default team /[slug]
       return NextResponse.redirect(new URL(`/${defaultTeam}`, req.url));
     }
   }

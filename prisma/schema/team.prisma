@@ -32,8 +32,8 @@ model Team {
   paymentMethodExpMonth Int?
   paymentMethodExpYear  Int?
 
-  // invite link (can be reset)
-  inviteToken String @unique @default(cuid())
+  // invites link (can be reset)
+  inviteToken String @unique
 
   // relations
   members        TeamMember[]
@@ -65,9 +65,6 @@ model TeamMember {
   teamId    String
   user      User     @relation(fields: [userId], references: [id])
   userId    String
-
-  // relations
-  links Link[]
 }
 
 model Invite {

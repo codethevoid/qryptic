@@ -14,6 +14,5 @@ export type Team = {
 
 export const useTeams = () => {
   const { data, error, isLoading } = useSWR<Team[]>("/api/teams", fetcher);
-  console.log(data);
   return { teams: data, error, isLoading };
 };

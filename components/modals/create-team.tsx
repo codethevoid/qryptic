@@ -5,10 +5,7 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -41,7 +38,6 @@ export const CreateTeam = ({ isOpen, setIsOpen }: CreateTeamProps) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const { update } = useSession();
   const router = useRouter();
 
   const onSubmit = async (values: CreateTeamFormValues) => {
@@ -53,7 +49,6 @@ export const CreateTeam = ({ isOpen, setIsOpen }: CreateTeamProps) => {
       return toast.error(message);
     }
 
-    await update({ defaultTeam: slug });
     await mutate("/api/teams");
     toast.success("Team created successfully!");
     router.push(`/${slug}`);

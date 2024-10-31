@@ -6,7 +6,7 @@ export type TableLink = {
   slug: string;
   destination: string;
   createdAt: Date;
-  createdBy: { user: { image: string; name: string | null; email: string } };
+  user: { name: string; email: string; image: string };
   domain: { name: string };
   events: { type: "click" | "scan" }[];
   tags: { id: string; name: string; color: TagColor }[];

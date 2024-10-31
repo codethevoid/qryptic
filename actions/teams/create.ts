@@ -6,6 +6,7 @@ import prisma from "@/db/prisma";
 import { nanoid } from "@/utils/nanoid";
 import type { Plan } from "@prisma/client";
 import { stripe } from "@/utils/stripe";
+import { redis } from "@/lib/upstash/redis";
 
 type CreateTeamResponse = {
   error: boolean;
@@ -119,11 +120,16 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
     where: { isDefault: true },
   });
 
-  // create invite token
+  // create invites token
   // let inviteToken = nanoid(32);
   // while (await prisma.team.findUnique({ where: { inviteToken } })) {
   //   inviteToken = nanoid(32);
   // }
+
+  let inviteToken = nanoid(32);
+  while (await prisma.team.findUnique({ where: { inviteToken } })) {
+    inviteToken = nanoid(32);
+  }
 
   const team = await prisma.team.create({
     data: {
@@ -135,6 +141,7 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
       subscriptionStatus: "active",
       image: `https://qryptic.s3.amazonaws.com/${key}`,
       defaultDomains: { connect: defaultDomains.map((d) => ({ id: d.id })) },
+      inviteToken,
     },
   });
 
@@ -147,11 +154,12 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
     },
   });
 
-  // update user with default team
-  await prisma.user.update({
-    where: { id: token.userId },
-    data: { defaultTeam: team.slug },
-  });
+  // update user with default team in redis
+  await redis.set(`user:${token.userId}:defaultTeam`, team.slug);
+  // await prisma.user.update({
+  //   where: { id: token.userId },
+  //   data: { defaultTeam: team.slug },
+  // });
 
   // we return the [slug] so we can update the jwt with the team [slug]
   // and so we can redirect the user to the [slug]

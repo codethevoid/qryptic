@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import { rootDomain } from "@/utils/qryptic/domains";
 import type { User } from "@prisma/client";
 
-type AuthUser = Pick<User, "id" | "defaultTeam">;
+type AuthUser = Pick<User, "id">;
 
 const createUser = async (email: string, image?: string, name?: string | null) => {
   return prisma.user.create({
@@ -65,7 +65,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const newUser = await createUser(email, profile?.picture, profile?.name);
           if (!newUser) return false;
           // schedule welcome email and allow sign in
-          // send welcome email
+          // create welcome email
           return true;
         }
 
@@ -77,17 +77,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true;
     },
     jwt: async ({ trigger, profile, account, token, user }) => {
-      if (trigger === "update") {
-        const refreshedUser: AuthUser | null = await prisma.user.findUnique({
-          where: { id: token.userId as string },
-          select: { id: true, defaultTeam: true },
-        });
-        if (!refreshedUser) return {};
-        // only need to update default team because that is the only thing we store in the token
-        // other than users id, we won't use name, email, or image
-        token.defaultTeam = refreshedUser.defaultTeam;
-        return token;
-      }
+      // if (trigger === "update") {
+      //   const refreshedUser: AuthUser | null = await prisma.user.findUnique({
+      //     where: { id: token.userId as string },
+      //     select: { id: true, defaultTeam: true },
+      //   });
+      //   if (!refreshedUser) return {};
+      //   // only need to update default team because that is the only thing we store in the token
+      //   // other than users id, we won't use name, email, or image
+      //   token.defaultTeam = refreshedUser.defaultTeam;
+      //   return token;
+      // }
 
       // handle initial sign in
       if (account) {
@@ -95,21 +95,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           // need to get the users id
           const userInDb: AuthUser | null = await prisma.user.findUnique({
             where: { email: profile?.email?.toLowerCase().trim() as string },
-            select: { id: true, defaultTeam: true },
+            select: { id: true },
           });
           if (!userInDb) return {};
-          const { defaultTeam, id: userId } = userInDb;
-          return { userId, defaultTeam };
+          const { id: userId } = userInDb;
+          return { userId };
         }
         // if not google, then it's credentials
         // get users from db and attach details to token
         const userInDb: AuthUser | null = await prisma.user.findUnique({
           where: { id: user.id },
-          select: { id: true, defaultTeam: true },
+          select: { id: true },
         });
         if (!userInDb) return {};
-        const { defaultTeam, id: userId } = userInDb;
-        return { userId, defaultTeam };
+        const { id: userId } = userInDb;
+        return { userId };
       }
 
       // handle subsequent sign ins
@@ -119,7 +119,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // attach users id to session
       if (token) {
         session.userId = token.userId as string;
-        session.defaultTeam = token.defaultTeam as string;
       }
       return session;
     },

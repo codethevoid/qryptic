@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { appMiddleware, linkMiddleware, rootMiddleware, adminMiddleware } from "@/lib/middleware";
 import { appDomain, adminDomain, rootDomain } from "@/utils/qryptic/domains";
-import { detectInvalidPath, parseReq } from "@/lib/middleware/utils";
+import { detectInvalidPath, getUserToken, parseReq } from "@/lib/middleware/utils";
 
 export const middleware = async (req: NextRequest) => {
   const { domain, path } = parseReq(req);

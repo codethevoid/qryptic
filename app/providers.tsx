@@ -2,7 +2,6 @@
 
 import { TooltipProvider } from "@/components/providers/tooltip-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
 
 type ProvidersProps = {
@@ -12,9 +11,7 @@ type ProvidersProps = {
 export const Providers = ({ children }: ProvidersProps) => {
   return (
     <ThemeProvider defaultTheme="dark" attribute="class" enableSystem disableTransitionOnChange>
-      <SessionProvider>
-        <TooltipProvider>{children}</TooltipProvider>
-      </SessionProvider>
+      <TooltipProvider>{children}</TooltipProvider>
     </ThemeProvider>
   );
 };

@@ -18,6 +18,8 @@ import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
 
 const inviteSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }),
@@ -44,14 +46,20 @@ const roles = [
   {
     value: "member",
     label: "Member",
-    description: "Create and edit links",
+    description: "Manage links, domains, and tags",
   },
 ];
 
-export const AddMember = () => {
+type Props = {
+  setTab: (tab: "members" | "invites") => void;
+  setIsInviteOpen: (open: boolean) => void;
+};
+
+export const AddMember = ({ setTab, setIsInviteOpen }: Props) => {
   const [role, setRole] = useState<"owner" | "member" | undefined>(undefined);
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
-  const { data: team } = useTeamSettings();
+  const [isLoading, setIsLoading] = useState(false);
+  const { data: team, mutate } = useTeamSettings();
 
   const {
     register,
@@ -63,8 +71,30 @@ export const AddMember = () => {
   });
 
   const onSubmit = async (values: InviteFormValues) => {
-    console.log(values);
-    console.log("submit", errors);
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/teams/${team?.slug}/invites/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      if (!res.ok) {
+        setIsLoading(false);
+        const data = await res.json();
+        return toast.error(data.error);
+      }
+
+      setIsLoading(false);
+      setValue("email", "");
+      setRole(undefined);
+      await mutate();
+      setTab("invites");
+      toast.success("Invite sent!");
+    } catch (e) {
+      console.error(e);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -76,7 +106,13 @@ export const AddMember = () => {
             <CardDescription className="text-[13px]">Invite a member to your team</CardDescription>
           </CardHeader>
           <div className="p-6">
-            <Button size="sm" variant="outline" className="space-x-2" disabled={team?.plan.isFree}>
+            <Button
+              size="sm"
+              variant="outline"
+              className="space-x-2"
+              disabled={team?.plan.isFree}
+              onClick={() => setIsInviteOpen(true)}
+            >
               <Link2 size={14} />
               <span>Invite link</span>
             </Button>
@@ -139,8 +175,13 @@ export const AddMember = () => {
               Upgrade
             </Button>
           ) : (
-            <Button size="sm" onClick={handleSubmit(onSubmit)}>
-              Invite
+            <Button
+              size="sm"
+              onClick={handleSubmit(onSubmit)}
+              className="w-[58px]"
+              disabled={isLoading}
+            >
+              {isLoading ? <ButtonSpinner /> : "Invite"}
             </Button>
           )}
         </CardFooter>

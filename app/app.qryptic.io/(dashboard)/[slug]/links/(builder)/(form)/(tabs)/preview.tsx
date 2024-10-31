@@ -38,7 +38,7 @@ export const Preview = () => {
     const blob = URL.createObjectURL(file);
     setImage(blob);
     setImageType(file.type);
-    // convert image to base64 so we can send it to the server
+    // convert image to base64 so we can create it to the server
 
     const reader = new FileReader();
     reader.onload = () => {

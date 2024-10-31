@@ -120,7 +120,7 @@ export const POST = withTeam(async ({ team, req, user }) => {
     const link = await prisma.link.create({
       data: {
         teamId: team.id,
-        createdById: user.id,
+        userId: user.userId, // make it the user id so in case the user is deleted we can still track who created the link
         destination: constructURL(destination),
         slug,
         notes,

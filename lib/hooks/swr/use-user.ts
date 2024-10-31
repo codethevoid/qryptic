@@ -5,8 +5,8 @@ type User = {
   id: string;
   email: string;
   name: string | null;
-  image: string;
-  defaultTeam: string;
+  image: string | null;
+  defaultTeam: string | null;
   isEmailVerified: boolean;
   hasUsedTrial: boolean;
 };

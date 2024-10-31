@@ -16,6 +16,6 @@ export type Plan = {
 
 export const usePlans = () => {
   const { slug } = useParams();
-  const { data, isLoading, error } = useSWR<Plan[]>(`/api/plans/${slug}`, fetcher);
+  const { data, isLoading, error } = useSWR<Plan[]>(slug ? `/api/plans/${slug}` : null, fetcher);
   return { plans: data, isLoading, error };
 };

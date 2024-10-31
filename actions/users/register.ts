@@ -52,11 +52,11 @@ export const registerUser = async (data: RegisterFormValues): Promise<RegisterUs
 
   if (!user) return { error: true, message: "Failed to create users" };
 
-  // send email verification email
+  // create email verification email
   await sendEmail({
     from: "Qryptic <support@mailer.qryptic.io>",
     to: email,
-    replyTo: "suppport@qryptic.io",
+    replyTo: "support@qryptic.io",
     subject: "Verify your email address",
     react: EmailVerificationEmail(token),
     text: `Welcome to Qryptic! Verify your email address by clicking this link ${protocol}${appDomain}/verify-email?token=${token}`,

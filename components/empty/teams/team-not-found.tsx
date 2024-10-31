@@ -1,39 +1,22 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { LoaderCircle, Users } from "lucide-react";
+import { Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
-import { useUser } from "@/lib/hooks/swr/use-user";
-import { useParams } from "next/navigation";
-import { useTeams } from "@/lib/hooks/swr/use-teams";
-import { updateDefaultTeam } from "@/actions/users/update-default-team";
-import NextLink from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import NextLink from "next/link";
 
 export const TeamNotFound = () => {
-  const { slug } = useParams();
-  const { user } = useUser();
-  const { teams } = useTeams();
-  const { update } = useSession();
+  // const { slug } = useParams();
+  // const { user } = useUser();
+  // const { teams } = useTeams();
+  // const { update } = useSession();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCheck = async () => {
-    if (slug !== user?.defaultTeam && user?.defaultTeam) {
-      return router.push("/teams");
-    }
-    // make sure user's default team is not accessible before updating
-    const team = teams?.find((t: any) => t.slug === user?.defaultTeam);
-    if (team) return router.push("/teams");
-    // if this is showing up, it means the user got booted from their team
-    // and their default team is no longer accessible, so we need to update cookie
-    setIsLoading(true);
-    if (!teams?.length) return router.push("/teams");
-    const { error } = await updateDefaultTeam(teams[0]?.slug || null);
-    if (!error) await update({ defaultTeam: teams[0]?.slug || null });
     router.push("/teams");
   };
 
@@ -50,8 +33,8 @@ export const TeamNotFound = () => {
             to it.
           </p>
         </div>
-        <Button className="w-full max-w-[200px]" disabled={isLoading} onClick={handleCheck}>
-          {isLoading ? <LoaderCircle size={14} className="animate-spin" /> : "Back to my teams"}
+        <Button className="w-full max-w-[200px]" asChild>
+          <NextLink href="/teams">Back to my teams</NextLink>
         </Button>
       </div>
     </Card>

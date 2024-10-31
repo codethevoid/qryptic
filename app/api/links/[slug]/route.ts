@@ -46,7 +46,7 @@ export const GET = withTeam(async ({ req, team }) => {
             slug: true,
             destination: true,
             createdAt: true,
-            createdBy: { select: { user: { select: { image: true, name: true, email: true } } } },
+            user: { select: { name: true, image: true, email: true } },
             domain: { select: { name: true } },
             events: { select: { type: true } },
             tags: { select: { id: true, name: true, color: true } },

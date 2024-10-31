@@ -7,7 +7,11 @@ import { CheckIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-export const CopyButton: FC<{ text: string }> = ({ text }) => {
+export const CopyButton: FC<{
+  text: string;
+  className?: string;
+  variant?: "ghost" | "outline" | "default";
+}> = ({ text, className, variant }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const copyToClipboard = async () => {
@@ -19,8 +23,11 @@ export const CopyButton: FC<{ text: string }> = ({ text }) => {
   return (
     <Button
       size="icon"
-      variant="ghost"
-      className="relative flex h-5 w-5 shrink-0 items-center justify-center rounded-md"
+      variant={variant || "ghost"}
+      className={cn(
+        "relative flex h-5 w-5 shrink-0 items-center justify-center rounded-md",
+        className,
+      )}
       onClick={async (e) => {
         e.preventDefault();
         if (isCopied) return;

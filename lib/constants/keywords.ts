@@ -29,7 +29,7 @@ export const keywords = [
   "faq",
   "guides",
   "documentation",
-  "invite",
+  "invites",
   "expired",
   "invites",
   "user",

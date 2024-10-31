@@ -104,7 +104,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links }) => {
               </Badge>
             )}
             <Avatar className="h-5 w-5 rounded-full border">
-              <AvatarImage src={link.createdBy.user.image} alt="avatar" />
+              <AvatarImage src={link.user.image} alt="avatar" />
               <AvatarFallback className="bg-transparent">
                 <Skeleton className="h-full w-full" />
               </AvatarFallback>
