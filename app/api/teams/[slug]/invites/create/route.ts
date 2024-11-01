@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { withTeamOwner } from "@/lib/auth/with-team-owner";
 import { sendEmail } from "@/utils/send-email";
 import prisma from "@/db/prisma";
-import { waitUntil } from "@vercel/functions";
 import { InviteEmail } from "@/emails/invite";
 import { protocol, appDomain } from "@/utils/qryptic/domains";
 import { z } from "zod";
@@ -79,16 +78,14 @@ export const POST = withTeamOwner(async ({ team, req }) => {
     });
 
     // send invite email
-    waitUntil(
-      sendEmail({
-        from: "Qryptic <notifications@mailer.qryptic.io>",
-        to: email,
-        replyTo: "support@qryptic.io",
-        subject: `You've been invited to join team ${teamData.name} on Qryptic!`,
-        react: InviteEmail(invite.id, teamData.name),
-        text: `You've been invited to join team ${teamData.name} on Qryptic! You can view the invite by clicking this link: ${protocol}${appDomain}${invite.id}`,
-      }),
-    );
+    await sendEmail({
+      from: "Qryptic <notifications@mailer.qryptic.io>",
+      to: email,
+      replyTo: "support@qryptic.io",
+      subject: `You've been invited to join team ${teamData.name} on Qryptic!`,
+      react: InviteEmail(invite.id, teamData.name),
+      text: `You've been invited to join team ${teamData.name} on Qryptic! You can view the invite by clicking this link: ${protocol}${appDomain}${invite.id}`,
+    });
 
     return NextResponse.json({ message: "Invite sent" });
   } catch (e) {

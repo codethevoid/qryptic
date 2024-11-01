@@ -56,8 +56,8 @@ export const RemoveMember = ({ isOpen, setIsOpen, member }: Props) => {
           <AlertDialogTitle>Remove member</AlertDialogTitle>
           <AlertDialogDescription>
             Are you sure you want to remove{" "}
-            <span className="text-foreground">{member?.user.email}</span> from the team? They will
-            no longer have access to the team unless re-invited by a team owner.
+            <span className="text-foreground">{member?.user.name || member?.user.email}</span> from
+            the team? They will no longer have access to the team unless re-invited by a team owner.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

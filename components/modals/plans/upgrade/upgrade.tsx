@@ -5,10 +5,7 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import NextLink from "next/link";

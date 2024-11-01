@@ -108,7 +108,9 @@ export const AccountDropdown = () => {
         </DropdownMenuContent>
       </DropdownMenu>
       <CreateTeam isOpen={isCreateTeamOpen} setIsOpen={setIsCreateTeamOpen} />
-      <Upgrade isOpen={isUpgradeOpen} setIsOpen={setIsUpgradeOpen} />
+      {team?.user.role === "owner" && (
+        <Upgrade isOpen={isUpgradeOpen} setIsOpen={setIsUpgradeOpen} />
+      )}
     </>
   );
 };

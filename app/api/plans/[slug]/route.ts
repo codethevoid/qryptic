@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/db/prisma";
-import { withTeamOwner } from "@/lib/auth/with-team-owner";
+import { withTeam } from "@/lib/auth/with-team";
 
-export const GET = withTeamOwner(async () => {
+export const GET = withTeam(async () => {
   try {
     const plans = await prisma.plan.findMany({
       where: { isFree: false, isLegacy: false, isCustom: false },

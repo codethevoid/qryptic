@@ -54,7 +54,9 @@ export const AppNav = () => {
       </div>
       <NavLinks inView={inView} />
       {/*<VerifyEmailAlert isLoading={isUserLoading} isEmailVerified={user?.isEmailVerified} />*/}
-      <Upgrade isOpen={isUpgradeOpen} setIsOpen={setIsUpgradeOpen} />
+      {team?.user.role === "owner" && (
+        <Upgrade isOpen={isUpgradeOpen} setIsOpen={setIsUpgradeOpen} />
+      )}
     </>
   );
 };

@@ -49,7 +49,7 @@ export type TeamSettings = {
   invoices: {
     id: string;
     amount: number;
-    status: "open" | "paid" | "failed" | "void";
+    status: "open" | "paid" | "void";
     date: Date;
     number: string;
     invoicePdf: string;

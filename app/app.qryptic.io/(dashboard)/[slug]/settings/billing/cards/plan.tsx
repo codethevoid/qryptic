@@ -2,10 +2,9 @@
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plan, Price } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
-import { AlertCircle, Info, LoaderCircle, RefreshCw, XCircle } from "lucide-react";
+import { AlertCircle, Info, RefreshCw, XCircle } from "lucide-react";
 import { useState } from "react";
 import NextLink from "next/link";
 import { Upgrade } from "@/components/modals/plans/upgrade/upgrade";

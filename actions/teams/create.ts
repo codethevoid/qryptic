@@ -33,16 +33,16 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
 
   // get all teams that user is super admin of and check if they have a free team
   const teams = await prisma.teamMember.findMany({
-    where: { userId: token.userId, role: "super_admin" },
+    where: { userId: token.userId, role: "owner" },
     include: { team: { include: { plan: true } } },
   });
 
   // if user has a free team, they can't create another
   const freeTeams = teams.filter((t) => t.team.plan.isFree);
-  if (freeTeams.length >= 2) {
+  if (freeTeams.length >= 1) {
     return {
       error: true,
-      description: `You can only have two teams on a free plan. Either upgrade or delete your existing free teams to create a new one.`,
+      description: `You can only have one team on a free plan. Either upgrade or delete your existing free team to create a new one.`,
     };
   }
 

@@ -13,7 +13,8 @@ export const QrCodeProperties = ({ mode }: { mode: "new" | "edit" }) => {
   return (
     <div className={cn("space-y-6", tab !== "qr" && "hidden")}>
       {/*{qrCodeType === null && <QrCodeTypePicker />}*/}
-      {qrCodeType === "standard" && <StandardQr mode={mode} />}
+      {/*{qrCodeType === "standard" && <StandardQr mode={mode} />}*/}
+      <StandardQr mode={mode} />
       {/*{qrCodeType === "ai" && <AiQr />}*/}
       {/*{qrCodeType !== null && (*/}
       {/*  <p*/}

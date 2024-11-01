@@ -14,6 +14,7 @@ import { useUser } from "@/lib/hooks/swr/use-user";
 import { Link2 } from "lucide-react";
 import { LeaveTeam } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/members/components/dialogs/leave-team";
 import { RemoveMember } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/members/components/dialogs/remove-member";
+import { EditRole } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/members/components/dialogs/edit-role";
 
 type Props = {
   setIsTeamInviteOpen: (open: boolean) => void;
@@ -103,7 +104,13 @@ export const MembersTable = ({ setIsTeamInviteOpen }: Props) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" onCloseAutoFocus={(e) => e.preventDefault()}>
                   {member.user.id !== user?.id && (
-                    <DropdownMenuItem className="space-x-2">
+                    <DropdownMenuItem
+                      className="space-x-2"
+                      onSelect={() => {
+                        setSelected(member);
+                        setIsEditRoleOpen(true);
+                      }}
+                    >
                       <Pencil size={13} />
                       <span className="text-[13px]">Edit role</span>
                     </DropdownMenuItem>
@@ -133,6 +140,7 @@ export const MembersTable = ({ setIsTeamInviteOpen }: Props) => {
       </div>
       <LeaveTeam isOpen={isLeaveOpen} setIsOpen={setIsLeaveOpen} />
       <RemoveMember isOpen={isRemoveOpen} setIsOpen={setIsRemoveOpen} member={selected} />
+      <EditRole isOpen={isEditRoleOpen} setIsOpen={setIsEditRoleOpen} member={selected} />
     </>
   );
 };

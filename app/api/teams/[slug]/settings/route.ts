@@ -26,6 +26,7 @@ export const GET = withTeamOwner(async ({ team: teamInfo }) => {
         trialEndsAt: true,
         inviteToken: true,
         invoices: {
+          where: { status: { not: "uncollectible" } },
           select: {
             id: true,
             amount: true,
@@ -34,6 +35,7 @@ export const GET = withTeamOwner(async ({ team: teamInfo }) => {
             number: true,
             invoicePdf: true,
           },
+          orderBy: { date: "desc" },
         },
         plan: {
           select: {

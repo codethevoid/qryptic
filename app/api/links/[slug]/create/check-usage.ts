@@ -8,7 +8,6 @@ type TeamUsage = {
 
 export const checkUsage = async (teamId: string) => {
   const from = startOfMonth(new Date());
-  const to = new Date();
 
   const team: TeamUsage = await prisma.team.findUnique({
     where: { id: teamId },
@@ -20,7 +19,6 @@ export const checkUsage = async (teamId: string) => {
             where: {
               createdAt: {
                 gte: from,
-                lte: to,
               },
             },
           },

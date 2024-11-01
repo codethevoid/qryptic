@@ -50,7 +50,6 @@ model Team {
 }
 
 enum Role {
-  super_admin // creator of the account, can transfew ownership ( can only be one )
   owner // this is the top role, can do anything (ignore super_addmin)
   member // create, read, update, delete
   billing // can only see invoices, billing history, and update payment method
@@ -77,9 +76,9 @@ model Invite {
 }
 
 enum SubscriptionStatus {
-  active
+  active // show this
   trialing
-  past_due
+  past_due // show this
   canceled
   unpaid
   incomplete
