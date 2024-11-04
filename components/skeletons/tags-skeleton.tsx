@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const TagsSkeleton = () => {
   return (
-    <div className="h-[530px]">
+    <div>
       <div className="rounded-lg border">
         {Array.from({ length: 5 }).map((_, i) => (
           <div

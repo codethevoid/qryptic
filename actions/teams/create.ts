@@ -83,7 +83,8 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
   let slug = name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/^-+|-+$/g, "")
+    .trim();
 
   if (!slug) {
     slug = nanoid(8);

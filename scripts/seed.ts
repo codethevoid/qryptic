@@ -1,5 +1,5 @@
-import prisma from "../../db/prisma";
-import { plans, proPrices, businessPrices } from "./data";
+import prisma from "@/db/prisma";
+import { plans, proPrices, businessPrices } from "@/prisma/data";
 
 const main = async () => {
   // need to create plans first and then prices for each plan besides the free plan

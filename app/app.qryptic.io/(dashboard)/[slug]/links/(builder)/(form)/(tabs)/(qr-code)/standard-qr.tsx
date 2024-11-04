@@ -244,7 +244,7 @@ export const StandardQr = ({ mode }: { mode: "new" | "edit" }) => {
                 )}
                 disabled={team?.plan.isFree}
                 onClick={() => {
-                  setLogo(team.image);
+                  setLogo(team?.image as string);
                   setLogoDimensions({ height: 34, width: 34 });
                   setLogoType("team");
                   setLogoFileType(null);

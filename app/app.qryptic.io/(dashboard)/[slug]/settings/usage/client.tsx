@@ -16,13 +16,14 @@ import { Upgrade } from "@/components/modals/plans/upgrade/upgrade";
 import { useState } from "react";
 import { ChangePlan } from "@/components/modals/plans/change-plan/change-plan";
 import { startOfMonth, format } from "date-fns";
+import { Loader } from "@/components/layout/loader";
 
 export const UsageClient = () => {
   const { data: team, isLoading, error } = useTeamSettings();
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
   const [isChangePlanOpen, setIsChangePlanOpen] = useState(false);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
   if (error) return <div>Error loading team settings</div>;
 
   const UpgradeButton = () => {
@@ -49,8 +50,8 @@ export const UsageClient = () => {
         <div className="space-y-0.5">
           <p className="font-semibold">Usage for {team?.name}</p>
           <p className="text-sm text-muted-foreground">
-            Showing data from {format(startOfMonth(new Date()), "MMMM d")} -{" "}
-            {format(new Date(), "MMMM d")}
+            Showing data from {format(startOfMonth(new Date()), "MMM d")} -{" "}
+            {format(new Date(), "MMM d")}
           </p>
         </div>
         <div className="space-y-6">

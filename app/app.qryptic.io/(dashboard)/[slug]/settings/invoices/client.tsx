@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Loader } from "@/components/layout/loader";
 
 type InvoiceStatus = TeamSettings["invoices"][0]["status"];
 
@@ -26,7 +27,7 @@ const badgeVariantMap: Record<InvoiceStatus, BadgeVariant> = {
 export const InvoicesClient = () => {
   const { data: team, isLoading, error } = useTeamSettings();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
   if (error) return <div>Error loading team settings</div>;
 
   return (

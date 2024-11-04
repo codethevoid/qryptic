@@ -21,7 +21,7 @@ export const uploadPreviewImage = async ({
   const buffer = Buffer.from(base64, "base64");
   if (buffer.length > maxSize) return { error: "Image size is too large" };
   // upload image to s3
-  const key = `previews/${team.slug}/${slug}/${nanoid(16)}`;
+  const key = `previews/${team.slug}/${slug}/${nanoid(8)}.${imageType.split("/")[1]}`;
   const location = await uploadImage(buffer, key, imageType);
   return { location: location || undefined };
 };

@@ -61,7 +61,7 @@ export const NavLinks = ({ inView }: { inView: boolean }) => {
   if (error || !slug) return null;
 
   return (
-    <div className={`sticky top-0 z-10 border-b border-border/70 bg-background px-4 py-1.5`}>
+    <div className={`sticky top-0 z-20 border-b border-border/70 bg-background px-4 py-1.5`}>
       <MaxWidthWrapper className="relative flex items-center space-x-3 overflow-hidden">
         <div className={`${!inView ? "left-0" : "-left-[20px]"} absolute transition-all`}>
           <QrypticIcon />
