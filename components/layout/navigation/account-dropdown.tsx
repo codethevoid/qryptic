@@ -20,6 +20,7 @@ import { CreateTeam } from "@/components/modals/create-team";
 import { useState } from "react";
 import { Upgrade } from "@/components/modals/plans/upgrade/upgrade";
 import { adminRoles } from "@/utils/roles";
+import NextLink from "next/link";
 
 export const AccountDropdown = () => {
   const { resolvedTheme, setTheme } = useTheme();
@@ -61,9 +62,11 @@ export const AccountDropdown = () => {
             <PlusCircle size={16} />
             <span>Create team</span>
           </DropdownMenuItem>
-          <DropdownMenuItem className="space-x-2.5">
-            <Cog size={16} />
-            <span>Account settings</span>
+          <DropdownMenuItem asChild className="space-x-2.5">
+            <NextLink href={"/account"}>
+              <Cog size={16} />
+              <span>Account settings</span>
+            </NextLink>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

@@ -32,7 +32,7 @@ export const TeamAvatar = () => {
     if (!file) return;
 
     // check if file is larger than 2mb
-    const maxSize = 3 * 1024 * 1024;
+    const maxSize = 2 * 1024 * 1024;
     if (file.size > maxSize) {
       return toast.error("File size must be less than 2mb");
     }
