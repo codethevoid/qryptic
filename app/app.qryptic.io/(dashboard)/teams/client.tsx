@@ -25,11 +25,11 @@ export const TeamsClient = () => {
     <>
       <div className="flex w-full items-center justify-between">
         <p className="text-xl font-bold">My Teams</p>
-        <Button disabled={isLoading} onClick={() => setCreateTeamOpen(true)}>
+        <Button disabled={isLoading} onClick={() => setCreateTeamOpen(true)} size="sm">
           Create team
         </Button>
       </div>
-      <div className="mt-6">
+      <div className="mt-6 max-md:mt-3">
         {isLoading ? (
           <TeamSkeleton />
         ) : error ? (
@@ -47,26 +47,26 @@ export const TeamsClient = () => {
 
 export const TeamsProvider = ({ teams }: { teams: Team[] }) => {
   return (
-    <div className="grid grid-cols-3 gap-4 max-md:grid-cols-1">
+    <div className="grid grid-cols-3 gap-4 max-lg:grid-cols-2 max-sm:grid-cols-1">
       {teams.map((team, i) => (
         <NextLink href={`/${team.slug}`} key={i}>
           <Card className="space-y-5 p-4 shadow transition-all hover:shadow-lg dark:hover:border-foreground">
-            <div className="flex justify-between">
-              <div className="flex items-center space-x-3">
-                <Avatar className="h-10 w-10 border">
+            <div className="flex justify-between space-x-3">
+              <div className="flex min-w-0 items-center space-x-3">
+                <Avatar className="h-10 w-10 shrink-0 border">
                   <AvatarImage src={team.image as string} alt={team.name} />
                   <AvatarFallback className="bg-transparent">
                     <Skeleton className="h-full w-full rounded-full" />
                   </AvatarFallback>
                 </Avatar>
-                <div>
-                  <p className="text-sm font-medium">{team.name}</p>
-                  <p className="text-[13px] text-muted-foreground">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium">{team.name}</p>
+                  <p className="truncate text-[13px] text-muted-foreground">
                     {team.domains.find((d) => d.isPrimary)?.name ?? shortDomain}
                   </p>
                 </div>
               </div>
-              <div className="self-start">
+              <div className="flex self-start">
                 <PlanBadge plan={team.plan.name as PlanName} />
               </div>
             </div>
@@ -81,7 +81,7 @@ export const TeamsProvider = ({ teams }: { teams: Team[] }) => {
               <div className="flex items-center space-x-1.5">
                 <Link2 size={14} className="relative bottom-[1px]" />
                 <p className="text-[13px] text-muted-foreground">
-                  {team._count.links !== 0 && `${team._count.links} `}
+                  {team._count.links !== 0 && `${team._count.links.toLocaleString("en-us")} `}
                   {team._count.links === 1
                     ? "link"
                     : team._count.links === 0
@@ -92,7 +92,7 @@ export const TeamsProvider = ({ teams }: { teams: Team[] }) => {
               <div className="flex items-center space-x-1.5">
                 <ChartArea size={14} className="relative bottom-[1px]" />
                 <p className="text-[13px] text-muted-foreground">
-                  {team._count.events !== 0 && `${team._count.events} `}
+                  {team._count.events !== 0 && `${team._count.events.toLocaleString("en-us")} `}
                   {team._count.events === 1
                     ? "event"
                     : team._count.events === 0

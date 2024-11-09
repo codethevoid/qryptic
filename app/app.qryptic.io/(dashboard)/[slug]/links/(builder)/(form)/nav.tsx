@@ -30,7 +30,7 @@ type LinkItem = {
   isPro: boolean;
 };
 
-const linkItems: LinkItem[] = [
+export const linkItems: LinkItem[] = [
   {
     name: "General",
     value: "general",

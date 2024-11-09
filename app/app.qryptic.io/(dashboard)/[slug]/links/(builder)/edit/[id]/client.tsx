@@ -10,6 +10,7 @@ import {
 import { useLink } from "@/lib/hooks/swr/use-link";
 import { useEffect } from "react";
 import { EditLinkSnackbar } from "@/components/snackbar/edit-link-snackbar";
+import { LinkMobileNav } from "../../(form)/mobile-nav";
 
 export const EditLinkProviderClient = () => {
   return (
@@ -101,8 +102,11 @@ const EditLinkClient = () => {
 
   return (
     <>
-      <div className="flex space-x-10">
-        <NewLinkNav />
+      <LinkMobileNav />
+      <div className="flex gap-10 max-lg:gap-6 max-sm:flex-col">
+        <div className="max-lg:hidden">
+          <NewLinkNav />
+        </div>
         <LinkForm mode="edit" />
         <LinkPreview mode="edit" />
       </div>

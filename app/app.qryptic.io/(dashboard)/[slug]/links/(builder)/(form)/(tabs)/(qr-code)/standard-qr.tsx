@@ -200,7 +200,7 @@ export const StandardQr = ({ mode }: { mode: "new" | "edit" }) => {
                     role="button"
                     key={c}
                     className={cn(
-                      "h-6 w-6 rounded-full border transition-all active:scale-[98%]",
+                      "h-6 w-6 rounded-full border transition-all active:scale-[98%] max-sm:h-[18px] max-sm:w-[18px]",
                       color === c && "ring-1 ring-primary ring-offset-1",
                     )}
                     style={{ backgroundColor: c }}

@@ -68,7 +68,7 @@ export const LinkPreview: FC<{ mode: "new" | "edit" }> = ({ mode }) => {
 
   return (
     <div className="space-y-4">
-      <div className="min-w-[300px] max-w-[300px]">
+      <div className="min-w-[300px] max-w-[300px] max-md:min-w-[260px] max-sm:w-full max-sm:max-w-none">
         <div className="w-full rounded-lg border p-4 shadow">
           <div className={`${team?.plan.isFree ? "space-y-0.5" : "space-y-0"}`}>
             <div className="flex items-center justify-between">
@@ -127,8 +127,8 @@ const XPreview = ({ image, title, url }: { image: string; title: string; url: st
             className="h-full w-full rounded-lg object-cover"
           />
           {title && (
-            <div className="absolute bottom-2 left-2 rounded-sm bg-black/70 px-1 py-0.5">
-              <p className="max-w-[232px] truncate text-xs text-white">{title}</p>
+            <div className="absolute bottom-2 left-2 right-2 max-w-fit rounded-sm bg-black/70 px-1 py-0.5">
+              <p className="truncate text-xs text-white">{title}</p>
             </div>
           )}
         </div>

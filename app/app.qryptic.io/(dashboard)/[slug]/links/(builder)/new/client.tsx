@@ -10,21 +10,33 @@ import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(buil
 import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
 import { useRouter } from "next/navigation";
 import { LinkFormProvider } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
+import { useState } from "react";
+import { LinkMobileNav } from "../(form)/mobile-nav";
 
 export const NewLinkClient = () => {
+  const [isNavOpen, setIsNavOpen] = useState(false); // for mobile
+
   return (
     <LinkFormProvider>
-      <div className="flex space-x-10">
-        <NewLinkNav />
+      <LinkMobileNav />
+      <div className="flex gap-10 max-lg:gap-6 max-sm:flex-col">
+        <div className="max-lg:hidden">
+          <NewLinkNav />
+        </div>
         <LinkForm mode="new" />
         <LinkPreview mode="new" />
       </div>
-      <NewLinkSnackbar />
+      <NewLinkSnackbar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
     </LinkFormProvider>
   );
 };
 
-const NewLinkSnackbar = () => {
+type Props = {
+  isNavOpen: boolean;
+  setIsNavOpen: (isNavOpen: boolean) => void;
+};
+
+const NewLinkSnackbar = ({ isNavOpen, setIsNavOpen }: Props) => {
   const { slug } = useParams();
   const { submitForm, isSubmitting, destination } = useLinkForm();
   const router = useRouter();
@@ -45,6 +57,14 @@ const NewLinkSnackbar = () => {
         >
           Cancel
         </Button>
+        {/* <Button
+          size="icon"
+          variant="outline"
+          className="rounded-full"
+          onClick={() => setIsNavOpen(true)}
+        >
+          <Menu size={14} />
+        </Button> */}
         <Button
           size="sm"
           className="w-[91px] rounded-full"
