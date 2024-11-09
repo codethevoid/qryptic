@@ -47,7 +47,7 @@ export const TeamsClient = () => {
 
 export const TeamsProvider = ({ teams }: { teams: Team[] }) => {
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-3 gap-4 max-md:grid-cols-1">
       {teams.map((team, i) => (
         <NextLink href={`/${team.slug}`} key={i}>
           <Card className="space-y-5 p-4 shadow transition-all hover:shadow-lg dark:hover:border-foreground">
@@ -70,10 +70,10 @@ export const TeamsProvider = ({ teams }: { teams: Team[] }) => {
                 <PlanBadge plan={team.plan.name as PlanName} />
               </div>
             </div>
-            <div className="flex w-fit items-center space-x-1.5 rounded-full bg-accent/70 px-3.5 py-1">
-              <QrypticIcon className="h-2.5" />
+            <div className="flex min-w-0 max-w-fit items-center space-x-1.5 rounded-full bg-accent/70 px-3.5 py-1">
+              <QrypticIcon className="h-2.5 shrink-0" />
               {/*<Link2 size={14} className="-rotate-45" />*/}
-              <p className="text-[13px]">
+              <p className="truncate text-xs">
                 {appDomain}/{team.slug}
               </p>
             </div>

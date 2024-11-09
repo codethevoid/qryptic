@@ -68,7 +68,7 @@ export const LinksClient: FC = () => {
 
   useEffect(() => {
     setPage(1);
-  }, [debouncedSearch, status, domains, tags]);
+  }, [search, status, domains, tags]);
 
   useEffect(() => {
     window?.scrollTo({ top: 0, behavior: "smooth" });
@@ -91,24 +91,26 @@ export const LinksClient: FC = () => {
       <div className="flex items-center justify-between">
         <p className="text-xl font-bold">Links</p>
         <div className="flex w-full items-center justify-end space-x-2">
-          <SearchInput
-            name="search links"
-            placeholder="Search links"
-            search={search}
-            setSearch={setSearch}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Select value={sort} onValueChange={(value: "date" | "activity") => setSort(value)}>
-            <SelectTrigger className="h-8 w-auto space-x-2 capitalize">
-              <span>{sort}</span>
-            </SelectTrigger>
-            <SelectContent onCloseAutoFocus={(e) => e.preventDefault()} align="end">
-              <SelectGroup>
-                <SelectItem value="date">Sort by date</SelectItem>
-                <SelectItem value="activity">Sort by activity</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <div className="flex items-center space-x-2 max-[768px]:hidden">
+            <SearchInput
+              name="search links"
+              placeholder="Search links"
+              search={search}
+              setSearch={setSearch}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Select value={sort} onValueChange={(value: "date" | "activity") => setSort(value)}>
+              <SelectTrigger className="h-8 w-auto space-x-2 capitalize">
+                <span>{sort}</span>
+              </SelectTrigger>
+              <SelectContent onCloseAutoFocus={(e) => e.preventDefault()} align="end">
+                <SelectGroup>
+                  <SelectItem value="date">Sort by date</SelectItem>
+                  <SelectItem value="activity">Sort by activity</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
           {/*<div>*/}
           {/*  <Tooltip>*/}
           {/*    <TooltipTrigger asChild>*/}
@@ -126,6 +128,28 @@ export const LinksClient: FC = () => {
             </NextLink>
           </Button>
         </div>
+      </div>
+      <div className="mt-3 flex items-center space-x-2 min-[768px]:hidden">
+        <SearchInput
+          name="search links"
+          placeholder="Search links"
+          search={search}
+          setSearch={setSearch}
+          wrapperClassName="max-w-none"
+          inputClassName="w-full"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Select value={sort} onValueChange={(value: "date" | "activity") => setSort(value)}>
+          <SelectTrigger className="h-8 w-auto space-x-2 capitalize">
+            <span>{sort}</span>
+          </SelectTrigger>
+          <SelectContent onCloseAutoFocus={(e) => e.preventDefault()} align="end">
+            <SelectGroup>
+              <SelectItem value="date">Sort by date</SelectItem>
+              <SelectItem value="activity">Sort by activity</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
       <LinkFilters
         search={search}
@@ -151,7 +175,7 @@ export const LinksClient: FC = () => {
         ) : data?.links.length === 0 || !data ? (
           "no links found"
         ) : (
-          <LinksTable links={data.links} />
+          <LinksTable links={data.links} mutate={mutate} />
         )}
       </div>
       {totals.filtered > pageSize && (

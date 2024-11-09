@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const DomainsSkeleton = () => {
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {Array.from({ length: 3 }).map((_, i) => (
         <div key={i} className="rounded-lg border p-4 shadow-sm">
           <div className="flex items-center justify-between">
@@ -22,7 +22,7 @@ export const DomainsSkeleton = () => {
               </div>
             </div>
             <div className="flex h-8 items-center space-x-2.5 self-start">
-              <Skeleton className="h-[22px] w-24 rounded-full" />
+              <Skeleton className="h-[22px] w-24 rounded-full max-[600px]:hidden" />
               <Skeleton className="h-7 w-16 rounded-lg" />
             </div>
           </div>

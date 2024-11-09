@@ -74,7 +74,7 @@ export const CompanyName = () => {
           <div className="space-y-1.5">
             <Label htmlFor="company">Company name</Label>
             <Input
-              defaultValue={team?.company}
+              defaultValue={team?.company || ""}
               id="company"
               placeholder="Company name"
               className="max-w-[400px]"

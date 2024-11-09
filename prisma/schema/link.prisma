@@ -26,7 +26,7 @@ model Link {
   geo     Json?
 
   // Custom open graph
-  ogTitle       String?
+  ogTitle       String? @db.Text
   ogDescription String? @db.Text
   ogImage       String?
 

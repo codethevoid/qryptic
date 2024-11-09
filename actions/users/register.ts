@@ -10,18 +10,28 @@ import { EmailVerificationEmail } from "@/emails/email-verification";
 import { protocol, appDomain } from "@/utils/qryptic/domains";
 import { signIn } from "@/auth";
 import { uploadImage } from "@/utils/upload-image";
+import { z } from "zod";
 
 type RegisterUserResponse = {
   error?: boolean;
   message: string;
 };
 
+const schema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+
 export const registerUser = async (data: RegisterFormValues): Promise<RegisterUserResponse> => {
   // check if email is already in use
   let { email, password } = data;
   if (!email || !password) return { error: true, message: "Invalid request" };
-
   email = email.toLowerCase().trim();
+
+  const isValid = schema.safeParse({ email, password });
+  if (!isValid.success) {
+    return { error: true, message: "Invalid email or password" };
+  }
 
   if (await prisma.user.findUnique({ where: { email: email } })) {
     return { error: true, message: "Email is already in use" };

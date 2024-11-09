@@ -48,12 +48,14 @@ export const TagsClient = () => {
     <>
       <div className="flex items-center justify-between" ref={containerRef}>
         <p className="text-xl font-bold">Tags</p>
-        <div className="flex w-full items-center justify-end space-x-2">
+        <div className="flex items-center justify-end space-x-2">
           <SearchInput
             placeholder="Search tags"
             setSearch={setSearch}
             search={search}
             // disabled={tags?.length === 0 && debouncedSearch === ""}
+            wrapperClassName="max-w-none max-[768px]:hidden"
+            inputClassName="w-auto"
             onChange={(e) => {
               setSearch(e.target.value);
               setPage(1);
@@ -65,7 +67,19 @@ export const TagsClient = () => {
           </Button>
         </div>
       </div>
-      <div className="mt-6">
+      <SearchInput
+        placeholder="Search tags"
+        setSearch={setSearch}
+        search={search}
+        // disabled={tags?.length === 0 && debouncedSearch === ""}
+        wrapperClassName="max-w-none min-[768px]:hidden mt-3"
+        inputClassName="w-full"
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setPage(1);
+        }}
+      />
+      <div className="mt-6 max-[768px]:mt-3">
         {isLoading || search !== debouncedSearch ? (
           <TagsSkeleton />
         ) : error ? (

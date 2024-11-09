@@ -6,11 +6,18 @@ export type TableLink = {
   slug: string;
   destination: string;
   createdAt: Date;
+  isArchived: boolean;
   user: { name: string; email: string; image: string };
   domain: { name: string };
   events: { type: "click" | "scan" }[];
   tags: { id: string; name: string; color: TagColor }[];
   _count: { events: number; tags: number };
+  qrCode: {
+    color: string;
+    logo: string;
+    logoHeight: number;
+    logoWidth: number;
+  };
 };
 
 export type LinksTable = {

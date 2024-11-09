@@ -46,7 +46,7 @@ const AlertDialogContent = React.forwardRef<
 AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName;
 
 const AlertDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("space-y-3 p-4 py-6", className)} {...props} />
+  <div className={cn("space-y-2 p-4 py-6", className)} {...props} />
 );
 AlertDialogHeader.displayName = "AlertDialogHeader";
 

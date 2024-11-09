@@ -88,10 +88,10 @@ export const LinkFilters = ({
   };
 
   return (
-    <>
+    <div className="max-[768px]:hidden">
       <div className="mt-3 grid w-full grid-cols-3 gap-2">
         <div
-          className={`flex items-center justify-between rounded-lg border px-3 py-2 shadow-sm transition-all ${status.includes("active") && activeFilters() - 1 === 0 ? "border-primary text-foreground" : "border-border text-muted-foreground hover:shadow-md dark:hover:border-zinc-600"}`}
+          className={`flex items-center justify-between rounded-lg border px-3 py-2 shadow-sm transition-all ${status.includes("active") && activeFilters() - 1 === 0 ? "border-primary text-foreground" : "border-border text-muted-foreground hover:border-primary/30"}`}
           role="button"
           onClick={() => {
             clearFilters();
@@ -106,7 +106,7 @@ export const LinkFilters = ({
           )}
         </div>
         <div
-          className={`flex items-center justify-between rounded-lg border px-3 py-2 shadow-sm transition-all ${status.includes("archived") && activeFilters() - 1 === 0 ? "border-primary text-foreground" : "border-border text-muted-foreground hover:shadow-md dark:hover:border-zinc-600"}`}
+          className={`flex items-center justify-between rounded-lg border px-3 py-2 shadow-sm transition-all ${status.includes("archived") && activeFilters() - 1 === 0 ? "border-primary text-foreground" : "border-border text-muted-foreground hover:border-primary/30"}`}
           role="button"
           onClick={() => {
             clearFilters();
@@ -121,7 +121,7 @@ export const LinkFilters = ({
           )}
         </div>
         <div
-          className={`flex items-center justify-between rounded-lg border px-3 py-2 shadow-sm transition-all ${!status.length && !activeFilters() ? "border-primary text-foreground" : "border-border text-muted-foreground hover:shadow-md dark:hover:border-zinc-600"}`}
+          className={`flex items-center justify-between rounded-lg border px-3 py-2 shadow-sm transition-all ${!status.length && !activeFilters() ? "border-primary text-foreground" : "border-border text-muted-foreground hover:border-primary/30"}`}
           role="button"
           onClick={() => {
             clearFilters();
@@ -470,6 +470,6 @@ export const LinkFilters = ({
           </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 };

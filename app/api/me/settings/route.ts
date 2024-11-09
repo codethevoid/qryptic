@@ -3,6 +3,7 @@ import { withSession } from "@/lib/auth/with-session";
 import prisma from "@/db/prisma";
 import { redis } from "@/lib/upstash/redis";
 import { TeamMember } from "@prisma/client";
+import { PlanName } from "@/types/plans";
 
 type userSettingsWithDefaultTeam = {
   id: string;
@@ -19,9 +20,11 @@ type userSettingsWithDefaultTeam = {
       name: string;
       slug: string;
       image: string;
+      plan: { name: string };
     };
   }[];
   defaultTeam: string | null;
+  hasPassword: boolean;
 };
 
 export const GET = withSession(async ({ user }) => {
@@ -36,10 +39,19 @@ export const GET = withSession(async ({ user }) => {
         isEmailVerified: true,
         googleAuth: true,
         credentialsAuth: true,
+        hashedPassword: true,
         teams: {
           select: {
             role: true,
-            team: { select: { id: true, name: true, slug: true, image: true } },
+            team: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                image: true,
+                plan: { select: { name: true } },
+              },
+            },
           },
         },
       },
@@ -49,9 +61,12 @@ export const GET = withSession(async ({ user }) => {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
+    const { hashedPassword, ...rest } = userSettings;
+
     const finalUserSettings: userSettingsWithDefaultTeam = {
-      ...userSettings,
+      ...rest,
       defaultTeam: await redis.get(`user:${user.id}:defaultTeam`),
+      hasPassword: !!userSettings.hashedPassword,
     };
 
     return NextResponse.json(finalUserSettings);

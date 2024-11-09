@@ -1,6 +1,6 @@
 import { Tag as TagBadge } from "@/components/ui/custom/tag";
 import { TagColor } from "@/types/colors";
-import { ChartArea, Link2, Pencil, Tag, Trash } from "lucide-react";
+import { ChartArea, Link2, Pencil, Tag, Trash, TagIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TagWithCounts } from "@/types/tags";
@@ -40,28 +40,49 @@ export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) =>
             key={tag.id}
           >
             <div className="flex items-center space-x-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full border bg-gradient-to-tr from-accent/10 to-accent shadow-sm">
+              {/* <div className="flex h-8 w-8 items-center justify-center rounded-full border bg-gradient-to-tr from-accent/10 to-accent shadow-sm">
                 <Tag size={13} />
-              </div>
-              <TagBadge className="w-fit text-nowrap" variant={tag.color as TagColor}>
-                {tag.name}
+              </div> */}
+              <TagBadge
+                variant={tag.color as TagColor}
+                className={`flex h-8 w-8 items-center justify-center border-border p-0`}
+              >
+                <TagIcon className="h-[13px] w-[13px]" />
               </TagBadge>
+              <p className="text-sm">{tag.name}</p>
+              {/* <TagBadge className="w-fit text-nowrap" variant={tag.color as TagColor}>
+                {tag.name}
+              </TagBadge> */}
             </div>
-            <div className="flex items-center space-x-2.5">
-              <Badge variant="neutral" className="space-x-1.5 text-nowrap">
-                <Link2 size={13} className="-rotate-45" />
-                <span>
-                  {tag.linkCount !== 0 && tag.linkCount}{" "}
-                  {tag.linkCount === 1 ? "link" : tag.linkCount === 0 ? "No links" : "links"}
-                </span>
-              </Badge>
-              <Badge variant="neutral" className="space-x-1.5 text-nowrap">
-                <ChartArea size={13} />
-                <span>
-                  {tag.eventCount !== 0 && tag.eventCount}{" "}
-                  {tag.eventCount === 1 ? "event" : tag.eventCount === 0 ? "No events" : "events"}
-                </span>
-              </Badge>
+            <div className="flex items-center space-x-2">
+              {tag.linkCount ? (
+                <Badge
+                  variant="neutral"
+                  className="flex h-5 items-center space-x-1 text-[11px] max-sm:hidden"
+                >
+                  <Link2 size={13} className="-rotate-45" />
+                  <span>
+                    {tag.linkCount !== 0 && tag.linkCount}{" "}
+                    {tag.linkCount === 1 ? "link" : tag.linkCount === 0 ? "No links" : "links"}
+                  </span>
+                </Badge>
+              ) : (
+                ""
+              )}
+              {tag.eventCount ? (
+                <Badge
+                  variant="neutral"
+                  className="flex h-5 items-center space-x-1 text-[11px] max-sm:hidden"
+                >
+                  <ChartArea size={13} />
+                  <span>
+                    {tag.eventCount !== 0 && tag.eventCount}{" "}
+                    {tag.eventCount === 1 ? "event" : tag.eventCount === 0 ? "No events" : "events"}
+                  </span>
+                </Badge>
+              ) : (
+                ""
+              )}
               <div className="flex items-center">
                 <Tooltip>
                   <TooltipTrigger asChild>

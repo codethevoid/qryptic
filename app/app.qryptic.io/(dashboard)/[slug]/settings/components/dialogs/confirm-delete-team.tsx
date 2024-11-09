@@ -53,7 +53,7 @@ export const ConfirmDeleteTeam = ({ isOpen, setIsOpen }: Props) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Delete team</AlertDialogTitle>
           <AlertDialogDescription>
-            Area you sure you want to delete your team? This action cannot be undone.
+            Are you sure you want to delete your team? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

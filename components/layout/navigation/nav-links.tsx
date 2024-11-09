@@ -7,6 +7,8 @@ import { useParams, usePathname } from "next/navigation";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { QrypticIcon } from "@/components/logos/qryptic-icon";
+import { useWindowSize, useWindowWidth } from "@react-hook/window-size";
+import { cn } from "@/lib/utils";
 
 const linkItems = [
   { title: "Home", href: "/" },
@@ -15,7 +17,7 @@ const linkItems = [
   { title: "Domains", href: "/domains" },
   { title: "Tags", href: "/tags" },
   // { title: "Team", href: "/team", roles: ["super_admin", "owner"] },
-  { title: "Settings", href: "/settings", roles: ["super_admin", "owner"] },
+  { title: "Settings", href: "/settings", roles: ["owner"] },
 ];
 
 export const NavLinks = ({ inView }: { inView: boolean }) => {
@@ -24,6 +26,7 @@ export const NavLinks = ({ inView }: { inView: boolean }) => {
   const { error } = useTeam();
   const { team } = useTeam();
   const navRef = useRef<HTMLDivElement>(null);
+  const width = useWindowWidth();
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>({
@@ -62,13 +65,21 @@ export const NavLinks = ({ inView }: { inView: boolean }) => {
 
   return (
     <div className={`sticky top-0 z-20 border-b border-border/70 bg-background px-4 py-1.5`}>
-      <MaxWidthWrapper className="relative flex items-center space-x-3 overflow-hidden">
-        <div className={`${!inView ? "left-0" : "-left-[20px]"} absolute transition-all`}>
+      <MaxWidthWrapper className="relative flex items-center space-x-3 overflow-x-auto scrollbar-hide">
+        <div
+          className={cn(
+            `${!inView ? "left-0" : "-left-[20px]"} absolute transition-all max-[499px]:hidden`,
+          )}
+        >
           <QrypticIcon />
         </div>
         <div
           ref={navRef}
-          className={`relative flex items-center ${inView ? "-left-3" : "left-[20px]"} relative transition-[left_150ms]`}
+          className={cn(
+            `relative flex items-center transition-[left_150ms]`,
+            inView ? "-left-3" : "left-5",
+            width < 500 && "-left-3",
+          )}
         >
           <div
             className="absolute z-0 h-7 rounded-full bg-zinc-100 transition-all duration-300 ease-in-out dark:bg-zinc-900"

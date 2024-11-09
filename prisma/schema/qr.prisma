@@ -15,7 +15,7 @@ model QrCode {
   prompt     String?   @db.Text // promp for the qr code (only used for ai qr codes)
 
   // relations
-  link   Link   @relation(fields: [linkId], references: [id])
+  link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
   linkId String @unique
 }
 

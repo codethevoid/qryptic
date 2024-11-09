@@ -13,7 +13,7 @@ export const PATCH = withTeamOwner(async ({ team, req }) => {
       return NextResponse.json({ error: "Please select an image" }, { status: 400 });
     }
 
-    const maxSize = 3 * 1024 * 1024; // 2mb
+    const maxSize = 2 * 1024 * 1024; // 2mb
     if (file.size > maxSize) {
       return NextResponse.json({ error: "File size must be less than 2mb" }, { status: 400 });
     }

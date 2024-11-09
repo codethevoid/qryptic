@@ -46,11 +46,13 @@ export const GET = withTeam(async ({ req, team }) => {
             slug: true,
             destination: true,
             createdAt: true,
+            isArchived: true,
             user: { select: { name: true, image: true, email: true } },
             domain: { select: { name: true } },
             events: { select: { type: true } },
             tags: { select: { id: true, name: true, color: true } },
             _count: { select: { events: true, tags: true } },
+            qrCode: { select: { color: true, logo: true, logoHeight: true, logoWidth: true } },
           },
           orderBy: {
             ...(sort === "date" && { createdAt: "desc" }),

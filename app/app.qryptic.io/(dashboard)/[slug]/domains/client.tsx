@@ -60,43 +60,78 @@ export const DomainsClient = () => {
       <div className="flex items-center justify-between">
         <p className="text-nowrap text-xl font-bold">Domains</p>
         <div className="flex w-full items-center justify-end space-x-2">
-          <SearchInput
-            name="search domains"
-            placeholder="Search domains"
-            setSearch={setSearch}
-            search={search}
-            // disabled={domains?.length === 0 && debouncedSearch === "" && status === "active"}
-            onChange={(e) => {
-              setPage(1);
-              setSearch(e.target.value);
-            }}
-          />
-          <Select
-            value={status}
-            onValueChange={(value: "all" | "active" | "archived") => {
-              setPage(1);
-              setStatus(value);
-            }}
-            // disabled={domains?.length === 0 && debouncedSearch === "" && status === "active"}
-          >
-            <SelectTrigger className="h-8 w-auto space-x-2 capitalize">
-              <span>{status}</span>
-            </SelectTrigger>
-            <SelectContent onCloseAutoFocus={(e) => e.preventDefault()} align="end">
-              <SelectGroup>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="archived">Archived</SelectItem>
-                <SelectItem value="all">All</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <div className="flex items-center space-x-2 max-[768px]:hidden">
+            <SearchInput
+              name="search domains"
+              placeholder="Search domains"
+              setSearch={setSearch}
+              search={search}
+              // disabled={domains?.length === 0 && debouncedSearch === "" && status === "active"}
+              onChange={(e) => {
+                setPage(1);
+                setSearch(e.target.value);
+              }}
+            />
+            <Select
+              value={status}
+              onValueChange={(value: "all" | "active" | "archived") => {
+                setPage(1);
+                setStatus(value);
+              }}
+              // disabled={domains?.length === 0 && debouncedSearch === "" && status === "active"}
+            >
+              <SelectTrigger className="h-8 w-auto space-x-2 capitalize">
+                <span>{status}</span>
+              </SelectTrigger>
+              <SelectContent onCloseAutoFocus={(e) => e.preventDefault()} align="end">
+                <SelectGroup>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
+                  <SelectItem value="all">All</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
           <Button className="space-x-1.5" size="sm" onClick={() => setIsAddOpen(true)}>
             <Plus size={14} />
             <span>Add domain</span>
           </Button>
         </div>
       </div>
-      <div className="mt-6">
+      <div className="mt-3 flex items-center space-x-2 min-[768px]:hidden">
+        <SearchInput
+          name="search domains"
+          placeholder="Search domains"
+          setSearch={setSearch}
+          search={search}
+          wrapperClassName="max-w-none"
+          inputClassName="w-full"
+          onChange={(e) => {
+            setPage(1);
+            setSearch(e.target.value);
+          }}
+        />
+        <Select
+          value={status}
+          onValueChange={(value: "all" | "active" | "archived") => {
+            setPage(1);
+            setStatus(value);
+          }}
+          // disabled={domains?.length === 0 && debouncedSearch === "" && status === "active"}
+        >
+          <SelectTrigger className="h-8 w-auto space-x-2 capitalize">
+            <span>{status}</span>
+          </SelectTrigger>
+          <SelectContent onCloseAutoFocus={(e) => e.preventDefault()} align="end">
+            <SelectGroup>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="archived">Archived</SelectItem>
+              <SelectItem value="all">All</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="mt-6 max-[768px]:mt-3">
         {isLoading || search !== debouncedSearch ? (
           <DomainsSkeleton />
         ) : error ? (

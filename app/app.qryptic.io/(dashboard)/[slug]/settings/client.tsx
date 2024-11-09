@@ -14,13 +14,11 @@ export const GeneralSettingsClient = () => {
   if (error) return <div>Failed to load team settings</div>;
 
   return (
-    <>
-      <div className="space-y-6">
-        <TeamAvatar />
-        <TeamName />
-        <CompanyName />
-        <DeleteTeam />
-      </div>
-    </>
+    <div className="space-y-6">
+      <TeamAvatar />
+      <TeamName />
+      <CompanyName />
+      <DeleteTeam />
+    </div>
   );
 };

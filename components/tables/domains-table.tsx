@@ -107,7 +107,7 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
 
   return (
     <>
-      <div className="space-y-5">
+      <div className="space-y-4">
         {domains
           .sort((a, b) => (b.isPrimary ? 1 : -1))
           .map((domain, i) => (
@@ -117,19 +117,19 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
             >
               <div>
                 <div className="flex items-center justify-between">
-                  <div className="space-y-1">
+                  <div className="min-w-0 space-y-1">
                     <div className="flex items-center space-x-2.5">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full border bg-gradient-to-tr from-accent/10 to-accent shadow-sm">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border bg-gradient-to-tr from-accent/10 to-accent shadow-sm">
                         <Globe size={13} />
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <p className="text-sm font-medium">{domain.name}</p>
+                      <div className="flex min-w-0 items-center space-x-2">
+                        <p className="truncate text-sm font-medium">{domain.name}</p>
                         {domain.isPrimary && <DefaultDomain />}
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2.5 pl-3.5">
-                      <CornerDownRight size={14} className="text-muted-foreground" />
-                      <p className="pl-1 text-[13px] text-muted-foreground">
+                    <div className="flex min-w-0 items-center space-x-2.5 pl-3.5">
+                      <CornerDownRight size={14} className="shrink-0 text-muted-foreground" />
+                      <p className="min-w-0 truncate text-nowrap pl-1 text-[13px] text-muted-foreground">
                         {domain.destination
                           ? `Redirects to ${domain.destination.replace("http://", "").replace("https://", "")}`
                           : "No destination configured"}
@@ -142,34 +142,34 @@ export const DomainsTable = ({ domains, mutateDomains }: DomainsTableProps) => {
                       !domain.isArchived && (
                         <>
                           {domainStatus[domain.name]?.config?.misconfigured ? (
-                            <Badge variant="error" className="space-x-1.5">
+                            <Badge variant="error" className="space-x-1.5 max-[600px]:px-0.5">
                               <XCircle size={13} />
-                              <span>Invalid config</span>
+                              <span className="max-[600px]:hidden">Invalid config</span>
                             </Badge>
                           ) : domainStatus[domain.name]?.verification?.error?.code ===
                             "missing_txt_record" ? (
-                            <Badge variant="warning" className="space-x-1.5">
+                            <Badge variant="warning" className="space-x-1.5 max-[600px]:px-0.5">
                               <Fingerprint size={13} />
-                              <span>Pending verification</span>
+                              <span className="max-[600px]:hidden">Pending verification</span>
                             </Badge>
                           ) : (
-                            <Badge variant="primary" className="space-x-1.5">
+                            <Badge variant="primary" className="space-x-1.5 max-[600px]:px-0.5">
                               <CircleCheck size={13} />
-                              <span>Valid config</span>
+                              <span className="max-[600px]:hidden">Valid config</span>
                             </Badge>
                           )}
                         </>
                       )}
                     {isCheckingConfig[domain.name] && !domain.isArchived && (
-                      <Badge variant="neutral" className="space-x-1.5">
+                      <Badge variant="neutral" className="space-x-1.5 max-[600px]:px-0.5">
                         <LoaderCircle size={13} className="animate-spin" />
-                        <span>Validating</span>
+                        <span className="max-[600px]:hidden">Validating</span>
                       </Badge>
                     )}
                     {domain.isArchived && (
-                      <Badge variant="orange" className="space-x-1.5">
+                      <Badge variant="orange" className="space-x-1.5 max-[768px]:px-0.5">
                         <Archive size={13} />
-                        <span>Archived</span>
+                        <span className="max-[600px]:hidden">Archived</span>
                       </Badge>
                     )}
                     <div className="flex">
@@ -350,28 +350,30 @@ const extractSubdomain = (domain: string): string | null => {
 const ConfigureDns = ({ domain }: { domain: Domain }) => {
   return (
     <div className="w-full space-y-2">
-      <p className="text-13.5">Set the following record on your DNS provider to continue:</p>
-      <div className="flex min-w-fit space-x-8 overflow-x-auto rounded-lg border bg-zinc-50 p-4 scrollbar-hide dark:bg-zinc-950">
+      <p className="text-13.5 max-[600px]:text-[13px]">
+        Set the following record on your DNS provider to continue:
+      </p>
+      <div className="flex space-x-8 overflow-x-auto rounded-lg border bg-zinc-50 p-4 scrollbar-hide dark:bg-zinc-950">
         <div className="space-y-2.5">
           <p className="text-[13px] tracking-wide text-muted-foreground">Type</p>
           <p className={`font-mono text-xs`}>{domain.isSubdomain ? "CNAME" : "A"}</p>
         </div>
         <div className="space-y-2.5">
           <p className="text-[13px] text-muted-foreground">Name</p>
-          <p className={`font-mono text-xs`}>
+          <p className={`overflow-auto text-nowrap font-mono text-xs`}>
             {domain.isSubdomain ? extractSubdomain(domain.name) : "@"}
           </p>
         </div>
         <div className="space-y-2.5">
           <p className="text-[13px] text-muted-foreground">Value</p>
-          <p className={`font-mono text-xs`}>
+          <p className={`overflow-auto text-nowrap font-mono text-xs`}>
             {domain.isSubdomain ? "cname.qryptic.io" : "76.76.21.21"}
           </p>
         </div>
       </div>
       <div className="flex items-center space-x-1.5 rounded-lg border bg-zinc-50 px-4 py-2 dark:bg-zinc-950">
-        <Info size={13} className="text-muted-foreground" />
-        <p className="text-[13px] text-muted-foreground">
+        <Info size={13} className="mt-[3px] shrink-0 self-start text-muted-foreground" />
+        <p className="text-[13px] text-muted-foreground max-[600px]:text-xs">
           It could take some time for changes to propagate.
         </p>
       </div>
@@ -391,7 +393,9 @@ const extractTxtRecord = (message: string) => {
 const VerificationDns = ({ message }: { message: string }) => {
   return (
     <div className="w-full space-y-2">
-      <p className="text-13.5">Set the following record on your DNS provider to continue:</p>
+      <p className="text-13.5 max-[600px]:text-[13px]">
+        Set the following record on your DNS provider to continue:
+      </p>
       <div className="flex space-x-8 overflow-x-auto rounded-lg border bg-zinc-50 p-4 scrollbar-hide dark:bg-zinc-950">
         <div className="space-y-2.5">
           <p className="text-[13px] text-muted-foreground">Type</p>
@@ -409,8 +413,8 @@ const VerificationDns = ({ message }: { message: string }) => {
         </div>
       </div>
       <div className="flex items-center space-x-1.5 rounded-lg border bg-zinc-50 px-4 py-2 dark:bg-zinc-950">
-        <Info size={13} className="text-muted-foreground" />
-        <p className="text-[13px] text-muted-foreground">
+        <Info size={13} className="mt-[3px] shrink-0 self-start text-muted-foreground" />
+        <p className="text-[13px] text-muted-foreground max-[600px]:text-xs">
           It could take some time for changes to propagate.
         </p>
       </div>
@@ -423,7 +427,7 @@ const DefaultDomain = () => {
     <Tooltip>
       <TooltipTrigger className="cursor-auto">
         {/*<div className="flex h-[19px] w-[19px] items-center justify-center rounded-full border border-foreground/20 bg-foreground/10 text-foreground">*/}
-        <Target size={13} className="relative top-[1px] text-foreground" />
+        <Target size={13} className="relative top-[1px] text-foreground max-[600px]:hidden" />
         {/*</div>*/}
       </TooltipTrigger>
       <TooltipContent className="max-w-[200px] text-center">

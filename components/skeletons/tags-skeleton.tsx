@@ -1,4 +1,3 @@
-import { Tag } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const TagsSkeleton = () => {
@@ -15,8 +14,8 @@ export const TagsSkeleton = () => {
               <Skeleton className="h-[22px] w-20 rounded-full" />
             </div>
             <div className="flex items-center space-x-2.5">
-              <Skeleton className="h-[22px] w-20 rounded-full" />
-              <Skeleton className="h-[22px] w-24 rounded-full" />
+              {/* <Skeleton className="h-[22px] w-20 rounded-full" /> */}
+              {/* <Skeleton className="h-[22px] w-24 rounded-full" /> */}
               <Skeleton className="h-8 w-8 rounded-lg" />
             </div>
           </div>

@@ -30,6 +30,7 @@ export const CopyButton: FC<{
       )}
       onClick={async (e) => {
         e.preventDefault();
+        e.stopPropagation();
         if (isCopied) return;
         await copyToClipboard();
       }}

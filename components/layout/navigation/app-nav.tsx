@@ -14,6 +14,7 @@ import { useState } from "react";
 import { NavLinks } from "@/components/layout/navigation/nav-links";
 import { useInView } from "react-intersection-observer";
 import { adminRoles } from "@/utils/roles";
+import { QrypticIcon } from "@/components/logos/qryptic-icon";
 
 export const AppNav = () => {
   const { slug } = useParams();
@@ -26,12 +27,13 @@ export const AppNav = () => {
       <div ref={ref} className={!slug || !team ? "sticky top-0 z-40" : "undefined"}>
         <div className="border-b border-border/70 bg-zinc-50 px-4 py-2.5 dark:bg-zinc-950">
           <MaxWidthWrapper className="flex items-center justify-between">
-            <div className="flex items-center space-x-5">
+            <div className="flex items-center space-x-5 max-[768px]:space-x-3">
               <NextLink href="/teams" passHref>
-                <QrypticLogo />
+                <QrypticLogo className="max-[768px]:hidden" />
+                <QrypticIcon className="min-[768px]:hidden" />
               </NextLink>
               {slug && team && (
-                <div className="h-[20px] w-[1px] rotate-[30deg] border-r border-dashed border-zinc-400 dark:border-zinc-600"></div>
+                <div className="h-5 w-[1px] rotate-[30deg] border-r border-dashed border-zinc-400 dark:border-zinc-600 max-[768px]:h-4"></div>
               )}
               <TeamSelector />
             </div>
@@ -41,12 +43,12 @@ export const AppNav = () => {
                   Upgrade
                 </Button>
               )}
-              <Button size="sm" variant="outline" className="shadow-none">
+              <Button size="sm" variant="outline" className="shadow-none max-[768px]:hidden">
                 Feedback
               </Button>
-              <Button size="icon" variant="outline" className="shadow-none">
+              {/* <Button size="icon" variant="outline" className="shadow-none">
                 <Bell size={14} />
-              </Button>
+              </Button> */}
               <AccountDropdown />
             </div>
           </MaxWidthWrapper>

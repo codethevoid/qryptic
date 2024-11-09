@@ -9,7 +9,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <AppNav />
-      <div className="overflow-x-hidden px-4 pb-24 pt-8">
+      <div className="px-4 pb-24 pt-8 max-md:pt-4">
         <MaxWidthWrapper>{children}</MaxWidthWrapper>
       </div>
     </>

@@ -52,6 +52,7 @@ export const CreateTeam = ({ isOpen, setIsOpen }: CreateTeamProps) => {
     await mutate("/api/teams");
     toast.success("Team created successfully!");
     setIsOpen(false);
+    setIsLoading(false);
     router.push(`/${slug}`);
   };
 

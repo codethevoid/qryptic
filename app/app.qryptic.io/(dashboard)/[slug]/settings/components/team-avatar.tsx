@@ -81,13 +81,6 @@ export const TeamAvatar = () => {
 
   return (
     <>
-      <input
-        type="file"
-        accept="image/*"
-        className="hidden"
-        ref={fileInputRef}
-        onChange={(e) => onFileChange(e)}
-      />
       <Card>
         <CardHeader>
           <CardTitle>Team avatar</CardTitle>
@@ -96,6 +89,13 @@ export const TeamAvatar = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            ref={fileInputRef}
+            onChange={(e) => onFileChange(e)}
+          />
           <div
             role="button"
             className="w-fit rounded-full border transition-all hover:opacity-90"

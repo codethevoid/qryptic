@@ -1,17 +1,7 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ButtonSpinner } from "@/components/ui/custom/button-spinner";
 import { useState } from "react";
 import { ConfirmDeleteTeam } from "@/app/app.qryptic.io/(dashboard)/[slug]/settings/components/dialogs/confirm-delete-team";
 

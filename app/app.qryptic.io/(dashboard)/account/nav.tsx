@@ -14,17 +14,17 @@ const linkItems = [
   },
   {
     name: "Security",
-    href: "/settings/security",
+    href: "/account/security",
   },
   {
     name: "Teams",
-    href: "/settings/teams",
+    href: "/account/teams",
   },
 ];
 
 export const AccountNav = () => {
   const path = usePathname();
-  const { data: user } = useUserSettings();
+  const { data: user, isLoading } = useUserSettings();
 
   return (
     <div className="flex min-w-[200px] max-w-[200px] flex-col">
@@ -35,9 +35,13 @@ export const AccountNav = () => {
             <Skeleton className="h-full w-full" />
           </AvatarFallback>
         </Avatar>
-        <p className="max-w-[176px] truncate text-xs font-medium text-muted-foreground">
-          {user?.name || user?.email}
-        </p>
+        {isLoading ? (
+          <Skeleton className="h-3.5 w-20" />
+        ) : (
+          <p className="max-w-[176px] truncate text-xs font-medium text-muted-foreground">
+            {user?.name || user?.email}
+          </p>
+        )}
       </div>
       {linkItems.map((item, i) => (
         <Button

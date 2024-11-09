@@ -56,6 +56,8 @@ async function removeDomain(name: string) {
       },
     );
 
+    console.log(res);
+
     return res.ok;
   } catch (e) {
     console.error(e);
