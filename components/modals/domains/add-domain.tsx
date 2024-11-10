@@ -94,7 +94,7 @@ export const AddDomain = ({ isOpen, setIsOpen, mutateDomains }: AddDomainProps) 
             <Label htmlFor="domain-name">Domain</Label>
             <Input id="domain-name" placeholder="mywebsite.link" {...register("name")} />
             {errors.name && <p className="text-xs text-red-600">{errors.name.message}</p>}
-            <div className="flex space-x-1.5">
+            {/* <div className="flex space-x-1.5">
               <Info size={13} className="relative top-[2px] shrink-0 text-muted-foreground" />
               <p className="text-xs text-muted-foreground">
                 Don&apos;t know what domain to use?{" "}
@@ -106,7 +106,7 @@ export const AddDomain = ({ isOpen, setIsOpen, mutateDomains }: AddDomainProps) 
                   Find out
                 </NextLink>
               </p>
-            </div>
+            </div> */}
           </div>
           <div className="space-y-1.5">
             <div className="flex items-center space-x-2">

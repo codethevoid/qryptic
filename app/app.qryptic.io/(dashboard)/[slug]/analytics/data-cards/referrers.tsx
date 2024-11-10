@@ -124,7 +124,7 @@ export const ReferrerData = ({
         </ScrollArea>
       ) : (
         <div className="flex h-[245px] items-center justify-center p-4">
-          <p className="text-muted-foreground">No data available</p>
+          <p className="text-muted-foreground text-sm">No data available</p>
         </div>
       )}
     </div>

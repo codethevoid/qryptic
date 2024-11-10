@@ -158,7 +158,7 @@ export const UserAgentData = ({
         </ScrollArea>
       ) : (
         <div className="flex h-[245px] items-center justify-center p-4">
-          <p className="text-muted-foreground">No data available</p>
+          <p className="text-sm text-muted-foreground">No data available</p>
         </div>
       )}
     </div>

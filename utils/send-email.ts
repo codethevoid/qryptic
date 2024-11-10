@@ -7,7 +7,7 @@ type SendEmailProps = {
   to: string;
   replyTo?: string;
   subject: string;
-  react: ReactNode;
+  react?: ReactNode;
   text: string;
   scheduledAt?: string | undefined;
 };

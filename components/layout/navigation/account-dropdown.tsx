@@ -21,14 +21,19 @@ import { useState } from "react";
 import { Upgrade } from "@/components/modals/plans/upgrade/upgrade";
 import { adminRoles } from "@/utils/roles";
 import NextLink from "next/link";
+import { Help } from "@/components/modals/help/help";
 
-export const AccountDropdown = () => {
+type Props = {
+  setIsFeedbackOpen: (isOpen: boolean) => void;
+};
+
+export const AccountDropdown = ({ setIsFeedbackOpen }: Props) => {
   const { resolvedTheme, setTheme } = useTheme();
   const { user } = useUser();
   const { team } = useTeam();
   const [isCreateTeamOpen, setIsCreateTeamOpen] = useState(false);
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
-
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
   return (
     <>
       <DropdownMenu modal={false}>
@@ -85,11 +90,11 @@ export const AccountDropdown = () => {
             </div>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="space-x-2.5">
+          <DropdownMenuItem className="space-x-2.5" onClick={() => setIsHelpOpen(true)}>
             <MessageCircleQuestion size={16} />
             <span>Help</span>
           </DropdownMenuItem>
-          <DropdownMenuItem className="space-x-2.5">
+          <DropdownMenuItem className="space-x-2.5" onClick={() => setIsFeedbackOpen(true)}>
             <ThumbsUp size={16} />
             <span>Feedback</span>
           </DropdownMenuItem>
@@ -110,6 +115,7 @@ export const AccountDropdown = () => {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+      <Help isOpen={isHelpOpen} setIsOpen={setIsHelpOpen} />
       <CreateTeam isOpen={isCreateTeamOpen} setIsOpen={setIsCreateTeamOpen} />
       {team?.user.role === "owner" && (
         <Upgrade isOpen={isUpgradeOpen} setIsOpen={setIsUpgradeOpen} />

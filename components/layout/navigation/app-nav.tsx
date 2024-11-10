@@ -15,11 +15,14 @@ import { NavLinks } from "@/components/layout/navigation/nav-links";
 import { useInView } from "react-intersection-observer";
 import { adminRoles } from "@/utils/roles";
 import { QrypticIcon } from "@/components/logos/qryptic-icon";
+import { Feedback } from "@/components/modals/feedback/feedback";
+import { Help } from "@/components/modals/help/help";
 
 export const AppNav = () => {
   const { slug } = useParams();
   const { team } = useTeam();
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const { ref, inView } = useInView();
 
   return (
@@ -43,18 +46,24 @@ export const AppNav = () => {
                   Upgrade
                 </Button>
               )}
-              <Button size="sm" variant="outline" className="shadow-none max-[768px]:hidden">
+              <Button
+                size="sm"
+                variant="outline"
+                className="shadow-none max-[768px]:hidden"
+                onClick={() => setIsFeedbackOpen(true)}
+              >
                 Feedback
               </Button>
               {/* <Button size="icon" variant="outline" className="shadow-none">
                 <Bell size={14} />
               </Button> */}
-              <AccountDropdown />
+              <AccountDropdown setIsFeedbackOpen={setIsFeedbackOpen} />
             </div>
           </MaxWidthWrapper>
         </div>
       </div>
       <NavLinks inView={inView} />
+      <Feedback isOpen={isFeedbackOpen} setIsOpen={setIsFeedbackOpen} />
       {/*<VerifyEmailAlert isLoading={isUserLoading} isEmailVerified={user?.isEmailVerified} />*/}
       {team?.user.role === "owner" && (
         <Upgrade isOpen={isUpgradeOpen} setIsOpen={setIsUpgradeOpen} />

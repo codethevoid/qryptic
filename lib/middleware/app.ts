@@ -10,7 +10,14 @@ export const appMiddleware = async (req: NextRequest) => {
   const token = await getUserToken(req);
 
   // if users is not authenticated and not on login page or register page, redirect to login
-  if (!token && path !== "/login" && path !== "/register") {
+  if (
+    !token &&
+    path !== "/login" &&
+    path !== "/register" &&
+    path !== "/verify-email" &&
+    path !== "/forgot-password" &&
+    path !== "/reset-password"
+  ) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 

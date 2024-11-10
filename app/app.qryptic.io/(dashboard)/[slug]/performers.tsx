@@ -40,7 +40,7 @@ export const Performers: FC<PerformersProps> = ({ data, date, isLoading }) => {
                   className={`w-full ${i !== data?.topLinks.length - 1 ? "border-b" : undefined} cursor-pointer transition-colors hover:bg-accent/60 dark:hover:bg-accent/40`}
                 >
                   <NextLink
-                    href={`/${slug}/links/${link.id}`}
+                    href={`/${slug}/links/edit/${link.id}`}
                     className="flex items-center justify-between space-x-3 px-4 py-2.5"
                   >
                     <div className="flex min-w-0 items-center space-x-2.5">
