@@ -60,7 +60,7 @@ export const registerUser = async (data: RegisterFormValues): Promise<RegisterUs
     },
   });
 
-  if (!user) return { error: true, message: "Failed to create users" };
+  if (!user) return { error: true, message: "Failed to create user" };
 
   // create email verification email
   await sendEmail({

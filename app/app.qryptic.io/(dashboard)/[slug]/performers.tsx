@@ -41,9 +41,9 @@ export const Performers: FC<PerformersProps> = ({ data, date, isLoading }) => {
                 >
                   <NextLink
                     href={`/${slug}/links/${link.id}`}
-                    className="flex items-center justify-between px-4 py-2.5"
+                    className="flex items-center justify-between space-x-3 px-4 py-2.5"
                   >
-                    <div className="flex items-center space-x-2.5">
+                    <div className="flex min-w-0 items-center space-x-2.5">
                       {/*<div className="flex h-8 w-8 items-center justify-center rounded-full border bg-gradient-to-tr from-accent/10 to-accent shadow-sm">*/}
                       {/*  {countEvents(link.events) === "clicks" ? (*/}
                       {/*    <MousePointer2 size={13} />*/}
@@ -52,8 +52,8 @@ export const Performers: FC<PerformersProps> = ({ data, date, isLoading }) => {
                       {/*  )}*/}
                       {/*</div>*/}
                       <LinkFavicon link={{ destination: link.destination, events: link.events }} />
-                      <div className="space-y-0.5">
-                        <p className="text-[13px]">
+                      <div className="min-w-0">
+                        <p className="truncate text-[13px]">
                           {link.domain.name}/{link.slug}
                         </p>
                         <p className="text-xs text-muted-foreground">

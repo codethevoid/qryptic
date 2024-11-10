@@ -29,11 +29,11 @@ export const AppNav = () => {
           <MaxWidthWrapper className="flex items-center justify-between">
             <div className="flex items-center space-x-5 max-[768px]:space-x-3">
               <NextLink href="/teams" passHref>
-                <QrypticLogo className="max-[768px]:hidden" />
-                <QrypticIcon className="min-[768px]:hidden" />
+                <QrypticLogo className="max-md:hidden" />
+                <QrypticIcon className="hidden max-md:block" />
               </NextLink>
               {slug && team && (
-                <div className="h-5 w-[1px] rotate-[30deg] border-r border-dashed border-zinc-400 dark:border-zinc-600 max-[768px]:h-4"></div>
+                <div className="h-5 w-[1px] rotate-[30deg] border-r border-dashed border-zinc-400 dark:border-zinc-600 max-md:h-4"></div>
               )}
               <TeamSelector />
             </div>

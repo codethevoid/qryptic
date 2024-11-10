@@ -151,7 +151,7 @@ export const MainNav = () => {
           <NextLink href="/" passHref>
             <QrypticLogo />
           </NextLink>
-          <div>
+          {/* <div>
             <Popover open={openDropdown === "product"}>
               <PopoverTrigger
                 onMouseLeave={handleMouseLeave}
@@ -236,7 +236,7 @@ export const MainNav = () => {
                 ))}
               </PopoverContent>
             </Popover>
-          </div>
+          </div> */}
         </div>
         <div className="flex items-center">
           <Button

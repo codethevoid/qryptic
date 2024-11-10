@@ -94,12 +94,12 @@ export const PlanCard = ({
                 {subscriptionStatus === "trialing" && (
                   <>
                     {hasPaymentMethod && !cancelAtPeriodEnd ? (
-                      <Badge variant="success" className="space-x-1">
+                      <Badge variant="success" className="space-x-1.5">
                         <RefreshCw size={13} />
                         <span>Renews {format(trialEndsAt as Date, "MMM dd, yyyy")}</span>
                       </Badge>
                     ) : (
-                      <Badge variant="primary" className="space-x-1">
+                      <Badge variant="primary" className="space-x-1.5">
                         <Info size={13} />
                         <span>Trial ends {format(trialEndsAt as Date, "MMM dd, yyyy")}</span>
                       </Badge>
@@ -109,12 +109,12 @@ export const PlanCard = ({
                 {subscriptionStatus === "active" && (
                   <>
                     {cancelAtPeriodEnd ? (
-                      <Badge variant="error" className="space-x-1">
+                      <Badge variant="error" className="space-x-1.5">
                         <XCircle size={13} />
                         <span>Cancels {format(subscriptionEnd as Date, "MMM dd, yyyy")}</span>
                       </Badge>
                     ) : (
-                      <Badge variant="success" className="space-x-1">
+                      <Badge variant="success" className="space-x-1.5">
                         <RefreshCw size={13} />
                         <span>Renews {format(subscriptionEnd as Date, "MMM dd, yyyy")}</span>
                       </Badge>
@@ -122,7 +122,7 @@ export const PlanCard = ({
                   </>
                 )}
                 {subscriptionStatus === "past_due" && (
-                  <Badge variant="warning" className="space-x-1">
+                  <Badge variant="warning" className="space-x-1.5">
                     <AlertCircle size={13} />
                     <span>Past due</span>
                   </Badge>
@@ -143,7 +143,7 @@ export const PlanCard = ({
         </CardContent>
         <CardFooter className="flex justify-between rounded-b-lg border-t bg-zinc-50 px-6 py-3 dark:bg-zinc-950">
           <p className="text-[13px] text-muted-foreground">
-            Custom needs?{" "}
+            <span className="max-sm:hidden">Custom needs? </span>
             <NextLink
               href="/contact"
               className="text-deepBlue-500 hover:underline dark:text-deepBlue-400"

@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { MaxWidthWrapper } from "@/components/layout/max-width-wrapper";
 import { AccountNav } from "@/app/app.qryptic.io/(dashboard)/account/nav";
+import { AccountMobileNav } from "./mobile-nav";
 
 const AccountSettingsLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -10,8 +11,9 @@ const AccountSettingsLayout = ({ children }: { children: ReactNode }) => {
           <p className="text-xl font-bold">Account settings</p>
         </MaxWidthWrapper>
       </div> */}
-      <div className="flex space-x-10">
+      <div className="flex space-x-10 max-md:flex-col max-md:space-x-0">
         <AccountNav />
+        <AccountMobileNav />
         <div className="w-full min-w-0">{children}</div>
       </div>
     </div>

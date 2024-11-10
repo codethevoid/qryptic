@@ -45,7 +45,10 @@ export const PaymentMethodCard = ({ paymentMethod, name: teamName }: PaymentMeth
                   </div>
                   <p className="text-[13px]">{paymentMethod.last4}</p>
                 </div>
-                <Badge variant="primary" className="items-center space-x-1 px-2 py-0.5">
+                <Badge
+                  variant="primary"
+                  className="items-center space-x-1 px-2 py-0.5 max-sm:hidden"
+                >
                   <CircleCheck size={13} />
                   <span>Default</span>
                 </Badge>
@@ -56,7 +59,10 @@ export const PaymentMethodCard = ({ paymentMethod, name: teamName }: PaymentMeth
             </div>
           )}
         </CardContent>
-        <CardFooter className="flex justify-end rounded-b-lg border-t bg-zinc-50 px-6 py-3 dark:bg-zinc-950">
+        <CardFooter className="flex justify-between rounded-b-lg border-t bg-zinc-50 px-6 py-3 dark:bg-zinc-950">
+          <p className="text-[13px] text-muted-foreground">
+            {`${paymentMethod ? "Update your" : "Add a new"} card`}
+          </p>
           <Button size="sm" onClick={() => setIsCardProviderOpen(true)}>
             {paymentMethod ? "Update card" : "Add card"}
           </Button>

@@ -88,7 +88,7 @@ export const Password = () => {
               : "Set a password to login with email and password"}
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex space-x-4">
+        <CardContent className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
           {user?.hasPassword && (
             <div className="w-full space-y-1.5">
               <Label htmlFor="password">Current password</Label>

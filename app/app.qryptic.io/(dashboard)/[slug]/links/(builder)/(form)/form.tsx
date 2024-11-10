@@ -15,10 +15,6 @@ import { Preview } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)
 import { Protection } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/(tabs)/protection";
 import { Cloak } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/(tabs)/cloak";
 import { Indexing } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/(tabs)/indexing";
-import { Button } from "@/components/ui/button";
-import { linkItems } from "./nav";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 
 type LinkFormProps = {
   mode: "new" | "edit";

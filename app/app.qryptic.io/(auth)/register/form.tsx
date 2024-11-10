@@ -19,7 +19,7 @@ import { LoaderCircle } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const {
     register,
     handleSubmit,
@@ -119,10 +119,7 @@ export const LoginForm = () => {
         </Card>
         <p className="text-center text-xs leading-5 text-muted-foreground">
           Already have an account?{" "}
-          <NextLink
-            className="text-foreground hover:underline"
-            href={`${protocol}${appDomain}/login`}
-          >
+          <NextLink className="text-foreground hover:underline" href={`/login`}>
             Login
           </NextLink>
         </p>

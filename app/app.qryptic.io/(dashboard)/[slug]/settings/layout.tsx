@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { TeamSettingsNav } from "@/components/layout/navigation/team-settings-nav";
 import { MaxWidthWrapper } from "@/components/layout/max-width-wrapper";
+import { TeamSettingsMobileNav } from "@/components/layout/navigation/team-settings-mobile-nav";
 
 const SettingsLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -10,8 +11,9 @@ const SettingsLayout = ({ children }: { children: ReactNode }) => {
           <p className="text-xl font-bold">Team settings</p>
         </MaxWidthWrapper>
       </div> */}
-      <div className="flex space-x-10">
+      <div className="flex space-x-10 max-md:flex-col max-md:space-x-0">
         <TeamSettingsNav />
+        <TeamSettingsMobileNav />
         <div className="w-full min-w-0">{children}</div>
       </div>
     </div>

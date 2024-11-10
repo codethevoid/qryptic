@@ -32,6 +32,7 @@ type LinkFiltersProps = {
   clearFilters: () => void;
   isLoading: boolean;
   totals: Totals;
+  setIsExportOpen: (isOpen: boolean) => void;
 };
 
 export const LinkFilters = ({
@@ -49,6 +50,7 @@ export const LinkFilters = ({
   clearFilters,
   isLoading,
   totals,
+  setIsExportOpen,
 }: LinkFiltersProps) => {
   const [domainSearch, setDomainSearch] = useState("");
   const [tagSearch, setTagSearch] = useState("");
@@ -464,7 +466,12 @@ export const LinkFilters = ({
           >
             Clear all ({activeFilters()})
           </Button>
-          <Button size="sm" variant="outline" className="h-7 space-x-1.5 px-2.5 text-xs">
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-7 space-x-1.5 px-2.5 text-xs"
+            onClick={() => setIsExportOpen(true)}
+          >
             <CloudDownload size={13} />
             <span>Export</span>
           </Button>

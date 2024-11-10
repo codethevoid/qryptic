@@ -44,14 +44,14 @@ export const InvoicesClient = () => {
             <div
               key={invoice.id}
               className={cn(
-                "grid grid-cols-[1fr_1fr_30px] gap-4 px-3 py-2.5",
+                "grid grid-cols-[1fr_1fr_30px] gap-6 px-3 py-2.5",
                 i !== 0 && "border-t",
               )}
             >
               <div className="space-y-0.5">
                 <p className="text-[13px]">{format(invoice.date, "MMMM d, yyyy")}</p>
                 <div className="flex items-center space-x-2">
-                  <p className="text-[13px] text-muted-foreground">{invoice.number}</p>
+                  <p className="truncate text-[13px] text-muted-foreground">{invoice.number}</p>
                   <Badge
                     className="px-2 py-0 text-[11px] capitalize"
                     variant={badgeVariantMap[invoice.status]}

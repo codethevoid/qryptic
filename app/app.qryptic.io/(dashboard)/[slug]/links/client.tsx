@@ -19,6 +19,11 @@ import { Snackbar } from "@/components/snackbar/snackbar";
 import { TagColor } from "@/types/colors";
 import { LinkFilters } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/filters";
 import { LinksTable } from "@/components/tables/links-table";
+import { LinksSkeleton } from "@/components/skeletons/links-skeleton";
+import { NoLinks } from "@/components/empty/links/no-links";
+import { type TableLink } from "@/types/links";
+import { NoLinksFound } from "@/components/empty/links/no-links-found";
+import { ExportLinkData } from "./dialogs/export-data";
 
 type Status = "active" | "archived";
 type StatusList = Status[];
@@ -47,6 +52,7 @@ export const LinksClient: FC = () => {
   const { slug } = useParams();
 
   const [isNewLinkOpen, setIsNewLinkOpen] = useState(false);
+  const [isExportOpen, setIsExportOpen] = useState(false);
 
   const { data, isLoading, error, mutate } = useLinks({
     status,
@@ -166,16 +172,19 @@ export const LinksClient: FC = () => {
         clearFilters={clearFilters}
         isLoading={isLoading}
         totals={totals}
+        setIsExportOpen={setIsExportOpen}
       />
       <div className="mt-3">
         {isLoading || search !== debouncedSearch ? (
-          "loading..."
+          <LinksSkeleton />
         ) : error ? (
-          "error"
-        ) : data?.links.length === 0 || !data ? (
-          "no links found"
+          "An error occurred"
+        ) : data?.totals.all === 0 ? (
+          <NoLinks />
+        ) : data?.links.length === 0 ? (
+          <NoLinksFound clearFilters={clearFilters} />
         ) : (
-          <LinksTable links={data.links} mutate={mutate} />
+          <LinksTable links={data?.links as TableLink[]} mutate={mutate} />
         )}
       </div>
       {totals.filtered > pageSize && (
@@ -191,6 +200,7 @@ export const LinksClient: FC = () => {
         />
       )}
       {/*<NewLink isOpen={isNewLinkOpen} setIsOpen={setIsNewLinkOpen} />*/}
+      <ExportLinkData isOpen={isExportOpen} setIsOpen={setIsExportOpen} />
     </>
   );
 };

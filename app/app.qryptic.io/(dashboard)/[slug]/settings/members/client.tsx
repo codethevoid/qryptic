@@ -24,7 +24,7 @@ export const MembersClient = () => {
         <AddMember setTab={setTab} setIsInviteOpen={setIsInviteByLinkOpen} />
         <div className="space-y-3">
           <Tabs value={tab} onValueChange={(value) => setTab(value as "members" | "invites")}>
-            <TabsList className="w-full max-w-[300px] border bg-transparent">
+            <TabsList className="w-full max-w-[300px] border bg-transparent max-sm:max-w-none">
               <TabsTrigger
                 className="w-full text-[13px] data-[state=active]:bg-zinc-100 data-[state=active]:shadow-none dark:data-[state=active]:bg-zinc-900"
                 value={"members"}

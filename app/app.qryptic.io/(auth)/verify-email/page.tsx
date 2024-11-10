@@ -4,6 +4,11 @@ import { QrypticLogo } from "@/components/logos/qryptic-logo";
 import { CardDescription, CardHeader, CardTitle, Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { constructMetadata } from "@/utils/construct-metadata";
+
+export const metadata = constructMetadata({
+  title: "Qryptic | Verify your email",
+});
 
 type VerifyEmailPageProps = {
   searchParams: { token?: string };
@@ -35,7 +40,7 @@ const VerifyEmailPage = async ({ searchParams }: VerifyEmailPageProps) => {
           <CardContent>
             <div className="mx-auto max-w-[320px]">
               <Button className="w-full" asChild>
-                <Link href="/dashboard">Go to dashboard</Link>
+                <Link href="/">Go to dashboard</Link>
               </Button>
             </div>
           </CardContent>

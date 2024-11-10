@@ -83,7 +83,7 @@ export const UsageClient = () => {
               <UpgradeButton />
             </CardFooter>
           </Card>
-          <div className="grid grid-cols-2 gap-x-6">
+          <div className="grid grid-cols-2 gap-6 max-lg:grid-cols-1">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">

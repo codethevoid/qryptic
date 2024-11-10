@@ -26,7 +26,7 @@ export const MiniChart = ({ events, date }: MiniChartProps) => {
   const chartData = aggregateEvents(date as DateRange, events);
 
   return (
-    <ChartContainer config={chartConfig} className="max-h-8 w-full max-w-20">
+    <ChartContainer config={chartConfig} className="max-h-8 w-full max-w-20 shrink-0">
       <AreaChart data={chartData}>
         <Area
           dataKey="total"

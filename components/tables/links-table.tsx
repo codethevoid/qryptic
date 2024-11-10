@@ -97,34 +97,36 @@ export const LinksTable: FC<LinksTableProps> = ({ links, mutate }) => {
                   className="flex h-5 items-center space-x-1 text-[11px]"
                 >
                   <TagIcon size={11} />
-                  <span className="max-md:hidden">{link.tags[0].name}</span>
-                  <span className="min-md:hidden">1</span>
+                  <span className="max-sm:hidden">{link.tags[0].name}</span>
+                  <span className="hidden max-sm:block">1</span>
                 </Tag>
               )}
               {link._count.tags > 1 && (
-                <Badge
-                  variant={"neutral"}
-                  className="flex h-5 items-center space-x-1 text-[11px] max-md:hidden"
+                <Tag
+                  variant={link.tags[0].color}
+                  className="flex h-5 items-center space-x-1 text-[11px]"
                 >
                   <TagIcon size={11} />
                   <span>
-                    {link._count.tags}
-                    <span className="max-md:hidden"> tags</span>
+                    <span className="hidden max-sm:block">{link._count.tags}</span>
+                    <span className="max-sm:hidden">
+                      {link.tags[0].name} +{link._count.tags - 1}
+                    </span>
                   </span>
-                </Badge>
+                </Tag>
               )}
               {link._count.events > 0 && (
                 <Badge variant="neutral" className="flex h-5 items-center space-x-1 text-[11px]">
                   <ChartArea size={11} />
                   <span>
                     {link._count.events.toLocaleString("en-us")}
-                    <span className="max-md:hidden">
+                    <span className="max-sm:hidden">
                       {link._count.events === 1 ? " event" : " events"}
                     </span>
                   </span>
                 </Badge>
               )}
-              <Avatar className="h-5 w-5 rounded-full border max-md:hidden">
+              <Avatar className="h-5 w-5 rounded-full border max-sm:hidden">
                 <AvatarImage src={link.user.image} alt="avatar" />
                 <AvatarFallback className="bg-transparent">
                   <Skeleton className="h-full w-full" />

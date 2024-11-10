@@ -4,6 +4,7 @@ import { Grid } from "@/components/layout/grid";
 import { Space_Grotesk } from "next/font/google";
 import { Footer } from "@/components/layout/navigation/footer";
 import { GeistSans } from "geist/font/sans";
+import { constructMetadata } from "@/utils/construct-metadata";
 
 const grotesk = Space_Grotesk({ subsets: ["latin"] });
 

@@ -103,7 +103,7 @@ export const AddMember = ({ setTab, setIsInviteOpen }: Props) => {
         <div className="flex justify-between">
           <CardHeader>
             <CardTitle>Add a teammate</CardTitle>
-            <CardDescription className="text-[13px]">Invite a member to your team</CardDescription>
+            <CardDescription className="text-[13px]">Start collaborating</CardDescription>
           </CardHeader>
           <div className="p-6">
             <Button
@@ -119,7 +119,7 @@ export const AddMember = ({ setTab, setIsInviteOpen }: Props) => {
           </div>
         </div>
         <CardContent>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
             <div className="space-y-1.5">
               <Label htmlFor="email">Email</Label>
               <Input

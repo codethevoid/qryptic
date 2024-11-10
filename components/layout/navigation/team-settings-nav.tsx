@@ -3,11 +3,10 @@
 import NextLink from "next/link";
 import { Button } from "@/components/ui/button";
 import { useParams, usePathname } from "next/navigation";
-import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-
-const linkItems = [
+import { useTeam } from "@/lib/hooks/swr/use-team";
+export const linkItems = [
   {
     name: "General",
     href: "/settings",
@@ -40,7 +39,7 @@ export const TeamSettingsNav = () => {
   const { team } = useTeam();
 
   return (
-    <div className="flex min-w-[200px] max-w-[200px] flex-col">
+    <div className="flex min-w-[200px] max-w-[200px] flex-col max-lg:min-w-[180px] max-md:hidden">
       <div className="mb-3 flex items-center space-x-2">
         <Avatar className="h-4 w-4 border">
           <AvatarImage src={team?.image} alt={team?.name} />

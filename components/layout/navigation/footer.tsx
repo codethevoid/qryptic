@@ -38,7 +38,7 @@ export const Footer = () => {
         <div className="grid grid-cols-[auto_auto_auto_auto_auto] justify-between gap-6">
           <div className="col-span-2 space-y-5">
             <QrypticLogo />
-            <p className="max-w-[300px] text-sm text-muted-foreground">
+            <p className="max-w-[300px] text-[13px] text-muted-foreground">
               Empowering businesses to deliver
               <br /> digital experiences at scale.
             </p>

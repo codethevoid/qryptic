@@ -41,12 +41,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       name: "credentials",
       authorize: async (credentials: Partial<Record<string, unknown>>) => {
         const { email, password } = credentials as Credentials;
-        const user: User | null = await prisma.user.findUnique({
+        const user: {
+          id: string;
+          email: string;
+          name: string | null;
+          image: string | null;
+          hashedPassword: string | null;
+        } | null = await prisma.user.findUnique({
           where: { email: email.toLowerCase().trim() },
+          select: { id: true, email: true, name: true, image: true, hashedPassword: true },
         });
         if (!user) return null;
-        if (!user.credentialsAuth || !user.hashedPassword) return null;
-        const isValid = bcrypt.compare(password, user.hashedPassword);
+        // if (!user.credentialsAuth || !user.hashedPassword) return null;
+        if (!user.hashedPassword) return null;
+        const isValid = await bcrypt.compare(password, user.hashedPassword);
         if (!isValid) return null;
         return user;
       },

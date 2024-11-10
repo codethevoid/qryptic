@@ -33,8 +33,14 @@ export const LinkMobileNav = () => {
             variant="outline"
             key={item.value}
             onClick={() => setTab(item.value)}
-            className={cn("space-x-2", tab === item.value && "bg-accent/60")}
+            // className={cn(
+            //   "h-7 space-x-2 text-muted-foreground hover:bg-zinc-100 hover:text-muted-foreground dark:hover:bg-zinc-900",
+            //   tab === item.value &&
+            //     "bg-zinc-100 text-foreground hover:text-foreground dark:bg-zinc-900",
+            // )}
+            className={cn("h-7 space-x-2", tab === item.value && "bg-accent/60")}
           >
+            {item.icon}
             <span>{item.name}</span>
             {item.isPro && team?.plan.isFree && (
               <Badge variant="neutral" className="px-1.5 py-0 text-[11px]">

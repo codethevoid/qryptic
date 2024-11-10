@@ -47,7 +47,7 @@ export const GeoTargeting = () => {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="h-9 w-full max-w-[150px] items-center justify-between space-x-2 rounded-r-none border-r-0 active:!scale-100"
+                className="h-9 w-full max-w-[150px] items-center justify-between space-x-2 rounded-r-none border-r-0 active:!scale-100 max-sm:max-w-[120px]"
                 size="sm"
                 title={selectedCountry?.country}
               >

@@ -98,7 +98,7 @@ export const MembersTable = ({ setIsTeamInviteOpen }: Props) => {
               <p className="text-[13px] capitalize text-muted-foreground">{member.role}</p>
               <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
-                  <Button size="icon" variant="ghost" className="h-7 w-7 active:!scale-100">
+                  <Button size="icon" variant="ghost" className="active:!scale-100">
                     <MoreHorizontal size={13} />
                   </Button>
                 </DropdownMenuTrigger>

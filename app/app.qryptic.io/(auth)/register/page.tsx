@@ -1,7 +1,12 @@
-import { LoginForm } from "@/app/app.qryptic.io/(auth)/register/form";
+import { RegisterForm } from "./form";
+import { constructMetadata } from "@/utils/construct-metadata";
+
+export const metadata = constructMetadata({
+  title: "Qryptic | Create your account",
+});
 
 const RegisterPage = () => {
-  return <LoginForm />;
+  return <RegisterForm />;
 };
 
 export default RegisterPage;
