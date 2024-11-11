@@ -3,7 +3,6 @@ import { NextResponse, NextRequest } from "next/server";
 import { parseReq } from "@/lib/middleware/utils";
 import { getUserToken } from "@/lib/middleware/utils";
 import { redis } from "@/lib/upstash/redis";
-import { qrypticHeaders } from "@/utils/qryptic/qryptic-headers";
 
 export const appMiddleware = async (req: NextRequest) => {
   const { path, fullPath } = parseReq(req);

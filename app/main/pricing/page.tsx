@@ -17,12 +17,12 @@ type CustomPlan = Plan & {
 const PricingPage = async () => {
   const plans: CustomPlan[] = await prisma.plan.findMany({
     where: { isCustom: false, isLegacy: false },
-    include: { prices: true },
+    include: { prices: { where: { isActive: true } } },
     orderBy: { links: "asc" },
   });
 
   return (
-    <div className="flex flex-col space-y-24 pb-24 pt-20">
+    <div className="flex flex-col space-y-24 pb-24 pt-20 max-sm:pt-16">
       <PricingTiers plans={plans} />
       <Compare plans={plans} />
       <Faq />

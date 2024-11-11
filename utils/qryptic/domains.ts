@@ -13,11 +13,11 @@ export const rootDomain =
     ? process.env.NEXT_PUBLIC_ROOT_DOMAIN
     : "localhost.com:3000";
 
-// this domain is used for the admin.qryptic.io panel (ex: admin.qryptic.io.example.com)
+// this domain is used for the admin.qryptic.io panel (ex: admin.qryptic.io)
 export const adminDomain =
   process.env.NODE_ENV === "production"
     ? process.env.NEXT_PUBLIC_ADMIN_DOMAIN
-    : "admin.localhost:3000";
+    : "admin.localhost.com:3000";
 
 // this domain is used for default short links (ex: qrypt.co/abc123)
 export const shortDomain = process.env.NEXT_PUBLIC_SHORT_DOMAIN;

@@ -30,11 +30,15 @@ import {
   PiggyBank,
   Ghost,
   Cog,
+  Router,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { useSession } from "next-auth/react";
+import { appDomain, protocol } from "@/utils/qryptic/domains";
+import NextLink from "next/link";
+import { SmallSwitch } from "@/components/ui/custom/small-switch";
+import NumberFlow from "@number-flow/react";
 
 type CustomPlan = Plan & {
   prices: Price[];
@@ -73,18 +77,18 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
         {/*  </div>*/}
         {/*</div>*/}
 
-        <div className="mb-6">
-          <h1 className="text-center text-4xl font-extrabold tracking-tight">
+        <div className="mb-6 max-sm:mb-4">
+          <h1 className="text-center text-4xl font-bold tracking-tight max-md:text-3xl max-sm:mx-auto max-sm:max-w-[310px] max-sm:text-3xl">
             Give your business the{" "}
             <span className="bg-gradient-to-r from-fuchsia-500 to-rose-500 bg-clip-text text-transparent">
               edge it deserves
             </span>
           </h1>
-          <p className="mt-2 text-center text-muted-foreground">
+          <p className="mt-2 text-center text-muted-foreground max-md:text-sm max-sm:mx-auto max-sm:max-w-[320px] max-sm:text-[13px]">
             Connect with your audience and grow your business with our powerful suite of tools.
           </p>
         </div>
-        <div className="mx-auto mb-8 max-w-[500px]">
+        <div className="mx-auto mb-8 max-w-[500px] max-sm:mb-6">
           {/*<Tabs*/}
           {/*  className="w-full"*/}
           {/*  defaultValue={interval}*/}
@@ -100,27 +104,47 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
           {/*  </TabsList>*/}
           {/*</Tabs>*/}
           <div className="flex items-center justify-center space-x-3">
-            <p className="text-sm font-medium">Pay monthly</p>
+            <p
+              className={cn(
+                "text-sm font-medium text-muted-foreground transition-colors max-sm:text-[13px]",
+                interval === "month" && "text-foreground",
+              )}
+            >
+              Pay monthly
+            </p>
             <Switch
-              defaultChecked={true}
+              checked={interval === "year"}
               onCheckedChange={(value) => (value ? setInterval("year") : setInterval("month"))}
+              className="max-sm:hidden"
             />
-            <p className="text-sm font-medium">Pay yearly</p>
+            <SmallSwitch
+              checked={interval === "year"}
+              onCheckedChange={(value) => (value ? setInterval("year") : setInterval("month"))}
+              className="hidden max-sm:block"
+            />
+            <p
+              className={cn(
+                "text-sm font-medium text-muted-foreground transition-colors max-sm:text-[13px]",
+                interval === "year" && "text-foreground",
+              )}
+            >
+              Pay yearly
+            </p>
           </div>
         </div>
-        <div className="grid grid-cols-[1fr_1fr_1fr]">
+        <div className="grid grid-cols-3 gap-4 max-[876px]:grid-cols-1">
           {plans.map((plan, index) => (
             <Card
               key={plan.id}
-              className={`w-full rounded-none shadow-none ${index > 0 ? "border-l-0" : ""} first-of-type:rounded-tl-xl ${index === 2 ? "rounded-tr-xl" : undefined}`}
+              className={`w-full rounded-none rounded-xl border shadow-lg max-[876px]:mx-auto max-[876px]:max-w-[500px] ${index === 1 ? "border-primary" : ""}`}
             >
               <CardHeader>
                 <div className="relative flex w-full items-center justify-between">
                   <CardTitle>{plan.name}</CardTitle>
                   {!plan.isFree && (
                     <Badge
-                      variant="success"
-                      className={`absolute right-0 flex space-x-1 rounded-full ${interval === "year" ? "scale-100 opacity-100" : "pointer-event-none scale-90 opacity-0"} transition-all`}
+                      variant={interval === "year" ? "success" : "neutral"}
+                      className={`absolute right-0 flex space-x-1 rounded-full ${interval === "month" ? "line-through" : ""} transition-all`}
                     >
                       <Tag size={12} />
                       <span>Save 20%</span>
@@ -131,7 +155,8 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
               </CardHeader>
               <CardContent>
                 <p className="flex items-baseline space-x-1 text-3xl font-extrabold">
-                  <span>{plan.isFree ? "$0" : `$${getMonthlyPrice(plan)}`}</span>
+                  {/* <span>{plan.isFree ? "$0" : `$${getMonthlyPrice(plan)}`}</span> */}
+                  $<NumberFlow value={plan.isFree ? 0 : getMonthlyPrice(plan)} />
                   <span className="text-[13px] font-normal text-muted-foreground">/month</span>
                 </p>
                 <p className="-mt-1 text-[13px] text-muted-foreground">
@@ -144,66 +169,70 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                 <Button
                   className={`group my-6 h-10 w-full justify-between rounded-full group-hover:translate-x-1 ${index === 1 ? "bg-deepBlue-500 text-white hover:bg-deepBlue-600" : undefined}`}
                   variant={index === 1 || index === 2 ? "default" : "outline"}
+                  asChild
                 >
-                  <span>{plan.isFree ? "Start for free" : "Start free trial"}</span>
-                  <ChevronArrow
-                    className={
-                      index === 0
-                        ? "bg-black dark:bg-white"
-                        : index === 1
-                          ? "bg-white"
-                          : "bg-white dark:bg-black"
-                    }
-                  />
+                  <a href={`${protocol}${appDomain}/register`}>
+                    <span>{plan.isFree ? "Start for free" : "Get started"}</span>
+                    <ChevronArrow
+                      className={
+                        index === 0
+                          ? "bg-black dark:bg-white"
+                          : index === 1
+                            ? "bg-white"
+                            : "bg-white dark:bg-black"
+                      }
+                    />
+                  </a>
                 </Button>
                 <div className="flex flex-col space-y-2">
                   <Feature
-                    icon={<QrCode size={16} />}
+                    icon={<QrCode size={15} />}
                     feature={`${plan.links.toLocaleString("en-us")} QR codes per month`}
                   />
                   <Feature
-                    icon={<Link size={16} />}
+                    icon={<Link size={15} />}
                     feature={`${plan.links.toLocaleString("en-us")} links per month`}
                   />
                   <Feature
-                    icon={<MousePointerClick size={16} />}
+                    icon={<MousePointerClick size={15} />}
                     feature="Unlimited click & scan tracking"
                   />
                   <Feature
-                    icon={<ChartArea size={16} />}
+                    icon={<ChartArea size={15} />}
                     feature={`${getAnalytics(plan.analytics)} analytical data`}
                   />
                   <Feature
-                    icon={<Globe size={16} />}
+                    icon={<Globe size={15} />}
                     feature={`${plan.domains} Custom domain${plan.domains > 1 ? "s" : ""}`}
                   />
                   <Feature
-                    icon={<User size={16} />}
+                    icon={<User size={15} />}
                     feature={`${plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
                   />
-                  {!plan.isFree && (
-                    <Feature icon={<AppWindowMac size={16} />} feature="API access (coming soon)" />
-                  )}
+
                   {/*{plan.qrCustomization && (*/}
                   {/*  <Feature icon={<Bot size={16} />} feature="AI QR generation" />*/}
                   {/*)}*/}
-                  {!plan.isFree && <Feature icon={<Bot size={16} />} feature="AI features" />}
+                  {/* {!plan.isFree && <Feature icon={<Bot size={16} />} feature="AI features" />} */}
                   {!plan.isFree && (
                     <Feature
-                      icon={<Cog size={16} />}
+                      icon={<Cog size={15} />}
                       feature="
                     Advanced link controls"
                     />
                   )}
                   {!plan.isFree && (
-                    <Feature icon={<Milestone size={16} />} feature="Domain redirector" />
+                    <Feature icon={<Milestone size={15} />} feature="Domain redirector" />
                   )}
-                  <Feature icon={<Headset size={16} />} feature={`${plan.supportLevel} support`} />
+                  {!plan.isFree && (
+                    <Feature icon={<AppWindowMac size={15} />} feature="API access (coming soon)" />
+                  )}
+                  <Feature icon={<Headset size={15} />} feature={`${plan.supportLevel} support`} />
                 </div>
               </CardContent>
             </Card>
           ))}
-          <Card className="col-span-3 rounded-none rounded-b-xl border-t-0 shadow-none">
+          {/* <Card className="col-span-3 rounded-xl border shadow-lg">
             <div className="grid grid-cols-2 gap-6 p-12">
               <div>
                 <p className="text-2xl font-extrabold tracking-tight">
@@ -216,9 +245,14 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                   Join the ranks of our enterprise customers and get access to our most advanced
                   features, custom usage limits, and dedicated support.
                 </p>
-                <Button className="group mt-8 flex h-10 w-full max-w-[300px] justify-between rounded-full">
-                  <span>Contact sales</span>
-                  <ChevronArrow className="bg-white dark:bg-black" />
+                <Button
+                  className="group mt-8 flex h-10 w-full max-w-[300px] justify-between rounded-full"
+                  asChild
+                >
+                  <NextLink href="/contact/sales">
+                    <span>Contact sales</span>
+                    <ChevronArrow className="bg-white dark:bg-black" />
+                  </NextLink>
                 </Button>
               </div>
               <div className="grid grid-cols-2 grid-rows-2 gap-x-4 gap-y-8">
@@ -268,7 +302,7 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                 </div>
               </div>
             </div>
-          </Card>
+          </Card> */}
         </div>
       </MaxWidthWrapper>
     </div>
@@ -283,9 +317,9 @@ type FeatureProps = {
 
 const Feature = ({ icon, feature, className }: FeatureProps) => {
   return (
-    <div className="flex items-center space-x-3">
+    <div className="flex items-center space-x-2.5">
       {icon}
-      <p className={cn("text-sm text-muted-foreground", className)}>{feature}</p>
+      <p className={cn("text-[13px] text-muted-foreground", className)}>{feature}</p>
     </div>
   );
 };

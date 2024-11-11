@@ -1,21 +1,8 @@
-model Admin {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-
-  name           String
-  avatar         String
-  email          String @unique
-  phone          String
-  hashedPassword String
-
-  // relations
-  teams Team[]
-}
-
 model User {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
+  isAdmin Boolean @default(false) // if true, user has access to the admin panel
   name            String?
   image           String?
   email           String  @unique

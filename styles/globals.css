@@ -74,7 +74,6 @@ body {
   }
 }
 
-
 @layer base {
   * {
     @apply border-border;
@@ -86,11 +85,11 @@ body {
 }
 
 @layer components {
-  .compare-grid-item:nth-child(5n) {
+  .compare-grid-item:nth-child(4n) {
     @apply border-r border-r-border;
   }
 
-  .compare-grid-item:nth-last-child(-n+5) {
+  .compare-grid-item:nth-last-child(-n + 4) {
     @apply border-b border-b-border;
   }
 }
@@ -103,7 +102,6 @@ body {
   position: fixed;
   z-index: -1;
 }
-
 
 .radial-overlay {
   position: fixed;
@@ -121,7 +119,6 @@ body {
   -moz-animation: animateBg 8s ease infinite;
   animation: animateBg 8s ease infinite;
 }
-
 
 @keyframes animateBg {
   0%,
@@ -150,7 +147,7 @@ body {
     box-shadow: 0 4px 30px #9a3412;
   }
   75% {
-    box-shadow: 0 4px 30px #6b21a8
+    box-shadow: 0 4px 30px #6b21a8;
   }
   100% {
     box-shadow: 0 4px 30px #1e40af;
@@ -174,7 +171,7 @@ body {
     box-shadow: 0 4px 30px #fed7aa;
   }
   75% {
-    box-shadow: 0 4px 30px #e9d5ff
+    box-shadow: 0 4px 30px #e9d5ff;
   }
   100% {
     box-shadow: 0 4px 30px #bfdbfe;
@@ -188,9 +185,8 @@ body {
 
 .fade-enter-active {
   animation: fadeIn 100ms forwards;
-  animation-delay: 100ms
+  animation-delay: 100ms;
 }
-
 
 @keyframes fadeIn {
   0% {
@@ -203,7 +199,7 @@ body {
 
 .custom-switch-thumb {
   height: 12px; /* Custom height for the thumb */
-  width: 12px;  /* Custom width for the thumb */
+  width: 12px; /* Custom width for the thumb */
   transform: translateX(0px); /* Custom translation for the thumb */
 }
 

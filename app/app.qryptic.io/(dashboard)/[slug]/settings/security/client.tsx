@@ -19,7 +19,7 @@ export const SecurityClient = () => {
           </p>
         </div>
         <Button size="sm" className="w-full max-w-[200px]" asChild>
-          <NextLink href={`${protocol}${rootDomain}/contact/sales`} passHref target="_blank">
+          <NextLink href={`${protocol}${rootDomain}/contact`} passHref target="_blank">
             Contact sales
           </NextLink>
         </Button>

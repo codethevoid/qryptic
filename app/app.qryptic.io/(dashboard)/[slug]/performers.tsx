@@ -52,7 +52,7 @@ export const Performers: FC<PerformersProps> = ({ data, date, isLoading }) => {
                       {/*  )}*/}
                       {/*</div>*/}
                       <LinkFavicon link={{ destination: link.destination, events: link.events }} />
-                      <div className="min-w-0">
+                      <div className="min-w-0 space-y-0.5">
                         <p className="truncate text-[13px]">
                           {link.domain.name}/{link.slug}
                         </p>

@@ -44,9 +44,6 @@ model Team {
   events         Event[]
   invoices       Invoice[]
   tags           Tag[]
-
-  // support manager for enterprise plans
-  manager Admin[] // dedicated support manager, only for enterprise plans
 }
 
 enum Role {

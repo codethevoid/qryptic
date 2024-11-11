@@ -251,15 +251,15 @@ export const MainNav = () => {
             <MoonStar size={16} className="absolute opacity-100 dark:opacity-0" />
           </Button>
 
-          <Button size="sm" variant="ghost" className="ml-1 rounded-full" asChild>
-            <NextLink href={`${protocol}${appDomain}/login`} passHref>
-              Log in
-            </NextLink>
+          <Button size="sm" variant="ghost" className="ml-1 rounded-full max-sm:ml-0" asChild>
+            <NextLink href="/pricing">Pricing</NextLink>
           </Button>
-          <Button size="sm" className="to cyan-500 group ml-3 rounded-full" asChild>
-            <NextLink href="/pricing" passHref>
-              Get started
-            </NextLink>
+
+          <Button size="sm" variant="ghost" className="ml-1 rounded-full max-sm:ml-0" asChild>
+            <a href={`${protocol}${appDomain}/login`}>Log in</a>
+          </Button>
+          <Button size="sm" className="to cyan-500 group ml-3 rounded-full max-sm:ml-2" asChild>
+            <a href={`${protocol}${appDomain}/register`}>Get started</a>
           </Button>
         </div>
       </MaxWidthWrapper>

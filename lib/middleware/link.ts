@@ -31,7 +31,7 @@ export const linkMiddleware = async (req: NextRequest) => {
       if (domainData.destination) {
         // redirect to default destination
         return NextResponse.redirect(constructURL(domainData.destination), {
-          headers: { "x-robots-tag": "googlebot: noindex" },
+          headers: { "x-robots-tag": "googlebot: noindex", ...qrypticHeaders },
         });
       }
       // if default destination does not exist, show a message to the user

@@ -11,6 +11,7 @@ import { useLink } from "@/lib/hooks/swr/use-link";
 import { useEffect } from "react";
 import { EditLinkSnackbar } from "@/components/snackbar/edit-link-snackbar";
 import { LinkMobileNav } from "../../(form)/mobile-nav";
+import { Loader } from "@/components/layout/loader";
 
 export const EditLinkProviderClient = () => {
   return (
@@ -96,7 +97,7 @@ const EditLinkClient = () => {
     }
   }, [data]);
 
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading) return <Loader />;
 
   if (error) return "an error occured";
 

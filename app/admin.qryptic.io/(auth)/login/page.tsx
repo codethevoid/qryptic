@@ -1,5 +1,1 @@
-const LoginPage = () => {
-  return <div>admin sign in</div>;
-};
-
-export default LoginPage;
+export { default } from "@/app/app.qryptic.io/(auth)/login/page";
