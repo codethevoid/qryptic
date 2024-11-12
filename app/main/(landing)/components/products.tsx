@@ -1,8 +1,8 @@
+"use client";
+
 import { MaxWidthWrapper } from "@/components/layout/max-width-wrapper";
 import { Link2, Link, CircleCheck, QrCode, ChartArea, Users } from "lucide-react";
 import { ReactNode } from "react";
-import { Button } from "@/components/ui/button";
-import NextImage from "next/image";
 
 type Product = {
   icon: ReactNode;

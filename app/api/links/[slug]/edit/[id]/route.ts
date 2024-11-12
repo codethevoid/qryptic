@@ -8,6 +8,7 @@ import bcrypt from "bcrypt";
 import { uploadPreviewImage } from "@/lib/links/upload-preview-image";
 import { uploadQrLogo } from "@/lib/links/upload-qr-logo";
 import { shortDomain } from "@/utils/qryptic/domains";
+import { blacklist } from "@/utils/blacklist";
 
 export const PATCH = withTeam(async ({ team, req, params }) => {
   try {
@@ -112,6 +113,29 @@ export const PATCH = withTeam(async ({ team, req, params }) => {
     }
 
     shouldIndex = domain.name === shortDomain ? true : shouldIndex;
+
+    // Check if destination is blacklisted
+    if (blacklist.some((item) => destination.toLowerCase().trim().includes(item))) {
+      return NextResponse.json({ error: "Destination is blacklisted" }, { status: 400 });
+    }
+
+    // Check if any geo destination is blacklisted
+    if (
+      Object.values(geo).some((value) =>
+        blacklist.some((item) => value.destination.toLowerCase().trim().includes(item)),
+      )
+    ) {
+      return NextResponse.json({ error: "Geo destination is blacklisted" }, { status: 400 });
+    }
+
+    // Check if android or ios destination is blacklisted
+    if (android && blacklist.some((item) => android.toLowerCase().trim().includes(item))) {
+      return NextResponse.json({ error: "Android destination is blacklisted" }, { status: 400 });
+    }
+
+    if (ios && blacklist.some((item) => ios.toLowerCase().trim().includes(item))) {
+      return NextResponse.json({ error: "iOS destination is blacklisted" }, { status: 400 });
+    }
 
     // update link
     const link = await prisma.link.update({
