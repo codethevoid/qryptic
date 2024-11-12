@@ -84,7 +84,9 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
             {!isLoading && data ? (
               <CardTitle>
                 {data?.events.length > 0
-                  ? `${data?.events.length.toLocaleString("en-us")} events captured`
+                  ? `${data?.events.length.toLocaleString("en-us")} event${
+                      data?.events.length === 1 ? "" : "s"
+                    } captured`
                   : "No events captured"}
               </CardTitle>
             ) : (
