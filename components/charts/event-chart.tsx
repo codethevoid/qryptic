@@ -51,7 +51,10 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
   const formatTick = (tick: string) => {
     const diff = differenceInDays(date?.to as Date, date?.from as Date);
     if (diff === 0) return tick;
-    return format(new Date(tick), "MMM d");
+
+    // Ensure the tick is in a format that Safari can handle
+    const parsedDate = new Date(tick.replace(/-/g, "/")); // Replacing dashes with slashes can sometimes help
+    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM d") : tick;
   };
 
   const formatTooltipLabel = (label: string) => {
@@ -59,7 +62,9 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
     if (diff === 0) {
       return `${label.split(" ")[0]}:00 ${label.split(" ")[1]}`;
     }
-    return format(new Date(label), "MMM d, yyyy");
+
+    const parsedDate = new Date(label.replace(/-/g, "/"));
+    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM d, yyyy") : label;
   };
 
   // const formatYTick = (num: number) => {
@@ -110,12 +115,7 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
           )}
         </CardHeader>
         <CardContent className="px-4 pb-4 pt-0">
-          <ChartContainer
-            config={chartConfig}
-            className={
-              "max-h-[327px] min-h-[327px] w-full max-[800px]:max-h-[280px] max-[800px]:min-h-[280px]"
-            }
-          >
+          <ChartContainer config={chartConfig} className={"h-[347px] w-full max-[800px]:h-[280px]"}>
             <AreaChart
               data={chartData}
               // margin={{ left: -20, top: 8, right: 12 }}

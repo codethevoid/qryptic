@@ -50,7 +50,10 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
   const formatTick = (tick: string) => {
     const diff = differenceInDays(date?.to as Date, date?.from as Date);
     if (diff === 0) return tick;
-    return format(new Date(tick), "MMM d");
+
+    // Ensure the tick is in a format that Safari can handle
+    const parsedDate = new Date(tick.replace(/-/g, "/")); // Replacing dashes with slashes can sometimes help
+    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM d") : tick;
   };
 
   const formatTooltipLabel = (label: string) => {
@@ -58,7 +61,9 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
     if (diff === 0) {
       return `${label.split(" ")[0]}:00 ${label.split(" ")[1]}`;
     }
-    return format(new Date(label), "MMM d, yyyy");
+
+    const parsedDate = new Date(label.replace(/-/g, "/"));
+    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM d, yyyy") : label;
   };
 
   const formatYTick = (num: number) => {
@@ -169,10 +174,7 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
         </div>
       </div>
       <div className="p-8 pl-6 max-[700px]:p-4 max-[700px]:pl-1 max-[700px]:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className={"max-h-[400px] w-full max-[700px]:min-h-[260px]"}
-        >
+        <ChartContainer config={chartConfig} className={"h-[400px] w-full max-md:h-[280px]"}>
           <AreaChart data={chartData} margin={{ left: -20, top: 8, right: 12 }}>
             <ChartTooltip
               cursor={false}

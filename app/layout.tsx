@@ -16,8 +16,8 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
         <Providers>
           {children}
           <Toaster closeButton richColors />
-          <Analytics />
-          <SpeedInsights />
+          {/* <Analytics />
+          <SpeedInsights /> */}
         </Providers>
       </body>
     </html>
