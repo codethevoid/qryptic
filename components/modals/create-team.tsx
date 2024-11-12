@@ -82,9 +82,9 @@ export const CreateTeam = ({ isOpen, setIsOpen }: CreateTeamProps) => {
           </div>
           <p className="text-[13px] text-muted-foreground">
             Continuing will create a new team on our free plan.{" "}
-            <NextLink href="/" className="text-deepBlue-500 hover:underline dark:text-deepBlue-400">
+            {/* <NextLink href="/" className="text-deepBlue-500 hover:underline dark:text-deepBlue-400">
               Learn more
-            </NextLink>
+            </NextLink> */}
           </p>
         </DialogBody>
         <DialogFooter>
