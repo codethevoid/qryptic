@@ -56,6 +56,6 @@ export const POST = async (req: NextRequest) => {
 async function checkRatelimit(req: NextRequest) {
   const ip = ipAddress(req);
   const identifier = `forgot-password:${ip}`;
-  const { success } = await ratelimit.limit(identifier);
+  const { success } = await ratelimit().limit(identifier);
   return success;
 }

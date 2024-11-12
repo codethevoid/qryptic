@@ -49,7 +49,7 @@ export const POST = async (req: NextRequest) => {
 async function checkRatelimit(req: NextRequest) {
   const ip = ipAddress(req);
   const identifier = `reset-password:${ip}`;
-  const { success, remaining } = await ratelimit.limit(identifier);
+  const { success, remaining } = await ratelimit().limit(identifier);
   console.log("Ratelimit remaining", remaining);
   return success;
 }
