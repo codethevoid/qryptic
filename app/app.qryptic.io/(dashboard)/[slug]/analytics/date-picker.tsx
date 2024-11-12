@@ -59,7 +59,7 @@ export const DatePicker = ({
       });
       // show a toast message
       return toast.error(`Date range exceeded!`, {
-        description: `The date range selected is greater than the allowed range of ${team?.plan.isFree ? team.plan.analytics : team.plan.analytics - 1} days. Upgrade your plan to increase historical data.`,
+        description: `The date range selected is greater than the allowed range of ${team?.plan?.isFree ? team?.plan?.analytics : team ? team?.plan?.analytics - 1 : ""} days. Upgrade your plan to increase historical data.`,
       });
     }
 
