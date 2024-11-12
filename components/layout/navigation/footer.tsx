@@ -20,7 +20,7 @@ const resources = [
   // { name: "Docs", route: "/docs" },
   // { name: "Guides", route: "/guides" },
   { name: "Pricing", route: "/pricing" },
-  { name: "Uptime", route: "/uptime" },
+  // { name: "Uptime", route: "/uptime" },
 ];
 
 const companyLinks = [
