@@ -14,7 +14,6 @@ import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { type Event } from "@/types/analytics";
-import { useSearchParams } from "next/navigation";
 
 const chartConfig = {
   clicks: {
@@ -40,7 +39,6 @@ type Props = {
 };
 
 export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
-  const searchParams = useSearchParams();
   const [areas, setAreas] = useState<AreaDataType[]>(["events"]);
 
   // memoize the chart data
