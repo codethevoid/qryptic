@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && prisma generate && prisma migrate deploy",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "migrate:dev": "dotenv -e .env.local -- pnpx prisma migrate dev"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.645.0",
