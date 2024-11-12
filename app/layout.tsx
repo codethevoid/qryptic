@@ -10,14 +10,16 @@ type RootLayoutProps = {
 };
 
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
+  const isProduction = process.env.NODE_ENV === "production";
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
         <Providers>
           {children}
           <Toaster closeButton richColors />
-          <Analytics />
-          <SpeedInsights />
+          {isProduction && <Analytics />}
+          {isProduction && <SpeedInsights />}
         </Providers>
       </body>
     </html>
