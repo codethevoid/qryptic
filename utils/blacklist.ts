@@ -1450,6 +1450,7 @@ export const blacklist = [
   "qrco.de",
   "qrs.ly",
   "qrtag.fr",
+  "qrypt.co",
   "qte.me",
   "qu.tc",
   "qvc.co",
