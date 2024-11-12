@@ -6,6 +6,8 @@ import { Footer } from "@/components/layout/navigation/footer";
 import { GeistSans } from "geist/font/sans";
 import { constructMetadata } from "@/utils/construct-metadata";
 
+export const metadata = constructMetadata({});
+
 const grotesk = Space_Grotesk({ subsets: ["latin"] });
 
 type MainLayoutProps = {

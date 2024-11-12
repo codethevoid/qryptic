@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { appDomain, protocol } from "@/utils/qryptic/domains";
 import NextLink from "next/link";
-import { Trust } from "./trust";
 
 export const Hero = () => {
   return (
@@ -13,13 +12,13 @@ export const Hero = () => {
         <MaxWidthWrapper className="space-y-8">
           <div className="space-y-6">
             <div className="space-y-2">
-              <h1 className="text-center text-4xl font-bold tracking-tight max-md:text-3xl">
-                Links that just do{" "}
+              <h1 className="text-center text-4xl font-bold tracking-tight max-md:text-3xl max-[500px]:mx-auto max-[500px]:max-w-[340px]">
+                Deliver digital experiences at{" "}
                 <span className="bg-gradient-to-r from-emerald-500 to-lime-500 bg-clip-text text-transparent">
-                  more
+                  scale
                 </span>
               </h1>
-              <p className="mx-auto max-w-lg text-center text-muted-foreground max-md:text-sm max-sm:max-w-[340px] max-sm:text-[13px]">
+              <p className="mx-auto max-w-xl text-center text-muted-foreground max-md:text-sm max-sm:max-w-[340px] max-sm:text-[13px]">
                 Unleash the full power of your links with an experience that goes beyond
                 clicks—designed to support growth, insights, and innovation.
               </p>
@@ -39,7 +38,7 @@ export const Hero = () => {
               </Button>
               <Button
                 variant="outline"
-                className="w-full max-w-[200px] rounded-full max-sm:max-w-none"
+                className="w-full max-w-[200px] rounded-full backdrop-blur max-sm:max-w-none"
                 size="lg"
                 asChild
               >
@@ -54,6 +53,7 @@ export const Hero = () => {
           <NextImage
             src="https://qryptic.s3.us-east-1.amazonaws.com/main/landing/hero-dark.png"
             alt="Qryptic analytics dashboard"
+            priority
             height={1308}
             width={2318}
             quality={100}
@@ -62,6 +62,7 @@ export const Hero = () => {
           <NextImage
             src="https://qryptic.s3.us-east-1.amazonaws.com/main/landing/hero-light.png"
             alt="Qryptic analytics dashboard"
+            priority
             height={1314}
             width={2302}
             quality={100}

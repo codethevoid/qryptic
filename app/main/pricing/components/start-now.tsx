@@ -27,9 +27,13 @@ export const StartNow = () => {
           </p>
         </div>
         <div className="flex items-center justify-center max-sm:flex-col max-sm:space-y-4">
-          <DarkButton />
-          <LightButton />
+          {/* <DarkButton />
+          <LightButton /> */}
+          <Button size="lg" className="w-full max-w-[200px] rounded-full max-sm:max-w-none" asChild>
+            <a href={`${protocol}${appDomain}/register`}>Start for free</a>
+          </Button>
           <Button
+            size="lg"
             className="ml-4 w-full max-w-[200px] rounded-full border backdrop-blur dark:hover:bg-accent/5 max-sm:ml-0 max-sm:max-w-none"
             variant="outline"
             asChild

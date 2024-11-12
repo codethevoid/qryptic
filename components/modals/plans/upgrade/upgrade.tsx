@@ -99,7 +99,14 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
                   Business
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value={plans[0].name} className="mt-4">
+              <div className="mt-4">
+                <PricingCard
+                  plan={(selectedPlan as Plan) || plans[0]}
+                  interval={interval}
+                  setInterval={setInterval}
+                />
+              </div>
+              {/* <TabsContent value={plans[0].name} className="mt-4">
                 <PricingCard
                   plan={plans[0] as Plan}
                   interval={interval}
@@ -112,7 +119,7 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
                   interval={interval}
                   setInterval={setInterval}
                 />
-              </TabsContent>
+              </TabsContent> */}
             </Tabs>
             <p className="text-[13px] text-muted-foreground">
               Compare all plans and features{" "}

@@ -5,6 +5,7 @@ import { Compare } from "@/app/main/pricing/components/compare";
 import { Faq } from "@/app/main/pricing/components/faq";
 import { StartNow } from "@/app/main/pricing/components/start-now";
 import { constructMetadata } from "@/utils/construct-metadata";
+import { GetStarted } from "../(landing)/components/get-started";
 
 export const metadata = constructMetadata({
   title: "Qryptic | Pricing",
@@ -22,11 +23,12 @@ const PricingPage = async () => {
   });
 
   return (
-    <div className="flex flex-col space-y-24 pb-24 pt-20 max-sm:pt-16">
+    <div className="space-y-20 py-20 max-sm:py-16">
       <PricingTiers plans={plans} />
       <Compare plans={plans} />
       <Faq />
-      <StartNow />
+      {/* <StartNow /> */}
+      <GetStarted />
     </div>
   );
 };

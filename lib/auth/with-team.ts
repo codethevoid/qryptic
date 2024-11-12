@@ -3,6 +3,8 @@ import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/db/prisma";
 import { Team, TeamMember } from "@prisma/client";
 import { auth } from "@/auth";
+import { ratelimit } from "../upstash/rate-limit";
+import { ipAddress } from "@vercel/functions";
 
 type CustomTeam = Pick<Team, "id" | "slug"> & { members?: TeamMember[] };
 
@@ -27,6 +29,13 @@ export const withTeam = (handler: WithTeamHandler) => {
 
     const slug = params.slug || req.nextUrl.searchParams.get("slug") || undefined;
     if (!slug) return NextResponse.json({ error: "No team provided" }, { status: 400 });
+
+    const ip = ipAddress(req);
+    const identifier = `team:${ip}`;
+    const { success } = await ratelimit(20, "10 s").limit(identifier);
+    if (!success) {
+      return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+    }
 
     let team: CustomTeam | null = await prisma.team.findUnique({
       where: { slug },

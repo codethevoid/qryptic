@@ -19,17 +19,15 @@ export const Faq = () => {
           </h3>
           <p className="mt-2 text-muted-foreground max-lg:text-center max-md:text-sm max-sm:text-[13px]">
             Have other questions? Contact us{" "}
-            <Link href="/contact" className="underline hover:text-foreground">
+            <Link
+              href="/contact"
+              className="text-deepBlue-500 hover:underline dark:text-deepBlue-400"
+            >
               here
             </Link>
           </p>
         </div>
-        <Accordion
-          type="single"
-          collapsible
-          className="w-full overflow-hidden rounded-xl border bg-background"
-          defaultValue="item-1"
-        >
+        <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
           <AccordionItem value="item-1" className="px-4 py-2">
             <AccordionTrigger>Which Qryptic plan is right for me?</AccordionTrigger>
             <AccordionContent>
@@ -100,7 +98,7 @@ export const Faq = () => {
               </p>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-8" className="border-b-0 px-4 py-2">
+          <AccordionItem value="item-8" className="px-4 py-2">
             <AccordionTrigger>How can I reach out with additional questions?</AccordionTrigger>
             <AccordionContent>
               <p className="text-sm text-muted-foreground max-md:text-[13px]">

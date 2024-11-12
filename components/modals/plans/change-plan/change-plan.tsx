@@ -125,12 +125,19 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
                 Business
               </TabsTrigger>
             </TabsList>
-            <TabsContent value={plans[0].name} className="mt-4">
+            <div className="mt-4">
+              <PricingCard
+                plan={(selectedPlan as Plan) || plans[0]}
+                interval={interval}
+                setInterval={setInterval}
+              />
+            </div>
+            {/* <TabsContent value={plans[0].name} className="mt-4">
               <PricingCard plan={plans[0] as Plan} interval={interval} setInterval={setInterval} />
             </TabsContent>
             <TabsContent value={plans[1].name} className="mt-4">
               <PricingCard plan={plans[1] as Plan} interval={interval} setInterval={setInterval} />
-            </TabsContent>
+            </TabsContent> */}
           </Tabs>
           <div className="flex items-center justify-between px-0.5">
             <p className="text-sm font-medium">Billed now</p>

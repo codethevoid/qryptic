@@ -1,5 +1,4 @@
 # UI
-## [ ] Change spacing between icon and text on for plan status badges
 ## [ ] Add modals that come in from bottom for mobile (look at shadcn page component)
 
 # Domains

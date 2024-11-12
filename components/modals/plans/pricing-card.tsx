@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { Bot, ChartArea, Cog, Globe, Link, QrCode, User } from "lucide-react";
 import { type Plan } from "@/lib/hooks/swr/use-plans";
+import NumberFlow from "@number-flow/react";
 
 type PricingCardProps = {
   plan: Plan;
@@ -34,7 +35,8 @@ export const PricingCard = ({ plan, interval, setInterval }: PricingCardProps) =
         <div className="flex items-center justify-between">
           <div className="flex w-full items-center space-x-3">
             <p className="flex items-baseline space-x-[2px] text-xl font-semibold text-foreground">
-              <span>${getMonthlyPrice(plan, interval)}</span>
+              $
+              <NumberFlow value={getMonthlyPrice(plan, interval)} />
               <span className="text-xs font-normal text-muted-foreground">/mo</span>
             </p>
             <Badge
@@ -88,6 +90,7 @@ type FeatureProps = {
   icon: ReactNode;
   feature: string;
   className?: string;
+  num?: number;
 };
 
 const Feature = ({ icon, feature, className }: FeatureProps) => {
