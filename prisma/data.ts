@@ -8,30 +8,30 @@ type CustomPlan = Omit<Plan, "id" | "createdAt" | "isLegacy" | "isCustom" | "sla
 export const proPrices: CustomPrice[] = [
   {
     interval: "month",
-    price: 10,
-    stripePriceId: "price_1PrrWt08CDYCFGXEtIFBCgNS",
-    stripeProductId: "prod_QjKBDVIxzwFecw",
+    price: 15,
+    stripePriceId: "price_1QKO8XKyK48kAwp61uIn0Jl4",
+    stripeProductId: "prod_RCnkKOF2IN3Xqg",
   },
   {
     interval: "year",
-    price: 96,
-    stripePriceId: "price_1PrrXP08CDYCFGXEGhyydBJQ",
-    stripeProductId: "prod_QjKBDVIxzwFecw",
+    price: 144,
+    stripePriceId: "price_1QKO91KyK48kAwp6Ly9656HI",
+    stripeProductId: "prod_RCnkKOF2IN3Xqg",
   },
 ];
 
 export const businessPrices: CustomPrice[] = [
   {
     interval: "month",
-    price: 30,
-    stripePriceId: "price_1Prrag08CDYCFGXEPugGOvU7",
-    stripeProductId: "prod_QjKFGI4YnmOPAJ",
+    price: 40,
+    stripePriceId: "price_1QKOARKyK48kAwp6YwPhALYJ",
+    stripeProductId: "prod_RCnlnMU9KnR0TM",
   },
   {
     interval: "year",
-    price: 288,
-    stripePriceId: "price_1PrrbG08CDYCFGXEjwW8nVQT",
-    stripeProductId: "prod_QjKFGI4YnmOPAJ",
+    price: 384,
+    stripePriceId: "price_1QKOAqKyK48kAwp6RuQ352C8",
+    stripeProductId: "prod_RCnlnMU9KnR0TM",
   },
 ];
 
@@ -43,7 +43,7 @@ export const plans: CustomPlan[] = [
     links: 20,
     seats: 1,
     domains: 1,
-    analytics: 30, // days
+    analytics: 30, // 1 month
     sso: false,
     rbac: false,
     sla: false,
@@ -53,10 +53,10 @@ export const plans: CustomPlan[] = [
     name: "Pro",
     description: "For startups and small teams",
     isFree: false,
-    links: 1000,
+    links: 3000,
     seats: 5,
     domains: 3,
-    analytics: 366, // days
+    analytics: 366, // 1 year
     sso: false,
     rbac: false,
     sla: false,
@@ -66,10 +66,10 @@ export const plans: CustomPlan[] = [
     name: "Business",
     description: "For growing businesses",
     isFree: false,
-    links: 5000,
+    links: 10000,
     seats: 20,
     domains: 10,
-    analytics: 1096, // days
+    analytics: 1096, // 3 years
     sso: false,
     rbac: false,
     sla: false,

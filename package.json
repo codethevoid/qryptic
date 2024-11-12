@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate",
-    "migrate:dev": "dotenv -e .env.local -- pnpx prisma migrate dev"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.645.0",
@@ -50,6 +49,7 @@
     "@types/ws": "^8.5.12",
     "@upstash/ratelimit": "^2.0.4",
     "@upstash/redis": "^1.34.3",
+    "@vercel/analytics": "^1.4.0",
     "@vercel/functions": "^1.4.2",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
