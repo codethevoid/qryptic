@@ -60,7 +60,7 @@ export const TimeframePicker = ({ timeFrame, setTimeFrame, setDate, setTempDate 
                 <span>Last 12 months</span>
               </div>
             </SelectItem>
-            {team?.plan.analytics >= 1096 && (
+            {team?.plan?.analytics || 0 >= 1096 && (
               <SelectItem value="threeYears">Last 3 years</SelectItem>
             )}
             {team?.plan.isFree && (
@@ -83,7 +83,7 @@ export const TimeframePicker = ({ timeFrame, setTimeFrame, setDate, setTempDate 
                 <span>Year to date</span>
               </div>
             </SelectItem>
-            {team?.plan.analytics < 1096 && !team?.plan.isFree && (
+            {team?.plan?.analytics || 0 < 1096 && !team?.plan?.isFree && (
               <SelectItem value="threeYears" disabled>
                 <div className="flex items-center space-x-2">
                   <Lock size={13} />
