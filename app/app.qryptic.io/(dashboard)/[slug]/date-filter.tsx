@@ -41,15 +41,17 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const handleTimeFrameChange = (value: TimeFrame) => {
+    const fromDate = subDays(today, daysMap[value] || 0);
+    const toDate = today;
+
+    if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+      console.error("Invalid date values for time frame:", value);
+      return;
+    }
+
     setTimeFrame(value);
-    setDate({
-      from: subDays(today, daysMap[value]),
-      to: today,
-    });
-    setTempDate({
-      from: subDays(today, daysMap[value]),
-      to: today,
-    });
+    setDate({ from: fromDate, to: toDate });
+    setTempDate({ from: fromDate, to: toDate });
   };
 
   const handleDateChange = () => {
