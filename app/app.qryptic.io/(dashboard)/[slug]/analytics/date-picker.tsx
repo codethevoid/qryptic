@@ -47,7 +47,7 @@ export const DatePicker = ({
     // subtract from date from today to get the number of days
     const days = differenceInDays(today, fromDate as Date) + 1;
     // check if the days is greater than the plan max days
-    if (days > team?.plan.analytics) {
+    if (days > (team?.plan?.analytics || 0)) {
       // if it is greater, set date back to the previous date range ( timeframe)
       setDate({
         from: subDays(today, daysMap[timeFrame]),
