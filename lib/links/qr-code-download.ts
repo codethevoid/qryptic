@@ -44,9 +44,14 @@ export const downloadPNG = (
 
     // If there's a logo, draw it in the center of the QR code
     if (logo) {
+      // const logoImg = new Image();
+      // logoImg.crossOrigin = "anonymous"; // Handle cross-origin for the logo image
+      // logoImg.src = logo;
+
+      const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(logo)}`;
       const logoImg = new Image();
-      logoImg.crossOrigin = "anonymous"; // Handle cross-origin for the logo image
-      logoImg.src = logo;
+      logoImg.crossOrigin = "anonymous"; 
+      logoImg.src = proxyUrl;
 
       logoImg.onload = () => {
         // Calculate the center position for the logo
@@ -73,7 +78,7 @@ export const downloadPNG = (
     }
 
     // Revoke the object URL to free memory
-    URL.revokeObjectURL(url);
+    // URL.revokeObjectURL(url);
   };
 
   img.onerror = () => {
