@@ -50,7 +50,7 @@ export const downloadPNG = (
 
       const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(logo)}`;
       const logoImg = new Image();
-      logoImg.crossOrigin = "anonymous"; 
+      logoImg.crossOrigin = "anonymous";
       logoImg.src = proxyUrl;
 
       logoImg.onload = () => {

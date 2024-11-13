@@ -35,6 +35,7 @@ export const DownloadQrCode = ({ isOpen, setIsOpen }: DownloadQrCodeProps) => {
     const svg = qrRef.current?.querySelector("svg");
     const filename = `qrcode-${teamSlug}-${slug}.${type}`;
 
+    console.log(logoDimensions);
     if (type === "svg") {
       downloadSVG(svg as SVGSVGElement, filename);
     } else {
@@ -73,7 +74,7 @@ export const DownloadQrCode = ({ isOpen, setIsOpen }: DownloadQrCodeProps) => {
               imageSettings={
                 logo
                   ? {
-                      src: `/api/proxy-image?url=${encodeURIComponent(logo)}`, // proxy logo for SVG ( we do it with PNG on download)
+                      src: logo,
                       ...logoDimensions,
                       excavate: true,
                     }
