@@ -73,7 +73,7 @@ export const DownloadQrCode = ({ isOpen, setIsOpen }: DownloadQrCodeProps) => {
               imageSettings={
                 logo
                   ? {
-                      src: logo,
+                      src: `/api/proxy-image?url=${encodeURIComponent(logo)}`, // proxy logo for SVG ( we do it with PNG on download)
                       ...logoDimensions,
                       excavate: true,
                     }
