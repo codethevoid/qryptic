@@ -11,6 +11,7 @@ type Props = {
 export const metadata = constructMetadata({
   title: "Password Protected Link",
   description: "This link is password protected. Please enter the password to continue.",
+  image: "",
   noIndex: true,
 });
 
