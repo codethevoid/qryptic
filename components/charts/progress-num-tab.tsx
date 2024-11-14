@@ -81,7 +81,7 @@ export const ProgressNumTab = ({
         className={cn(
           "absolute left-0 top-1/2 h-0 w-0.5 -translate-y-1/2 bg-primary transition-all ease-in group-hover:h-[31.5px]",
           selected && "h-[31.5px]",
-          isMobile && "group-hover:h-0",
+          isMobile && !selected && "group-hover:h-0",
         )}
       />
     </div>
