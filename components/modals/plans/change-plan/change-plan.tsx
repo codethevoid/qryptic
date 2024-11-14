@@ -96,8 +96,7 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
         <CompactDialogHeader>
           <CompactDialogTitle>Change plan</CompactDialogTitle>
           <CompactDialogDescription>
-            Select a plan to change your subscription to. Changes will take effect immediately.
-            Compare all plans and features{" "}
+            Select a plan. Changes will take effect immediately. Compare all plans and features{" "}
             <NextLink
               href={`${protocol}${rootDomain}/pricing`}
               target="_blank"
