@@ -3,6 +3,7 @@ import { ProgressTabIcon } from "@/components/ui/custom/progress-tab-icon";
 import { JSX } from "react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { isMobile } from "react-device-detect";
 
 type ProgressNumTabProps = HTMLAttributes<HTMLDivElement> & {
   label: string;
@@ -80,6 +81,7 @@ export const ProgressNumTab = ({
         className={cn(
           "absolute left-0 top-1/2 h-0 w-0.5 -translate-y-1/2 bg-primary transition-all ease-in group-hover:h-[31.5px]",
           selected && "h-[31.5px]",
+          isMobile && "group-hover:h-0",
         )}
       />
     </div>
