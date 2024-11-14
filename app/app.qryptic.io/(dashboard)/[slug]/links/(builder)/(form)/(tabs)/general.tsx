@@ -155,6 +155,7 @@ export const General = ({ mode }: { mode: "new" | "edit" }) => {
           value={destination}
           onChange={(e) => handleDestinationChange(e)}
           disabled={mode === "edit" && team?.plan.isFree}
+          autoComplete="off"
         />
       </div>
       <div className="space-y-1.5">
