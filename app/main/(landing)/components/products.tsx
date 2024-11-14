@@ -45,7 +45,7 @@ const products: Product[] = [
     subTitle: "Branded short links",
     title: "Personalized short links",
     description:
-      "Create recognizable short links that match your brand. Link to your website, social media, or any other online content.",
+      "Create recognizable short links that match your brand. Add pass protection, device targeting, cloaking, and more.",
   },
   {
     icon: <QrCode className="h-[22px] w-[22px] shrink-0 max-sm:h-[18px] max-sm:w-[18px]" />,
