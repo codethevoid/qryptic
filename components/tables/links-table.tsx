@@ -75,7 +75,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links, mutate }) => {
                   >
                     {`${link.domain.name}/${link.slug}`}
                   </a>
-                  <CopyButton text={`https://${link.domain.name}/${link.slug}`} />
+                  <CopyButton text={`${link.domain.name}/${link.slug}`} />
                 </div>
                 <div className="flex items-center space-x-1 text-xs text-muted-foreground">
                   <CornerDownRight size={12} className="shrink-0" />
@@ -152,9 +152,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links, mutate }) => {
                     className="space-x-2"
                     onClick={async (e) => {
                       e.stopPropagation();
-                      await navigator?.clipboard?.writeText(
-                        `https://${link.domain.name}/${link.slug}`,
-                      );
+                      await navigator?.clipboard?.writeText(`${link.domain.name}/${link.slug}`);
                       toast.success("Link copied to clipboard");
                     }}
                   >
