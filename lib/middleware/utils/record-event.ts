@@ -29,6 +29,9 @@ export const recordEvent = async ({ req, linkId, finalUrl }: Props): Promise<voi
   const exists = await redis.exists(key);
   if (exists) return;
 
+  // set key in upstash to prevent duplicate events for next 5 minutes
+  await redis.set(key, "1", { ex: 300 });
+
   // record event
   try {
     const res = await fetch(`${protocol}${rootDomain}/api/events/record`, {
@@ -39,11 +42,6 @@ export const recordEvent = async ({ req, linkId, finalUrl }: Props): Promise<voi
       },
       body: JSON.stringify({ linkId, ua, eventType, ip, geo, referrer, continent, finalUrl }),
     });
-
-    if (!res.ok) return;
-
-    // set key in upstash to prevent duplicate events for next 5 minutes
-    await redis.set(key, "1", { ex: 300 });
   } catch (e) {
     console.error(e);
   }
