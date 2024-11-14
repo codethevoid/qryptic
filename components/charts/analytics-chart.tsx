@@ -88,7 +88,7 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
   };
 
   return (
-    <div className="overflow-hidden rounded-lg border shadow">
+    <div className="overflow-hidden rounded-lg border shadow max-sm:-mx-4 max-sm:rounded-none max-sm:border-l-0 max-sm:border-r-0 max-sm:shadow-none">
       <div className="w-full border-b bg-zinc-50 dark:bg-zinc-950">
         <div className="flex w-full min-[700px]:max-w-[440px]">
           <div
