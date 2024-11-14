@@ -12,7 +12,7 @@ export const generateMetadata = async ({
 }): Promise<Metadata> => {
   const domain = params.domain;
   return constructMetadata({
-    title: `Qryptic - ${domain}`,
+    title: `Qryptic | ${domain}`,
     description: `${domain} is a custom domain on ${process.env.NEXT_PUBLIC_APP_NAME}`,
   });
 };
