@@ -46,6 +46,20 @@ export const Footer = () => {
             </p>
 
             <div className="w-fit max-sm:mx-auto">
+              <Button size="icon" variant="outline" asChild>
+                <a href="https://x.com/qryptic_io" target="_blank">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-4 w-4"
+                  >
+                    <path d="M10.4883 14.651L15.25 21H22.25L14.3917 10.5223L20.9308 3H18.2808L13.1643 8.88578L8.75 3H1.75L9.26086 13.0145L2.31915 21H4.96917L10.4883 14.651ZM16.25 19L5.75 5H7.75L18.25 19H16.25Z"></path>
+                  </svg>
+                </a>
+              </Button>
+            </div>
+            <div className="w-fit max-sm:mx-auto">
               <Button size="sm" variant="outline" className="space-x-2 text-xs">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
