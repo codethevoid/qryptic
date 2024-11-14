@@ -109,7 +109,7 @@ export const LocationData = ({
                     alt={`flag of ${item.country}`}
                     icon={<Map size={16} />}
                     selected={city === item.formattedKey}
-                    onlyIcon={item.country === "unknown"}
+                    onlyIcon={item.label === "unknown"}
                     type="percent"
                     onClick={() => {
                       // filter events by destination

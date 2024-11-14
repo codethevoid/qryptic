@@ -29,7 +29,10 @@ export const groupBy = (events: Event[], key: Key) => {
   events.forEach((event) => {
     // if key is city, we can get duplicate cities with different countries
     // so we need to group by city and country
-    const formattedKey = key === "city" ? `${event[key]}-${event.country}` : event[key];
+    let formattedKey = key === "city" ? `${event[key]}-${event.country}` : event[key];
+    if (key === "city" && formattedKey.includes("unknown")) {
+      formattedKey = "unknown"; // group all unknown cities together regardless of country
+    }
 
     // set percentage of count to total events
     if (!grouped[formattedKey]) {
