@@ -42,7 +42,7 @@ const CloakedPage = async ({ params }: Props) => {
   // if link should not be cloaked
   if (!link.shouldCloak) redirect(link.destination);
 
-  return <iframe className="min-h-screen w-screen border-none" src={link.destination} />;
+  return <iframe className="min-h-screen w-full border-none" src={link.destination} />;
 };
 
 export default CloakedPage;
