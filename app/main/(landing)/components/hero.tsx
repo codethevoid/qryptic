@@ -13,9 +13,9 @@ export const Hero = () => {
           <div className="space-y-6">
             <div className="space-y-2">
               <h1 className="text-center text-4xl font-bold tracking-tight max-md:text-3xl max-[500px]:mx-auto max-[500px]:max-w-[340px]">
-                Deliver digital experiences at{" "}
+                Links that just do{" "}
                 <span className="bg-gradient-to-r from-emerald-500 to-lime-500 bg-clip-text text-transparent">
-                  scale
+                  more
                 </span>
               </h1>
               <p className="mx-auto max-w-xl text-center text-muted-foreground max-md:text-sm max-sm:max-w-[340px] max-sm:text-[13px]">
