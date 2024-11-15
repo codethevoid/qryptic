@@ -10,14 +10,6 @@ export const parseReq = (req: NextRequest) => {
   // For development, we want to use the short domain
   if (domain === "qrypt.co:3000") {
     domain = shortDomain as string;
-  } else {
-    if (domain.endsWith(".vercel.app")) {
-      if (domain.startsWith("app.")) {
-        domain = appDomain as string;
-      } else {
-        domain = rootDomain as string;
-      }
-    }
   }
 
   // this is the path starting with the first forward slash after the domain (ex: /path/to/page)
