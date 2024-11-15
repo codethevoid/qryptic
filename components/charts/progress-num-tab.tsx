@@ -69,7 +69,7 @@ export const ProgressNumTab = ({
           <p className="text-[13px]">
             {type === "num"
               ? count.toLocaleString("en-us")
-              : `${(actualPercent as number).toFixed(1)}%`}
+              : `${Math.round(actualPercent as number)}%`}
           </p>
         </div>
         <span
