@@ -3,6 +3,7 @@ import { NextRequest, userAgent } from "next/server";
 
 export const detectBot = (req: NextRequest) => {
   const ua = userAgent(req);
+  console.log(ua);
   if (ua.isBot) return true;
   if (ua.ua) {
     /* Note:
@@ -15,7 +16,7 @@ export const detectBot = (req: NextRequest) => {
      * - Go-http-client/1.1 is a bot: https://user-agents.net/string/go-http-client-1-1
      * - iframely is for https://iframely.com/docs/about (used by Notion, Linear)
      */
-    return /bot|chatgpt|bluesky|facebookexternalhit|WhatsApp|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex|MetaInspector|Go-http-client|iframely/i.test(
+    return /bot|chatgpt|bluesky|facebookexternalhit|WhatsApp|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex|MetaInspector|Go-http-client|iframely|help@dataminr.com/i.test(
       ua.ua,
     );
   }
