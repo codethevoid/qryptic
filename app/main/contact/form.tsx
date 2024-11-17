@@ -58,7 +58,7 @@ export const ContactForm = () => {
   };
 
   return (
-    <div className="flex h-[calc(100vh-379px)] min-h-[550px] items-center justify-center px-4">
+    <div className="flex h-[calc(100vh-421px)] min-h-[550px] items-center justify-center px-4">
       <div className="w-full max-w-[500px] space-y-4 rounded-xl border bg-background p-6 shadow-lg">
         <div className="space-y-1.5">
           <h3 className="font-semibold">Contact us</h3>

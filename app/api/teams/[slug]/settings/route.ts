@@ -65,7 +65,7 @@ export const GET = withTeamOwner(async ({ team: teamInfo }) => {
         },
         _count: {
           select: {
-            domains: true,
+            domains: { where: { isArchived: false, isDefault: false } },
             members: true,
             links: { where: { createdAt: { gte: startOfMonth(new Date()) } } },
           },

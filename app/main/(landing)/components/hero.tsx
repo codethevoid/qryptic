@@ -13,14 +13,15 @@ export const Hero = () => {
           <div className="space-y-6">
             <div className="space-y-2">
               <h1 className="text-center text-4xl font-bold tracking-tight max-md:text-3xl max-[500px]:mx-auto max-[500px]:max-w-[340px]">
-                Links that just do{" "}
+                Your{" "}
                 <span className="bg-gradient-to-r from-emerald-500 to-lime-500 bg-clip-text text-transparent">
-                  more
+                  complete{" "}
                 </span>
+                link management platform
               </h1>
               <p className="mx-auto max-w-xl text-center text-muted-foreground max-md:text-sm max-sm:max-w-[340px] max-sm:text-[13px]">
-                Unleash the full power of your links with an experience that goes beyond
-                clicks—designed to support growth, insights, and innovation.
+                Qryptic gives you with the tools to create and track your links and QR codes.
+                Enhance your brand, engage your audience, and measure your success.
               </p>
             </div>
             <div className="flex items-center justify-center space-x-4 max-sm:flex-col max-sm:space-x-0 max-sm:space-y-4">

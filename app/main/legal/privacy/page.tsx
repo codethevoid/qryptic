@@ -397,7 +397,7 @@ const PrivacyPage = () => {
         <p>
           Qryptic Support
           <br />
-          https://qryptic.io/support
+          https://qryptic.io/contact
         </p>
       </MaxWidthWrapper>
     </div>

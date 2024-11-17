@@ -16,6 +16,7 @@ import {
   Mail,
   MoonStar,
   Pencil,
+  PenTool,
   QrCode,
   Rocket,
   Sun,
@@ -30,6 +31,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ChevronDown } from "lucide-react";
 import { useState, useRef } from "react";
 import { QrypticIcon } from "@/components/logos/qryptic-icon";
+import { usePathname } from "next/navigation";
 
 const productLinks = [
   {
@@ -92,39 +94,40 @@ const solutionLinks = [
 const resourceLinks = [
   {
     title: "Blog",
-    icon: <Pencil size={16} />,
+    icon: <PenTool size={16} />,
     href: "/blog",
-    description: "Read the latest articles",
+    description: "Read the latest news",
   },
+  // {
+  //   title: "Guides",
+  //   icon: <Book size={16} />,
+  //   href: "/guides",
+  //   description: "Learn how to use Qryptic",
+  // },
   {
-    title: "Guides",
-    icon: <Book size={16} />,
-    href: "/guides",
-    description: "Learn how to use Qryptic",
-  },
-  {
-    title: "Contact sales",
+    title: "Contact us",
     icon: <Mail size={16} />,
-    href: "/contact/sales",
-    description: "Talk about your custom needs",
+    href: "/contact",
+    description: "Get in touch with us",
   },
-  {
-    title: "Changelog",
-    icon: <ListCheck size={16} />,
-    href: "/changelog",
-    description: "Stay up to date with our releases",
-  },
-  {
-    title: "Help center",
-    icon: <Headset size={16} />,
-    href: "/help-center",
-    description: "Get help from our team",
-  },
+  // {
+  //   title: "Changelog",
+  //   icon: <ListCheck size={16} />,
+  //   href: "/changelog",
+  //   description: "Stay up to date with our releases",
+  // },
+  // {
+  //   title: "Help center",
+  //   icon: <Headset size={16} />,
+  //   href: "/help-center",
+  //   description: "Get help from our team",
+  // },
 ];
 
 export const MainNav = () => {
   const { setTheme, resolvedTheme } = useTheme();
   const scrollPos = useScrollPosition();
+  const pathname = usePathname();
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -144,15 +147,15 @@ export const MainNav = () => {
 
   return (
     <div
-      className={`sticky top-0 z-50 border-b px-4 py-2 transition-colors ${scrollPos > 50 ? "border-border bg-background/85 backdrop-blur" : "border-transparent"}`}
+      className={`sticky top-0 z-50 border-b px-4 py-2 transition-colors ${scrollPos > 50 || pathname.includes("blog") ? "border-border bg-background/85 backdrop-blur" : "border-transparent"}`}
     >
       <MaxWidthWrapper className="flex items-center justify-between">
         <div className="flex items-center space-x-12">
           <NextLink href="/" passHref>
             <QrypticLogo />
           </NextLink>
-          {/* <div>
-            <Popover open={openDropdown === "product"}>
+          <div className="max-md:hidden">
+            {/* <Popover open={openDropdown === "product"}>
               <PopoverTrigger
                 onMouseLeave={handleMouseLeave}
                 onMouseEnter={() => handleMouseEnter("product")}
@@ -201,13 +204,13 @@ export const MainNav = () => {
                   <ListItem key={link.title} {...link} />
                 ))}
               </PopoverContent>
-            </Popover>
+            </Popover> */}
             <Button
               asChild
               size="sm"
               variant="ghost"
               onMouseEnter={() => setOpenDropdown(null)}
-              className={`inline-flex h-7 cursor-pointer items-center rounded-full px-3 py-1 text-sm font-medium text-foreground/75 transition-colors hover:bg-accent hover:text-foreground`}
+              className={`inline-flex cursor-pointer items-center rounded-full px-3 text-[13px] font-medium text-foreground/70 transition-colors hover:bg-transparent hover:text-foreground`}
             >
               <NextLink href="/pricing">Pricing</NextLink>
             </Button>
@@ -215,7 +218,7 @@ export const MainNav = () => {
               <PopoverTrigger
                 onMouseEnter={() => handleMouseEnter("resources")}
                 onMouseLeave={handleMouseLeave}
-                className={`inline-flex cursor-auto items-center rounded-full px-3 py-1 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground ${openDropdown === "resources" ? "bg-accent text-foreground" : "text-foreground/75"}`}
+                className={`inline-flex h-8 cursor-auto items-center rounded-full px-3 text-[13px] font-medium transition-colors ${openDropdown === "resources" ? "text-foreground" : "text-foreground/70"}`}
               >
                 Resources{" "}
                 <ChevronDown
@@ -227,16 +230,16 @@ export const MainNav = () => {
                 onMouseEnter={() => handleMouseEnter("resources")}
                 onMouseLeave={handleMouseLeave}
                 className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_300ms] data-[state=open]:!animate-[enter_300ms]"
-                sideOffset={7}
                 align="start"
                 onCloseAutoFocus={(e) => e.preventDefault()}
+                onClick={() => setOpenDropdown(null)}
               >
                 {resourceLinks.map((link) => (
                   <ListItem key={link.title} {...link} />
                 ))}
               </PopoverContent>
             </Popover>
-          </div> */}
+          </div>
         </div>
         <div className="flex items-center">
           <Button
@@ -251,7 +254,12 @@ export const MainNav = () => {
             <MoonStar size={16} className="absolute opacity-100 dark:opacity-0" />
           </Button>
 
-          <Button size="sm" variant="ghost" className="ml-1 rounded-full max-sm:ml-0" asChild>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="ml-1 hidden rounded-full max-md:inline-flex max-sm:ml-0"
+            asChild
+          >
             <NextLink href="/pricing">Pricing</NextLink>
           </Button>
 
