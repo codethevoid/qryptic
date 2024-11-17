@@ -27,9 +27,11 @@ export const groupBy = (events: Event[], key: Key) => {
   > = {};
 
   // filter out unknown values for (browser, os, deviceType, and city)
-  const filteredEvents = events.filter((event) => {
-    return !["Unknown", "unknown"].includes(event[key]);
-  });
+  // const filteredEvents = events.filter((event) => {
+  //   return !["Unknown", "unknown"].includes(event[key]);
+  // });
+
+  const filteredEvents = events.filter((event) => !["Unknown", "unknown"].includes(event[key]));
 
   filteredEvents.forEach((event) => {
     // if key is city, we can get duplicate cities with different countries
