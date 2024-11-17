@@ -13,6 +13,10 @@ import {
 import Link from "next/link";
 import NextImage from "next/image";
 import { format } from "date-fns";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import matter from "gray-matter";
+import { readFileSync } from "fs";
+import { useMDXComponents } from "@/mdx-components";
 
 export const dynamicParams = false;
 
@@ -49,11 +53,13 @@ export const generateMetadata = async ({
 
 const BlogPostPage = async ({ params }: { params: { category: string; post: string } }) => {
   const { category, post } = params;
-  const { default: Post, metadata } = await import(
-    `@/app/main/blog/content/${category}/${post}.mdx`
-  );
+  const { metadata } = await import(`@/app/main/blog/content/${category}/${post}.mdx`);
 
-  console.log(Post, metadata);
+  const filePath = path.join(process.cwd(), "app/main/blog/content", category, `${post}.mdx`);
+  const file = readFileSync(filePath, "utf8");
+  const { content } = matter(file);
+
+  const components = useMDXComponents({});
 
   return (
     <div className="px-4 py-8">
@@ -111,7 +117,8 @@ const BlogPostPage = async ({ params }: { params: { category: string; post: stri
           />
         </div>
         <article className="prose prose-sm max-w-none dark:prose-invert prose-headings:mb-2 prose-headings:font-bold prose-headings:tracking-tight">
-          {/* <Post /> */}
+          {/* <MDXContent.default /> */}
+          <MDXRemote source={content} components={components} />
         </article>
       </MaxWidthWrapper>
     </div>
