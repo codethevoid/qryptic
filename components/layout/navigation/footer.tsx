@@ -36,7 +36,7 @@ const companyLinks = [
 
 export const Footer = () => {
   return (
-    <div className="mx-4 border-t bg-background/60 px-4 py-16">
+    <div className="border-t bg-background/60 px-4 py-16">
       <MaxWidthWrapper>
         <div className="grid grid-cols-[auto_auto_auto_auto_auto] justify-between gap-6 max-sm:grid-cols-1 max-sm:gap-10">
           <div className="col-span-3 space-y-5 max-sm:col-span-1">
