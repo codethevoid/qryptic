@@ -14,6 +14,8 @@ import Link from "next/link";
 import NextImage from "next/image";
 import { format } from "date-fns";
 
+export const dynamicParams = false;
+
 const contentDir = path.join(process.cwd(), "app/main/blog/content");
 
 export const generateStaticParams = async () => {
