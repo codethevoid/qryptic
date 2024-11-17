@@ -45,20 +45,14 @@ export const PATCH = withSession(async ({ req, user }) => {
 
     // get teams user is a part of
     const teams = await prisma.teamMember.findMany({
-      where: { userId: user.id },
-      include: {
-        team: true,
-      },
+      where: { userId: user.id, role: "owner" },
+      include: { team: true },
     });
 
     for (const team of teams) {
       const { createdBy, stripeCustomerId } = team.team;
-      const createdByUser = await prisma.user.findUnique({
-        where: { id: createdBy },
-      });
-
       // if the user is the creator of the team and the team does not have an email invoice to set, update the stripe customer email
-      if (createdByUser?.email === user.email && !team.team.emailInvoiceTo) {
+      if (createdBy === user.id && !team.team.emailInvoiceTo) {
         // update stripe customer email
         await stripe.customers.update(stripeCustomerId, {
           email: email.toLowerCase().trim(),
