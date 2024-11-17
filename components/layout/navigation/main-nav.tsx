@@ -96,7 +96,7 @@ const resourceLinks = [
     title: "Blog",
     icon: <PenTool size={16} />,
     href: "/blog",
-    description: "Read the latest news",
+    description: "Read the latest articles",
   },
   // {
   //   title: "Guides",
