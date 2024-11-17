@@ -8,7 +8,7 @@ import NextLink from "next/link";
 export const Hero = () => {
   return (
     <div>
-      <div className="flex flex-col items-center justify-center bg-gradient-to-b from-transparent px-4">
+      <div className="-mb-6 flex flex-col items-center justify-center overflow-x-hidden bg-gradient-to-b from-transparent px-4">
         <MaxWidthWrapper className="space-y-8">
           <div className="space-y-6">
             <div className="space-y-2">
@@ -51,24 +51,26 @@ export const Hero = () => {
               </Button> */}
             </div>
           </div>
-          <NextImage
-            src="https://qryptic.s3.us-east-1.amazonaws.com/main/landing/hero-dark.png"
-            alt="Qryptic analytics dashboard"
-            priority
-            height={1308}
-            width={2318}
-            quality={100}
-            className="hidden w-full rounded-xl border shadow-lg dark:block"
-          />
-          <NextImage
-            src="https://qryptic.s3.us-east-1.amazonaws.com/main/landing/hero-light.png"
-            alt="Qryptic analytics dashboard"
-            priority
-            height={1314}
-            width={2302}
-            quality={100}
-            className="w-full rounded-xl border shadow-lg dark:hidden"
-          />
+          <div className="min-w-[580px] pb-6 max-[400px]:min-w-[500px]">
+            <NextImage
+              src="https://qryptic.s3.us-east-1.amazonaws.com/main/landing/hero-dark.png"
+              alt="Qryptic analytics dashboard"
+              priority
+              height={1308}
+              width={2318}
+              quality={100}
+              className="hidden w-full rounded-xl border shadow-lg dark:block"
+            />
+            <NextImage
+              src="https://qryptic.s3.us-east-1.amazonaws.com/main/landing/hero-light.png"
+              alt="Qryptic analytics dashboard"
+              priority
+              height={1314}
+              width={2302}
+              quality={100}
+              className="w-full rounded-xl border shadow-lg dark:hidden"
+            />
+          </div>
         </MaxWidthWrapper>
       </div>
     </div>
