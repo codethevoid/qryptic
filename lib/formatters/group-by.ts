@@ -49,7 +49,7 @@ export const groupBy = (events: Event[], key: Key) => {
     } else {
       grouped[formattedKey].count++;
     }
-    const percent = (grouped[formattedKey].count / events.length) * 100;
+    const percent = (grouped[formattedKey].count / filteredEvents.length) * 100;
     grouped[formattedKey] = { ...grouped[formattedKey], percent };
   });
 
