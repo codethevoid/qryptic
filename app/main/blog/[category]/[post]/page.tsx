@@ -82,7 +82,7 @@ const BlogPostPage = async ({ params }: { params: { category: string; post: stri
             <BreadcrumbSeparator /> */}
             <BreadcrumbItem>
               <BreadcrumbPage className="text-[13px] capitalize">
-                {post.replace("-", " ")}
+                {metadata.breadcrumb}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
