@@ -3,7 +3,6 @@ import { NextRequest, userAgent } from "next/server";
 
 export const detectBot = (req: NextRequest) => {
   const ua = userAgent(req);
-  console.log(ua);
   if (ua.isBot) return true;
   if (ua.ua) {
     /* Note:
