@@ -87,7 +87,7 @@ export const UserAgentData = ({
       ) : events.length ? (
         <ScrollArea className="h-[245px]">
           <div className="py-3">
-            {stat === "browser"
+            {stat === "browser" && browsers.length 
               ? browsers.map((item, i) => (
                   <ProgressNumTab
                     key={item.label}
@@ -111,7 +111,7 @@ export const UserAgentData = ({
                     }}
                   />
                 ))
-              : stat === "deviceType"
+              : stat === "deviceType" && deviceTypes.length
                 ? deviceTypes.map((item, i) => (
                     <ProgressNumTab
                       key={item.label}
@@ -134,9 +134,10 @@ export const UserAgentData = ({
                       }}
                     />
                   ))
-                : oss.map((item, i) => (
-                    <ProgressNumTab
-                      key={item.label}
+                : stat === "os" && oss.length
+                  ? oss.map((item, i) => (
+                      <ProgressNumTab
+                        key={item.label}
                       label={item.label}
                       count={item.count}
                       percent={i === 0 ? 100 : item.percent === oss[0].percent ? 100 : item.percent}
@@ -153,7 +154,12 @@ export const UserAgentData = ({
                         }
                       }}
                     />
-                  ))}
+                  ))
+                : (
+                    <div className="flex h-[245px] items-center justify-center p-4">
+                      <div className="text-sm text-muted-foreground">No data available</div>
+                    </div>
+                  )}
           </div>
         </ScrollArea>
       ) : (

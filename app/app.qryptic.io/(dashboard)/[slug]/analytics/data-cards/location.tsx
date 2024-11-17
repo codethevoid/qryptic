@@ -66,63 +66,67 @@ export const LocationData = ({
       ) : events.length ? (
         <ScrollArea className="h-[245px]">
           <div className="py-3">
-            {stat === "country"
-              ? countries.map((item, i) => (
-                  <ProgressNumTab
-                    key={item.label}
-                    label={countriesList.find((c) => c.code === item.label)?.country || item.label}
-                    count={item.count}
-                    flag={`https://flagcdn.com/40x30/${item.label.toLowerCase()}.png`}
-                    icon={<Map size={16} />}
-                    selected={country === item.label}
-                    alt={`flag of ${item.label}`}
-                    type="percent"
-                    actualPercent={item.percent}
-                    onlyIcon={item.label === "unknown"}
-                    percent={
-                      i === 0 ? 100 : item.percent === countries[0].percent ? 100 : item.percent
+            {stat === "country" && countries.length ? (
+              countries.map((item, i) => (
+                <ProgressNumTab
+                  key={item.label}
+                  label={countriesList.find((c) => c.code === item.label)?.country || item.label}
+                  count={item.count}
+                  flag={`https://flagcdn.com/40x30/${item.label.toLowerCase()}.png`}
+                  icon={<Map size={16} />}
+                  selected={country === item.label}
+                  alt={`flag of ${item.label}`}
+                  type="percent"
+                  actualPercent={item.percent}
+                  onlyIcon={item.label === "unknown"}
+                  percent={
+                    i === 0 ? 100 : item.percent === countries[0].percent ? 100 : item.percent
+                  }
+                  onClick={() => {
+                    // filter events by country
+                    if (country === item.label) {
+                      setCountry(undefined);
+                      setCity(undefined);
+                    } else {
+                      setCountry(item.label);
+                      // reset city filter when country is selected
+                      // bc duplicate cities with different countries
+                      setCity(undefined);
                     }
-                    onClick={() => {
-                      // filter events by country
-                      if (country === item.label) {
-                        setCountry(undefined);
-                        setCity(undefined);
-                      } else {
-                        setCountry(item.label);
-                        // reset city filter when country is selected
-                        // bc duplicate cities with different countries
-                        setCity(undefined);
-                      }
-                    }}
-                  />
-                ))
-              : cities.map((item, i) => (
-                  <ProgressNumTab
-                    key={item.formattedKey}
-                    label={item.label}
-                    count={item.count}
-                    percent={
-                      i === 0 ? 100 : item.percent === cities[0].percent ? 100 : item.percent
+                  }}
+                />
+              ))
+            ) : stat === "city" && cities.length ? (
+              cities.map((item, i) => (
+                <ProgressNumTab
+                  key={item.formattedKey}
+                  label={item.label}
+                  count={item.count}
+                  percent={i === 0 ? 100 : item.percent === cities[0].percent ? 100 : item.percent}
+                  actualPercent={item.percent}
+                  flag={`https://flagcdn.com/40x30/${countriesList.find((c) => c.code === item.country)?.code.toLowerCase() || ""}.png`}
+                  alt={`flag of ${item.country}`}
+                  icon={<Map size={16} />}
+                  selected={city === item.formattedKey}
+                  onlyIcon={item.label === "unknown"}
+                  type="percent"
+                  onClick={() => {
+                    // filter events by destination
+                    if (city === item.formattedKey) {
+                      setCity(undefined);
+                      setCountry(undefined);
+                    } else {
+                      setCity(item.formattedKey);
+                      setCountry(item.formattedKey.split("-")[1]);
                     }
-                    actualPercent={item.percent}
-                    flag={`https://flagcdn.com/40x30/${countriesList.find((c) => c.code === item.country)?.code.toLowerCase() || ""}.png`}
-                    alt={`flag of ${item.country}`}
-                    icon={<Map size={16} />}
-                    selected={city === item.formattedKey}
-                    onlyIcon={item.label === "unknown"}
-                    type="percent"
-                    onClick={() => {
-                      // filter events by destination
-                      if (city === item.formattedKey) {
-                        setCity(undefined);
-                        setCountry(undefined);
-                      } else {
-                        setCity(item.formattedKey);
-                        setCountry(item.formattedKey.split("-")[1]);
-                      }
-                    }}
-                  />
-                ))}
+                  }}
+                />
+              ))
+            ) : (
+              <div className="flex h-[245px] items-center justify-center p-4">
+                <div className="text-sm text-muted-foreground">No data available</div>
+              </div>
+            )}
           </div>
         </ScrollArea>
       ) : (
