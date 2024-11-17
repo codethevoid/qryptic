@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { appName } from "@/utils/qryptic/domains";
+import { appName, rootDomain } from "@/utils/qryptic/domains";
 
 type Props = {
   title?: string;
@@ -55,7 +55,10 @@ export const constructMetadata = ({
     twitter: {
       title,
       description,
-      ...(image && { image }),
+      ...(image && {
+        card: "summary_large_image",
+        images: [image],
+      }),
       creator: "@qryptic_io",
     },
     icons,
@@ -65,5 +68,6 @@ export const constructMetadata = ({
         index: false,
       },
     }),
+    metadataBase: new URL(rootDomain as string),
   };
 };
