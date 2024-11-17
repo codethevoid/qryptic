@@ -22,8 +22,9 @@ export const recordEvent = async ({ req, linkId, finalUrl }: Props): Promise<voi
   const referrer = req.headers.get("referer");
   const continent = req.headers.get("x-vercel-ip-continent");
 
-  // we will not track bot requests
+  // we will not track bot requests or requests without a user agent
   if (isBotRequest) return;
+  if (!ua?.ua) return;
 
   const key = `event:${linkId}:${ip}`;
   const exists = await redis.exists(key);
