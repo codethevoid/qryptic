@@ -11,7 +11,7 @@ type Props = {
 export const constructMetadata = ({
   title = `Qryptic | Deliver Digital Experiences at Scale`,
   description = `Qryptic | Modernize the way your business delivers impactful marketing campaigns. Easily track, manage, and optimize every campaign, empowering your team to create data-driven strategies and deliver seamless digital experiences at scale.`,
-  image = "https://qryptic.s3.us-east-1.amazonaws.com/main/open-graph.png",
+  image = "https://qryptic.s3.us-east-1.amazonaws.com/main/open-graph-light.png",
   icons = [
     {
       rel: "apple-touch-icon",
