@@ -3,8 +3,8 @@ import { NextRequest, userAgent } from "next/server";
 
 export const detectBot = (req: NextRequest) => {
   const ua = userAgent(req);
-  if (ua) {
-    if (ua.isBot) return true;
+  if (ua.isBot) return true;
+  if (ua.ua) {
     /* Note:
      * - bot is for most bots & crawlers
      * - ChatGPT is for ChatGPT

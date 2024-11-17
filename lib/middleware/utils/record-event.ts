@@ -24,7 +24,6 @@ export const recordEvent = async ({ req, linkId, finalUrl }: Props): Promise<voi
 
   // we will not track bot requests or requests without a user agent
   if (isBotRequest) return;
-  if (!ua?.ua) return;
 
   const key = `event:${linkId}:${ip}`;
   const exists = await redis.exists(key);
