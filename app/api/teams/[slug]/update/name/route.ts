@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/db/prisma";
 import { z } from "zod";
 import { withTeamOwner } from "@/lib/auth/with-team-owner";
+import { stripe } from "@/utils/stripe";
 
 const teamNameSchema = z.object({
   name: z
@@ -38,9 +39,13 @@ export const PATCH = withTeamOwner(async ({ team, req }) => {
     //   }
     // }
 
-    await prisma.team.update({
+    const updatedTeam = await prisma.team.update({
       where: { id: team.id },
       data: { name: name.trim() },
+    });
+
+    await stripe.customers.update(updatedTeam.stripeCustomerId, {
+      name: name.trim(),
     });
 
     return NextResponse.json({});

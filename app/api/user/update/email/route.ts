@@ -3,6 +3,7 @@ import { withSession } from "@/lib/auth/with-session";
 import prisma from "@/db/prisma";
 import { z } from "zod";
 import { nanoid } from "@/utils/nanoid";
+import { stripe } from "@/utils/stripe";
 
 const schema = z.object({
   email: z.string().email(),
@@ -41,6 +42,29 @@ export const PATCH = withSession(async ({ req, user }) => {
         emailToken: token,
       },
     });
+
+    // get teams user is a part of
+    const teams = await prisma.teamMember.findMany({
+      where: { userId: user.id },
+      include: {
+        team: true,
+      },
+    });
+
+    for (const team of teams) {
+      const { createdBy, stripeCustomerId } = team.team;
+      const createdByUser = await prisma.user.findUnique({
+        where: { id: createdBy },
+      });
+
+      // if the user is the creator of the team and the team does not have an email invoice to set, update the stripe customer email
+      if (createdByUser?.email === user.email && !team.team.emailInvoiceTo) {
+        // update stripe customer email
+        await stripe.customers.update(stripeCustomerId, {
+          email: email.toLowerCase().trim(),
+        });
+      }
+    }
 
     return NextResponse.json({ message: "Email has been updated" });
   } catch (e) {
