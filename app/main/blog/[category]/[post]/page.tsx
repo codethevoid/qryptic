@@ -53,6 +53,8 @@ const BlogPostPage = async ({ params }: { params: { category: string; post: stri
     `@/app/main/blog/content/${category}/${post}.mdx`
   );
 
+  console.log(Post, metadata);
+
   return (
     <div className="px-4 py-8">
       <MaxWidthWrapper className="max-w-screen-md space-y-8">
@@ -109,7 +111,7 @@ const BlogPostPage = async ({ params }: { params: { category: string; post: stri
           />
         </div>
         <article className="prose prose-sm max-w-none dark:prose-invert prose-headings:mb-2 prose-headings:font-bold prose-headings:tracking-tight">
-          <Post />
+          {/* <Post /> */}
         </article>
       </MaxWidthWrapper>
     </div>
