@@ -9,6 +9,7 @@ model Domain {
   destination String? // root domain, non-existing links, expired links
   isSubdomain Boolean
   isArchived  Boolean   @default(false)
+  isExclusive Boolean   @default(false)
 
   // relations
   team   Team?   @relation(fields: [teamId], references: [id])
