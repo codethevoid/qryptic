@@ -45,11 +45,17 @@ export const DELETE = withTeam(async ({ params, team }) => {
   }
 });
 
+function isSubdomain(name: string) {
+  const subdomainRegex = /^[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+  return subdomainRegex.test(name);
+}
+
 async function removeDomain(name: string) {
   try {
     // DELETE /v9/projects/{idOrName}/domains/{domain}
+    const isSubdomainName = isSubdomain(name);
     const res = await fetch(
-      `https://api.vercel.com/v9/projects/${process.env.VERCEL_PROJECT_ID}/domains/${name}?teamId=${process.env.VERCEL_TEAM_ID}`,
+      `https://api.vercel.com/v9/projects/${process.env.VERCEL_PROJECT_ID}/domains/${isSubdomainName ? name : `www.${name}`}?teamId=${process.env.VERCEL_TEAM_ID}`,
       {
         method: "DELETE",
         headers: { Authorization: `Bearer ${process.env.VERCEL_AUTH_BEARER_TOKEN}` },

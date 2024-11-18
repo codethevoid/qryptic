@@ -69,12 +69,17 @@ function isSubdomain(name: string) {
 async function addDomainToVercel(name: string) {
   try {
     // POST /v10/projects/{idOrName}/domains
+    const isSubdomainName = isSubdomain(name);
+    const body = {
+      name: isSubdomainName ? name : `www.${name}`,
+      ...(!isSubdomainName && { redirect: name }),
+    };
     const res = await fetch(
       `https://api.vercel.com/v10/projects/${process.env.VERCEL_PROJECT_ID}/domains?teamId=${process.env.VERCEL_TEAM_ID}`,
       {
         method: "POST",
         headers: { Authorization: `Bearer ${process.env.VERCEL_AUTH_BEARER_TOKEN}` },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify(body),
       },
     );
 
