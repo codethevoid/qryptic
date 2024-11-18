@@ -35,7 +35,7 @@ export const Hero = () => {
                 size="lg"
                 asChild
               >
-                <a href={`${protocol}${appDomain}/register`}>Start for free</a>
+                <a href={`${protocol}${appDomain}/register`}>Start generating</a>
               </Button>
               <Button
                 variant="outline"
