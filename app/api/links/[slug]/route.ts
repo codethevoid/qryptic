@@ -63,7 +63,11 @@ export const GET = withTeam(async ({ req, team }) => {
         }),
         prisma.domain.findMany({
           where: {
-            OR: [{ teamId: team.id }, { enabledTeams: { some: { id: team.id } } }],
+            OR: [
+              { teamId: team.id }, // teams domains
+              { enabledTeams: { some: { id: team.id } } }, // enabled default domains
+              { links: { some: { teamId: team.id } } }, // links with certain domains that could have been disabled
+            ],
           },
           select: { id: true, name: true },
         }),
