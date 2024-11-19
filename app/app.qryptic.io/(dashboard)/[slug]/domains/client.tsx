@@ -197,7 +197,7 @@ export const DomainsClient = () => {
                     <p className="text-xs text-muted-foreground">
                       {domain.name === "qrypt.co"
                         ? "Qryptic's default short domain"
-                        : "Qryptic's exclusive domain"}
+                        : "Qryptic's exclusive short domain"}
                     </p>
                   </div>
                 </div>
