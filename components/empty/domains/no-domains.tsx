@@ -24,7 +24,7 @@ export const NoDomains = ({ setIsOpen, status, setStatus, search, setSearch }: N
               : status === "all"
                 ? "No domains found"
                 : status === "active"
-                  ? "No active domains"
+                  ? "No custom domains"
                   : "No archived domains"}
           </p>
           <p className="mt-0.5 text-center text-sm text-muted-foreground">

@@ -145,6 +145,8 @@ export const General = ({ mode }: { mode: "new" | "edit" }) => {
     setUtmContent(searchParams.get("utm_content") || "");
   };
 
+  console.log(data?.domains);
+
   return (
     <div className={cn("space-y-4", tab !== "general" && "hidden")}>
       <div className="space-y-1.5">

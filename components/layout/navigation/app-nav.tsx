@@ -17,10 +17,11 @@ import { adminRoles } from "@/utils/roles";
 import { QrypticIcon } from "@/components/logos/qryptic-icon";
 import { Feedback } from "@/components/modals/feedback/feedback";
 import { Help } from "@/components/modals/help/help";
+import { cn } from "@/lib/utils";
 
 export const AppNav = () => {
   const { slug } = useParams();
-  const { team } = useTeam();
+  const { team, isLoading } = useTeam();
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const { ref, inView } = useInView();
@@ -35,17 +36,21 @@ export const AppNav = () => {
                 <QrypticLogo className="max-md:hidden" />
                 <QrypticIcon className="hidden max-md:block" />
               </NextLink>
-              {slug && team && (
+              {slug && (
                 <div className="h-5 w-[1px] rotate-[30deg] border-r border-dashed border-zinc-400 dark:border-zinc-600 max-md:h-4"></div>
               )}
               <TeamSelector />
             </div>
             <div className="flex items-center space-x-2.5">
-              {team?.plan.isFree && adminRoles.includes(team?.user.role) && (
-                <Button size="sm" onClick={() => setIsUpgradeOpen(true)}>
-                  Upgrade
-                </Button>
-              )}
+              {/* {team?.plan.isFree && adminRoles.includes(team?.user.role) && ( */}
+              <Button
+                size="sm"
+                onClick={() => setIsUpgradeOpen(true)}
+                className={team?.plan.isFree && team?.user.role === "owner" ? "flex" : "hidden"}
+              >
+                Upgrade
+              </Button>
+              {/* )} */}
               <Button
                 size="sm"
                 variant="outline"

@@ -4,7 +4,7 @@ import { withTeam } from "@/lib/auth/with-team";
 
 export const GET = withTeam(async ({ team }) => {
   try {
-    const [tags, domains] = await prisma.$transaction([
+    let [tags, domains] = await prisma.$transaction([
       prisma.tag.findMany({
         where: { teamId: team.id },
         select: { id: true, name: true, color: true },
@@ -18,6 +18,22 @@ export const GET = withTeam(async ({ team }) => {
         select: { id: true, name: true, isPrimary: true, destination: true },
       }),
     ]);
+
+    if (domains.length === 0) {
+      const defaultDomain = await prisma.domain.findUnique({
+        where: { name: "qrypt.co" },
+        select: { id: true, name: true, isPrimary: true, destination: true },
+      });
+
+      domains = [
+        defaultDomain as {
+          id: string;
+          name: string;
+          isPrimary: boolean;
+          destination: string | null;
+        },
+      ];
+    }
 
     return NextResponse.json({ tags, domains });
   } catch (e) {

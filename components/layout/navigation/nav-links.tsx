@@ -24,7 +24,7 @@ export const NavLinks = ({ inView }: { inView: boolean }) => {
   const path = usePathname();
   const { slug } = useParams();
   const { error } = useTeam();
-  const { team } = useTeam();
+  const { team, isLoading } = useTeam();
   const navRef = useRef<HTMLDivElement>(null);
   const width = useWindowWidth();
 
@@ -68,7 +68,7 @@ export const NavLinks = ({ inView }: { inView: boolean }) => {
       <MaxWidthWrapper className="relative flex items-center space-x-3 overflow-x-auto scrollbar-hide">
         <div
           className={cn(
-            `${!inView ? "left-0" : "-left-[20px]"} absolute transition-all max-[499px]:hidden`,
+            `${!inView ? "left-0" : "-left-[20px]"} ${isLoading ? "hidden" : ""} absolute transition-all max-[499px]:hidden`,
           )}
         >
           <QrypticIcon />

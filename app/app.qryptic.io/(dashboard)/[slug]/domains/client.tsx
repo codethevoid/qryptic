@@ -3,7 +3,7 @@
 import { useDomains } from "@/lib/hooks/swr/use-domains";
 import { SearchInput } from "@/components/ui/custom/search-input";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Globe, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AddDomain } from "@/components/modals/domains/add-domain";
 import { useDebounce } from "@/lib/hooks/use-debounce";
@@ -23,6 +23,18 @@ import {
 import { Snackbar } from "@/components/snackbar/snackbar";
 import { DomainsSkeleton } from "@/components/skeletons/domains-skeleton";
 import { type Domain } from "@/lib/hooks/swr/use-domains";
+import { useDefaultDomains } from "@/lib/hooks/swr/use-default-domains";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Loader } from "@/components/layout/loader";
+import { SmallSwitch } from "@/components/ui/custom/small-switch";
+import { Badge } from "@/components/ui/badge";
+
+type DefaultDomain = {
+  id: string;
+  name: string;
+  enabled: boolean;
+  isExclusive: boolean;
+};
 
 export const DomainsClient = () => {
   const { team } = useTeam();
@@ -36,6 +48,12 @@ export const DomainsClient = () => {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 300);
   const { domains, count, isLoading, error } = useDomains(page, pageSize, status, debouncedSearch);
+  const { data: defaultDomains, isLoading: defaultDomainsLoading } = useDefaultDomains();
+  const [defaultDomainsState, setDefaultDomainsState] = useState<DefaultDomain[]>(defaultDomains);
+
+  useEffect(() => {
+    setDefaultDomainsState(defaultDomains);
+  }, [defaultDomains]);
 
   useEffect(() => {
     count !== undefined && setTotal(count);
@@ -147,6 +165,64 @@ export const DomainsClient = () => {
         ) : (
           <DomainsTable domains={domains as Domain[]} mutateDomains={mutateDomains} />
         )}
+      </div>
+      <div className="mt-6">
+        <div className="space-y-0.5">
+          <p className="font-semibold">Default domains</p>
+          <p className="text-[13px] text-muted-foreground">
+            These are the default domains provided by Qryptic. Disabling them will hide them from
+            the domain dropdown when creating and editing your links.
+          </p>
+        </div>
+        <div className="mt-3 space-y-4">
+          {defaultDomainsLoading ? (
+            <Loader />
+          ) : (
+            defaultDomainsState?.map((domain: DefaultDomain) => (
+              <div className="flex items-center justify-between rounded-lg border px-3 py-2.5 shadow-sm">
+                <div className="flex items-center space-x-2.5">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full border bg-gradient-to-tr from-accent/10 to-accent shadow-sm">
+                    <Globe size={15} />
+                  </div>
+                  <div className="space-y-0.5">
+                    <div className="flex items-center space-x-1.5">
+                      <p className="text-[13px]">{domain.name}</p>
+                      {domain.isExclusive && (
+                        <Badge variant="colorful" className="h-[18px] px-2 py-0 text-[11px]">
+                          Exclusive
+                        </Badge>
+                      )}
+                    </div>
+
+                    <p className="text-xs text-muted-foreground">
+                      {domain.name === "qrypt.co"
+                        ? "Qryptic's default short domain"
+                        : "Qryptic's exclusive domain"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <SmallSwitch
+                    disabled={team?.plan.isFree && domain.isExclusive}
+                    checked={team?.plan.isFree && domain.isExclusive ? false : domain.enabled}
+                    onCheckedChange={async (checked: boolean) => {
+                      // enable or disable domain
+                      setDefaultDomainsState((prev) =>
+                        prev.map((d) => (d.id === domain.id ? { ...d, enabled: checked } : d)),
+                      );
+                      // update the default domain
+                      await fetch(`/api/domains/${team?.slug}/default-domains/${domain.id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ enabled: checked }),
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
       <AddDomain isOpen={isAddOpen} setIsOpen={setIsAddOpen} mutateDomains={mutateDomains} />
       {total > pageSize && (

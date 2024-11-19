@@ -25,7 +25,7 @@ export const TeamAuth = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <SplashLoader isLoading={isLoading} />
+      {/* <SplashLoader isLoading={isLoading} /> */}
       {children}
     </>
   );
