@@ -33,13 +33,11 @@ const getPosts = async () => {
       });
     }),
   );
-  return posts;
+  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
 
 const BlogHomePage = async () => {
-  const posts: Post[] = (await getPosts()).sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
+  const posts: Post[] = await getPosts();
 
   return (
     <div className="h-[calc(100vh-573px)] min-h-fit">

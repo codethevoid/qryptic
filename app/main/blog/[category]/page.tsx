@@ -6,6 +6,8 @@ import NextLink from "next/link";
 import NextImage from "next/image";
 import { format } from "date-fns";
 
+export const dynamicParams = false;
+
 type Post = {
   category: string;
   slug: string;
