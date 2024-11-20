@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { appDomain, protocol } from "@/utils/qryptic/domains";
 import NextLink from "next/link";
+import { LinkBadge } from "@/components/ui/custom/link-badge";
 
 export const Hero = () => {
   return (
@@ -11,6 +12,7 @@ export const Hero = () => {
       <div className="-mb-6 flex flex-col items-center justify-center overflow-x-hidden bg-gradient-to-b from-transparent px-4">
         <MaxWidthWrapper className="space-y-8">
           <div className="space-y-6">
+            <LinkBadge />
             <div className="space-y-2">
               <h1 className="text-center text-4xl font-bold tracking-tight max-md:text-3xl max-[500px]:mx-auto max-[500px]:max-w-[340px]">
                 Your{" "}

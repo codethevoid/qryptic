@@ -3,7 +3,6 @@ import { Plan, Price } from "@prisma/client";
 import { PricingTiers } from "@/app/main/pricing/components/tiers";
 import { Compare } from "@/app/main/pricing/components/compare";
 import { Faq } from "@/app/main/pricing/components/faq";
-import { StartNow } from "@/app/main/pricing/components/start-now";
 import { constructMetadata } from "@/utils/construct-metadata";
 import { GetStarted } from "../(landing)/components/get-started";
 

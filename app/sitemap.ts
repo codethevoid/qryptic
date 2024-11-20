@@ -24,9 +24,27 @@ export const getBlogPosts = async (): Promise<MetadataRoute.Sitemap[0][]> => {
   return posts;
 };
 
+const getBlogCategories = async (): Promise<MetadataRoute.Sitemap[0][]> => {
+  const categories = readdirSync(contentDir);
+  const posts = await getBlogPosts();
+  return categories.map((category) => ({
+    url: `https://qryptic.io/blog/${category}`,
+    lastModified: posts
+      .filter((post) => post.url.split("/")[4] === category)
+      .sort(
+        (a, b) =>
+          new Date(b.lastModified as string).getTime() -
+          new Date(a.lastModified as string).getTime(),
+      )[0]?.lastModified,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+};
+
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   // get blog posts
   const posts: MetadataRoute.Sitemap[0][] = await getBlogPosts();
+  const categories: MetadataRoute.Sitemap[0][] = await getBlogCategories();
 
   return [
     {
@@ -66,6 +84,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
       priority: 0.7,
     },
     ...posts,
+    ...categories,
   ];
 };
 
