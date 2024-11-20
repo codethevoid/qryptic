@@ -15,7 +15,7 @@ export const getBlogPosts = async (): Promise<MetadataRoute.Sitemap[0][]> => {
           url: `https://qryptic.io/blog/${category}/${postFile.replace(".mdx", "")}`,
           lastModified: new Date(metadata.updatedAt ? metadata.updatedAt : metadata.date),
           changeFrequency: "monthly" as const,
-          priority: 0.6,
+          priority: metadata.priority ?? 0.6,
         };
       });
     }),
@@ -32,13 +32,13 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     {
       url: "https://qryptic.io",
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: "https://qryptic.io/pricing",
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
       priority: 0.8,
     },
     {
@@ -62,7 +62,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     {
       url: "https://qryptic.io/blog",
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
       priority: 0.7,
     },
     ...posts,
