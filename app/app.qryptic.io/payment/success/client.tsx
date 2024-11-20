@@ -4,6 +4,7 @@ import { PartyPopper, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NextLink from "next/link";
 import { GodRays } from "@/components/layout/god-rays";
+import { QrypticIcon } from "@/components/logos/qryptic-icon";
 
 export const PaymentSuccessClient = ({ plan }: { plan: string }) => {
   return (
@@ -11,7 +12,8 @@ export const PaymentSuccessClient = ({ plan }: { plan: string }) => {
       <GodRays />
       <div className="flex h-screen min-h-fit w-full items-center justify-center px-4">
         <div className="max-w-[440px] space-y-6 rounded-xl border bg-background px-4 py-6 shadow-lg">
-          <Rocket size={30} className="mx-auto" />
+          {/* <Rocket size={30} className="mx-auto" /> */}
+          <QrypticIcon className="mx-auto h-6 w-6" />
           <div>
             <p className="text-center text-lg font-semibold">
               Welcome to Qryptic {plan.slice(0, 1).toUpperCase() + plan.slice(1)}!
