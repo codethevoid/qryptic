@@ -14,7 +14,7 @@ export const PaymentSuccessClient = ({ plan }: { plan: string }) => {
         <div className="max-w-[440px] space-y-6 rounded-xl border bg-background px-4 py-6 shadow-lg">
           {/* <Rocket size={30} className="mx-auto" /> */}
           <QrypticIcon className="mx-auto h-6 w-6" />
-          <div>
+          <div className="space-y-1">
             <p className="text-center text-lg font-semibold">
               Welcome to Qryptic {plan.slice(0, 1).toUpperCase() + plan.slice(1)}!
             </p>
