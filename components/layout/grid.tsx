@@ -1,3 +1,5 @@
+import NextImage from "next/image";
+
 export const Grid = () => {
   return (
     <>

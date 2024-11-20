@@ -15,12 +15,17 @@ type Post = {
   date: string;
 };
 
-export const metadata = constructMetadata({
-  title: "Qryptic | Blog",
-  description: "The latest news from Qryptic",
-});
+export const generateMetadata = ({ params }: { params: { category: string } }) => {
+  return constructMetadata({
+    title: `Qryptic | ${params.category
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")}`,
+    description: `The latest ${params.category.replace("-", " ")} blog posts from Qryptic`,
+  });
+};
 
-const getPosts = async () => {
+const getPosts = async (category: string) => {
   const contentDir = path.join(process.cwd(), "app/main/blog/content");
   const categories = readdirSync(contentDir);
   const posts = await Promise.all(
@@ -36,8 +41,9 @@ const getPosts = async () => {
   return posts;
 };
 
-const BlogHomePage = async () => {
-  const posts: Post[] = (await getPosts()).sort(
+const BlogCategoryPage = async ({ params }: { params: { category: string } }) => {
+  const { category } = params;
+  const posts: Post[] = (await getPosts(category)).sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
 
@@ -79,4 +85,4 @@ const BlogHomePage = async () => {
   );
 };
 
-export default BlogHomePage;
+export default BlogCategoryPage;

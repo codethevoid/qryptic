@@ -229,7 +229,7 @@ export const MainNav = () => {
               <PopoverContent
                 onMouseEnter={() => handleMouseEnter("resources")}
                 onMouseLeave={handleMouseLeave}
-                className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_300ms] data-[state=open]:!animate-[enter_300ms]"
+                className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_100ms] data-[state=open]:!animate-[enter_200ms]"
                 align="start"
                 onCloseAutoFocus={(e) => e.preventDefault()}
                 onClick={() => setOpenDropdown(null)}

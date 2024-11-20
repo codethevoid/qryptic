@@ -216,3 +216,19 @@ body {
 image {
   border-radius: 100%;
 }
+
+.cls-1 {
+  fill: none;
+}
+
+.cls-2 {
+  clip-path: url(#clippath-1);
+}
+
+.cls-3 {
+  opacity: 0.34;
+}
+
+.cls-4 {
+  clip-path: url(#clippath);
+}

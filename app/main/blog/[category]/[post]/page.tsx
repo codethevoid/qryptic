@@ -62,34 +62,35 @@ const BlogPostPage = async ({ params }: { params: { category: string; post: stri
   const components = useMDXComponents({});
 
   return (
-    <div className="px-4 py-8">
-      <MaxWidthWrapper className="max-w-screen-md space-y-8">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/blog" className="text-[13px]">
-                  Blog
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            {/* <BreadcrumbItem>
-              <BreadcrumbPage className="text-[13px] capitalize">
+    <MaxWidthWrapper className="max-w-screen-md space-y-8">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/blog" className="text-[13px]">
+                Blog
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href={`/blog/${category}`} className="text-[13px] capitalize">
                 {category.replace("-", " ")}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator /> */}
-            <BreadcrumbItem>
-              <BreadcrumbPage className="text-[13px] capitalize">
-                {metadata.breadcrumb}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:mb-2 prose-headings:font-bold prose-headings:tracking-tight max-md:prose-h1:text-2xl">
-          {/* <Badge className="mb-3 capitalize">{category.replace("-", " ")}</Badge> */}
-          {/* <div className="flex items-center gap-2">
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          {/* <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="text-[13px] capitalize">
+              {metadata.breadcrumb}
+            </BreadcrumbPage>
+          </BreadcrumbItem> */}
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="prose prose-sm max-w-none max-w-screen-md dark:prose-invert prose-headings:mb-2 prose-headings:font-bold prose-headings:tracking-tight max-md:prose-h1:text-2xl">
+        {/* <Badge className="mb-3 capitalize">{category.replace("-", " ")}</Badge> */}
+        {/* <div className="flex items-center gap-2">
             <NextImage
               className="h-6 w-6 rounded-full border"
               src={data.writtenBy.image}
@@ -103,25 +104,29 @@ const BlogPostPage = async ({ params }: { params: { category: string; post: stri
               <p className="text-xs">{data.writtenBy.title}</p>
             </div>
           </div> */}
-          <p className="mb-2 text-[13px]">{format(new Date(metadata.date), "MMMM do, yyyy")}</p>
-          <h1>{metadata.title}</h1>
-          <p className="mt-2">{metadata.description}</p>
-          <NextImage
-            src={metadata.image as string}
-            alt={metadata.title}
-            height={630}
-            width={1200}
-            quality={100}
-            priority
-            className="mt-6 w-full rounded-xl border shadow-lg"
-          />
-        </div>
-        <article className="prose prose-sm max-w-none dark:prose-invert prose-headings:mb-2 prose-headings:font-bold prose-headings:tracking-tight">
-          {/* <MDXContent.default /> */}
-          <MDXRemote source={content} components={components} />
-        </article>
-      </MaxWidthWrapper>
-    </div>
+        <p className="mb-2 text-[13px]">{format(new Date(metadata.date), "MMMM do, yyyy")}</p>
+        <h1>{metadata.title}</h1>
+        <p className="mt-2">{metadata.description}</p>
+        <NextImage
+          src={metadata.image as string}
+          alt={metadata.title}
+          height={630}
+          width={1200}
+          quality={100}
+          priority
+          className="mt-6 w-full rounded-xl border shadow-lg"
+        />
+      </div>
+      <article className="prose prose-sm max-w-none dark:prose-invert prose-headings:mb-2 prose-headings:font-bold prose-headings:tracking-tight">
+        {/* <MDX /> */}
+        {/* <div className="max-w-screen-md"> */}
+        <MDXRemote source={content} components={components} />
+        {/* </div> */}
+        {/* <aside className="sticky top-[97px] h-full min-w-[200px] rounded-xl border bg-background p-4">
+          Glossary
+        </aside> */}
+      </article>
+    </MaxWidthWrapper>
   );
 };
 
