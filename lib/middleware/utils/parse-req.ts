@@ -8,7 +8,7 @@ export const parseReq = (req: NextRequest) => {
   domain = domain?.replace("www.", "").toLowerCase();
 
   // For development, we want to use the short domain
-  if (domain === "qrypt.co:3000") {
+  if (domain === "qrypt.localhost.com:3000") {
     domain = shortDomain as string;
   }
 
