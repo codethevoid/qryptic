@@ -8,7 +8,7 @@ export const Grid = () => {
       <div className="radial-overlay bg-[radial-gradient(circle,transparent,white_90%)] dark:bg-[radial-gradient(circle,transparent,black_90%)]"></div>
       <div className="pointer-events-none fixed inset-0 z-[-1] overflow-hidden">
         <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-3xl dark:bg-foreground/10"></div>
-        <GodRays />
+        {/* <GodRays /> */}
       </div>
     </>
   );
