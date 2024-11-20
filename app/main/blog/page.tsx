@@ -68,7 +68,7 @@ const BlogHomePage = async () => {
                     {format(new Date(post.date), "MMM do, yyyy")}
                   </p>
                 </div>
-                <p className="line-clamp-2 text-[15px] font-medium">{post.title}</p>
+                <p className="line-clamp-2 text-[15px] font-medium max-sm:text-sm">{post.title}</p>
                 <p className="line-clamp-2 text-[13px] text-muted-foreground">{post.description}</p>
               </div>
             </NextLink>

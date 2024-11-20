@@ -26,26 +26,20 @@ export const generateMetadata = ({ params }: { params: { category: string } }) =
 };
 
 const getPosts = async (category: string) => {
-  const contentDir = path.join(process.cwd(), "app/main/blog/content");
-  const categories = readdirSync(contentDir);
+  const categoryDir = path.join(process.cwd(), "app/main/blog/content", category);
+  const files = readdirSync(categoryDir);
   const posts = await Promise.all(
-    categories.flatMap((category) => {
-      const postFiles = readdirSync(path.join(contentDir, category));
-      return postFiles.map(async (postFile) => {
-        // Make this an async function
-        const { metadata } = await import(`@/app/main/blog/content/${category}/${postFile}`);
-        return { category, slug: postFile.replace(".mdx", ""), ...metadata };
-      });
+    files.map(async (file) => {
+      const { metadata } = await import(`@/app/main/blog/content/${category}/${file}`);
+      return { category, slug: file.replace(".mdx", ""), ...metadata };
     }),
   );
-  return posts;
+  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 };
 
 const BlogCategoryPage = async ({ params }: { params: { category: string } }) => {
   const { category } = params;
-  const posts: Post[] = (await getPosts(category)).sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
+  const posts: Post[] = await getPosts(category);
 
   return (
     <div className="h-[calc(100vh-573px)] min-h-fit">

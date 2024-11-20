@@ -48,7 +48,7 @@ export const Footer = () => {
 
             <div className="w-fit max-sm:mx-auto">
               <Button size="icon" variant="outline" asChild>
-                <a href="https://x.com/qryptic_io" target="_blank">
+                <a href="https://x.com/qrypticdotio" target="_blank">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"

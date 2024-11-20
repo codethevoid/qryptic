@@ -17,6 +17,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import matter from "gray-matter";
 import { readFileSync } from "fs";
 import { useMDXComponents } from "@/mdx-components";
+import { ReadMore } from "../../components/read-more";
 
 export const dynamicParams = false;
 
@@ -126,6 +127,7 @@ const BlogPostPage = async ({ params }: { params: { category: string; post: stri
           Glossary
         </aside> */}
       </article>
+      <ReadMore category={category} postSlug={post} />
     </MaxWidthWrapper>
   );
 };
