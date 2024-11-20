@@ -62,7 +62,7 @@ export const createCheckoutSession = async (
     payment_method_types: ["card"],
     mode: "subscription",
     line_items: [{ price: price.stripePriceId, quantity: 1 }],
-    success_url: `${protocol}${appDomain}/${team.slug}/payment/success`,
+    success_url: `${protocol}${appDomain}/${team.slug}/payment/success?plan=${plan.name.toLowerCase()}`,
     cancel_url: `${protocol}${appDomain}${path}`,
   });
 

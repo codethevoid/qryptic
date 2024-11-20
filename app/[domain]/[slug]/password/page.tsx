@@ -3,6 +3,7 @@ import { constructMetadata } from "@/utils/construct-metadata";
 import { PasswordForm } from "@/app/[domain]/[slug]/password/form";
 import { redirect } from "next/navigation";
 import { notFound } from "next/navigation";
+import { GodRays } from "@/components/layout/god-rays";
 
 type Props = {
   params: { slug: string };
@@ -25,7 +26,12 @@ const PasswordPage = async ({ params }: Props) => {
 
   if (!link.passwordHash) redirect(link.destination);
 
-  return <PasswordForm />;
+  return (
+    <>
+      <GodRays />
+      <PasswordForm />
+    </>
+  );
 };
 
 export default PasswordPage;
