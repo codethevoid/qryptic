@@ -27,6 +27,12 @@ export const generateMetadata = ({ params }: { params: { category: string } }) =
   });
 };
 
+export const generateStaticParams = async () => {
+  const contentDir = path.join(process.cwd(), "app/main/blog/content");
+  const categories = readdirSync(contentDir);
+  return categories.map((category) => ({ category }));
+};
+
 const getPosts = async (category: string) => {
   const categoryDir = path.join(process.cwd(), "app/main/blog/content", category);
   const files = readdirSync(categoryDir);
