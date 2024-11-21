@@ -37,25 +37,25 @@ export const GET = async () => {
     },
   });
 
-  teams = teams.filter((team) => {
-    const teamMember = (team.members as Member[])?.find((member) => member.userId === token.userId);
-    const allowedSeats = team.plan.seats;
-    const currSeats = (team.members as Member[])?.length as number;
-    const role = teamMember?.role as string;
+  // teams = teams.filter((team) => {
+  //   const teamMember = (team.members as Member[])?.find((member) => member.userId === token.userId);
+  //   const allowedSeats = team.plan.seats;
+  //   const currSeats = (team.members as Member[])?.length as number;
+  //   const role = teamMember?.role as string;
 
-    // if (team.plan.isFree) {
-    //   if (role !== "super_admin") return false;
-    // } else if (currSeats > allowedSeats && !adminRoles.includes(role)) {
-    //   return false;
-    // }
+  //   // if (team.plan.isFree) {
+  //   //   if (role !== "super_admin") return false;
+  //   // } else if (currSeats > allowedSeats && !adminRoles.includes(role)) {
+  //   //   return false;
+  //   // }
 
-    // we will prompt the owner(s) to upgrade the plan if the current seats exceed the allowed seats
-    if (role !== "owner" && currSeats > allowedSeats) return false;
+  //   // we will prompt the owner(s) to upgrade the plan if the current seats exceed the allowed seats
+  //   if (role !== "owner" && currSeats > allowedSeats) return false;
 
-    return true;
-  });
+  //   return true;
+  // });
 
-  teams.forEach((team) => (team.members = (team.members as Member[]).length));
+  // teams.forEach((team) => (team.members = (team.members as Member[]).length));
 
   return NextResponse.json(teams);
 };

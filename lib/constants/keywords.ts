@@ -23,7 +23,9 @@ export const keywords = [
   "notifications",
   "support",
   "help",
-  "help-center",
+  "onboarding",
+  "onboard",
+  "create-team",
   "hel-desk",
   "knowledge-base",
   "faq",
@@ -92,4 +94,5 @@ export const keywords = [
   "link",
   "links",
   "qr-codes",
+  "help-center",
 ];

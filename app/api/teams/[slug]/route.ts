@@ -39,9 +39,9 @@ export const GET = withTeam(async ({ team: teamInfo, user }) => {
       return NextResponse.json({ message: "Team not found" }, { status: 404 });
     }
 
-    const allowedSeats = team.plan.seats;
-    const currentSeats = team._count.members as number;
-    const isFreePlan = team.plan.isFree;
+    // const allowedSeats = team.plan.seats;
+    // const currentSeats = team._count.members as number;
+    // const isFreePlan = team.plan.isFree;
 
     // if plan is free and current seats is greater than allowed seats, we will not allow
     // any member to view the team other than super admin bc there can only be 1 seat on free plan
@@ -53,9 +53,9 @@ export const GET = withTeam(async ({ team: teamInfo, user }) => {
     //   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     // }
 
-    if (currentSeats > allowedSeats && user.role !== "owner") {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
+    // if (currentSeats > allowedSeats && user.role !== "owner") {
+    //   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    // }
 
     const { paymentMethodId, ...rest } = team;
 
