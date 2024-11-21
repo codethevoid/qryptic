@@ -9,7 +9,7 @@ import { shortDomain } from "@/utils/qryptic/domains";
 import { uploadPreviewImage } from "@/lib/links/upload-preview-image";
 import { uploadQrLogo } from "@/lib/links/upload-qr-logo";
 import { constructURL } from "@/utils/construct-url";
-import { blacklist } from "@/utils/blacklist";
+import { processLink } from "@/lib/links/process-link";
 
 export const POST = withTeam(async ({ team, req, user }) => {
   try {
@@ -72,12 +72,34 @@ export const POST = withTeam(async ({ team, req, user }) => {
       }
     }
 
-    if (!domain) {
+    // check domain is valid
+    const domainData = await prisma.domain.findUnique({
+      where: { id: domain.id },
+      include: { team: true },
+    });
+
+    if (domainData) {
+      if (domainData.isDefault && domainData.isExclusive && teamWithPlan?.plan.isFree) {
+        return NextResponse.json(
+          { error: "You must upgrade to a paid plan to use this domain" },
+          { status: 400 },
+        );
+      }
+
+      if (domainData.team) {
+        if (domainData.teamId !== team.id) {
+          return NextResponse.json({ error: "You cannot use this domain" }, { status: 400 });
+        }
+      }
+    }
+
+    if (!domainData) {
       // get default domain for qryptic
       domain = (await prisma.domain.findFirst({
         where: {
           isDefault: true,
           isArchived: false,
+          isExclusive: false,
         },
         select: {
           id: true,
@@ -115,29 +137,17 @@ export const POST = withTeam(async ({ team, req, user }) => {
       if (data.location) logo = data.location;
     }
 
-    shouldIndex = domain.name === shortDomain ? true : shouldIndex;
+    shouldIndex = domain.name === shortDomain || domain.name === "qx.one" ? true : shouldIndex;
 
-    // Check if destination is blacklisted
-    if (blacklist.some((item) => destination.toLowerCase().trim().includes(item))) {
-      return NextResponse.json({ error: "Destination is blacklisted" }, { status: 400 });
-    }
-
-    // Check if any geo destination is blacklisted
-    if (
-      Object.values(geo).some((value) =>
-        blacklist.some((item) => value.destination.toLowerCase().trim().includes(item)),
-      )
-    ) {
-      return NextResponse.json({ error: "Geo destination is blacklisted" }, { status: 400 });
-    }
-
-    // Check if android or ios destination is blacklisted
-    if (android && blacklist.some((item) => android.toLowerCase().trim().includes(item))) {
-      return NextResponse.json({ error: "Android destination is blacklisted" }, { status: 400 });
-    }
-
-    if (ios && blacklist.some((item) => ios.toLowerCase().trim().includes(item))) {
-      return NextResponse.json({ error: "iOS destination is blacklisted" }, { status: 400 });
+    const isValidDest = await processLink({
+      destination,
+      geo,
+      android,
+      ios,
+      expired: expiredDestination,
+    });
+    if (!isValidDest) {
+      return NextResponse.json({ error: "Malicious link detected" }, { status: 400 });
     }
 
     // create link

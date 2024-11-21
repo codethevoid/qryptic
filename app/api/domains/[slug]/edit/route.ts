@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { withTeam } from "@/lib/auth/with-team";
 import prisma from "@/db/prisma";
+import { detectThreat } from "@/lib/links/detect-threat";
 
 export const PATCH = withTeam(async ({ req, team }) => {
   try {
@@ -19,6 +20,13 @@ export const PATCH = withTeam(async ({ req, team }) => {
       where: { id: team.id },
       select: { plan: true },
     });
+
+    if (destination) {
+      const isThreat = await detectThreat(destination);
+      if (isThreat) {
+        return NextResponse.json({ error: "Malicious destination detected" }, { status: 400 });
+      }
+    }
 
     // update domain
     await prisma.domain.update({

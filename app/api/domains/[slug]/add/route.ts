@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { withTeam } from "@/lib/auth/with-team";
 import prisma from "@/db/prisma";
 import { Domain, Plan } from "@prisma/client";
+import { detectThreat } from "@/lib/links/detect-threat";
 
 type DomainsAndPlan = {
   domains: Domain[];
@@ -14,6 +15,11 @@ export const POST = withTeam(async ({ req, team }) => {
     let { name, destination } = body;
     if (!name) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     name = name.toLowerCase().replace("www.", "").trim();
+
+    const isThreat = await detectThreat(name);
+    if (isThreat) {
+      return NextResponse.json({ error: "Domain name is not allowed" }, { status: 400 });
+    }
 
     // get domains and plan limits
     const { domains, plan } = (await prisma.team.findUnique({
@@ -40,6 +46,13 @@ export const POST = withTeam(async ({ req, team }) => {
     const domainAdded = await addDomainToVercel(name);
     if (!domainAdded)
       return NextResponse.json({ error: "Failed to create domain" }, { status: 500 });
+
+    if (destination) {
+      const isValidDest = await detectThreat(destination);
+      if (!isValidDest) {
+        return NextResponse.json({ error: "Malicious destination detected" }, { status: 400 });
+      }
+    }
 
     // create domain in db
     await prisma.domain.create({

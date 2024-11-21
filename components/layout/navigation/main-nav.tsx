@@ -32,6 +32,7 @@ import { ChevronDown } from "lucide-react";
 import { useState, useRef } from "react";
 import { QrypticIcon } from "@/components/logos/qryptic-icon";
 import { usePathname } from "next/navigation";
+import { detectThreat } from "@/lib/links/detect-threat";
 
 const productLinks = [
   {

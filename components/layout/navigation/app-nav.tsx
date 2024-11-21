@@ -16,8 +16,6 @@ import { useInView } from "react-intersection-observer";
 import { adminRoles } from "@/utils/roles";
 import { QrypticIcon } from "@/components/logos/qryptic-icon";
 import { Feedback } from "@/components/modals/feedback/feedback";
-import { Help } from "@/components/modals/help/help";
-import { cn } from "@/lib/utils";
 
 export const AppNav = () => {
   const { slug } = useParams();
