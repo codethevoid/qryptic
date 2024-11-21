@@ -39,7 +39,7 @@ export const TeamInviteClient = ({ team }: Props) => {
   return (
     <div className="flex w-full max-w-[420px] flex-col items-center space-y-6">
       <QrypticLogo className="h-[18px]" />
-      <div className="w-full space-y-4 rounded-xl border bg-background p-6 shadow-lg">
+      <div className="w-full space-y-4 rounded-xl border bg-background px-6 py-10 shadow-lg">
         <div className="flex justify-center">
           <NextImage
             src={team.image}
