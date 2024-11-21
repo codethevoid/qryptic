@@ -118,7 +118,7 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
 
   // get default domains
   const defaultDomains = await prisma.domain.findMany({
-    where: { isDefault: true },
+    where: { isDefault: true, isExclusive: false },
   });
 
   // create invites token
