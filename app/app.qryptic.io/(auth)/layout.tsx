@@ -8,7 +8,7 @@ type AuthLayoutProps = {
 const AuthLayout = ({ children }: Readonly<AuthLayoutProps>) => {
   return (
     <div>
-      {process.env.NODE_ENV === "production" && <GodRays />}
+      <GodRays />
       {children}
     </div>
   );

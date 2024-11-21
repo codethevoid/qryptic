@@ -1,11 +1,5 @@
-"use client";
-
-import { usePathname } from "next/navigation";
-
 export const GodRays = () => {
-  const path = usePathname();
-
-  if (path.includes("/blog")) {
+  if (process.env.NODE_ENV === "development") {
     return null;
   }
 

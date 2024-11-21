@@ -1,4 +1,14 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 export const Grid = () => {
+  const path = usePathname();
+
+  if (path.includes("/blog")) {
+    return null;
+  }
+
   return (
     <>
       <div className="grid-bg bg-[linear-gradient(90deg,rgba(113,113,122,.06)_1px,transparent_1px),linear-gradient(0deg,rgba(113,113,122,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(113,113,122,.04)_1px,transparent_1px),linear-gradient(0deg,rgba(113,113,122,.04)_1px,transparent_1px)] bg-[length:80px_80px,80px_80px,10px_10px,10px_10px] dark:bg-[linear-gradient(90deg,rgba(113,113,122,.11)_1px,transparent_1px),linear-gradient(0deg,rgba(113,113,122,.11)_1px,transparent_1px),linear-gradient(90deg,rgba(113,113,122,.1)_1px,transparent_1px),linear-gradient(0deg,rgba(113,113,122,.1)_1px,transparent_1px)]"></div>
