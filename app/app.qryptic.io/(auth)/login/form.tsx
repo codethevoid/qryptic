@@ -8,11 +8,11 @@ import { Separator } from "@/components/ui/separator";
 import { GoogleIcon } from "@/components/ui/icons/google-icon";
 import NextLink from "next/link";
 import { appDomain, protocol } from "@/utils/qryptic/domains";
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
@@ -57,6 +57,10 @@ export const LoginForm = () => {
       toast.error("Failed to log in");
     }
   };
+
+  useEffect(() => {
+    setIsLoading(null);
+  }, []);
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center px-4 py-10">

@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Lock } from "lucide-react";
 import { registerUser } from "@/actions/users/register";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -40,6 +40,10 @@ export const RegisterForm = () => {
     // redirect to dashboard
     router.push("/");
   };
+
+  useEffect(() => {
+    setIsLoading(null);
+  }, []);
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center px-4 py-10">

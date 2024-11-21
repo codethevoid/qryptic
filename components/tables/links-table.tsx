@@ -97,7 +97,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links, mutate }) => {
                   variant={link.tags[0].color}
                   className="flex h-5 items-center space-x-1 text-[11px] max-sm:hidden"
                 >
-                  <TagIcon size={11} />
+                  <TagIcon size={12} />
                   <span className="max-sm:hidden">{link.tags[0].name}</span>
                   <span className="hidden max-sm:block">1</span>
                 </Tag>
@@ -107,7 +107,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links, mutate }) => {
                   variant={link.tags[0].color}
                   className="flex h-5 items-center space-x-1 text-[11px] max-sm:hidden"
                 >
-                  <TagIcon size={11} />
+                  <TagIcon size={12} />
                   <span>
                     <span className="hidden max-sm:block">{link._count.tags}</span>
                     <span className="max-sm:hidden">
@@ -118,7 +118,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links, mutate }) => {
               )}
               {link._count.events > 0 && (
                 <Badge variant="neutral" className="flex h-5 items-center space-x-1 text-[11px]">
-                  <MousePointerClick size={11} />
+                  <MousePointerClick size={13} />
                   <span>
                     {link._count.events.toLocaleString("en-us")}
                     <span className="max-sm:hidden">
