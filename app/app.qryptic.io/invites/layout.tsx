@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
-import { Grid } from "@/components/layout/grid";
+import { GodRays } from "@/components/layout/god-rays";
 
 const InviteLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <Grid />
+      {process.env.NODE_ENV === "production" && <GodRays />}
       <div className="flex min-h-screen w-full items-center justify-center px-4 py-10">
         {children}
       </div>

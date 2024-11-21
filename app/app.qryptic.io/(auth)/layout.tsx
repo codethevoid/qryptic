@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { Grid } from "@/components/layout/grid";
 import { GodRays } from "@/components/layout/god-rays";
 
 type AuthLayoutProps = {
@@ -9,8 +8,7 @@ type AuthLayoutProps = {
 const AuthLayout = ({ children }: Readonly<AuthLayoutProps>) => {
   return (
     <div>
-      <Grid />
-      <GodRays />
+      {process.env.NODE_ENV === "production" && <GodRays />}
       {children}
     </div>
   );
