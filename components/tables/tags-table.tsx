@@ -1,6 +1,6 @@
 import { Tag as TagBadge } from "@/components/ui/custom/tag";
 import { TagColor } from "@/types/colors";
-import { ChartArea, Link2, Pencil, Tag, Trash, TagIcon } from "lucide-react";
+import { ChartArea, Link2, Pencil, Tag, Trash, TagIcon, MousePointerClick } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TagWithCounts } from "@/types/tags";
@@ -62,7 +62,7 @@ export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) =>
                 >
                   <Link2 size={13} className="-rotate-45" />
                   <span>
-                    {tag.linkCount !== 0 && tag.linkCount}{" "}
+                    {tag.linkCount !== 0 && tag.linkCount.toLocaleString("en-us")}{" "}
                     {tag.linkCount === 1 ? "link" : tag.linkCount === 0 ? "No links" : "links"}
                   </span>
                 </Badge>
@@ -74,9 +74,9 @@ export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) =>
                   variant="neutral"
                   className="flex h-5 items-center space-x-1 text-[11px] max-sm:hidden"
                 >
-                  <ChartArea size={13} />
+                  <MousePointerClick size={13} />
                   <span>
-                    {tag.eventCount !== 0 && tag.eventCount}{" "}
+                    {tag.eventCount !== 0 && tag.eventCount.toLocaleString("en-us")}{" "}
                     {tag.eventCount === 1 ? "event" : tag.eventCount === 0 ? "No events" : "events"}
                   </span>
                 </Badge>

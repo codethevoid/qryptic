@@ -14,6 +14,7 @@ import {
   Trash,
   QrCodeIcon,
   ArchiveRestore,
+  MousePointerClick,
 } from "lucide-react";
 import { Tag } from "@/components/ui/custom/tag";
 import { Badge } from "@/components/ui/badge";
@@ -94,7 +95,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links, mutate }) => {
               {link._count.tags === 1 && (
                 <Tag
                   variant={link.tags[0].color}
-                  className="flex h-5 items-center space-x-1 text-[11px]"
+                  className="flex h-5 items-center space-x-1 text-[11px] max-sm:hidden"
                 >
                   <TagIcon size={11} />
                   <span className="max-sm:hidden">{link.tags[0].name}</span>
@@ -104,7 +105,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links, mutate }) => {
               {link._count.tags > 1 && (
                 <Tag
                   variant={link.tags[0].color}
-                  className="flex h-5 items-center space-x-1 text-[11px]"
+                  className="flex h-5 items-center space-x-1 text-[11px] max-sm:hidden"
                 >
                   <TagIcon size={11} />
                   <span>
@@ -117,7 +118,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links, mutate }) => {
               )}
               {link._count.events > 0 && (
                 <Badge variant="neutral" className="flex h-5 items-center space-x-1 text-[11px]">
-                  <ChartArea size={11} />
+                  <MousePointerClick size={11} />
                   <span>
                     {link._count.events.toLocaleString("en-us")}
                     <span className="max-sm:hidden">

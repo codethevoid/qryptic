@@ -2,7 +2,7 @@
 
 import { useTeams } from "@/lib/hooks/swr/use-teams";
 import { Button } from "@/components/ui/button";
-import { ChartArea, Globe, Link, Link2, Users } from "lucide-react";
+import { ChartArea, Globe, Link, Link2, MousePointerClick, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { AvatarFallback, Avatar, AvatarImage } from "@/components/ui/avatar";
 import { QrypticIcon } from "@/components/logos/qryptic-icon";
@@ -90,7 +90,7 @@ export const TeamsProvider = ({ teams }: { teams: Team[] }) => {
                 </p>
               </div>
               <div className="flex items-center space-x-1.5">
-                <ChartArea size={14} className="relative bottom-[1px]" />
+                <MousePointerClick size={14} className="relative bottom-[1px]" />
                 <p className="text-[13px] text-muted-foreground">
                   {team._count.events !== 0 && `${team._count.events.toLocaleString("en-us")} `}
                   {team._count.events === 1
