@@ -1,9 +1,8 @@
-"use client";
-
 import { MaxWidthWrapper } from "@/components/layout/max-width-wrapper";
 import { QrypticLogo } from "@/components/logos/qryptic-logo";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ui/custom/theme-toggle";
 
 // const products = [
 //   // { name: "AI", route: "/ai" },
@@ -34,12 +33,14 @@ const companyLinks = [
   { name: "Terms", route: "/legal/terms" },
 ];
 
+const labLinks = [{ name: "Unveil", route: "/lab/unveil" }];
+
 export const Footer = () => {
   return (
     <div className="border-t bg-background/60 px-4 py-16">
       <MaxWidthWrapper>
         <div className="grid grid-cols-[auto_auto_auto_auto_auto] justify-between gap-6 max-sm:grid-cols-1 max-sm:gap-10">
-          <div className="col-span-3 space-y-5 max-sm:col-span-1">
+          <div className="col-span-2 space-y-5 max-sm:col-span-1">
             <QrypticLogo className="max-sm:mx-auto" />
             <p className="max-w-[300px] text-[13px] text-muted-foreground max-sm:mx-auto max-sm:text-center">
               Empowering businesses to deliver
@@ -47,7 +48,7 @@ export const Footer = () => {
             </p>
 
             <div className="w-fit max-sm:mx-auto">
-              <Button size="icon" variant="outline" asChild>
+              <Button size="icon" variant="outline" asChild name="x-link">
                 <a href="https://x.com/qrypticdotio" target="_blank">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -85,6 +86,20 @@ export const Footer = () => {
             </div>
           </div> */}
           <div>
+            <p className="mb-4 text-sm font-medium max-sm:mb-2 max-sm:text-center">Lab</p>
+            <div className="flex flex-col space-y-1.5">
+              {labLinks.map((tool) => (
+                <Link
+                  href={tool.route}
+                  key={tool.name}
+                  className="w-fit text-[13px] text-muted-foreground hover:text-foreground max-sm:mx-auto max-sm:text-center"
+                >
+                  {tool.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div>
             <p className="mb-4 text-sm font-medium max-sm:mb-2 max-sm:text-center">Resources</p>
             <div className="flex flex-col space-y-1.5">
               {resources.map((resource) => (
@@ -113,10 +128,12 @@ export const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="mt-12">
-          <p className="text-xs text-muted-foreground max-sm:text-center">
+        <div className="mt-12 flex items-center justify-between max-sm:flex-col-reverse max-sm:items-center">
+          <p className="text-xs text-muted-foreground max-sm:mt-4 max-sm:text-center">
             &copy; {new Date().getFullYear()} Qryptic. All rights reserved.
           </p>
+
+          <ThemeToggle />
         </div>
       </MaxWidthWrapper>
     </div>

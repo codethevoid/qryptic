@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import NextLink from "next/link";
 import { protocol, rootDomain } from "@/utils/qryptic/domains";
 import { GodRays } from "@/components/layout/god-rays";
+import prisma from "@/db/prisma";
+import { notFound } from "next/navigation";
 
 export const generateMetadata = async ({
   params,
@@ -12,13 +14,29 @@ export const generateMetadata = async ({
   params: { domain: string };
 }): Promise<Metadata> => {
   const domain = params.domain;
+  const domainRecord = await prisma.domain.findUnique({
+    where: { name: domain },
+    select: { name: true },
+  });
+
+  if (!domainRecord) return notFound();
+
   return constructMetadata({
-    title: `Qryptic | ${domain}`,
+    title: `Qryptic | ${domainRecord.name}`,
     description: `${domain} is a custom domain on ${process.env.NEXT_PUBLIC_APP_NAME}`,
   });
 };
 
-const RootDomainPage = ({ params }: { params: { domain: string } }) => {
+const RootDomainPage = async ({ params }: { params: { domain: string } }) => {
+  const { domain } = params;
+
+  const domainRecord = await prisma.domain.findUnique({
+    where: { name: domain },
+    select: { name: true },
+  });
+
+  if (!domainRecord) return notFound();
+
   return (
     <>
       <GodRays />

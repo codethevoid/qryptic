@@ -9,7 +9,7 @@ import { LinkBadge } from "@/components/ui/custom/link-badge";
 export const Hero = () => {
   return (
     <div>
-      <div className="-mb-6 flex flex-col items-center justify-center overflow-x-hidden bg-gradient-to-b from-transparent px-4">
+      <div className="-mb-6 flex flex-col items-center justify-center overflow-x-hidden px-4">
         <MaxWidthWrapper className="space-y-8">
           <div className="space-y-6">
             <LinkBadge />

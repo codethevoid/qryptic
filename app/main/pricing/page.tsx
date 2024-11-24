@@ -2,7 +2,7 @@ import prisma from "@/db/prisma";
 import { Plan, Price } from "@prisma/client";
 import { PricingTiers } from "@/app/main/pricing/components/tiers";
 import { Compare } from "@/app/main/pricing/components/compare";
-import { Faq } from "@/app/main/pricing/components/faq";
+import { PricingFaq } from "./components/faq";
 import { constructMetadata } from "@/utils/construct-metadata";
 import { GetStarted } from "../(landing)/components/get-started";
 
@@ -25,7 +25,7 @@ const PricingPage = async () => {
     <div className="space-y-20 py-20 max-sm:py-16">
       <PricingTiers plans={plans} />
       <Compare plans={plans} />
-      <Faq />
+      <PricingFaq />
       {/* <StartNow /> */}
       <GetStarted />
     </div>

@@ -37,6 +37,9 @@ export const appMiddleware = async (req: NextRequest) => {
       if (!defaultTeam) {
         return NextResponse.redirect(new URL("/teams", req.url));
       }
+      // if (!defaultTeam) {
+      //   return NextResponse.redirect(new URL("/teams", req.url));
+      // }
 
       // redirect to default team /[slug]
       return NextResponse.redirect(new URL(`/${defaultTeam}`, req.url));

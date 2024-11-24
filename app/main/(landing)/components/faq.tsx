@@ -9,7 +9,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const faqs = [
+export type Faq = {
+  question: string;
+  answer: string;
+};
+
+const defaultFaqs = [
   {
     question: "What is Qryptic, and how can it help my business?",
     answer:
@@ -52,7 +57,7 @@ const faqs = [
   },
 ];
 
-export const Faq = () => {
+export const Faq = ({ faqs = defaultFaqs }: { faqs?: Faq[] }) => {
   return (
     <div className="border-y bg-background/60 px-4 py-16">
       <MaxWidthWrapper className="flex space-x-12 max-lg:flex-col max-lg:space-x-0 max-lg:space-y-8">
@@ -62,10 +67,7 @@ export const Faq = () => {
           </h3>
           <p className="mt-2 text-muted-foreground max-lg:text-center max-md:text-sm max-sm:text-[13px]">
             Have other questions? Contact us{" "}
-            <Link
-              href="/contact"
-              className="text-deepBlue-500 hover:underline dark:text-deepBlue-400"
-            >
+            <Link href="/contact" className="underline transition-colors hover:text-foreground">
               here
             </Link>
           </p>
