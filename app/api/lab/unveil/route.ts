@@ -3,6 +3,8 @@ import { constructURL } from "@/utils/construct-url";
 import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 
+export const maxDuration = 30;
+
 export const GET = async (req: NextRequest) => {
   try {
     const url = req.nextUrl.searchParams.get("url");
