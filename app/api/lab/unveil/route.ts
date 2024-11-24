@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { constructURL } from "@/utils/construct-url";
-import puppeteer from "puppeteer-core";
-import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -23,11 +22,7 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ error: "Failed to get final URL" }, { status: 400 });
     }
 
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-    });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     // await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: "light" }]);
     await page.setViewport({ width: 1920, height: 1080 });
