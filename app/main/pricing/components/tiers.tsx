@@ -115,13 +115,13 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
             <Switch
               checked={interval === "year"}
               onCheckedChange={(value) => (value ? setInterval("year") : setInterval("month"))}
-              className="max-sm:hidden"
+              // className="max-sm:hidden"
             />
-            <SmallSwitch
+            {/* <SmallSwitch
               checked={interval === "year"}
               onCheckedChange={(value) => (value ? setInterval("year") : setInterval("month"))}
               className="hidden max-sm:block"
-            />
+            /> */}
             <p
               className={cn(
                 "text-sm font-medium text-muted-foreground transition-colors max-sm:text-[13px]",

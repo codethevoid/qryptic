@@ -31,12 +31,12 @@ export const appMiddleware = async (req: NextRequest) => {
       const defaultTeam = await redis.get(`user:${token.userId}:defaultTeam`);
       // if no default team, means they don't have any teams
       // redirect to onboarding page
-      // if (!defaultTeam) {
-      //   return NextResponse.redirect(new URL("/onboarding/create-team", req.url));
-      // }
       if (!defaultTeam) {
-        return NextResponse.redirect(new URL("/teams", req.url));
+        return NextResponse.redirect(new URL("/onboarding/create-team", req.url));
       }
+      // if (!defaultTeam) {
+      //   return NextResponse.redirect(new URL("/teams", req.url));
+      // }
 
       // redirect to default team /[slug]
       return NextResponse.redirect(new URL(`/${defaultTeam}`, req.url));

@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { MaxWidthWrapper } from "@/components/layout/max-width-wrapper";
 import { QrypticLogo } from "@/components/logos/qryptic-logo";
 import { appDomain, protocol } from "@/utils/qryptic/domains";
-import { useTheme } from "next-themes";
 import {
   Book,
   Bot,
   Building,
   ChartArea,
   ChevronRight,
+  FlaskConical,
   Headset,
   ListCheck,
   Mail,
@@ -21,18 +21,19 @@ import {
   Rocket,
   Sun,
   Users,
+  WandSparkles,
 } from "lucide-react";
 import { useScrollPosition } from "@/lib/hooks";
 import NextLink from "next/link";
 import { Link } from "lucide-react";
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { ReactNode, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChevronDown } from "lucide-react";
 import { useState, useRef } from "react";
-import { QrypticIcon } from "@/components/logos/qryptic-icon";
 import { usePathname } from "next/navigation";
-import { detectThreat } from "@/lib/links/detect-threat";
+import { MobileNav } from "./mobile-nav";
+import { useWindowWidth } from "@react-hook/window-size";
 
 const productLinks = [
   {
@@ -67,35 +68,35 @@ const productLinks = [
   },
 ];
 
-const solutionLinks = [
-  {
-    title: "Startups",
-    icon: <Rocket size={16} />,
-    href: "/startups",
-    description: "Accelerate your growth",
-  },
-  {
-    title: "Enterprise",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        width="16"
-        height="16"
-        fill="currentColor"
-      >
-        <path d="M3 19V5.70046C3 5.27995 3.26307 4.90437 3.65826 4.76067L13.3291 1.24398C13.5886 1.14961 13.8755 1.28349 13.9699 1.54301C13.9898 1.59778 14 1.65561 14 1.71388V6.6667L20.3162 8.77211C20.7246 8.90822 21 9.29036 21 9.72079V19H23V21H1V19H3ZM5 19H12V3.85543L5 6.40089V19ZM19 19V10.4416L14 8.77488V19H19Z"></path>
-      </svg>
-    ),
-    href: "/enterprise",
-    description: "Scale with confidence",
-  },
-];
+// const solutionLinks = [
+//   {
+//     title: "Startups",
+//     icon: <Rocket size={16} />,
+//     href: "/startups",
+//     description: "Accelerate your growth",
+//   },
+//   {
+//     title: "Enterprise",
+//     icon: (
+//       <svg
+//         xmlns="http://www.w3.org/2000/svg"
+//         viewBox="0 0 24 24"
+//         width="16"
+//         height="16"
+//         fill="currentColor"
+//       >
+//         <path d="M3 19V5.70046C3 5.27995 3.26307 4.90437 3.65826 4.76067L13.3291 1.24398C13.5886 1.14961 13.8755 1.28349 13.9699 1.54301C13.9898 1.59778 14 1.65561 14 1.71388V6.6667L20.3162 8.77211C20.7246 8.90822 21 9.29036 21 9.72079V19H23V21H1V19H3ZM5 19H12V3.85543L5 6.40089V19ZM19 19V10.4416L14 8.77488V19H19Z"></path>
+//       </svg>
+//     ),
+//     href: "/enterprise",
+//     description: "Scale with confidence",
+//   },
+// ];
 
-const resourceLinks = [
+export const resourceLinks = [
   {
     title: "Blog",
-    icon: <PenTool size={16} />,
+    icon: <PenTool className="max-md:[14px] h-4 w-4 max-md:w-[14px]" />,
     href: "/blog",
     description: "Read the latest articles",
   },
@@ -107,7 +108,7 @@ const resourceLinks = [
   // },
   {
     title: "Contact us",
-    icon: <Mail size={16} />,
+    icon: <Mail className="h-4 w-4 max-md:h-[14px] max-md:w-[14px]" />,
     href: "/contact",
     description: "Get in touch with us",
   },
@@ -125,13 +126,23 @@ const resourceLinks = [
   // },
 ];
 
+export const labLinks = [
+  {
+    title: "Unveil",
+    icon: <WandSparkles className="h-4 w-4 max-md:h-[14px] max-md:w-[14px]" />,
+    href: "/lab/unveil",
+    description: "Reveal final url to any short link",
+  },
+];
+
 export const MainNav = () => {
-  const { setTheme, resolvedTheme } = useTheme();
   const scrollPos = useScrollPosition();
   const pathname = usePathname();
+  const windowWidth = useWindowWidth();
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleMouseEnter = (dropdown: string) => {
     if (closeTimeoutRef.current) {
@@ -146,133 +157,165 @@ export const MainNav = () => {
     }, 150);
   };
 
+  useEffect(() => {
+    if (windowWidth >= 768) {
+      setIsMobileMenuOpen(false);
+    }
+  }, [windowWidth]);
+
   return (
-    <div
-      className={`sticky top-0 z-50 border-b px-4 py-2 transition-colors ${scrollPos > 50 || pathname.includes("blog") ? "border-border bg-background/85 backdrop-blur" : "border-transparent"}`}
-    >
-      <MaxWidthWrapper className="flex items-center justify-between">
-        <div className="flex items-center space-x-12">
-          <NextLink href="/" passHref>
-            <QrypticLogo />
-          </NextLink>
-          <div className="max-md:hidden">
-            {/* <Popover open={openDropdown === "product"}>
+    <>
+      <div
+        className={`sticky top-0 z-50 border-b px-4 py-2 transition-colors ${scrollPos > 50 || pathname.includes("blog") || isMobileMenuOpen ? "border-border bg-background/85 backdrop-blur" : "border-transparent"} ${isMobileMenuOpen ? "!border-transparent !bg-background" : ""}`}
+      >
+        <MaxWidthWrapper className="flex items-center justify-between">
+          <div className="flex items-center space-x-12">
+            <NextLink href="/" passHref className="qryptic-home-page-link">
+              <QrypticLogo />
+            </NextLink>
+            <div className="max-md:hidden">
+              {/* <Popover open={openDropdown === "product"}>
               <PopoverTrigger
-                onMouseLeave={handleMouseLeave}
+              onMouseLeave={handleMouseLeave}
                 onMouseEnter={() => handleMouseEnter("product")}
                 className={`inline-flex cursor-auto items-center rounded-full px-3 py-1 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground ${openDropdown === "product" ? "bg-accent text-foreground" : "text-foreground/75"}`}
-              >
+                >
                 Product{" "}
                 <ChevronDown
-                  className={`relative top-[1px] ml-1 h-3 w-3 transition duration-300 ${openDropdown === "product" ? "rotate-180" : undefined}`}
+                className={`relative top-[1px] ml-1 h-3 w-3 transition duration-300 ${openDropdown === "product" ? "rotate-180" : undefined}`}
                   aria-hidden="true"
                 />
               </PopoverTrigger>
               <PopoverContent
-                onMouseLeave={handleMouseLeave}
+              onMouseLeave={handleMouseLeave}
                 onMouseEnter={() => handleMouseEnter("product")}
                 className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_300ms] data-[state=open]:!animate-[enter_300ms]"
                 sideOffset={7}
                 align="start"
                 onCloseAutoFocus={(e) => e.preventDefault()}
-              >
+                >
                 {productLinks.map((link) => (
                   <ListItem key={link.title} {...link} />
-                ))}
-              </PopoverContent>
-            </Popover>
-            <Popover open={openDropdown === "solutions"}>
-              <PopoverTrigger
-                onMouseEnter={() => handleMouseEnter("solutions")}
-                onMouseLeave={handleMouseLeave}
-                className={`inline-flex cursor-auto items-center rounded-full px-3 py-1 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground ${openDropdown === "solutions" ? "bg-accent text-foreground" : "text-foreground/75"}`}
-              >
-                Solutions{" "}
-                <ChevronDown
+                  ))}
+                  </PopoverContent>
+                  </Popover>
+                  <Popover open={openDropdown === "solutions"}>
+                  <PopoverTrigger
+                  onMouseEnter={() => handleMouseEnter("solutions")}
+                  onMouseLeave={handleMouseLeave}
+                  className={`inline-flex cursor-auto items-center rounded-full px-3 py-1 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground ${openDropdown === "solutions" ? "bg-accent text-foreground" : "text-foreground/75"}`}
+                  >
+                  Solutions{" "}
+                  <ChevronDown
                   className={`relative top-[1px] ml-1 h-3 w-3 transition duration-300 ${openDropdown === "solutions" ? "rotate-180" : undefined}`}
                   aria-hidden="true"
-                />
-              </PopoverTrigger>
-              <PopoverContent
-                onMouseEnter={() => handleMouseEnter("solutions")}
-                onMouseLeave={handleMouseLeave}
-                className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_300ms] data-[state=open]:!animate-[enter_300ms]"
-                sideOffset={7}
-                align="start"
-                onCloseAutoFocus={(e) => e.preventDefault()}
+                  />
+                  </PopoverTrigger>
+                  <PopoverContent
+                  onMouseEnter={() => handleMouseEnter("solutions")}
+                  onMouseLeave={handleMouseLeave}
+                  className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_300ms] data-[state=open]:!animate-[enter_300ms]"
+                  sideOffset={7}
+                  align="start"
+                  onCloseAutoFocus={(e) => e.preventDefault()}
+                  >
+                  {solutionLinks.map((link) => (
+                    <ListItem key={link.title} {...link} />
+                    ))}
+                    </PopoverContent>
+                    </Popover> */}
+              <Popover open={openDropdown === "lab"}>
+                <PopoverTrigger
+                  onMouseEnter={() => handleMouseEnter("lab")}
+                  onMouseLeave={handleMouseLeave}
+                  className={`inline-flex h-8 cursor-auto items-center rounded-full px-3 text-[13px] font-medium transition-colors ${openDropdown === "lab" ? "text-foreground" : "text-foreground/70"}`}
+                >
+                  Lab{" "}
+                  <ChevronDown
+                    className={`relative top-[1px] ml-1 h-3 w-3 transition duration-300 ${openDropdown === "lab" ? "rotate-180" : undefined}`}
+                    aria-hidden="true"
+                  />
+                </PopoverTrigger>
+                <PopoverContent
+                  onMouseEnter={() => handleMouseEnter("lab")}
+                  onMouseLeave={handleMouseLeave}
+                  className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_100ms] data-[state=open]:!animate-[enter_200ms]"
+                  align="start"
+                  onCloseAutoFocus={(e) => e.preventDefault()}
+                  onClick={() => setOpenDropdown(null)}
+                >
+                  {labLinks.map((link) => (
+                    <ListItem key={link.title} {...link} />
+                  ))}
+                </PopoverContent>
+              </Popover>
+              <Popover open={openDropdown === "resources"}>
+                <PopoverTrigger
+                  onMouseEnter={() => handleMouseEnter("resources")}
+                  onMouseLeave={handleMouseLeave}
+                  className={`inline-flex h-8 cursor-auto items-center rounded-full px-3 text-[13px] font-medium transition-colors ${openDropdown === "resources" ? "text-foreground" : "text-foreground/70"}`}
+                >
+                  Resources{" "}
+                  <ChevronDown
+                    className={`relative top-[1px] ml-1 h-3 w-3 transition duration-300 ${openDropdown === "resources" ? "rotate-180" : undefined}`}
+                    aria-hidden="true"
+                  />
+                </PopoverTrigger>
+                <PopoverContent
+                  onMouseEnter={() => handleMouseEnter("resources")}
+                  onMouseLeave={handleMouseLeave}
+                  className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_100ms] data-[state=open]:!animate-[enter_200ms]"
+                  align="start"
+                  onCloseAutoFocus={(e) => e.preventDefault()}
+                  onClick={() => setOpenDropdown(null)}
+                >
+                  {resourceLinks.map((link) => (
+                    <ListItem key={link.title} {...link} />
+                  ))}
+                </PopoverContent>
+              </Popover>
+              <Button
+                asChild
+                size="sm"
+                variant="ghost"
+                onMouseEnter={() => setOpenDropdown(null)}
+                className={`inline-flex cursor-pointer items-center rounded-full px-3 text-[13px] font-medium text-foreground/70 transition-colors hover:bg-transparent hover:text-foreground`}
               >
-                {solutionLinks.map((link) => (
-                  <ListItem key={link.title} {...link} />
-                ))}
-              </PopoverContent>
-            </Popover> */}
-            <Button
-              asChild
-              size="sm"
-              variant="ghost"
-              onMouseEnter={() => setOpenDropdown(null)}
-              className={`inline-flex cursor-pointer items-center rounded-full px-3 text-[13px] font-medium text-foreground/70 transition-colors hover:bg-transparent hover:text-foreground`}
-            >
-              <NextLink href="/pricing">Pricing</NextLink>
-            </Button>
-            <Popover open={openDropdown === "resources"}>
-              <PopoverTrigger
-                onMouseEnter={() => handleMouseEnter("resources")}
-                onMouseLeave={handleMouseLeave}
-                className={`inline-flex h-8 cursor-auto items-center rounded-full px-3 text-[13px] font-medium transition-colors ${openDropdown === "resources" ? "text-foreground" : "text-foreground/70"}`}
-              >
-                Resources{" "}
-                <ChevronDown
-                  className={`relative top-[1px] ml-1 h-3 w-3 transition duration-300 ${openDropdown === "resources" ? "rotate-180" : undefined}`}
-                  aria-hidden="true"
-                />
-              </PopoverTrigger>
-              <PopoverContent
-                onMouseEnter={() => handleMouseEnter("resources")}
-                onMouseLeave={handleMouseLeave}
-                className="w-auto rounded-xl p-2.5 data-[state=closed]:!animate-[exit_100ms] data-[state=open]:!animate-[enter_200ms]"
-                align="start"
-                onCloseAutoFocus={(e) => e.preventDefault()}
-                onClick={() => setOpenDropdown(null)}
-              >
-                {resourceLinks.map((link) => (
-                  <ListItem key={link.title} {...link} />
-                ))}
-              </PopoverContent>
-            </Popover>
+                <NextLink href="/pricing">Pricing</NextLink>
+              </Button>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center">
+          <div className="flex items-center max-md:hidden">
+            <Button size="sm" variant="ghost" className="ml-1 rounded-full max-sm:ml-0" asChild>
+              <a href={`${protocol}${appDomain}/login`}>Log in</a>
+            </Button>
+            <Button size="sm" className="to cyan-500 group ml-3 rounded-full max-sm:ml-2" asChild>
+              <a href={`${protocol}${appDomain}/register`}>Sign up</a>
+            </Button>
+          </div>
           <Button
             size="icon"
-            variant="ghost"
-            className="rounded-full"
-            onClick={() => {
-              setTheme(resolvedTheme === "dark" ? "light" : "dark");
-            }}
+            variant="outline"
+            className="hidden h-7 w-7 rounded-full bg-background shadow-none hover:bg-background active:!scale-100 max-md:inline-flex"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            <Sun size={16} className="absolute opacity-0 dark:opacity-100" />
-            <MoonStar size={16} className="absolute opacity-100 dark:opacity-0" />
+            <div className="relative h-full w-full">
+              <span
+                className={`absolute left-1/2 top-[9px] h-[1.5px] w-[13px] -translate-x-1/2 transform rounded-full bg-muted-foreground transition-all duration-200 ${
+                  isMobileMenuOpen ? "top-[12px] rotate-45" : ""
+                }`}
+              />
+              <span
+                className={`absolute bottom-[9px] left-1/2 h-[1.5px] w-[13px] -translate-x-1/2 transform rounded-full bg-muted-foreground transition-all duration-200 ${
+                  isMobileMenuOpen ? "bottom-[12.5px] -rotate-45" : ""
+                }`}
+              />
+            </div>
           </Button>
-
-          <Button
-            size="sm"
-            variant="ghost"
-            className="ml-1 hidden rounded-full max-md:inline-flex max-sm:ml-0"
-            asChild
-          >
-            <NextLink href="/pricing">Pricing</NextLink>
-          </Button>
-
-          <Button size="sm" variant="ghost" className="ml-1 rounded-full max-sm:ml-0" asChild>
-            <a href={`${protocol}${appDomain}/login`}>Log in</a>
-          </Button>
-          <Button size="sm" className="to cyan-500 group ml-3 rounded-full max-sm:ml-2" asChild>
-            <a href={`${protocol}${appDomain}/register`}>Get started</a>
-          </Button>
-        </div>
-      </MaxWidthWrapper>
-    </div>
+        </MaxWidthWrapper>
+      </div>
+      <MobileNav isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen} />
+    </>
   );
 };
 
