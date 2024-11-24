@@ -57,6 +57,7 @@
     "@vercel/functions": "^1.4.2",
     "@vercel/speed-insights": "^1.1.0",
     "bcrypt": "^5.1.1",
+    "chromium": "^3.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",

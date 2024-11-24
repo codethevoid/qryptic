@@ -22,6 +22,8 @@ import {
   Sun,
   Users,
   WandSparkles,
+  XIcon,
+  MenuIcon,
 } from "lucide-react";
 import { useScrollPosition } from "@/lib/hooks";
 import NextLink from "next/link";
@@ -299,18 +301,7 @@ export const MainNav = () => {
             className="hidden h-7 w-7 rounded-full bg-background shadow-none hover:bg-background active:!scale-100 max-md:inline-flex"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            <div className="relative h-full w-full">
-              <span
-                className={`absolute left-1/2 top-[9px] h-[1.5px] w-[13px] -translate-x-1/2 rounded-full bg-muted-foreground transition-all duration-200 ${
-                  isMobileMenuOpen ? "top-[12px] rotate-45" : ""
-                }`}
-              />
-              <span
-                className={`absolute bottom-[9px] left-1/2 h-[1.5px] w-[13px] -translate-x-1/2 rounded-full bg-muted-foreground transition-all duration-200 ${
-                  isMobileMenuOpen ? "bottom-[12.5px] -rotate-45" : ""
-                }`}
-              />
-            </div>
+            {isMobileMenuOpen ? <XIcon size={15} /> : <MenuIcon size={15} />}
           </Button>
         </MaxWidthWrapper>
       </div>
