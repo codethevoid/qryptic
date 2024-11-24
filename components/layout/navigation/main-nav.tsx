@@ -301,12 +301,12 @@ export const MainNav = () => {
           >
             <div className="relative h-full w-full">
               <span
-                className={`absolute left-1/2 top-[9px] h-[1.5px] w-[13px] -translate-x-1/2 transform rounded-full bg-muted-foreground transition-all duration-200 ${
+                className={`absolute left-1/2 top-[9px] h-[1.5px] w-[13px] -translate-x-1/2 rounded-full bg-muted-foreground transition-all duration-200 ${
                   isMobileMenuOpen ? "top-[12px] rotate-45" : ""
                 }`}
               />
               <span
-                className={`absolute bottom-[9px] left-1/2 h-[1.5px] w-[13px] -translate-x-1/2 transform rounded-full bg-muted-foreground transition-all duration-200 ${
+                className={`absolute bottom-[9px] left-1/2 h-[1.5px] w-[13px] -translate-x-1/2 rounded-full bg-muted-foreground transition-all duration-200 ${
                   isMobileMenuOpen ? "bottom-[12.5px] -rotate-45" : ""
                 }`}
               />

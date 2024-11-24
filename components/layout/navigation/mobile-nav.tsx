@@ -57,12 +57,7 @@ export const MobileNav = ({ isOpen, setIsOpen }: Props) => {
         "fixed top-[45px] z-50 w-full overflow-hidden bg-background backdrop-blur transition-all duration-200"
       }
     >
-      <div
-        className={cn(
-          "space-y-6 px-4 py-2 transition-all delay-100 duration-200",
-          isOpen ? "opacity-100" : "opacity-0",
-        )}
-      >
+      <div className={cn("space-y-6 px-4 py-2")}>
         <div className="space-y-2.5">
           <Button size="sm" className="w-full rounded-full shadow-none active:!scale-100" asChild>
             <a href={`${protocol}${appDomain}/register`}>Sign up</a>
