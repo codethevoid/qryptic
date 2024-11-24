@@ -1,6 +1,17 @@
 import type { MetadataRoute } from "next";
 import { readdirSync } from "fs";
 import path from "path";
+import { labData } from "@/lib/lab/data";
+
+const generateLabMetadata = () => {
+  const labLinks = labData.map((tool) => ({
+    url: `https://qryptic.io/lab/${tool.href.split("/")[2]}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }));
+  return labLinks;
+};
 
 const contentDir = path.join(process.cwd(), "app/main/blog/content");
 
@@ -45,6 +56,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   // get blog posts
   const posts: MetadataRoute.Sitemap[0][] = await getBlogPosts();
   const categories: MetadataRoute.Sitemap[0][] = await getBlogCategories();
+  const labs: MetadataRoute.Sitemap[0][] = generateLabMetadata();
 
   return [
     {
@@ -85,6 +97,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     },
     ...posts,
     ...categories,
+    ...labs,
   ];
 };
 

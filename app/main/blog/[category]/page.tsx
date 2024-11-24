@@ -50,7 +50,7 @@ const BlogCategoryPage = async ({ params }: { params: { category: string } }) =>
   const posts: Post[] = await getPosts(category);
 
   return (
-    <div className="h-[calc(100vh-573px)] min-h-fit">
+    <div className="h-[calc(100vh-586px)] min-h-fit">
       <MaxWidthWrapper>
         <div className="grid grid-cols-3 gap-4 max-lg:grid-cols-2 max-sm:grid-cols-1">
           {posts.map((post) => (

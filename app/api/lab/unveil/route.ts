@@ -1,9 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
 import { constructURL } from "@/utils/construct-url";
-import puppeteer from "puppeteer-core";
-import chromium from "@sparticuz/chromium";
-
-export const maxDuration = 30;
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -25,25 +21,24 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ error: "Failed to get final URL" }, { status: 400 });
     }
 
-    const chromiumPath =
-      "https://qryptic.s3.us-east-1.amazonaws.com/main/chromium-v131.0.0-pack.tar";
+    const searchParams = new URLSearchParams();
+    searchParams.set("access_key", process.env.SCREENSHOT_API_KEY!);
+    searchParams.set("url", finalDestination);
+    searchParams.set("format", "png");
+    searchParams.set("block_ads", "true");
+    searchParams.set("block_cookie_banners", "true");
 
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(chromiumPath),
-      headless: true,
-    });
-    const page = await browser.newPage();
-    // await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: "light" }]);
-    await page.setViewport({ width: 1920, height: 1080 });
-    await page.goto(finalDestination, { waitUntil: "networkidle2" });
-    const screenshot = await page.screenshot({ encoding: "base64", type: "png" });
-    await browser.close();
+    const res = await fetch(`https://api.screenshotone.com/take?${searchParams.toString()}`);
+    if (!res.ok) {
+      return NextResponse.json({ error: "Failed to get preview" }, { status: 500 });
+    }
+    const buffer = await res.arrayBuffer();
+    const base64 = Buffer.from(buffer).toString("base64");
 
     return NextResponse.json({
       shortUrl: constructedURL,
       destination: finalDestination,
-      preview: `data:image/png;base64,${screenshot}`,
+      preview: `data:image/png;base64,${base64}`,
     });
   } catch (e) {
     console.error("Error getting link preview for shortened link: ", e);

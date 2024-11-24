@@ -5,7 +5,7 @@ const robots = (): MetadataRoute.Robots => {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/app.qryptic.io", "/admin.qryptic.io"],
+      disallow: ["/app.qryptic.io/", "/admin.qryptic.io/", "/main/"],
     },
     sitemap: "https://qryptic.io/sitemap.xml",
   };
