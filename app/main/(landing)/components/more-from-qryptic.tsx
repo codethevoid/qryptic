@@ -16,7 +16,7 @@ export const MoreFromQryptic = async ({ posts }: { posts: Post[] }) => {
             </span>
           </h2>
           <p className="mx-auto max-w-lg text-center text-muted-foreground max-md:text-sm max-sm:max-w-[340px] max-sm:text-[13px]">
-            Explore our latest blog posts for tte latest company news, product updates, educational
+            Explore our latest blog posts for the latest company news, product updates, educational
             content, and more.
           </p>
         </div>
