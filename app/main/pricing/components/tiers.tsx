@@ -136,7 +136,7 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
           {plans.map((plan, index) => (
             <Card
               key={plan.id}
-              className={`w-full rounded-none rounded-xl border shadow-sm max-[876px]:mx-auto max-[876px]:max-w-[500px] ${index === 1 ? "border-primary" : ""}`}
+              className={`w-full rounded-none rounded-xl border shadow-sm max-[876px]:mx-auto max-[876px]:max-w-[500px]`}
             >
               <CardHeader>
                 <div className="relative flex w-full items-center justify-between">
@@ -166,20 +166,14 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                       : "Billed annually"}
                 </p>
                 <Button
-                  className={`group my-6 h-10 w-full justify-between rounded-full group-hover:translate-x-1 ${index === 1 ? "bg-deepBlue-500 text-white hover:bg-deepBlue-600" : undefined}`}
+                  className={`group my-6 h-10 w-full justify-between rounded-full group-hover:translate-x-1`}
                   variant={index > 0 ? "default" : "outline"}
                   asChild
                 >
                   <a href={`${protocol}${appDomain}/register`}>
                     <span>{plan.isFree ? "Start for free" : "Get started"}</span>
                     <ChevronArrow
-                      className={
-                        index === 0
-                          ? "bg-black dark:bg-white"
-                          : index === 1
-                            ? "bg-white"
-                            : "bg-white dark:bg-black"
-                      }
+                      className={index === 0 ? "bg-black dark:bg-white" : "bg-white dark:bg-black"}
                     />
                   </a>
                 </Button>

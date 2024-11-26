@@ -61,7 +61,7 @@ export const Compare = ({ plans }: CompareProps) => {
             >
               <p className="text-sm font-medium">{plan.name}</p>
               <Button
-                className={`rounded-full text-xs max-[1040px]:w-full ${index === 1 ? "bg-deepBlue-500 text-white hover:bg-deepBlue-600" : ""}`}
+                className={`rounded-full text-xs max-[1040px]:w-full`}
                 size="sm"
                 variant={plan.isFree ? "outline" : "default"}
                 asChild
@@ -205,10 +205,7 @@ export const Compare = ({ plans }: CompareProps) => {
             info="SSL certificates will automatically generate for all of your custom domains."
           />
           {plans.map((plan: CustomPlan, i) => (
-            <TableCell
-              key={plan.id}
-              value={<CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />}
-            />
+            <TableCell key={plan.id} value={<CircleCheckFill />} />
           ))}
           {/* <TableCell value={<CircleCheckFill />} /> */}
 
@@ -222,7 +219,7 @@ export const Compare = ({ plans }: CompareProps) => {
               key={plan.id}
               value={
                 !plan.isFree ? (
-                  <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
+                  <CircleCheckFill />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
                 )
@@ -238,10 +235,7 @@ export const Compare = ({ plans }: CompareProps) => {
             info={"Easily create UTM parameters to your links."}
           />
           {plans.map((plan: CustomPlan, i) => (
-            <TableCell
-              key={plan.id}
-              value={<CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />}
-            />
+            <TableCell key={plan.id} value={<CircleCheckFill />} />
           ))}
           {/* <TableCell value={<CircleCheckFill />} /> */}
 
@@ -297,7 +291,7 @@ export const Compare = ({ plans }: CompareProps) => {
               key={plan.id}
               value={
                 !plan.isFree ? (
-                  <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
+                  <CircleCheckFill />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
                 )
@@ -317,7 +311,7 @@ export const Compare = ({ plans }: CompareProps) => {
               key={plan.id}
               value={
                 !plan.isFree ? (
-                  <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
+                  <CircleCheckFill />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
                 )
@@ -337,7 +331,7 @@ export const Compare = ({ plans }: CompareProps) => {
               key={plan.id}
               value={
                 !plan.isFree ? (
-                  <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
+                  <CircleCheckFill />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
                 )
@@ -357,7 +351,7 @@ export const Compare = ({ plans }: CompareProps) => {
               key={plan.id}
               value={
                 !plan.isFree ? (
-                  <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
+                  <CircleCheckFill />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
                 )
@@ -377,7 +371,7 @@ export const Compare = ({ plans }: CompareProps) => {
               key={plan.id}
               value={
                 !plan.isFree ? (
-                  <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
+                  <CircleCheckFill />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
                 )
@@ -463,7 +457,7 @@ export const Compare = ({ plans }: CompareProps) => {
               key={plan.id}
               value={
                 !plan.isFree ? (
-                  <CircleCheckFill className={i === 1 ? "fill-deepBlue-500" : undefined} />
+                  <CircleCheckFill />
                 ) : (
                   <Minus size={18} className="text-muted-foreground" />
                 )
