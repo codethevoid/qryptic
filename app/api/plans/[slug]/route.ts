@@ -20,6 +20,7 @@ export const GET = withTeam(async () => {
           select: { id: true, stripePriceId: true, price: true, interval: true },
         },
       },
+      orderBy: { links: "asc" },
     });
 
     return NextResponse.json(plans);

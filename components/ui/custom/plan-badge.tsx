@@ -11,7 +11,7 @@ export const PlanBadge = ({ plan, className }: PlanBadgeProps) => {
     Free: "neutral",
     Pro: "colorful",
     Business: "primary",
-    Enterprise: "warning",
+    Enterprise: "purple",
   };
 
   return (

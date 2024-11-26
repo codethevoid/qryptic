@@ -70,7 +70,7 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
 
   return (
     <div className="px-4">
-      <MaxWidthWrapper>
+      <MaxWidthWrapper className="max-w-[1200px]">
         {/*<div className="mx-auto mb-4 w-fit rounded-full bg-gradient-to-t from-purple-600 to-purple-900 p-[1px]">*/}
         {/*  <div className="rounded-full bg-gradient-to-t from-background/80 to-card px-3 py-1">*/}
         {/*    <p className="text-[13px] font-semibold text-purple-400">Plans and pricing</p>*/}
@@ -132,11 +132,11 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4 max-[876px]:grid-cols-1 max-[876px]:gap-6">
+        <div className="grid grid-cols-4 gap-4 max-[1100px]:grid-cols-2 max-sm:grid-cols-1">
           {plans.map((plan, index) => (
             <Card
               key={plan.id}
-              className={`w-full rounded-none rounded-xl border shadow-sm max-[876px]:mx-auto max-[876px]:max-w-[500px] ${index === 1 ? "border-primary shadow-lg" : ""}`}
+              className={`w-full rounded-none rounded-xl border shadow-sm max-[876px]:mx-auto max-[876px]:max-w-[500px] ${index === 1 ? "border-primary" : ""}`}
             >
               <CardHeader>
                 <div className="relative flex w-full items-center justify-between">
@@ -144,10 +144,9 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                   {!plan.isFree && (
                     <Badge
                       variant={interval === "year" ? "success" : "neutral"}
-                      className={`absolute right-0 flex space-x-1 rounded-full ${interval === "month" ? "line-through" : ""} transition-all`}
+                      className={`absolute right-0 flex space-x-1 rounded-full px-1.5 ${interval === "month" ? "line-through" : ""} transition-all`}
                     >
-                      <Tag size={12} />
-                      <span>Save 20%</span>
+                      <span className="text-xs">Save 20%</span>
                     </Badge>
                   )}
                 </div>
@@ -161,14 +160,14 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                 </p>
                 <p className="-mt-1 text-[13px] text-muted-foreground">
                   {plan.isFree
-                    ? "Forever free. Upgrade anytime."
+                    ? "Forever free"
                     : interval === "month"
                       ? "Billed monthly"
                       : "Billed annually"}
                 </p>
                 <Button
                   className={`group my-6 h-10 w-full justify-between rounded-full group-hover:translate-x-1 ${index === 1 ? "bg-deepBlue-500 text-white hover:bg-deepBlue-600" : undefined}`}
-                  variant={index === 1 || index === 2 ? "default" : "outline"}
+                  variant={index > 0 ? "default" : "outline"}
                   asChild
                 >
                   <a href={`${protocol}${appDomain}/register`}>
@@ -187,15 +186,15 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                 <div className="flex flex-col space-y-2">
                   <Feature
                     icon={<QrCode size={15} />}
-                    feature={`${plan.links.toLocaleString("en-us")} QR codes per month`}
+                    feature={`${plan.links.toLocaleString("en-us")} QR codes/mo`}
                   />
                   <Feature
                     icon={<Link size={15} />}
-                    feature={`${plan.links.toLocaleString("en-us")} links per month`}
+                    feature={`${plan.links.toLocaleString("en-us")} links/mo`}
                   />
                   <Feature
                     icon={<MousePointerClick size={15} />}
-                    feature="Unlimited click & scan tracking"
+                    feature="Unlimited event tracking"
                   />
                   <Feature
                     icon={<ChartArea size={15} />}
@@ -232,7 +231,7 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
               </CardContent>
             </Card>
           ))}
-          {/* <Card className="col-span-3 rounded-xl border shadow-lg">
+          {/* <Card className="col-span-3 rounded-xl border shadow-sm">
             <div className="grid grid-cols-2 gap-6 p-12">
               <div>
                 <p className="text-2xl font-extrabold tracking-tight">

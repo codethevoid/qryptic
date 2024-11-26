@@ -34,7 +34,7 @@ export const Compare = ({ plans }: CompareProps) => {
   const { ref, inView } = useInView();
 
   return (
-    <div className="px-4 max-md:hidden">
+    <div className="px-4 max-[800px]:hidden">
       <MaxWidthWrapper>
         <div className="mb-8">
           <h2
@@ -47,7 +47,7 @@ export const Compare = ({ plans }: CompareProps) => {
             Find the plan that&apos;s right for your business. You can change your plan at anytime.
           </p>
         </div>
-        <div className="sticky top-[48px] z-10 grid w-full grid-cols-[230px_1fr_1fr_1fr] max-md:hidden">
+        <div className="sticky top-[48px] z-10 grid w-full grid-cols-[230px_1fr_1fr_1fr_1fr] max-md:hidden">
           <div
             className={`compare-grid-item flex flex-col justify-center border border-b border-r-0 bg-background p-4 ${!inView ? "rounded-tl-none" : "rounded-tl-xl"}`}
           >
@@ -56,12 +56,12 @@ export const Compare = ({ plans }: CompareProps) => {
           </div>
           {plans.map((plan: Plan, index) => (
             <div
-              className={`compare-grid-item flex items-center border border-b border-r-0 bg-background p-4 max-[900px]:flex-col max-[900px]:space-y-2 min-[900px]:justify-between ${!inView ? "rounded-tr-none" : index === 2 ? "rounded-tr-xl" : ""}`}
+              className={`compare-grid-item flex items-center border border-b border-r-0 bg-background p-4 max-[1040px]:flex-col max-[1040px]:space-y-2 min-[1040px]:justify-between ${!inView ? "rounded-tr-none" : index === 3 ? "rounded-tr-xl" : ""}`}
               key={plan.id}
             >
               <p className="text-sm font-medium">{plan.name}</p>
               <Button
-                className={`rounded-full text-xs max-[900px]:w-full ${index === 1 ? "bg-deepBlue-500 text-white hover:bg-deepBlue-600" : ""}`}
+                className={`rounded-full text-xs max-[1040px]:w-full ${index === 1 ? "bg-deepBlue-500 text-white hover:bg-deepBlue-600" : ""}`}
                 size="sm"
                 variant={plan.isFree ? "outline" : "default"}
                 asChild
@@ -81,7 +81,7 @@ export const Compare = ({ plans }: CompareProps) => {
             </Button>
           </div> */}
         </div>
-        <div className="grid w-full grid-cols-[230px_1fr_1fr_1fr] bg-background max-md:hidden">
+        <div className="grid w-full grid-cols-[230px_1fr_1fr_1fr_1fr] bg-background max-md:hidden">
           {/* QR codes  */}
           <TableCell
             value="QR Codes"
@@ -95,7 +95,7 @@ export const Compare = ({ plans }: CompareProps) => {
               className="border-t-0"
             />
           ))}
-          {/* <TableCell value="Custom" className="border-t-0" /> */}
+          {/* <TableCell value="Unlimited" className="border-t-0" /> */}
 
           {/* Custom links row */}
           <TableCell
@@ -106,7 +106,7 @@ export const Compare = ({ plans }: CompareProps) => {
           {plans.map((plan: CustomPlan) => (
             <TableCell key={plan.id} value={`${plan.links.toLocaleString("en-us")}/mo`} />
           ))}
-          {/* <TableCell value="Custom" /> */}
+          {/* <TableCell value="Unlimited" /> */}
 
           {/* Click and scan tracking row */}
           <TableCell
@@ -128,7 +128,7 @@ export const Compare = ({ plans }: CompareProps) => {
           {plans.map((plan: CustomPlan) => (
             <TableCell key={plan.id} value={getAnalytics(plan.analytics)} />
           ))}
-          {/* <TableCell value="Custom" /> */}
+          {/* <TableCell value="All time" /> */}
 
           {/* Redirects row */}
           <TableCell
@@ -164,7 +164,7 @@ export const Compare = ({ plans }: CompareProps) => {
               }
             />
           ))}
-          {/* <TableCell value="Custom" /> */}
+          {/* <TableCell value="Unlimited" /> */}
 
           {/* QR Customization */}
           <TableCell
@@ -186,7 +186,7 @@ export const Compare = ({ plans }: CompareProps) => {
           {plans.map((plan: CustomPlan) => (
             <TableCell key={plan.id} value={plan.seats} />
           ))}
-          {/* <TableCell value={"Custom"} /> */}
+          {/* <TableCell value={"Unlimited"} /> */}
 
           {/* Custom domains */}
           <TableCell
@@ -197,7 +197,7 @@ export const Compare = ({ plans }: CompareProps) => {
           {plans.map((plan: CustomPlan) => (
             <TableCell key={plan.id} value={plan.domains} />
           ))}
-          {/* <TableCell value={"Custom"} /> */}
+          {/* <TableCell value={"Unlimited"} /> */}
 
           <TableCell
             value="SSL certificates"
@@ -450,20 +450,6 @@ export const Compare = ({ plans }: CompareProps) => {
           ))} */}
           {/* <TableCell value={<CircleCheckFill />} /> */}
 
-          {/* dedicated support manager */}
-          {/* <TableCell
-            value="Dedicated support rep"
-            className="justify-between font-medium"
-            info="Get your own dedicated support representative you can reach out to at anytime for all of your needs."
-          />
-          {plans.map((plan: CustomPlan, i) => (
-            <TableCell
-              key={plan.id}
-              value={<Minus size={18} className="text-muted-foreground" />}
-            />
-          ))} */}
-          {/* <TableCell value={<CircleCheckFill />} /> */}
-
           {/* api access */}
           <TableCell
             value="API access (coming soon)"
@@ -486,6 +472,26 @@ export const Compare = ({ plans }: CompareProps) => {
           ))}
           {/* <TableCell value={<CircleCheckFill />} /> */}
 
+          {/* dedicated support manager */}
+          <TableCell
+            value="Dedicated support rep"
+            className="justify-between font-medium"
+            info="Get your own dedicated support representative you can reach out to at anytime for all of your needs."
+          />
+          {plans.map((plan: CustomPlan, i) => (
+            <TableCell
+              key={plan.id}
+              value={
+                i !== 3 ? (
+                  <Minus size={18} className="text-muted-foreground" />
+                ) : (
+                  <CircleCheckFill />
+                )
+              }
+            />
+          ))}
+          {/* <TableCell value={<CircleCheckFill />} /> */}
+
           {/* support level */}
           <TableCell
             value="Support level"
@@ -496,7 +502,7 @@ export const Compare = ({ plans }: CompareProps) => {
             <TableCell
               key={plan.id}
               value={plan.supportLevel}
-              className={`${i === 2 ? "rounded-br-xl" : ""}`}
+              className={`${i === 3 ? "rounded-br-xl" : ""}`}
             />
           ))}
           {/* <TableCell value="Dedicated" className="rounded-br-xl" /> */}

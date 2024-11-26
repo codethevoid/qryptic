@@ -123,6 +123,13 @@ export const ChangePlan = ({ isOpen, setIsOpen }: ChangePlanProps) => {
               >
                 Business
               </TabsTrigger>
+              <TabsTrigger
+                className="w-full data-[state=active]:bg-zinc-100 data-[state=active]:shadow-none dark:data-[state=active]:bg-zinc-900"
+                value={plans[2].name}
+                onClick={() => handlePreview(plans[2])}
+              >
+                Enterprise
+              </TabsTrigger>
             </TabsList>
             <div className="mt-4">
               <PricingCard

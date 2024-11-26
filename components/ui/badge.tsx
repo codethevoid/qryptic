@@ -18,6 +18,8 @@ const badgeVariants = cva(
         neutral:
           "border-transparent dark:bg-zinc-500/20 bg-zinc-500/10 text-foreground/80 font-medium",
         colorful: "border-transparent bg-teal-500/15 text-teal-600 dark:text-teal-500 font-medium",
+        purple:
+          "border-transparent bg-purple-500/15 text-purple-600 dark:text-purple-500 font-medium",
         orange:
           "border-transparent bg-orange-500/15 text-orange-600 dark:text-orange-500 font-medium",
         // DEFAULT VARIANTS (DO NOT USE)

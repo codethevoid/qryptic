@@ -85,11 +85,11 @@ body {
 }
 
 @layer components {
-  .compare-grid-item:nth-child(4n) {
+  .compare-grid-item:nth-child(5n) {
     @apply border-r border-r-border;
   }
 
-  .compare-grid-item:nth-last-child(-n + 4) {
+  .compare-grid-item:nth-last-child(-n + 5) {
     @apply border-b border-b-border;
   }
 }
