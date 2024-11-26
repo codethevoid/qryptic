@@ -170,8 +170,7 @@ export const DomainsClient = () => {
         <div className="space-y-0.5">
           <p className="font-semibold">Default domains</p>
           <p className="text-[13px] text-muted-foreground">
-            These are the default domains provided by Qryptic. Disabling them will hide them from
-            the domain dropdown when creating and editing your links.
+            These are the default domains provided by Qryptic.
           </p>
         </div>
         <div className="mt-3 space-y-4">
