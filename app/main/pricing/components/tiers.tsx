@@ -136,7 +136,7 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
           {plans.map((plan, index) => (
             <Card
               key={plan.id}
-              className={`w-full rounded-none rounded-xl border shadow-lg max-[876px]:mx-auto max-[876px]:max-w-[500px] ${index === 1 ? "border-primary" : ""}`}
+              className={`w-full rounded-none rounded-xl border shadow-sm max-[876px]:mx-auto max-[876px]:max-w-[500px] ${index === 1 ? "border-primary shadow-lg" : ""}`}
             >
               <CardHeader>
                 <div className="relative flex w-full items-center justify-between">

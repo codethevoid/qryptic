@@ -54,7 +54,7 @@ export const UnveilClient = () => {
   };
 
   return (
-    <div className="mx-auto max-w-[440px] space-y-2 rounded-xl border bg-zinc-50 p-2 shadow-lg dark:bg-zinc-900 max-sm:max-w-none">
+    <div className="mx-auto max-w-[440px] space-y-2 rounded-xl border bg-zinc-50 p-2 shadow-sm dark:bg-zinc-900 max-sm:max-w-none">
       <div className="relative">
         <Link2
           size={15}

@@ -22,7 +22,7 @@ export const GetStarted = () => {
   return (
     <div className="px-4">
       <MaxWidthWrapper>
-        <Card className="col-span-3 rounded-xl border shadow-lg">
+        <Card className="col-span-3 rounded-xl border shadow-sm">
           <div className="grid grid-cols-2 gap-6 p-12 max-md:grid-cols-1 max-md:p-6">
             <div>
               <p className="text-2xl font-extrabold tracking-tight max-sm:text-xl">

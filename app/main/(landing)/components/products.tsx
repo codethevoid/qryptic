@@ -129,7 +129,7 @@ export const Products = () => {
           {products.map((product, i) => (
             <div
               key={product.title}
-              className="flex items-center space-x-10 rounded-xl border bg-background p-6 pl-10 shadow-md max-sm:flex-col max-sm:items-start max-sm:space-x-0 max-sm:space-y-6 max-sm:pl-6"
+              className="flex items-center space-x-10 rounded-xl border bg-background p-6 pl-10 shadow-sm max-sm:flex-col max-sm:items-start max-sm:space-x-0 max-sm:space-y-6 max-sm:pl-6"
             >
               <div className="relative flex h-[54px] w-[54px] shrink-0 items-center justify-center rounded-xl border ring-[5px] ring-accent/65 max-sm:h-[44px] max-sm:w-[44px]">
                 {product.icon}

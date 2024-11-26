@@ -57,7 +57,7 @@ const BlogCategoryPage = async ({ params }: { params: { category: string } }) =>
             <NextLink
               href={`/blog/${post.category}/${post.slug}`}
               key={post.slug}
-              className="space-y-3 overflow-hidden rounded-xl border bg-background p-4 shadow-md transition-all hover:shadow-lg dark:hover:border-primary"
+              className="space-y-3 overflow-hidden rounded-xl border bg-background p-4 shadow-sm transition-all hover:shadow-lg dark:hover:border-primary"
             >
               <NextImage
                 src={post.image}
