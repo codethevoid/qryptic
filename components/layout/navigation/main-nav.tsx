@@ -24,6 +24,7 @@ import {
   WandSparkles,
   XIcon,
   MenuIcon,
+  Radar,
 } from "lucide-react";
 import { useScrollPosition } from "@/lib/hooks";
 import NextLink from "next/link";
@@ -134,6 +135,12 @@ export const labLinks = [
     icon: <WandSparkles className="h-4 w-4 max-md:h-[14px] max-md:w-[14px]" />,
     href: "/lab/unveil",
     description: "Reveal final url to any short link",
+  },
+  {
+    title: "Radar",
+    icon: <Radar className="h-4 w-4 max-md:h-[14px] max-md:w-[14px]" />,
+    href: "/lab/radar",
+    description: "Detect malicious links",
   },
 ];
 
@@ -298,10 +305,10 @@ export const MainNav = () => {
           <Button
             size="icon"
             variant="outline"
-            className="hidden h-7 w-7 rounded-full bg-background shadow-none hover:bg-background active:!scale-100 max-md:inline-flex"
+            className="hidden h-8 w-8 rounded-full bg-background shadow-none hover:bg-background active:!scale-100 max-md:inline-flex"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <XIcon size={15} /> : <MenuIcon size={15} />}
+            {isMobileMenuOpen ? <XIcon size={16} /> : <MenuIcon size={16} />}
           </Button>
         </MaxWidthWrapper>
       </div>

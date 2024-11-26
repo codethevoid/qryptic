@@ -33,7 +33,10 @@ const companyLinks = [
   { name: "Terms", route: "/legal/terms" },
 ];
 
-const labLinks = [{ name: "Unveil", route: "/lab/unveil" }];
+const labLinks = [
+  { name: "Unveil", route: "/lab/unveil" },
+  { name: "Radar", route: "/lab/radar" },
+];
 
 export const Footer = () => {
   return (

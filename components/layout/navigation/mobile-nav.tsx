@@ -52,7 +52,7 @@ export const MobileNav = ({ isOpen, setIsOpen }: Props) => {
 
   return (
     <div
-      style={{ height: isOpen ? `calc(100vh - 45px)` : "0px" }}
+      style={{ height: isOpen ? `calc(100vh - 49px)` : "0px" }}
       className={
         "fixed top-[45px] z-50 w-full overflow-hidden bg-background backdrop-blur transition-all duration-200"
       }

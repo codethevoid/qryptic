@@ -1,8 +1,14 @@
 import { NextResponse, NextRequest } from "next/server";
 import { constructURL } from "@/utils/construct-url";
-
+import { ratelimit } from "@/lib/upstash/rate-limit";
+import { ipAddress } from "@vercel/functions";
 export const GET = async (req: NextRequest) => {
   try {
+    const success = await checkRatelimit(req);
+    if (!success) {
+      return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+    }
+
     const url = req.nextUrl.searchParams.get("url");
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 });
@@ -29,16 +35,16 @@ export const GET = async (req: NextRequest) => {
     searchParams.set("block_cookie_banners", "true");
 
     const res = await fetch(`https://api.screenshotone.com/take?${searchParams.toString()}`);
-    if (!res.ok) {
-      return NextResponse.json({ error: "Failed to get preview" }, { status: 500 });
+    let base64 = null;
+    if (res.ok) {
+      const buffer = await res.arrayBuffer();
+      base64 = Buffer.from(buffer).toString("base64");
     }
-    const buffer = await res.arrayBuffer();
-    const base64 = Buffer.from(buffer).toString("base64");
 
     return NextResponse.json({
       shortUrl: constructedURL,
       destination: finalDestination,
-      preview: `data:image/png;base64,${base64}`,
+      preview: base64 ? `data:image/png;base64,${base64}` : null,
     });
   } catch (e) {
     console.error("Error getting link preview for shortened link: ", e);
@@ -70,4 +76,11 @@ async function resolveFinalDestination(url: string, maxRedirects = 10): Promise<
   // Too many redirects
   console.error("Too many redirects while resolving the URL.");
   return null;
+}
+
+async function checkRatelimit(req: NextRequest) {
+  const ip = ipAddress(req);
+  const identifier = `${ip}-unveil`;
+  const { success } = await ratelimit().limit(identifier);
+  return success;
 }

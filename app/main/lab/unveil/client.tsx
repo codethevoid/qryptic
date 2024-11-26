@@ -21,6 +21,12 @@ export const UnveilClient = () => {
 
   const onSubmit = async () => {
     if (!enteredShortUrl) return toast.error("Please enter a valid short URL");
+    try {
+      new URL(enteredShortUrl);
+    } catch (e) {
+      return toast.error("Enter a valid URL");
+    }
+    setShortUrl(enteredShortUrl);
     setIsFirstLoad(false);
     setIsLoading(true);
     try {
@@ -35,7 +41,6 @@ export const UnveilClient = () => {
       const data = await res.json();
       setDestination(data.destination);
       setPreview(data.preview);
-      setShortUrl(data.shortUrl);
       setIsLoading(false);
       setEnteredShortUrl("");
     } catch (e) {
@@ -49,7 +54,7 @@ export const UnveilClient = () => {
   };
 
   return (
-    <div className="mx-auto max-w-[440px] space-y-2 rounded-xl border bg-zinc-50 p-2 dark:bg-zinc-900 max-sm:max-w-none">
+    <div className="mx-auto max-w-[440px] space-y-2 rounded-xl border bg-zinc-50 p-2 shadow-lg dark:bg-zinc-900 max-sm:max-w-none">
       <div className="relative">
         <Link2
           size={15}
@@ -57,7 +62,7 @@ export const UnveilClient = () => {
         />
         <Input
           className="w-full bg-background pl-[34px] pr-[34px]"
-          placeholder="bit.ly/4g14yjZ"
+          placeholder="https://bit.ly/4g14yjZ"
           value={enteredShortUrl}
           disabled={isLoading}
           onChange={(e) => setEnteredShortUrl(e.target.value)}
@@ -77,13 +82,28 @@ export const UnveilClient = () => {
         <p className="rounded-md border bg-zinc-50 px-3 py-1 text-[13px] dark:bg-zinc-900/60">
           Short link
         </p>
-        <p className="px-3 text-[13px] text-muted-foreground">{shortUrl}</p>
+        <div className="flex min-w-0">
+          <p className="min-w-0 truncate px-3 text-[13px] text-muted-foreground">{shortUrl}</p>
+        </div>
       </div>
       <div className="space-y-2 rounded-lg border bg-background p-2 shadow-sm">
         <p className="rounded-md border bg-zinc-50 px-3 py-1 text-[13px] dark:bg-zinc-900/60">
           Destination
         </p>
-        <p className="min-w-0 truncate px-3 text-[13px] text-muted-foreground">{destination}</p>
+        <div className="flex">
+          {isLoading ? (
+            <Skeleton className="h-[19.5px] w-full" />
+          ) : (
+            <a
+              href={destination}
+              rel="noreferrer"
+              target="_blank"
+              className="min-w-0 truncate px-3 text-[13px] text-muted-foreground hover:underline"
+            >
+              {destination}
+            </a>
+          )}
+        </div>
       </div>
       <div className="space-y-2 rounded-lg border bg-background p-2 shadow-sm">
         <p className="rounded-md border bg-zinc-50 px-3 py-1 text-[13px] dark:bg-zinc-900/60">
