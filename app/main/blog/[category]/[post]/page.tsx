@@ -118,7 +118,7 @@ const BlogPostPage = async ({ params }: { params: { category: string; post: stri
           className="mt-6 w-full rounded-xl border shadow-lg"
         />
       </div>
-      <article className="prose prose-sm max-w-none dark:prose-invert prose-headings:mb-2 prose-headings:font-bold prose-headings:tracking-tight">
+      <article className="prose prose-sm max-w-none dark:prose-invert prose-headings:mb-2 prose-headings:font-bold prose-headings:tracking-tight prose-code:text-xs prose-pre:border prose-pre:bg-zinc-50 prose-pre:text-foreground prose-img:my-6 dark:prose-pre:bg-zinc-950">
         {/* <MDX /> */}
         {/* <div className="max-w-screen-md"> */}
         <MDXRemote source={content} components={components} />

@@ -1,13 +1,18 @@
 import { ChevronArrow } from "../chevron-arrow";
 import NextLink from "next/link";
 
-export const LinkBadge = () => {
+type Props = {
+  href: string;
+  label: string;
+};
+
+export const LinkBadge = ({ href, label }: Props) => {
   return (
     <NextLink
-      href="/blog/company-news/new-exclusive-short-domain-qx-one"
-      className="group mx-auto flex w-fit cursor-pointer items-center space-x-1 rounded-full border bg-background px-3 py-1 transition-colors hover:border-primary/30"
+      href={href}
+      className="group mx-auto flex w-fit cursor-pointer items-center space-x-1 rounded-full border bg-background px-3 py-[3px] transition-colors hover:border-primary/30"
     >
-      <p className="text-[13px] font-medium">Exlusive short domain is now live</p>
+      <p className="text-[13px] font-medium">{label}</p>
       <ChevronArrow className="bg-black dark:bg-white" />
     </NextLink>
   );

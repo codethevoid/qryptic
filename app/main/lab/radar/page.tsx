@@ -15,7 +15,7 @@ export const metadata = constructMetadata({
   title: "Radar | Detect malicious links",
   description:
     "Radar scans and analyzes links for potential threats like phishing, malware, and scams, ensuring a secure browsing experience.",
-  image: "https://qryptic.s3.us-east-1.amazonaws.com/main/radar-og.png",
+  image: "https://cdn.qryptic.io/main/radar-og.png",
 });
 
 const highlights: Highlight[] = [

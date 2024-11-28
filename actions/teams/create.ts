@@ -140,7 +140,7 @@ export const createTeam = async (name: string): Promise<CreateTeamResponse> => {
       planId: freePlan.id,
       stripeCustomerId: customer.id,
       subscriptionStatus: "active",
-      image: `https://qryptic.s3.amazonaws.com/${key}`,
+      image: `https://cdn.qryptic.io/${key}`,
       defaultDomains: { connect: defaultDomains.map((d) => ({ id: d.id })) },
       inviteToken,
     },

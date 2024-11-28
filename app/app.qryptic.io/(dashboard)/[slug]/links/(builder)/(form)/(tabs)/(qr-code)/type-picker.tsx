@@ -23,7 +23,7 @@ export const QrCodeTypePicker = () => {
         <div className="space-y-4 rounded-lg border p-4 shadow">
           <div className="space-y-2">
             <Image
-              src="https://qryptic.s3.amazonaws.com/main/standard-qr.png"
+              src="https://cdn.qryptic.io/main/standard-qr.png"
               alt="Standad QR"
               width={218}
               height={218}
@@ -44,7 +44,7 @@ export const QrCodeTypePicker = () => {
         <div className="space-y-4 rounded-lg border p-4 shadow">
           <div className="space-y-2">
             <Image
-              src="https://qryptic.s3.amazonaws.com/main/qr-ai.png"
+              src="https://cdn.qryptic.io/main/qr-ai.png"
               alt="AI QR"
               width={768}
               height={768}

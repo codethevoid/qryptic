@@ -130,7 +130,7 @@ export const UnveilClient = () => {
         ) : (
           <>
             <NextImage
-              src={"https://qryptic.s3.us-east-1.amazonaws.com/main/vercel-screenshot-dark.png"}
+              src={"https://cdn.qryptic.io/main/vercel-screenshot-dark.png"}
               alt="website-screenshot-preview"
               width={1920}
               height={1080}
@@ -139,7 +139,7 @@ export const UnveilClient = () => {
               priority
             />
             <NextImage
-              src={"https://qryptic.s3.us-east-1.amazonaws.com/main/vercel-screenshot.png"}
+              src={"https://cdn.qryptic.io/main/vercel-screenshot.png"}
               alt="website-screenshot-preview"
               width={1920}
               height={1080}

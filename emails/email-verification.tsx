@@ -20,7 +20,7 @@ export const EmailVerificationEmail = (token: string) => (
       <Body className="bg-white font-sans">
         <Container className="mx-auto my-8 w-full max-w-[400px] rounded-xl border border-solid border-zinc-200 px-6 py-10">
           <Img
-            src={"https://qryptic.s3.amazonaws.com/logos/qryptic-wordmark.png"}
+            src={"https://cdn.qryptic.io/logos/qryptic-wordmark.png"}
             height={26}
             width={110}
             alt="qryptic"

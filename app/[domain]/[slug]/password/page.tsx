@@ -12,7 +12,7 @@ type Props = {
 export const metadata = constructMetadata({
   title: "Password Protected Link",
   description: "This link is password protected. Please enter the password to continue.",
-  image: "https://qryptic.s3.us-east-1.amazonaws.com/main/open-graph-password.jpg",
+  image: "https://cdn.qryptic.io/main/open-graph-password.jpg",
   noIndex: true,
 });
 

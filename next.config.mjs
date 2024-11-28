@@ -7,8 +7,13 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**", // Allow all domains (if needed)
+        hostname: "cdn.qryptic.io",
+      },
+      {
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        hostname: "www.google.com",
       },
     ],
   },

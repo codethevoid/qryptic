@@ -15,7 +15,7 @@ export const metadata = constructMetadata({
   title: "Unveil | Discover the true destination behind any short link",
   description:
     "Uncover the hidden URLs behind shortened links with Unveil. Instantly unshorten links, enhance online safety, and protect yourself from phishing scams, malicious sites, and more.",
-  image: "https://qryptic.s3.us-east-1.amazonaws.com/main/unveil-opengraph.png",
+  image: "https://cdn.qryptic.io/main/unveil-opengraph.png",
 });
 
 const highlights: Highlight[] = [

@@ -31,6 +31,7 @@ import {
   Ghost,
   Cog,
   Router,
+  CheckIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
@@ -138,7 +139,7 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
               key={plan.id}
               className={`w-full rounded-none rounded-xl border shadow-sm max-[876px]:mx-auto max-[876px]:max-w-[500px]`}
             >
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <div className="relative flex w-full items-center justify-between">
                   <CardTitle>{plan.name}</CardTitle>
                   {!plan.isFree && (
@@ -166,7 +167,7 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                       : "Billed annually"}
                 </p>
                 <Button
-                  className={`group my-6 h-10 w-full justify-between rounded-full group-hover:translate-x-1`}
+                  className={`group my-4 h-10 w-full justify-between rounded-full group-hover:translate-x-1`}
                   variant={index > 0 ? "default" : "outline"}
                   asChild
                 >
@@ -177,29 +178,26 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                     />
                   </a>
                 </Button>
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-1.5">
                   <Feature
-                    icon={<QrCode size={15} />}
+                    icon={<CheckIcon size={15} />}
                     feature={`${plan.links.toLocaleString("en-us")} QR codes/mo`}
                   />
                   <Feature
-                    icon={<Link size={15} />}
+                    icon={<CheckIcon size={15} />}
                     feature={`${plan.links.toLocaleString("en-us")} links/mo`}
                   />
+                  <Feature icon={<CheckIcon size={15} />} feature="Unlimited event tracking" />
                   <Feature
-                    icon={<MousePointerClick size={15} />}
-                    feature="Unlimited event tracking"
-                  />
-                  <Feature
-                    icon={<ChartArea size={15} />}
+                    icon={<CheckIcon size={15} />}
                     feature={`${getAnalytics(plan.analytics)} analytical data`}
                   />
                   <Feature
-                    icon={<Globe size={15} />}
+                    icon={<CheckIcon size={15} />}
                     feature={`${plan.domains} Custom domain${plan.domains > 1 ? "s" : ""}`}
                   />
                   <Feature
-                    icon={<User size={15} />}
+                    icon={<CheckIcon size={15} />}
                     feature={`${plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
                   />
 
@@ -208,19 +206,18 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                   {/*)}*/}
                   {/* {!plan.isFree && <Feature icon={<Bot size={16} />} feature="AI features" />} */}
                   {!plan.isFree && (
-                    <Feature
-                      icon={<Cog size={15} />}
-                      feature="
-                    Advanced link controls"
-                    />
+                    <Feature icon={<CheckIcon size={15} />} feature="Advanced link controls" />
                   )}
                   {!plan.isFree && (
-                    <Feature icon={<Milestone size={15} />} feature="Domain redirector" />
+                    <Feature icon={<CheckIcon size={15} />} feature="Domain redirector" />
                   )}
                   {!plan.isFree && (
-                    <Feature icon={<AppWindowMac size={15} />} feature="API access (coming soon)" />
+                    <Feature icon={<CheckIcon size={15} />} feature="API access (coming soon)" />
                   )}
-                  <Feature icon={<Headset size={15} />} feature={`${plan.supportLevel} support`} />
+                  <Feature
+                    icon={<CheckIcon size={15} />}
+                    feature={`${plan.supportLevel} support`}
+                  />
                 </div>
               </CardContent>
             </Card>

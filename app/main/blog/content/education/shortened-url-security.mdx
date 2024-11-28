@@ -1,0 +1,74 @@
+export const metadata = {
+  title: "The security risks of short URLs and how to stay safe",
+  description:
+    "Learn the risks of shortened URLs, stay safe from phishing, and protect yourself with practical tips and tools.",
+  image: "https://cdn.qryptic.io/main/secure.png",
+  date: "2024-11-28 (Eastern Standard Time)",
+};
+
+Shortened URLs are great for sharing links quickly and keeping things clean, but the downside is you can’t always tell where they’ll take you. While they’re convenient, it’s important to stay cautious and know how to spot potential risks.
+
+## What are shortened URLs?
+
+Shortened URLs, often referred to as short links, are compact versions of long web addresses. Instead of sharing a lengthy, complicated URL, these links make it easy to share something clean and concise. For example, a link like:
+
+```
+https://qryptic.io/blog/company-news/new-exclusive-short-domain-qx-one
+```
+
+can be shortened to something like:
+
+```
+qx.one/xoft
+```
+
+Shortened URLs are created using tools like Bitly, TinyURL, or [Qryptic](https://qryptic.io) and are incredibly useful for sharing links by SMS, email, print marketing, and on platforms with character limits like X (formerly Twitter) for example. While convenient and visually appealing, they carry risks since their destination isn't always clear.
+
+## Behind the scenes of a short link
+
+Understanding how short links work behind the scenes is essential. In this post, we’ll provide a quick overview of their functionality. For a deeper dive, stay tuned for a more detailed blog post coming soon.
+
+<Image
+  src="https://cdn.qryptic.io/main/short-link-flow-dark.png"
+  alt="chart showing how short links work"
+  height={772}
+  width={4456}
+  className="hidden dark:block"
+/>
+<Image
+  src="https://cdn.qryptic.io/main/short-link-flow.png"
+  alt="chart showing how short links work"
+  height={772}
+  width={4456}
+  className="dark:hidden"
+/>
+
+Here's a quick rundown of how it works:
+
+1. User creates a shortened link and shares it with others.
+2. A link is clicked, sending a request to the servers which look up the corresponding URL from their database.
+3. The server redirects the user to the final destination, which is the original URL associated with the short link.
+
+The biggest risk with shortened URLs is not knowing where they lead, making it easy for malicious actors to hide phishing sites, scams, or malware behind harmless-looking links.
+
+## How criminals use short links
+
+Shortened URLs are often exploited by bad actors to:
+
+- **Distribute Malware or Ransomware:** Short links are used to trick users into visiting malicious websites that can compromise their devices or data.
+- **Impersonate Trusted Brands for Phishing:** Attackers create short links that mimic legitimate brands to lure users into sharing sensitive information, such as login credentials or financial details.
+- **Bypass Security Filters:** Shortened URLs can bypass security measures on platforms or email filters, allowing harmful links to spread more easily.
+
+## How you can stay safe
+
+A few precautions and the right tools can help protect us and minimize potential dangers:
+
+- **Verify the source:** Always ensure the link comes from a trusted source before clicking.
+- **Preview the destination:** With our [Unveil](https://qryptic.io/lab/unveil) tool, you can preview the destination of any short link before clicking.
+- **Scan for Threats:** You can use our [Radar](https://qryptic.io/lab/radar) tool to check for hidden threats like malware or phishing attempts.
+
+## Security at Qryptic
+
+At Qryptic, we prioritize security by maintaining a comprehensive blacklist of over 2,000 link shorteners known to be exploited by criminals. These bad actors often chain multiple shorteners together to bypass security measures, but our platform ensures they are blocked.
+
+We scan every short link's destination for threats such as malware, unwanted software, and social engineering to ensure user safety. Leveraging AI and machine learning, over 10 billion URLs are analyzed daily to detect and block malicious links, preventing the spread of harmful content.

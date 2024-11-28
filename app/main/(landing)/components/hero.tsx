@@ -12,7 +12,10 @@ export const Hero = () => {
       <div className="-mb-6 flex flex-col items-center justify-center overflow-x-hidden px-4">
         <MaxWidthWrapper className="space-y-8">
           <div className="space-y-6">
-            <LinkBadge />
+            <LinkBadge
+              href="/blog/company-news/new-exclusive-short-domain-qx-one"
+              label="Exlusive short domain is now live"
+            />
             <div className="space-y-2">
               <h1 className="text-center text-4xl font-bold tracking-tight max-md:text-3xl max-[500px]:mx-auto max-[500px]:max-w-[340px]">
                 Your{" "}
@@ -55,16 +58,16 @@ export const Hero = () => {
           </div>
           <div className="min-w-[580px] pb-6 max-[400px]:min-w-[500px]">
             <NextImage
-              src="https://qryptic.s3.us-east-1.amazonaws.com/main/landing/hero-dark.png"
+              src="https://cdn.qryptic.io/main/landing/hero-dark.png"
               alt="Qryptic analytics dashboard"
               priority
               height={1308}
               width={2318}
               quality={100}
-              className="hidden w-full rounded-xl border shadow-lg dark:block"
+              className="transform:perspective(4101px)_rotateX(51deg)_rotateY(-13deg)_rotateZ(40deg)] hidden w-full rounded-xl border shadow-lg dark:block"
             />
             <NextImage
-              src="https://qryptic.s3.us-east-1.amazonaws.com/main/landing/hero-light.png"
+              src="https://cdn.qryptic.io/main/landing/hero-light.png"
               alt="Qryptic analytics dashboard"
               priority
               height={1314}

@@ -119,7 +119,7 @@ const XPreview = ({ image, title, url }: { image: string; title: string; url: st
       </div>
       <div className="space-y-1">
         <div className="relative aspect-[1200/630]">
-          <Image
+          <img
             src={image}
             width={1200}
             height={630}
@@ -147,7 +147,7 @@ const FacebookPreview = ({ image, title, url }: { image: string; title: string; 
       </div>
       <div className="border">
         <div className="aspect-[1200/630]">
-          <Image
+          <img
             src={image}
             width={1200}
             height={630}
@@ -177,7 +177,7 @@ const LinkedInPreview = ({ title, image, url }: { title: string; image: string; 
       <div className="rounded-lg border p-2.5">
         <div className="grid grid-cols-2 gap-4">
           <div className="aspect-[1200/630] overflow-hidden rounded-md">
-            <Image
+            <img
               src={image}
               width={1200}
               height={630}

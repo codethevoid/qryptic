@@ -31,6 +31,14 @@ export const BlogNav = () => {
         >
           <NextLink href="/blog/company-news">Company news</NextLink>
         </Button>
+        <Button
+          variant={pathname === "/blog/education" ? "default" : "ghost"}
+          size="sm"
+          className="rounded-full"
+          asChild
+        >
+          <NextLink href="/blog/education">Education</NextLink>
+        </Button>
       </div>
     </MaxWidthWrapper>
   );

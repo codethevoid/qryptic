@@ -54,7 +54,7 @@ export const registerUser = async (data: RegisterFormValues): Promise<RegisterUs
     data: {
       email,
       hashedPassword: await bcrypt.hash(password, 10),
-      image: imgLocation,
+      image: `https://d1amdcfc5q74f4.cloudfront.net/${key}`,
       emailToken: token,
       credentialsAuth: true,
     },

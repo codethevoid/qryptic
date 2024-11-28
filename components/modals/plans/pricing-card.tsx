@@ -3,7 +3,7 @@ import { SmallSwitch } from "@/components/ui/custom/small-switch";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
-import { Bot, ChartArea, Cog, Globe, Link, QrCode, User } from "lucide-react";
+import { Bot, ChartArea, CheckIcon, Cog, Globe, Link, QrCode, User } from "lucide-react";
 import { type Plan } from "@/lib/hooks/swr/use-plans";
 import NumberFlow from "@number-flow/react";
 
@@ -62,24 +62,24 @@ export const PricingCard = ({ plan, interval, setInterval }: PricingCardProps) =
       <div className="p-4">
         <div className="space-y-1.5">
           <Feature
-            icon={<QrCode size={15} />}
+            icon={<CheckIcon size={15} />}
             feature={`${plan.links.toLocaleString("en-us")} QR codes per month`}
           />
           <Feature
-            icon={<Link size={15} />}
+            icon={<CheckIcon size={15} />}
             feature={`${plan.links.toLocaleString("en-us")} links per month`}
           />
           <Feature
-            icon={<ChartArea size={15} />}
+            icon={<CheckIcon size={15} />}
             feature={`${getAnalytics(plan.analytics)} analytical data`}
           />
-          <Feature icon={<Globe size={15} />} feature={`${plan.domains} custom domains`} />
+          <Feature icon={<CheckIcon size={15} />} feature={`${plan.domains} custom domains`} />
           <Feature
-            icon={<User size={15} />}
+            icon={<CheckIcon size={15} />}
             feature={`${plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
           />
           {/*<Feature icon={<Bot size={15} />} feature="AI features" />*/}
-          <Feature icon={<Cog size={15} />} feature="Advanced link controls" />
+          <Feature icon={<CheckIcon size={15} />} feature="Advanced link controls" />
         </div>
       </div>
     </Card>

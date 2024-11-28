@@ -11,34 +11,34 @@ type Props = {
 export const constructMetadata = ({
   title = `Qryptic | Deliver Digital Experiences at Scale`,
   description = `Qryptic | Modernize the way your business delivers impactful marketing campaigns. Easily track, manage, and optimize every campaign, empowering your team to create data-driven strategies and deliver seamless digital experiences at scale.`,
-  image = "https://qryptic.s3.us-east-1.amazonaws.com/main/open-graph-light.png",
+  image = "https://cdn.qryptic.io/main/open-graph-light.png",
   icons = [
     {
       rel: "apple-touch-icon",
       sizes: "32x32",
-      url: "https://qryptic.s3.us-east-1.amazonaws.com/logos/favicons/apple-touch-icon.png",
+      url: "https://cdn.qryptic.io/logos/favicons/apple-touch-icon.png",
     },
     {
       rel: "android-chrome",
       sizes: "192x192",
-      url: "https://qryptic.s3.us-east-1.amazonaws.com/logos/favicons/android-chrome-192x192.png",
+      url: "https://cdn.qryptic.io/logos/favicons/android-chrome-192x192.png",
     },
     {
       rel: "android-chrome",
       sizes: "512x512",
-      url: "https://qryptic.s3.us-east-1.amazonaws.com/logos/favicons/android-chrome-512x512.png",
+      url: "https://cdn.qryptic.io/logos/favicons/android-chrome-512x512.png",
     },
     {
       rel: "icon",
       type: "image/png",
       sizes: "32x32",
-      url: "https://qryptic.s3.us-east-1.amazonaws.com/logos/favicons/favicon-32x32.png",
+      url: "https://cdn.qryptic.io/logos/favicons/favicon-32x32.png",
     },
     {
       rel: "icon",
       type: "image/png",
       sizes: "16x16",
-      url: "https://qryptic.s3.us-east-1.amazonaws.com/logos/favicons/favicon-16x16.png",
+      url: "https://cdn.qryptic.io/logos/favicons/favicon-16x16.png",
     },
   ],
   noIndex = false,
