@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const TeamSkeleton = () => {
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-3 gap-4 max-lg:grid-cols-2 max-sm:grid-cols-1">
       {Array.from({ length: 6 }).map((_, i) => (
         <Card key={i} className="space-y-5 p-4 shadow-sm">
           <div className="flex justify-between">
