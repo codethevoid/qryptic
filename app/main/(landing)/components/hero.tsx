@@ -6,12 +6,11 @@ import { appDomain, protocol } from "@/utils/qryptic/domains";
 import NextLink from "next/link";
 import { LinkBadge } from "@/components/ui/custom/link-badge";
 import { RainbowButton } from "@/components/ui/rainbow-button";
-import { ParticlesBg } from "@/components/layout/particles";
 
 export const Hero = () => {
   return (
     <div className="relative">
-      <ParticlesBg />
+      {/* <ParticlesBg /> */}
       <div className="-mb-6 flex flex-col items-center justify-center overflow-x-hidden px-4">
         <MaxWidthWrapper className="space-y-8">
           <div className="space-y-6">
