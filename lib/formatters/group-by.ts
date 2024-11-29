@@ -11,6 +11,16 @@ type Key =
   | "os"
   | "deviceType";
 
+const stripDestination = (destination: string) => {
+  // remove https://, http://, and www. from destination
+  // and remove search params
+  return destination
+    .replace("https://", "")
+    .replace("http://", "")
+    .replace("www.", "")
+    .split("?")[0];
+};
+
 export const groupBy = (events: Event[], key: Key) => {
   if (!events?.length) return [];
 
@@ -37,6 +47,7 @@ export const groupBy = (events: Event[], key: Key) => {
     // if key is city, we can get duplicate cities with different countries
     // so we need to group by city and country
     let formattedKey = key === "city" ? `${event[key]}-${event.country}` : event[key];
+    if (key === "destination") formattedKey = stripDestination(event.destination);
 
     // set percentage of count to total events
     if (!grouped[formattedKey]) {

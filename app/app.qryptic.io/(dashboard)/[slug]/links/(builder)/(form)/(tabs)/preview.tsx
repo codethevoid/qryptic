@@ -65,12 +65,12 @@ export const Preview = () => {
             role="button"
             className="relative aspect-[1200/630] w-full cursor-pointer overflow-hidden rounded-lg border shadow-sm transition-[opacity] hover:opacity-90"
           >
-            <NextImage
+            <img
               src={image}
               alt={title}
               height={630}
               width={1200}
-              quality={100}
+              // quality={100}
               className="h-full w-full object-cover"
             />
           </div>

@@ -54,9 +54,9 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
 
     // Ensure the tick is in a format that Safari can handle
     const parsedDate = new Date(tick.replace(/-/g, "/")); // Replacing dashes with slashes can sometimes help
-    return !isNaN(parsedDate.getTime())
-      ? format(parsedDate, diff > 270 ? "MMM ''yy'" : "MMM d")
-      : tick;
+    // if difference is great than 270 days, show month and year
+    if (diff > 270) return format(parsedDate, "MMM ''yy'");
+    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM d") : tick;
   };
 
   const formatTooltipLabel = (label: string) => {
@@ -66,9 +66,8 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
     }
 
     const parsedDate = new Date(label.replace(/-/g, "/"));
-    return !isNaN(parsedDate.getTime())
-      ? format(parsedDate, diff > 270 ? "MMMM yyyy" : "MMM do, yyyy")
-      : label;
+    if (diff > 270) return format(parsedDate, "MMMM yyyy");
+    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM do, yyyy") : label;
   };
 
   // const formatYTick = (num: number) => {
