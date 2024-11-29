@@ -15,6 +15,9 @@ const nextConfig = {
       {
         hostname: "www.google.com",
       },
+      {
+        hostname: "flagcdn.com",
+      },
     ],
   },
   compiler: {

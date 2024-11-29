@@ -37,6 +37,7 @@ import { useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { MobileNav } from "./mobile-nav";
 import { useWindowWidth } from "@react-hook/window-size";
+import { RainbowButton } from "@/components/ui/rainbow-button";
 
 const productLinks = [
   {
@@ -294,22 +295,31 @@ export const MainNav = () => {
               </Button>
             </div>
           </div>
-          <div className="flex items-center max-md:hidden">
+          <div className="flex items-center space-x-2 max-md:hidden">
             <Button size="sm" variant="ghost" className="ml-1 rounded-full max-sm:ml-0" asChild>
               <a href={`${protocol}${appDomain}/login`}>Log in</a>
             </Button>
-            <Button size="sm" className="to cyan-500 group ml-3 rounded-full max-sm:ml-2" asChild>
-              <a href={`${protocol}${appDomain}/register`}>Sign up</a>
+
+            <a href={`${protocol}${appDomain}/register`}>
+              <RainbowButton className="h-8 rounded-full px-3 text-[13px]">Sign up</RainbowButton>
+            </a>
+          </div>
+          <div className="hidden space-x-2 max-md:flex">
+            <a
+              href={`${protocol}${appDomain}/register`}
+              className={cn(isMobileMenuOpen && "hidden")}
+            >
+              <RainbowButton className="h-8 rounded-full px-3 text-[13px]">Sign up</RainbowButton>
+            </a>
+            <Button
+              size="icon"
+              variant="outline"
+              className="h-8 w-8 rounded-full bg-background shadow-none hover:bg-background active:!scale-100"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <XIcon size={16} /> : <MenuIcon size={16} />}
             </Button>
           </div>
-          <Button
-            size="icon"
-            variant="outline"
-            className="hidden h-8 w-8 rounded-full bg-background shadow-none hover:bg-background active:!scale-100 max-md:inline-flex"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <XIcon size={16} /> : <MenuIcon size={16} />}
-          </Button>
         </MaxWidthWrapper>
       </div>
       <MobileNav isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen} />

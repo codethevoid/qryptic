@@ -134,11 +134,22 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
                   {(team?.plan.analytics as number) >= 1096 && (
                     <SelectItem value="threeYears">Last 3 years</SelectItem>
                   )}
+                  {(team?.plan.analytics as number) >= 1826 && (
+                    <SelectItem value="fiveYears">Last 5 years</SelectItem>
+                  )}
                   {team?.plan.isFree && (
                     <SelectItem value="threeYears" disabled>
                       <div className="flex items-center space-x-2">
                         <Lock size={13} />
                         <span>Last 3 years</span>
+                      </div>
+                    </SelectItem>
+                  )}
+                  {team?.plan.isFree && (
+                    <SelectItem value="threeYears" disabled>
+                      <div className="flex items-center space-x-2">
+                        <Lock size={13} />
+                        <span>Last 5 years</span>
                       </div>
                     </SelectItem>
                   )}
@@ -162,12 +173,14 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
                       </div>
                     </SelectItem>
                   )}
-                  <SelectItem value="all" disabled>
-                    <div className="flex items-center space-x-2">
-                      <Lock size={13} />
-                      <span>All time</span>
-                    </div>
-                  </SelectItem>
+                  {(team?.plan.analytics as number) < 1826 && !team?.plan.isFree && (
+                    <SelectItem value="fiveYears" disabled>
+                      <div className="flex items-center space-x-2">
+                        <Lock size={13} />
+                        <span>Last 5 years</span>
+                      </div>
+                    </SelectItem>
+                  )}
                 </SelectGroup>
               </SelectContent>
             </Select>

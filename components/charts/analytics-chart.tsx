@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/chart";
 import { differenceInDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, TooltipProps, XAxis, YAxis, Line } from "recharts";
 import { aggregateEvents } from "@/lib/formatters/aggregate";
 import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -18,7 +18,7 @@ import { type Event } from "@/types/analytics";
 const chartConfig = {
   clicks: {
     label: "Clicks",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-4))",
   },
   scans: {
     label: "Scans",
@@ -26,7 +26,7 @@ const chartConfig = {
   },
   total: {
     label: "Events",
-    color: "hsl(var(--chart-4))",
+    color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
 
@@ -53,7 +53,9 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
 
     // Ensure the tick is in a format that Safari can handle
     const parsedDate = new Date(tick.replace(/-/g, "/")); // Replacing dashes with slashes can sometimes help
-    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM d") : tick;
+    return !isNaN(parsedDate.getTime())
+      ? format(parsedDate, diff > 270 ? "MMM ''yy'" : "MMM d")
+      : tick;
   };
 
   const formatTooltipLabel = (label: string) => {
@@ -63,7 +65,9 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
     }
 
     const parsedDate = new Date(label.replace(/-/g, "/"));
-    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM d, yyyy") : label;
+    return !isNaN(parsedDate.getTime())
+      ? format(parsedDate, diff > 270 ? "MMMM yyyy" : "MMM do, yyyy")
+      : label;
   };
 
   const formatYTick = (num: number) => {
@@ -88,7 +92,7 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
   };
 
   return (
-    <div className="overflow-hidden rounded-lg border shadow max-sm:-mx-4 max-sm:rounded-none max-sm:border-l-0 max-sm:border-r-0 max-sm:shadow-none">
+    <div className="overflow-hidden rounded-lg border shadow-sm max-sm:-mx-4 max-sm:rounded-none max-sm:border-l-0 max-sm:border-r-0 max-sm:shadow-none">
       <div className="w-full border-b bg-zinc-50 dark:bg-zinc-950">
         <div className="flex w-full min-[700px]:max-w-[440px]">
           <div
@@ -99,7 +103,7 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
             onClick={() => handleAreaChange("events")}
           >
             <div className="items-flex flex items-center space-x-2">
-              <span className="relative bottom-[0.5px] h-2.5 w-2.5 rounded-[2px] border border-[hsl(var(--chart-4))] bg-[hsl(var(--chart-4))]" />
+              <span className="relative bottom-[0.5px] h-2.5 w-2.5 rounded-[2px] border border-[hsl(var(--chart-1))] bg-[hsl(var(--chart-1))]" />
               <p className="text-[13px] text-muted-foreground">Events</p>
             </div>
             {!isLoading ? (
@@ -127,7 +131,7 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
             onClick={() => handleAreaChange("clicks")}
           >
             <div className="flex items-center space-x-2">
-              <span className="relative bottom-[0.5px] h-2.5 w-2.5 rounded-[2px] border border-[hsl(var(--chart-1))] bg-[hsl(var(--chart-1))]" />
+              <span className="relative bottom-[0.5px] h-2.5 w-2.5 rounded-[2px] border border-[hsl(var(--chart-4))] bg-[hsl(var(--chart-4))]" />
               <p className="text-[13px] text-muted-foreground">Clicks</p>
             </div>
             {!isLoading ? (
@@ -177,13 +181,14 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
         <ChartContainer config={chartConfig} className={"h-[400px] w-full max-md:h-[280px]"}>
           <AreaChart data={chartData} margin={{ left: -20, top: 8, right: 12 }}>
             <ChartTooltip
-              cursor={false}
               content={
                 <ChartTooltipContent
                   indicator="dot"
                   labelFormatter={(label) => formatTooltipLabel(label)}
                 />
               }
+              position={{ y: 0 }}
+              cursor={{ stroke: "var(--border)" }}
             />
             <XAxis
               dataKey="interval"
@@ -203,34 +208,31 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
             {areas.includes("events") && (
               <Area
                 dataKey="total"
-                type="monotone"
                 fill="url(#fillTotal)"
                 fillOpacity={0.4}
                 stroke="var(--color-total)"
                 stackId="a"
-                strokeWidth={1.5}
+                strokeWidth={2}
               />
             )}
             {areas.includes("clicks") && (
               <Area
                 dataKey="clicks"
-                type="monotone"
                 fill="url(#fillClicks)"
                 fillOpacity={0.4}
                 stroke="var(--color-clicks)"
                 stackId="b"
-                strokeWidth={1.5}
+                strokeWidth={2}
               />
             )}
             {areas.includes("scans") && (
               <Area
                 dataKey="scans"
-                type="monotone"
                 fill="url(#fillScans)"
                 fillOpacity={0.4}
                 stroke="var(--color-scans)"
                 stackId="c"
-                strokeWidth={1.5}
+                strokeWidth={2}
               />
             )}
             <defs>

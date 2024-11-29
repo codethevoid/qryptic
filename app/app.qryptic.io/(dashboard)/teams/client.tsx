@@ -50,7 +50,7 @@ export const TeamsProvider = ({ teams }: { teams: Team[] }) => {
     <div className="grid grid-cols-3 gap-4 max-lg:grid-cols-2 max-sm:grid-cols-1">
       {teams.map((team, i) => (
         <NextLink href={`/${team.slug}`} key={i}>
-          <Card className="space-y-5 p-4 shadow transition-all hover:shadow-lg dark:hover:border-foreground">
+          <Card className="space-y-5 p-4 shadow-sm transition-all hover:shadow-lg dark:hover:border-foreground">
             <div className="flex justify-between space-x-3">
               <div className="flex min-w-0 items-center space-x-3">
                 <Avatar className="h-10 w-10 shrink-0 border">

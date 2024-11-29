@@ -6,7 +6,7 @@ export const TeamSkeleton = () => {
   return (
     <div className="grid grid-cols-3 gap-4">
       {Array.from({ length: 6 }).map((_, i) => (
-        <Card key={i} className="space-y-5 p-4 shadow">
+        <Card key={i} className="space-y-5 p-4 shadow-sm">
           <div className="flex justify-between">
             <div className="flex items-center space-x-3">
               <Avatar className="h-10 w-10">

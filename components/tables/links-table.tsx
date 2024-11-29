@@ -54,7 +54,7 @@ export const LinksTable: FC<LinksTableProps> = ({ links, mutate }) => {
 
   return (
     <>
-      <div className="rounded-lg border">
+      <div className="rounded-lg border shadow-sm">
         {links.map((link: TableLink, i: number) => (
           <div
             key={link.id}

@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export const TagsSkeleton = () => {
   return (
     <div>
-      <div className="rounded-lg border">
+      <div className="rounded-lg border shadow-sm">
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             className={`${i !== 4 ? "border-b" : undefined} flex items-center justify-between space-x-2.5 px-3 py-2.5 transition-all`}

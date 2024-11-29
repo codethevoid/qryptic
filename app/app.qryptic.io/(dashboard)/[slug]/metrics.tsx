@@ -25,7 +25,7 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
   return (
     <div className="mt-6 grid grid-cols-3 gap-5 max-[768px]:mt-3 max-[750px]:grid-cols-1 max-[750px]:grid-rows-3">
       <NextLink href={`/${slug}/links`} passHref>
-        <Card className="w-full space-y-2 p-4 shadow transition-all hover:border-primary/30">
+        <Card className="w-full space-y-2 p-4 shadow-sm transition-all hover:border-primary/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <p className="text-sm">Links</p>
@@ -80,7 +80,7 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
         </Card>
       </NextLink>
       <NextLink href={`/${slug}/analytics`} passHref>
-        <Card className="w-full space-y-2 p-4 shadow transition-all hover:border-primary/30">
+        <Card className="w-full space-y-2 p-4 shadow-sm transition-all hover:border-primary/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <p className="text-sm">Clicks</p>
@@ -134,7 +134,7 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
         </Card>
       </NextLink>
       <NextLink href={`/${slug}/analytics`} passHref>
-        <Card className="w-full space-y-2 p-4 shadow transition-all hover:border-primary/30">
+        <Card className="w-full space-y-2 p-4 shadow-sm transition-all hover:border-primary/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <p className="text-sm">Scans</p>

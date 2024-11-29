@@ -1,16 +1,26 @@
-import { differenceInDays, format, eachDayOfInterval, eachHourOfInterval, isToday } from "date-fns";
+import {
+  differenceInDays,
+  differenceInMonths,
+  differenceInYears,
+  format,
+  eachDayOfInterval,
+  eachWeekOfInterval,
+  eachMonthOfInterval,
+  eachHourOfInterval,
+  isToday,
+} from "date-fns";
 import { DateRange } from "react-day-picker";
 import { TimeFrame } from "@/types/analytics";
 
 type Event = { createdAt: Date; type: "click" | "scan" };
 
-// function that will return an interval key based on the time frame
-const getIntervals = (date: DateRange, timeFrame?: TimeFrame) => {
+// Function to determine intervals dynamically based on the date range
+const getIntervals = (date: DateRange) => {
   if (!date.from || !date.to) return { intervals: [], key: "" };
-  const diffInDays = differenceInDays(date.to as Date, date.from as Date);
-  // const diffInMonths = differenceInMonths(date.to as Date, date.from as Date);
-  // group hourly for one day
-  // if the day is in the past, we want to show all hours
+
+  const diffInDays = differenceInDays(date.to, date.from);
+  const diffInMonths = differenceInMonths(date.to, date.from);
+  const diffInYears = differenceInYears(date.to, date.from);
 
   if (diffInDays === 0) {
     const isTodaysDate = isToday(date.from as Date);
@@ -20,19 +30,43 @@ const getIntervals = (date: DateRange, timeFrame?: TimeFrame) => {
     });
     return { intervals: hours, key: "h a" };
   }
-  // group everything else by day
-  const days = eachDayOfInterval({ start: date.from as Date, end: date.to as Date });
-  return { intervals: days, key: "MM-dd-yyyy" };
+
+  // Group by day for up to 9 months
+  if (diffInDays <= 270) {
+    const isTodaysDate = isToday(date.from);
+    const days = eachDayOfInterval({
+      start: date.from,
+      end: isTodaysDate ? new Date() : date.to,
+    });
+    return { intervals: days, key: "MM-dd-yyyy" }; // Daily key
+  }
+
+  // // Group by week for up to 3 years
+  // if (diffInYears < 3) {
+  //   const weeks = eachWeekOfInterval({
+  //     start: date.from,
+  //     end: date.to,
+  //   });
+  //   return { intervals: weeks, key: "wo-yyyy" }; // Weekly key
+  // }
+
+  // Group by month for periods longer than 9 months
+  const months = eachMonthOfInterval({
+    start: date.from,
+    end: date.to,
+  });
+  return { intervals: months, key: "MMMM-yyyy" }; // Monthly key
 };
 
-type AggregatedData = { interval: string; clicks: number; scans: number }[];
+type AggregatedData = { interval: string; clicks: number; scans: number; total: number }[];
 
+// Function to aggregate events based on intervals
 export const aggregateEvents = (
   date: DateRange,
   events: Event[] = [],
   timeFrame?: TimeFrame,
 ): AggregatedData => {
-  const { intervals, key } = getIntervals(date, timeFrame);
+  const { intervals, key } = getIntervals(date);
 
   const formattedData: AggregatedData = intervals.map((interval) => {
     const intervalKey = format(interval, key);

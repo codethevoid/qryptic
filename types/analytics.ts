@@ -6,6 +6,7 @@ export type TimeFrame =
   | "threeMonths"
   | "twelveMonths"
   | "threeYears"
+  | "fiveYears"
   | "monthToDate"
   | "yearToDate"
   | "all"

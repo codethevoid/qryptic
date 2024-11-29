@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 export const LinksSkeleton = () => {
   return (
-    <div className="rounded-lg border">
+    <div className="rounded-lg border shadow-sm">
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           className={cn("flex justify-between space-x-2.5 px-3 py-2.5", i !== 0 && "border-t")}

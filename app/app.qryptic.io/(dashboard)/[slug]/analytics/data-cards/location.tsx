@@ -44,7 +44,7 @@ export const LocationData = ({
   console.log(country, city);
 
   return (
-    <div className="overflow-hidden rounded-lg border shadow">
+    <div className="overflow-hidden rounded-lg border shadow-sm">
       <div className="flex items-center justify-between border-b bg-zinc-50 px-4 py-2.5 dark:bg-zinc-950">
         <Select value={stat} onValueChange={(value: "country" | "city") => setStat(value)}>
           <SelectTrigger className="-ml-1.5 h-8 w-auto space-x-3 border-none px-2 shadow-none hover:bg-accent dark:hover:bg-accent/60">

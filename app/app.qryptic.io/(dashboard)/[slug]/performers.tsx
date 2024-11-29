@@ -22,7 +22,7 @@ export const Performers: FC<PerformersProps> = ({ data, date, isLoading }) => {
 
   return (
     <div className="max-[800px]:col-span-5 min-[800px]:col-span-2">
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden shadow-sm">
         <CardHeader className="border-b p-4">
           <CardTitle>Top performers</CardTitle>
           <CardDescription className="text-[13px]">Most active links this period</CardDescription>

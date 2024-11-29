@@ -20,17 +20,17 @@ import { TimeFrame } from "@/types/analytics";
 import { useMemo } from "react";
 
 const chartConfig = {
-  clicks: {
-    label: "Clicks",
-    color: "hsl(var(--chart-1))",
-  },
-  scans: {
-    label: "Scans",
-    color: "hsl(var(--chart-2))",
-  },
+  // clicks: {
+  //   label: "Clicks",
+  //   color: "hsl(var(--chart-1))",
+  // },
+  // scans: {
+  //   label: "Scans",
+  //   color: "hsl(var(--chart-2))",
+  // },
   total: {
-    label: "Total",
-    color: "hsl(var(--chart-3))",
+    label: "Events",
+    color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
 
@@ -54,7 +54,9 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
 
     // Ensure the tick is in a format that Safari can handle
     const parsedDate = new Date(tick.replace(/-/g, "/")); // Replacing dashes with slashes can sometimes help
-    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM d") : tick;
+    return !isNaN(parsedDate.getTime())
+      ? format(parsedDate, diff > 270 ? "MMM ''yy'" : "MMM d")
+      : tick;
   };
 
   const formatTooltipLabel = (label: string) => {
@@ -64,7 +66,9 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
     }
 
     const parsedDate = new Date(label.replace(/-/g, "/"));
-    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM d, yyyy") : label;
+    return !isNaN(parsedDate.getTime())
+      ? format(parsedDate, diff > 270 ? "MMMM yyyy" : "MMM do, yyyy")
+      : label;
   };
 
   // const formatYTick = (num: number) => {
@@ -78,7 +82,7 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
 
   return (
     <div className="max-[800px]:col-span-5 min-[800px]:col-span-3">
-      <Card>
+      <Card className="shadow-sm">
         <CardHeader className="space-y-0.5 p-4">
           <div className="flex items-center justify-between">
             {!isLoading && data ? (
@@ -123,13 +127,14 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
               // margin={{ left: -20, top: 8, right: 12 }}
             >
               <ChartTooltip
-                cursor={false}
                 content={
                   <ChartTooltipContent
                     indicator="dot"
                     labelFormatter={(label) => formatTooltipLabel(label)}
                   />
                 }
+                position={{ y: 0 }}
+                cursor={{ stroke: "var(--border)" }}
               />
 
               <XAxis
@@ -147,33 +152,39 @@ export const EventChart = ({ data, date, isLoading, timeFrame }: EventChartProps
               {/*  tickFormatter={(tick: number) => formatYTick(tick)}*/}
               {/*/>*/}
               <CartesianGrid vertical={false} strokeDasharray={3} />
-              <Area
+              {/* <Area
                 dataKey="clicks"
-                type="monotone"
                 fill="url(#fillClicks)"
                 fillOpacity={0.4}
                 stroke="var(--color-clicks)"
                 stackId="a"
                 strokeWidth={1.5}
-              />
-              <Area
+              /> */}
+              {/* <Area
                 dataKey="scans"
-                type="monotone"
                 fill="url(#fillScans)"
                 fillOpacity={0.4}
                 stroke="var(--color-scans)"
                 stackId="b"
                 strokeWidth={1.5}
+              /> */}
+              <Area
+                dataKey="total"
+                fill="url(#fillTotal)"
+                fillOpacity={0.4}
+                stroke="var(--color-total)"
+                stackId="a"
+                strokeWidth={2}
               />
               <defs>
-                <linearGradient id="fillClicks" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--color-clicks)" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="var(--color-clicks)" stopOpacity={0.1} />
+                <linearGradient id="fillTotal" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--color-total)" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="var(--color-total)" stopOpacity={0.1} />
                 </linearGradient>
-                <linearGradient id="fillScans" x1="0" y1="0" x2="0" y2="1">
+                {/* <linearGradient id="fillScans" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="var(--color-scans)" stopOpacity={0.8} />
                   <stop offset="95%" stopColor="var(--color-scans)" stopOpacity={0.1} />
-                </linearGradient>
+                </linearGradient> */}
               </defs>
             </AreaChart>
           </ChartContainer>

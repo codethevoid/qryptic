@@ -33,7 +33,7 @@ export const TagsTable = ({ tags, mutateTags, containerRef }: TagsTableProps) =>
 
   return (
     <>
-      <div className="rounded-lg border">
+      <div className="rounded-lg border shadow-sm">
         {tags.map((tag, i) => (
           <div
             className={`${i !== tags.length - 1 ? "border-b" : undefined} flex items-center justify-between space-x-2.5 px-3 py-2.5 transition-all`}

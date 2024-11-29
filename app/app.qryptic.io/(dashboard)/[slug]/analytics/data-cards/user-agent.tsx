@@ -53,7 +53,7 @@ export const UserAgentData = ({
   }, [events]);
 
   return (
-    <div className="overflow-hidden rounded-lg border shadow">
+    <div className="overflow-hidden rounded-lg border shadow-sm">
       <div className="flex items-center justify-between border-b bg-zinc-50 px-4 py-2.5 dark:bg-zinc-950">
         <Select
           value={stat}
