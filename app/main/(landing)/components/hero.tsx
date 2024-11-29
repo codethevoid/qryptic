@@ -6,16 +6,18 @@ import { appDomain, protocol } from "@/utils/qryptic/domains";
 import NextLink from "next/link";
 import { LinkBadge } from "@/components/ui/custom/link-badge";
 import { RainbowButton } from "@/components/ui/rainbow-button";
+import { ParticlesBg } from "@/components/layout/particles";
 
 export const Hero = () => {
   return (
-    <div>
+    <div className="relative">
+      <ParticlesBg />
       <div className="-mb-6 flex flex-col items-center justify-center overflow-x-hidden px-4">
         <MaxWidthWrapper className="space-y-8">
           <div className="space-y-6">
             <LinkBadge
               href="/blog/company-news/new-exclusive-short-domain-qx-one"
-              label="Introducing premium domain"
+              label="Introducing our premium domain"
             />
             <div className="space-y-2">
               <h1 className="text-center text-4xl font-bold tracking-tight max-md:text-3xl max-[500px]:mx-auto max-[500px]:max-w-[340px]">
@@ -58,7 +60,7 @@ export const Hero = () => {
               </Button> */}
             </div>
           </div>
-          <div className="min-w-[580px] pb-6 max-[400px]:min-w-[500px]">
+          <div className="relative min-w-[580px] pb-6 max-[400px]:min-w-[500px]">
             <NextImage
               src="https://cdn.qryptic.io/main/landing/hero-dark.png"
               alt="Qryptic analytics dashboard"
