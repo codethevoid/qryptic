@@ -8,7 +8,7 @@ const getDomain = (url: string) => {
     const domain = new URL(url).hostname;
     return domain.replace("www.", "");
   } catch {
-    return "direct";
+    return "(direct)";
   }
 };
 

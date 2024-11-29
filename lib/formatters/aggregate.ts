@@ -1,13 +1,11 @@
 import {
   differenceInDays,
-  differenceInMonths,
-  differenceInYears,
   format,
   eachDayOfInterval,
-  eachWeekOfInterval,
   eachMonthOfInterval,
   eachHourOfInterval,
   isToday,
+  subHours,
 } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { TimeFrame } from "@/types/analytics";
@@ -19,14 +17,18 @@ const getIntervals = (date: DateRange) => {
   if (!date.from || !date.to) return { intervals: [], key: "" };
 
   const diffInDays = differenceInDays(date.to, date.from);
-  const diffInMonths = differenceInMonths(date.to, date.from);
-  const diffInYears = differenceInYears(date.to, date.from);
 
   if (diffInDays === 0) {
-    const isTodaysDate = isToday(date.from as Date);
+    // const isTodaysDate = isToday(date.from as Date);
+    // const hours = eachHourOfInterval({
+    //   start: date.from as Date,
+    //   end: isTodaysDate ? new Date() : date.to.setHours(23, 59, 59, 999),
+    // });
+    // return { intervals: hours, key: "h a" };
+    const last24HoursStart = subHours(new Date(), 23); // 24 hours ago
     const hours = eachHourOfInterval({
-      start: date.from as Date,
-      end: isTodaysDate ? new Date() : date.to.setHours(23, 59, 59, 999),
+      start: last24HoursStart,
+      end: new Date(),
     });
     return { intervals: hours, key: "h a" };
   }
@@ -55,7 +57,7 @@ const getIntervals = (date: DateRange) => {
     start: date.from,
     end: date.to,
   });
-  return { intervals: months, key: "MMMM-yyyy" }; // Monthly key
+  return { intervals: months, key: "yyyy-MM-01" }; // Monthly key
 };
 
 type AggregatedData = { interval: string; clicks: number; scans: number; total: number }[];
@@ -67,6 +69,7 @@ export const aggregateEvents = (
   timeFrame?: TimeFrame,
 ): AggregatedData => {
   const { intervals, key } = getIntervals(date);
+  console.log(intervals);
 
   const formattedData: AggregatedData = intervals.map((interval) => {
     const intervalKey = format(interval, key);

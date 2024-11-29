@@ -3,7 +3,7 @@
 import { type TimeFrame } from "@/types/analytics";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { subDays, startOfToday } from "date-fns";
+import { subDays, startOfToday, subHours } from "date-fns";
 import { TimeframePicker } from "@/app/app.qryptic.io/(dashboard)/[slug]/analytics/timeframe-picker";
 import { DatePicker } from "@/app/app.qryptic.io/(dashboard)/[slug]/analytics/date-picker";
 import { useAnalytics } from "@/lib/hooks/swr/use-analytics";
@@ -16,7 +16,7 @@ import { UserAgentData } from "@/app/app.qryptic.io/(dashboard)/[slug]/analytics
 export const AnalyticsClient = () => {
   const [timeFrame, setTimeFrame] = useState<TimeFrame>("today");
   const [date, setDate] = useState<DateRange | undefined>({
-    from: subDays(startOfToday(), 0),
+    from: subHours(startOfToday(), 23),
     to: startOfToday(),
   });
   const [tempDate, setTempDate] = useState<DateRange | undefined>(date);

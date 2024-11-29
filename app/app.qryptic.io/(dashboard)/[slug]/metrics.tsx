@@ -25,19 +25,19 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
   return (
     <div className="mt-6 grid grid-cols-3 gap-5 max-[768px]:mt-3 max-[750px]:grid-cols-1 max-[750px]:grid-rows-3">
       <NextLink href={`/${slug}/links`} passHref>
-        <Card className="w-full space-y-2 p-4 shadow-sm transition-all hover:border-primary/30">
+        <Card className="w-full space-y-2 p-4 shadow transition-all hover:border-primary/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <p className="text-sm">Links</p>
+              <p className="text-sm">Events</p>
               {!isLoading && data ? (
                 <Badge
                   className="flex h-[18px] px-2 text-[11px]"
-                  variant={getVariant(data.links.percentChange)}
+                  variant={getVariant(data.eventPercentChange)}
                 >
-                  {data?.links.percentChange > 0 ? (
+                  {data?.eventPercentChange > 0 ? (
                     <span
                       className={
-                        data.links.percentChange === Infinity ? "relative bottom-[1px]" : undefined
+                        data.eventPercentChange === Infinity ? "relative bottom-[1px]" : undefined
                       }
                     >
                       +
@@ -45,12 +45,12 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
                   ) : (
                     ""
                   )}
-                  {data.links.percentChange === Infinity ? (
+                  {data.eventPercentChange === Infinity ? (
                     <InfinityIcon size={12} className="ml-0.5" />
                   ) : (
-                    data.links.percentChange.toLocaleString("en-us")
+                    data.eventPercentChange.toLocaleString("en-us")
                   )}
-                  {data.links.percentChange !== Infinity && "%"}
+                  {data.eventPercentChange !== Infinity && "%"}
                 </Badge>
               ) : (
                 <Skeleton className="h-[18px] w-12 rounded-full" />
@@ -60,7 +60,7 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
           </div>
           <div className="space-y-0.5">
             {!isLoading && data ? (
-              <p className="text-2xl font-bold">{data.links.count.toLocaleString("en-us")}</p>
+              <p className="text-2xl font-bold">{data.eventCount.toLocaleString("en-us")}</p>
             ) : (
               // <NumberFlow value={data.links.count} />
               <div className="flex h-8 items-center">
@@ -69,7 +69,7 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
             )}
             {!isLoading && data ? (
               <p className="text-xs text-muted-foreground">
-                {data.links.prevCount.toLocaleString("en-us")} previous period
+                {data.prevEventCount.toLocaleString("en-us")} previous period
               </p>
             ) : (
               <div className="flex h-4 items-center">
@@ -80,7 +80,7 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
         </Card>
       </NextLink>
       <NextLink href={`/${slug}/analytics`} passHref>
-        <Card className="w-full space-y-2 p-4 shadow-sm transition-all hover:border-primary/30">
+        <Card className="w-full space-y-2 p-4 shadow transition-all hover:border-primary/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <p className="text-sm">Clicks</p>
@@ -134,7 +134,7 @@ export const Metrics = ({ data, isLoading }: MetricsProps) => {
         </Card>
       </NextLink>
       <NextLink href={`/${slug}/analytics`} passHref>
-        <Card className="w-full space-y-2 p-4 shadow-sm transition-all hover:border-primary/30">
+        <Card className="w-full space-y-2 p-4 shadow transition-all hover:border-primary/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <p className="text-sm">Scans</p>

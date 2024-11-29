@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { subDays, startOfToday } from "date-fns";
+import { subDays, startOfToday, subHours } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { useDashboard } from "@/lib/hooks/swr/use-dashboard";
 import { Metrics } from "./metrics";
@@ -14,7 +14,7 @@ export const HomeClient = () => {
   const today = startOfToday();
   const [timeFrame, setTimeFrame] = useState<TimeFrame>("today");
   const [date, setDate] = useState<DateRange | undefined>({
-    from: subDays(today, 0), // today by default
+    from: subHours(today, 23), // today by default
     to: today,
   });
 

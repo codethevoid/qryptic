@@ -4,7 +4,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { CalendarDays } from "lucide-react";
-import { differenceInDays, format, startOfToday, subDays } from "date-fns";
+import { differenceInDays, format, startOfToday, subDays, subHours } from "date-fns";
 import { daysMap } from "@/lib/analytics/maps";
 import { toast } from "sonner";
 import { TimeFrame } from "@/types/analytics";
@@ -36,7 +36,7 @@ export const DatePicker = ({
     const isInvalidDate = !tempDate || !tempDate.from || !tempDate.to;
     if (isInvalidDate) {
       return setTempDate({
-        from: subDays(today, daysMap[timeFrame]),
+        from: timeFrame === "today" ? subHours(today, 23) : subDays(today, daysMap[timeFrame]),
         to: today,
       });
     }
@@ -48,13 +48,13 @@ export const DatePicker = ({
     const days = differenceInDays(today, fromDate as Date) + 1;
     // check if the days is greater than the plan max days
     if (days > (team?.plan?.analytics || 0)) {
-      // if it is greater, set date back to the previous date range ( timeframe)
+      // if it is greater, set date back to the previous date range ( timeframe )
       setDate({
-        from: subDays(today, daysMap[timeFrame]),
+        from: timeFrame === "today" ? subHours(today, 23) : subDays(today, daysMap[timeFrame]),
         to: today,
       });
       setTempDate({
-        from: subDays(today, daysMap[timeFrame]),
+        from: timeFrame === "today" ? subHours(today, 23) : subDays(today, daysMap[timeFrame]),
         to: today,
       });
       // show a toast message

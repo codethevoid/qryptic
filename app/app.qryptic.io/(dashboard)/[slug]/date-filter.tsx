@@ -8,7 +8,7 @@ import {
 import { CalendarDays, ChevronDown, Globe, Link2, Lock, Tag, User } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { differenceInDays, format, startOfToday, subDays } from "date-fns";
+import { differenceInDays, format, startOfToday, subDays, subHours } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import {
   DropdownMenu,
@@ -41,7 +41,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const handleTimeFrameChange = (value: TimeFrame) => {
-    const fromDate = subDays(today, daysMap[value] || 0);
+    const fromDate = value === "today" ? subHours(today, 23) : subDays(today, daysMap[value]);
     const toDate = today;
 
     if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
@@ -59,7 +59,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
     const isInvalidDate = !tempDate || !tempDate.from || !tempDate.to;
     if (isInvalidDate) {
       return setTempDate({
-        from: subDays(today, daysMap[timeFrame]),
+        from: timeFrame === "today" ? subHours(today, 23) : subDays(today, daysMap[timeFrame]),
         to: today,
       });
     }
@@ -73,11 +73,11 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
     if (days > (team?.plan.analytics as number)) {
       // if it is greater, set date back to the previous date range ( timeframe)
       setDate({
-        from: subDays(today, daysMap[timeFrame]),
+        from: timeFrame === "today" ? subHours(today, 23) : subDays(today, daysMap[timeFrame]),
         to: today,
       });
       setTempDate({
-        from: subDays(today, daysMap[timeFrame]),
+        from: timeFrame === "today" ? subHours(today, 23) : subDays(today, daysMap[timeFrame]),
         to: today,
       });
       // show a toast message
@@ -115,7 +115,7 @@ export const DateFilter = ({ setTimeFrame, date, setDate, timeFrame }: DateFilte
               <SelectContent onCloseAutoFocus={(e) => e.preventDefault()} align="end">
                 <SelectGroup>
                   {timeFrame === "custom" && <SelectItem value="custom">Custom</SelectItem>}
-                  <SelectItem value="today">Today</SelectItem>
+                  <SelectItem value="today">Last 24 hours</SelectItem>
                   {/*<SelectItem value="twentyFourHours">Last 24 hours</SelectItem>*/}
                   <SelectItem value="sevenDays">Last 7 days</SelectItem>
                   <SelectItem value="fourWeeks">Last 4 weeks</SelectItem>

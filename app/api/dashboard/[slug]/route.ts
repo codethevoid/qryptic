@@ -1,14 +1,14 @@
 import { withTeam } from "@/lib/auth/with-team";
 import prisma from "@/db/prisma";
 import { NextResponse } from "next/server";
-import { differenceInDays, subDays, subMonths, addDays, subHours } from "date-fns";
+import { differenceInDays, subDays, subMonths, addDays, subHours, addHours } from "date-fns";
 
 export const GET = withTeam(async ({ req, team }) => {
   try {
     const url = req.nextUrl;
     const to = new Date(url.searchParams.get("to") || "");
     const from = new Date(url.searchParams.get("from") || "");
-    const timeFrame = url.searchParams.get("timeFrame") || "fourWeeks";
+    const timeFrame = url.searchParams.get("timeFrame") || "today";
     // const days = differenceInDays(to, from);
     if (!to || !from) {
       return NextResponse.json({ error: "Missing date parameters" }, { status: 400 });
@@ -43,7 +43,10 @@ export const GET = withTeam(async ({ req, team }) => {
       prisma.event.findMany({
         where: {
           teamId: team.id,
-          createdAt: { gte: prev.from, lt: addDays(prev.to, 1) },
+          createdAt: {
+            gte: prev.from,
+            lt: timeFrame === "today" ? prev.to : addDays(prev.to, 1),
+          },
         },
         select: { type: true, createdAt: true },
       }),
@@ -87,6 +90,9 @@ export const GET = withTeam(async ({ req, team }) => {
         ),
       },
       events,
+      eventCount: events.length,
+      prevEventCount: prevEvents.length,
+      eventPercentChange: calcPercentChange(events.length, prevEvents.length),
       topLinks: topLinks.filter((l) => l.events.length > 0),
     });
   } catch (e) {
@@ -120,8 +126,8 @@ function getPreviousPeriod(from: Date, to: Date, timeFrame: string) {
   const diff = differenceInDays(to, from);
   if (diff === 0) {
     return {
-      from: subDays(from, 1),
-      to: subDays(to, 1),
+      from: subHours(from, 24),
+      to: subHours(to, 23),
     };
   }
 

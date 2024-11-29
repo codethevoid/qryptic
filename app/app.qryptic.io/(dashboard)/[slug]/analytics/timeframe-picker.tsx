@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 import { TimeFrame } from "@/types/analytics";
 import { daysMap, timeFrameLabels } from "@/lib/analytics/maps";
-import { startOfToday, subDays } from "date-fns";
+import { startOfToday, subDays, subHours } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { useTeam } from "@/lib/hooks/swr/use-team";
 import { Lock } from "lucide-react";
@@ -26,11 +26,11 @@ export const TimeframePicker = ({ timeFrame, setTimeFrame, setDate, setTempDate 
   const handleTimeFrameChange = (value: TimeFrame) => {
     setTimeFrame(value);
     setDate({
-      from: subDays(today, daysMap[value]),
+      from: value === "today" ? subHours(today, 23) : subDays(today, daysMap[value]),
       to: today,
     });
     setTempDate({
-      from: subDays(today, daysMap[value]),
+      from: value === "today" ? subHours(today, 23) : subDays(today, daysMap[value]),
       to: today,
     });
   };
@@ -44,7 +44,7 @@ export const TimeframePicker = ({ timeFrame, setTimeFrame, setDate, setTempDate 
         <SelectContent onCloseAutoFocus={(e) => e.preventDefault()} align="end">
           <SelectGroup>
             {timeFrame === "custom" && <SelectItem value="custom">Custom</SelectItem>}
-            <SelectItem value="today">Today</SelectItem>
+            <SelectItem value="today">Last 24 hours</SelectItem>
             {/*<SelectItem value="twentyFourHours">Last 24 hours</SelectItem>*/}
             <SelectItem value="sevenDays">Last 7 days</SelectItem>
             <SelectItem value="fourWeeks">Last 4 weeks</SelectItem>

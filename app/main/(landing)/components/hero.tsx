@@ -15,7 +15,7 @@ export const Hero = () => {
           <div className="space-y-6">
             <LinkBadge
               href="/blog/company-news/new-exclusive-short-domain-qx-one"
-              label="Exlusive short domain is now live"
+              label="Introducing premium domain"
             />
             <div className="space-y-2">
               <h1 className="text-center text-4xl font-bold tracking-tight max-md:text-3xl max-[500px]:mx-auto max-[500px]:max-w-[340px]">

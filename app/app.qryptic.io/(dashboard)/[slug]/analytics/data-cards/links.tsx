@@ -82,7 +82,7 @@ export const LinksData = ({
                     label={item.label}
                     count={item.count}
                     url={item.url}
-                    icon={<Link2 size={16} />}
+                    icon={<Link2 size={16} className="text-muted-foreground" />}
                     selected={shortUrl === item.label}
                     percent={
                       i === 0 ? 100 : item.percent === shortUrls[0].percent ? 100 : item.percent
@@ -106,7 +106,7 @@ export const LinksData = ({
                       i === 0 ? 100 : item.percent === destinations[0].percent ? 100 : item.percent
                     }
                     url={item.url}
-                    icon={<Link2 size={16} />}
+                    icon={<Link2 size={16} className="text-muted-foreground" />}
                     selected={destination === item.label}
                     onClick={() => {
                       // filter events by destination

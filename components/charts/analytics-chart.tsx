@@ -6,7 +6,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { differenceInDays, format } from "date-fns";
+import { differenceInDays, format, addHours } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { Area, AreaChart, CartesianGrid, TooltipProps, XAxis, YAxis, Line } from "recharts";
 import { aggregateEvents } from "@/lib/formatters/aggregate";
@@ -49,13 +49,17 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
 
   const formatTick = (tick: string) => {
     const diff = differenceInDays(date?.to as Date, date?.from as Date);
-    if (diff === 0) return tick;
+    if (diff === 0) {
+      if (tick === "12 AM") return format(new Date(), "MMM d");
+      return tick;
+    }
 
     // Ensure the tick is in a format that Safari can handle
     const parsedDate = new Date(tick.replace(/-/g, "/")); // Replacing dashes with slashes can sometimes help
     // if difference is great than 270 days, show month and year
-    if (diff > 270) return format(parsedDate, "MMM ''yy'");
-    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM d") : tick;
+    return !isNaN(parsedDate.getTime())
+      ? format(parsedDate, diff > 270 ? "MMM ''yy'" : "MMM d")
+      : tick;
   };
 
   const formatTooltipLabel = (label: string) => {
@@ -65,8 +69,9 @@ export const AnalyticsChart = ({ events = [], date, isLoading }: Props) => {
     }
 
     const parsedDate = new Date(label.replace(/-/g, "/"));
-    if (diff > 270) return format(parsedDate, "MMMM yyyy");
-    return !isNaN(parsedDate.getTime()) ? format(parsedDate, "MMM do, yyyy") : label;
+    return !isNaN(parsedDate.getTime())
+      ? format(parsedDate, diff > 270 ? "MMMM yyyy" : "MMM do, yyyy")
+      : label;
   };
 
   const formatYTick = (num: number) => {

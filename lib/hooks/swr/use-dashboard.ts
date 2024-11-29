@@ -22,6 +22,9 @@ export const useDashboard = (from: Date, to: Date, timeFrame: string) => {
     if (typeof data.scans.percentChange === "string") {
       data.scans.percentChange = Number(data.scans.percentChange);
     }
+    if (typeof data.eventPercentChange === "string") {
+      data.eventPercentChange = Number(data.eventPercentChange);
+    }
   }
 
   return { data, isLoading, error };

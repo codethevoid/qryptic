@@ -48,7 +48,10 @@ export const ProgressNumTab = ({
 
   return (
     <div
-      className="group relative px-3 transition-colors hover:bg-accent/40"
+      className={cn(
+        "group relative px-3 transition-colors hover:bg-accent/40",
+        isMobile && "hover:bg-transparent",
+      )}
       role="button"
       {...props}
     >

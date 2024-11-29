@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { withTeam } from "@/lib/auth/with-team";
 import prisma from "@/db/prisma";
-import { addDays } from "date-fns";
+import { addDays, differenceInDays, subHours } from "date-fns";
 
 export const GET = withTeam(async ({ req, team }) => {
   try {
-    const from = new Date(req.nextUrl.searchParams.get("from") || "");
-    const to = new Date(req.nextUrl.searchParams.get("to") || "");
+    let from = new Date(req.nextUrl.searchParams.get("from") || "");
+    let to = new Date(req.nextUrl.searchParams.get("to") || "");
     const shortUrl = req.nextUrl.searchParams.get("shortUrl") || "";
     const destination = req.nextUrl.searchParams.get("destination") || "";
     const referrer = req.nextUrl.searchParams.get("referrer") || "";

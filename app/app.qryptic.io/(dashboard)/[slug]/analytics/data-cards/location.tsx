@@ -73,7 +73,7 @@ export const LocationData = ({
                   label={countriesList.find((c) => c.code === item.label)?.country || item.label}
                   count={item.count}
                   flag={`https://flagcdn.com/40x30/${item.label.toLowerCase()}.png`}
-                  icon={<Map size={16} />}
+                  icon={<Map size={16} className="text-muted-foreground" />}
                   selected={country === item.label}
                   alt={`flag of ${item.label}`}
                   type="percent"
@@ -106,7 +106,7 @@ export const LocationData = ({
                   actualPercent={item.percent}
                   flag={`https://flagcdn.com/40x30/${countriesList.find((c) => c.code === item.country)?.code.toLowerCase() || ""}.png`}
                   alt={`flag of ${item.country}`}
-                  icon={<Map size={16} />}
+                  icon={<Map size={16} className="text-muted-foreground" />}
                   selected={city === item.formattedKey}
                   onlyIcon={item.label === "unknown"}
                   type="percent"

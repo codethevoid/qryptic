@@ -1,6 +1,6 @@
 export type TimeFrame =
   | "today"
-  | "twentyFourHours"
+  // | "twentyFourHours"
   | "sevenDays"
   | "fourWeeks"
   | "threeMonths"

@@ -2,8 +2,8 @@ import { TimeFrame } from "@/types/analytics";
 import { differenceInDays, startOfMonth, startOfToday, startOfYear, subMonths } from "date-fns";
 
 export const timeFrameLabels = {
-  today: "Today",
-  twentyFourHours: "Last 24 hours",
+  today: "Last 24 hours",
+  // twentyFourHours: "Last 24 hours",
   sevenDays: "Last 7 days",
   fourWeeks: "Last 4 weeks",
   threeMonths: "Last 3 months",
@@ -18,7 +18,7 @@ export const timeFrameLabels = {
 
 export const daysMap: Record<TimeFrame, number> = {
   today: 0,
-  twentyFourHours: 1,
+  // twentyFourHours: 1,
   sevenDays: 6,
   fourWeeks: 27,
   threeMonths: differenceInDays(startOfToday(), subMonths(startOfToday(), 3)) - 1,

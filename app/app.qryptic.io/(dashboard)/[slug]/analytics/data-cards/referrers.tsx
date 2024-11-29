@@ -79,7 +79,7 @@ export const ReferrerData = ({
                     label={item.label}
                     count={item.count}
                     url={item.url}
-                    icon={<Globe size={16} />}
+                    icon={<Globe size={16} className="text-muted-foreground" />}
                     onlyIcon={item.label === "direct"}
                     percent={
                       i === 0
@@ -108,7 +108,7 @@ export const ReferrerData = ({
                       i === 0 ? 100 : item.percent === referrers[0].percent ? 100 : item.percent
                     }
                     url={item.url}
-                    icon={<Globe size={16} />}
+                    icon={<Globe size={16} className="text-muted-foreground" />}
                     onlyIcon={item.label === "direct"}
                     selected={referrer === item.label}
                     onClick={() => {

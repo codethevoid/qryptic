@@ -25,5 +25,8 @@ export type Dashboard = {
     percentChange: number;
   };
   events: Event[];
+  eventCount: number;
+  prevEventCount: number;
+  eventPercentChange: number;
   topLinks: TopLink[];
 };
