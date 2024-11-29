@@ -42,17 +42,17 @@ export const POST = withTeam(async ({ req, team }) => {
       return NextResponse.json({ error: "Domain name is already in use" }, { status: 400 });
     }
 
+    if (destination) {
+      const isThreat = await detectThreat(destination);
+      if (isThreat) {
+        return NextResponse.json({ error: "Malicious destination detected" }, { status: 400 });
+      }
+    }
+
     // attempt to create domain to project in vercel
     const domainAdded = await addDomainToVercel(name);
     if (!domainAdded)
       return NextResponse.json({ error: "Failed to create domain" }, { status: 500 });
-
-    if (destination) {
-      const isValidDest = await detectThreat(destination);
-      if (!isValidDest) {
-        return NextResponse.json({ error: "Malicious destination detected" }, { status: 400 });
-      }
-    }
 
     // create domain in db
     await prisma.domain.create({
