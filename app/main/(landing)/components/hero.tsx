@@ -6,12 +6,13 @@ import { appDomain, protocol } from "@/utils/qryptic/domains";
 import NextLink from "next/link";
 import { LinkBadge } from "@/components/ui/custom/link-badge";
 import { RainbowButton } from "@/components/ui/rainbow-button";
+import FlickeringGrid from "@/components/ui/flickering-grid";
 
 export const Hero = () => {
   return (
-    <div className="relative">
+    <div>
       {/* <ParticlesBg /> */}
-      <div className="-mb-6 flex flex-col items-center justify-center overflow-x-hidden px-4">
+      <div className="-mb-6 flex flex-col items-center justify-center px-4">
         <MaxWidthWrapper className="space-y-8">
           <div className="space-y-6">
             <LinkBadge
@@ -27,8 +28,8 @@ export const Hero = () => {
                 Your complete link management platform
               </h1>
               <p className="mx-auto max-w-xl text-center text-muted-foreground max-md:text-sm max-sm:max-w-[340px] max-sm:text-[13px]">
-                Qryptic gives you with the tools to create and track your links and QR codes.
-                Enhance your brand, engage your audience, and measure your success.
+                Qryptic gives you the tools to create and track your links and QR codes. Manage your
+                links, engage your audience, and track your success.
               </p>
             </div>
             <div className="flex items-center justify-center space-x-4 max-sm:flex-col max-sm:space-x-0 max-sm:space-y-4">
@@ -59,6 +60,41 @@ export const Hero = () => {
               </Button> */}
             </div>
           </div>
+          {/* <div className="mx-auto h-40 w-full max-w-md space-y-2 rounded-xl border bg-background p-2.5 shadow-sm">
+            <Input placeholder="https://example.com/my-long-link" className="bg-background" />
+            <div className="relative z-10 h-20 w-full overflow-hidden rounded-lg border shadow-sm">
+              <FlickeringGrid
+                className="absolute inset-0 top-0 z-[-1] hidden size-full w-full dark:block"
+                color="#fff"
+                height={300}
+                width={600}
+                squareSize={3}
+              />
+
+              <FlickeringGrid
+                className="absolute inset-0 z-[-1] size-full w-full dark:hidden"
+                color="#000"
+                height={300}
+                width={600}
+                squareSize={3}
+              />
+            </div>
+          </div> */}
+          {/* <div className="grid grid-cols-3 gap-2">
+            <div className="flex h-40 items-center justify-center rounded-l-2xl rounded-r-md border bg-background p-4 shadow-sm">
+              <div className="space-y-2">
+                <h3 className="text-center text-lg font-semibold">Link management</h3>
+                <p className="text-center text-sm text-muted-foreground">
+                  Create and manage your links with ease.
+                </p>
+                <Button variant="outline" size="sm">
+                  Learn more
+                </Button>
+              </div>
+            </div>
+            <div className="h-40 rounded-md rounded-l-md border bg-background p-4 shadow-sm"></div>
+            <div className="h-40 rounded-l-md rounded-r-2xl border bg-background p-4 shadow-sm"></div>
+          </div> */}
           <div className="relative min-w-[580px] pb-6 max-[400px]:min-w-[500px]">
             <NextImage
               src="https://cdn.qryptic.io/main/landing/hero-dark.png"
