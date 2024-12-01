@@ -81,7 +81,7 @@ export const Products = () => {
               growth
             </span>
           </h2>
-          <p className="mx-auto max-w-lg text-center text-muted-foreground max-md:text-sm max-sm:max-w-[340px] max-sm:text-[13px]">
+          <p className="mx-auto max-w-xl text-center text-muted-foreground max-md:text-sm max-sm:max-w-[340px] max-sm:text-[13px]">
             Whether you&apos;re a startup or an established business, our products are designed to
             help you grow your business and reach your goals.
           </p>

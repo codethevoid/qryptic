@@ -51,7 +51,7 @@ export const Hero = () => {
                 className="w-full max-w-[200px] max-sm:max-w-none"
                 href={`${protocol}${appDomain}/register`}
               >
-                <RainbowButton className="w-full rounded-full text-sm">
+                <RainbowButton className="w-full rounded-full text-sm transition-all hover:scale-[103%]">
                   Start generating
                 </RainbowButton>
               </a>

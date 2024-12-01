@@ -5,6 +5,7 @@ import { Compare } from "@/app/main/pricing/components/compare";
 import { PricingFaq } from "./components/faq";
 import { constructMetadata } from "@/utils/construct-metadata";
 import { GetStarted } from "../(landing)/components/get-started";
+import { FinalCta } from "../(landing)/components/final-cta";
 
 export const metadata = constructMetadata({
   title: "Qryptic | Pricing",
@@ -27,7 +28,8 @@ const PricingPage = async () => {
       <Compare plans={plans} />
       <PricingFaq />
       {/* <StartNow /> */}
-      <GetStarted />
+      {/* <GetStarted /> */}
+      <FinalCta />
     </div>
   );
 };
