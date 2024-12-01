@@ -6,7 +6,7 @@ import { protocol, appDomain } from "@/utils/qryptic/domains";
 export const FinalCta = () => {
   return (
     <div className="px-4 max-sm:overflow-x-hidden">
-      <MaxWidthWrapper className="max-sm:-pb-6 -mb-40 space-y-8 max-md:-mb-[136px] max-sm:-mb-0">
+      <MaxWidthWrapper className="-mb-40 space-y-8 max-md:-mb-[136px] max-sm:-mb-0">
         <div className="space-y-6">
           <div className="space-y-2">
             <h2 className="text-center text-3xl font-bold tracking-tight max-md:text-2xl">
