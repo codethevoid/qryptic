@@ -46,7 +46,7 @@ export const generateMetadata = async ({
   const { category, post } = params;
   const { metadata } = await import(`@/app/main/blog/content/${category}/${post}.mdx`);
   return constructMetadata({
-    title: `${metadata.title} | Qryptic`,
+    title: `${metadata.title}`,
     description: metadata.description,
     image: metadata.image,
   });
