@@ -9,9 +9,9 @@ type Props = {
 };
 
 export const constructMetadata = ({
-  title = `Qryptic | Deliver Digital Experiences at Scale`,
-  description = `Qryptic | Modernize the way your business delivers impactful marketing campaigns. Easily track, manage, and optimize every campaign, empowering your team to create data-driven strategies and deliver seamless digital experiences at scale.`,
-  image = "https://cdn.qryptic.io/main/open-graph-light.png",
+  title = `Qryptic | Your complete link management platform`,
+  description = `Qryptic lets you customize and track your links with ease. Build branded links, design unique QR codes, and monitor performance to boost results.`,
+  image = "https://cdn.qryptic.io/main/qryptic-open-graph.png",
   icons = [
     {
       rel: "apple-touch-icon",

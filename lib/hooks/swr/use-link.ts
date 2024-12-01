@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { type TagColor } from "@/types/colors";
 import { type LogoType } from "@/types/links";
 
-type Link = {
+export type Link = {
   id: string;
   destination: string;
   slug: string;

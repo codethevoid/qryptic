@@ -23,7 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { type Tab } from "@/types/links";
 import { useLinkForm } from "@/app/app.qryptic.io/(dashboard)/[slug]/links/(builder)/(form)/context";
 
-type LinkItem = {
+export type LinkItem = {
   name: string;
   value: Tab;
   icon: JSX.Element;

@@ -19,10 +19,10 @@ export function ParticlesBg() {
   return (
     <Particles
       className="absolute inset-0 -top-20 z-[-1] max-sm:-top-16"
-      quantity={140}
+      quantity={100}
       ease={80}
       color={color}
-      refresh
+      // refresh
     />
   );
 }

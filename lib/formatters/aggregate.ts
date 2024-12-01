@@ -69,7 +69,6 @@ export const aggregateEvents = (
   timeFrame?: TimeFrame,
 ): AggregatedData => {
   const { intervals, key } = getIntervals(date);
-  console.log(intervals);
 
   const formattedData: AggregatedData = intervals.map((interval) => {
     const intervalKey = format(interval, key);
