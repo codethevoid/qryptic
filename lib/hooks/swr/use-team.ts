@@ -21,7 +21,7 @@ export type Team = {
     seats: number;
     links: number;
   };
-  user: { role: "super_admin" | "owner" | "member" };
+  user: { role: "owner" | "member" };
 };
 
 export const useTeam = () => {

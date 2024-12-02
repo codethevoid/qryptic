@@ -212,6 +212,9 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                     <Feature icon={<CheckIcon size={15} />} feature="Domain redirector" />
                   )}
                   {!plan.isFree && (
+                    <Feature icon={<CheckIcon size={15} />} feature="UTM parameter tracking" />
+                  )}
+                  {!plan.isFree && (
                     <Feature icon={<CheckIcon size={15} />} feature="API access (coming soon)" />
                   )}
                   <Feature

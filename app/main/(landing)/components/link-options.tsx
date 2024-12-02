@@ -258,7 +258,7 @@ export const LinkOptions = ({ activeTab, setActiveTab, link }: Props) => {
                     {Object.values(utm).filter((i) => i.length > 0).length > 0 ? "?" : ""}
                     {Object.entries(utm)
                       .filter(([_, value]) => value)
-                      .map(([key, value]) => `${key}=${value}`)
+                      .map(([key, value]) => `${key}=${value.split(" ").join("+")}`)
                       .join("&")}
                   </p>
                 </div>

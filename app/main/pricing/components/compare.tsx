@@ -239,6 +239,24 @@ export const Compare = ({ plans }: CompareProps) => {
           ))}
           {/* <TableCell value={<CircleCheckFill />} /> */}
 
+          <TableCell
+            value="UTM parameter tracking"
+            className="justify-between font-medium"
+            info={"Track data from UTM parameters."}
+          />
+          {plans.map((plan: CustomPlan, i) => (
+            <TableCell
+              key={plan.id}
+              value={
+                !plan.isFree ? (
+                  <CircleCheckFill />
+                ) : (
+                  <Minus size={18} className="text-muted-foreground" />
+                )
+              }
+            />
+          ))}
+
           {/* AI QR Customization */}
           {/* <TableCell
             value="AI QR generation"

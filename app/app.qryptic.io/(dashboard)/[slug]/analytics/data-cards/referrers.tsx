@@ -7,13 +7,15 @@ import {
 } from "@/components/ui/select";
 import { useMemo, useState } from "react";
 import { type Event } from "@/types/analytics";
-import { Globe, Link2 } from "lucide-react";
+import { Globe, Link2, Lock } from "lucide-react";
 import { groupBy } from "@/lib/formatters/group-by";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ProgressNumTab } from "@/components/charts/progress-num-tab";
 import { Loader } from "@/components/layout/loader";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTeam } from "@/lib/hooks/swr/use-team";
+import { Upgrade } from "@/components/modals/plans/upgrade/upgrade";
 
 const utmParamOptions = ["Source", "Medium", "Campaign", "Term", "Content"];
 type UTM = "source" | "medium" | "campaign" | "term" | "content";
@@ -61,6 +63,8 @@ export const ReferrerData = ({
 }: Props) => {
   const [stat, setStat] = useState<"referrer" | "referrerDomain" | "utm">("referrerDomain");
   const [utmStat, setUtmStat] = useState<UTM>("source");
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const { team } = useTeam();
   const referrers = useMemo(() => {
     if (!events?.length) return [];
     return groupBy(events, "referrer");
@@ -91,137 +95,135 @@ export const ReferrerData = ({
   }, [events]);
 
   return (
-    <div className="overflow-hidden rounded-lg border shadow-sm">
-      <div className="flex items-center justify-between border-b bg-zinc-50 px-4 py-2.5 dark:bg-zinc-950">
-        <Select
-          value={stat}
-          onValueChange={(value: "referrer" | "referrerDomain") => setStat(value)}
-        >
-          <SelectTrigger className="-ml-1.5 h-8 w-auto space-x-3 border-none px-2 shadow-none hover:bg-accent dark:hover:bg-accent/60">
-            <p className="text-sm font-medium">
-              {stat === "referrer"
-                ? "Referrer URLs"
-                : stat === "utm"
-                  ? "UTM parameters"
-                  : "Referrers"}
-            </p>
-          </SelectTrigger>
-          <SelectContent align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
-            <SelectGroup>
-              <SelectItem value="referrerDomain">Referrers</SelectItem>
-              <SelectItem value="referrer">Referrer URLs</SelectItem>
-              <SelectItem value="utm">UTM parameters</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Globe className="text-muted-foreground" size={15} />
-      </div>
-      {stat === "utm" && (
-        <div className="flex items-center space-x-1 border-b bg-zinc-50 px-4 py-1 dark:bg-zinc-950">
-          {utmParamOptions.map((option) => (
-            <Button
-              key={option}
-              size="sm"
-              variant={"ghost"}
-              className={cn(
-                "h-6 rounded-md px-2 py-0 text-xs font-normal text-muted-foreground hover:bg-zinc-200/40 dark:hover:bg-accent/60",
-                option.toLowerCase() === utmStat &&
-                  "bg-zinc-200/40 text-foreground dark:bg-accent/60",
-              )}
-              onClick={() => setUtmStat(option.toLowerCase() as UTM)}
-            >
-              {option}
-            </Button>
-          ))}
+    <>
+      <div className="overflow-hidden rounded-lg border shadow-sm">
+        <div className="flex items-center justify-between border-b bg-zinc-50 px-4 py-2.5 dark:bg-zinc-950">
+          <Select
+            value={stat}
+            onValueChange={(value: "referrer" | "referrerDomain") => setStat(value)}
+          >
+            <SelectTrigger className="-ml-1.5 h-8 w-auto space-x-3 border-none px-2 shadow-none hover:bg-accent dark:hover:bg-accent/60">
+              <p className="text-sm font-medium">
+                {stat === "referrer"
+                  ? "Referrer URLs"
+                  : stat === "utm"
+                    ? "UTM parameters"
+                    : "Referrers"}
+              </p>
+            </SelectTrigger>
+            <SelectContent align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
+              <SelectGroup>
+                <SelectItem value="referrerDomain">Referrers</SelectItem>
+                <SelectItem value="referrer">Referrer URLs</SelectItem>
+                <SelectItem value="utm">UTM parameters</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Globe className="text-muted-foreground" size={15} />
         </div>
-      )}
-      {isLoading ? (
-        <div
-          className={cn(
-            "flex h-[245px] items-center justify-center p-4",
-            stat === "utm" && "h-[212px]",
-          )}
-        >
-          <Loader />
-        </div>
-      ) : events.length ? (
-        <ScrollArea className={cn("h-[245px]", stat === "utm" && "h-[212px]")}>
-          <div className="py-3">
-            {stat === "referrerDomain"
-              ? referrerDomains.map((item, i) => (
-                  <ProgressNumTab
-                    key={item.label}
-                    label={item.label}
-                    count={item.count}
-                    url={item.url}
-                    icon={<Globe size={16} className="text-muted-foreground" />}
-                    onlyIcon={item.label === "direct"}
-                    percent={
-                      i === 0
-                        ? 100
-                        : item.percent === referrerDomains[0].percent
-                          ? 100
-                          : item.percent
-                    }
-                    selected={referrerDomain === item.label}
-                    onClick={() => {
-                      // filter events by referrerDomain
-                      if (referrerDomain === item.label) {
-                        setReferrerDomain(undefined);
-                      } else {
-                        setReferrerDomain(item.label);
-                      }
-                    }}
-                  />
-                ))
-              : stat === "referrer"
-                ? referrers.map((item, i) => (
+        {stat === "utm" && (
+          <div className="flex items-center space-x-1 border-b bg-zinc-50 px-4 py-1 dark:bg-zinc-950">
+            {utmParamOptions.map((option) => (
+              <Button
+                key={option}
+                size="sm"
+                variant={"ghost"}
+                className={cn(
+                  "h-6 rounded-md px-2 py-0 text-xs font-normal text-muted-foreground hover:bg-zinc-200/40 dark:hover:bg-accent/60",
+                  option.toLowerCase() === utmStat &&
+                    "bg-zinc-200/40 text-foreground dark:bg-accent/60",
+                )}
+                onClick={() => setUtmStat(option.toLowerCase() as UTM)}
+              >
+                {option}
+              </Button>
+            ))}
+          </div>
+        )}
+        {isLoading ? (
+          <div
+            className={cn(
+              "flex h-[245px] items-center justify-center p-4",
+              stat === "utm" && "h-[212px]",
+            )}
+          >
+            <Loader />
+          </div>
+        ) : stat === "utm" && team?.plan.isFree ? (
+          <div className="flex h-[212px] flex-col items-center justify-center space-y-3 p-4">
+            <Lock size={16} className="text-muted-foreground" />
+            {team?.user.role === "owner" && (
+              <>
+                <p className="text-center text-[13px] text-muted-foreground">
+                  Upgrade to <span className="font-medium text-foreground">Pro</span> to access this
+                  feature
+                </p>
+                <Button size="sm" className="h-8" onClick={() => setIsUpgradeModalOpen(true)}>
+                  Upgrade to Pro
+                </Button>
+              </>
+            )}
+            {team?.user.role !== "owner" && (
+              <p className="mx-auto max-w-[200px] text-center text-[13px] text-muted-foreground">
+                Ask a team owner to upgrade to{" "}
+                <span className="font-medium text-foreground">Pro</span> to access this feature
+              </p>
+            )}
+          </div>
+        ) : events.length ? (
+          <ScrollArea className={cn("h-[245px]", stat === "utm" && "h-[212px]")}>
+            <div className="py-3">
+              {stat === "referrerDomain"
+                ? referrerDomains.map((item, i) => (
                     <ProgressNumTab
                       key={item.label}
-                      label={stripDestination(item.label)}
+                      label={item.label}
                       count={item.count}
-                      percent={
-                        i === 0 ? 100 : item.percent === referrers[0].percent ? 100 : item.percent
-                      }
                       url={item.url}
                       icon={<Globe size={16} className="text-muted-foreground" />}
                       onlyIcon={item.label === "direct"}
-                      selected={referrer === item.label}
+                      percent={
+                        i === 0
+                          ? 100
+                          : item.percent === referrerDomains[0].percent
+                            ? 100
+                            : item.percent
+                      }
+                      selected={referrerDomain === item.label}
                       onClick={() => {
-                        if (referrer === item.label) {
-                          setReferrer(undefined);
+                        // filter events by referrerDomain
+                        if (referrerDomain === item.label) {
+                          setReferrerDomain(undefined);
                         } else {
-                          setReferrer(item.label);
+                          setReferrerDomain(item.label);
                         }
                       }}
                     />
                   ))
-                : utmStat === "source"
-                  ? utmSources.map((item, i) => (
+                : stat === "referrer"
+                  ? referrers.map((item, i) => (
                       <ProgressNumTab
                         key={item.label}
-                        label={item.label}
+                        label={stripDestination(item.label)}
                         count={item.count}
-                        showIcon={false}
                         percent={
-                          i === 0
-                            ? 100
-                            : item.percent === utmSources[0].percent
-                              ? 100
-                              : item.percent
+                          i === 0 ? 100 : item.percent === referrers[0].percent ? 100 : item.percent
                         }
-                        selected={utmSource === item.label}
+                        url={item.url}
+                        icon={<Globe size={16} className="text-muted-foreground" />}
+                        onlyIcon={item.label === "direct"}
+                        selected={referrer === item.label}
                         onClick={() => {
-                          if (utmSource === item.label) {
-                            setUtmSource("");
+                          if (referrer === item.label) {
+                            setReferrer(undefined);
                           } else {
-                            setUtmSource(item.label);
+                            setReferrer(item.label);
                           }
                         }}
                       />
                     ))
-                  : utmStat === "medium"
-                    ? utmMediums.map((item, i) => (
+                  : utmStat === "source"
+                    ? utmSources.map((item, i) => (
                         <ProgressNumTab
                           key={item.label}
                           label={item.label}
@@ -234,18 +236,18 @@ export const ReferrerData = ({
                                 ? 100
                                 : item.percent
                           }
-                          selected={utmMedium === item.label}
+                          selected={utmSource === item.label}
                           onClick={() => {
-                            if (utmMedium === item.label) {
-                              setUtmMedium("");
+                            if (utmSource === item.label) {
+                              setUtmSource("");
                             } else {
-                              setUtmMedium(item.label);
+                              setUtmSource(item.label);
                             }
                           }}
                         />
                       ))
-                    : utmStat === "campaign"
-                      ? utmCampaigns.map((item, i) => (
+                    : utmStat === "medium"
+                      ? utmMediums.map((item, i) => (
                           <ProgressNumTab
                             key={item.label}
                             label={item.label}
@@ -254,22 +256,22 @@ export const ReferrerData = ({
                             percent={
                               i === 0
                                 ? 100
-                                : item.percent === utmCampaigns[0].percent
+                                : item.percent === utmSources[0].percent
                                   ? 100
                                   : item.percent
                             }
-                            selected={utmCampaign === item.label}
+                            selected={utmMedium === item.label}
                             onClick={() => {
-                              if (utmCampaign === item.label) {
-                                setUtmCampaign("");
+                              if (utmMedium === item.label) {
+                                setUtmMedium("");
                               } else {
-                                setUtmCampaign(item.label);
+                                setUtmMedium(item.label);
                               }
                             }}
                           />
                         ))
-                      : utmStat === "term"
-                        ? utmTerms.map((item, i) => (
+                      : utmStat === "campaign"
+                        ? utmCampaigns.map((item, i) => (
                             <ProgressNumTab
                               key={item.label}
                               label={item.label}
@@ -278,22 +280,22 @@ export const ReferrerData = ({
                               percent={
                                 i === 0
                                   ? 100
-                                  : item.percent === utmTerms[0].percent
+                                  : item.percent === utmCampaigns[0].percent
                                     ? 100
                                     : item.percent
                               }
-                              selected={utmTerm === item.label}
+                              selected={utmCampaign === item.label}
                               onClick={() => {
-                                if (utmTerm === item.label) {
-                                  setUtmTerm("");
+                                if (utmCampaign === item.label) {
+                                  setUtmCampaign("");
                                 } else {
-                                  setUtmTerm(item.label);
+                                  setUtmCampaign(item.label);
                                 }
                               }}
                             />
                           ))
-                        : utmStat === "content"
-                          ? utmContents.map((item, i) => (
+                        : utmStat === "term"
+                          ? utmTerms.map((item, i) => (
                               <ProgressNumTab
                                 key={item.label}
                                 label={item.label}
@@ -302,28 +304,54 @@ export const ReferrerData = ({
                                 percent={
                                   i === 0
                                     ? 100
-                                    : item.percent === utmContents[0].percent
+                                    : item.percent === utmTerms[0].percent
                                       ? 100
                                       : item.percent
                                 }
-                                selected={utmContent === item.label}
+                                selected={utmTerm === item.label}
                                 onClick={() => {
-                                  if (utmContent === item.label) {
-                                    setUtmContent("");
+                                  if (utmTerm === item.label) {
+                                    setUtmTerm("");
                                   } else {
-                                    setUtmContent(item.label);
+                                    setUtmTerm(item.label);
                                   }
                                 }}
                               />
                             ))
-                          : ""}
+                          : utmStat === "content"
+                            ? utmContents.map((item, i) => (
+                                <ProgressNumTab
+                                  key={item.label}
+                                  label={item.label}
+                                  count={item.count}
+                                  showIcon={false}
+                                  percent={
+                                    i === 0
+                                      ? 100
+                                      : item.percent === utmContents[0].percent
+                                        ? 100
+                                        : item.percent
+                                  }
+                                  selected={utmContent === item.label}
+                                  onClick={() => {
+                                    if (utmContent === item.label) {
+                                      setUtmContent("");
+                                    } else {
+                                      setUtmContent(item.label);
+                                    }
+                                  }}
+                                />
+                              ))
+                            : ""}
+            </div>
+          </ScrollArea>
+        ) : (
+          <div className="flex h-[245px] items-center justify-center p-4">
+            <p className="text-sm text-muted-foreground">No data available</p>
           </div>
-        </ScrollArea>
-      ) : (
-        <div className="flex h-[245px] items-center justify-center p-4">
-          <p className="text-sm text-muted-foreground">No data available</p>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+      <Upgrade isOpen={isUpgradeModalOpen} setIsOpen={setIsUpgradeModalOpen} />
+    </>
   );
 };
