@@ -334,7 +334,12 @@ export const ReferrerData = ({
             </div>
           </ScrollArea>
         ) : (
-          <div className="flex h-[245px] items-center justify-center p-4">
+          <div
+            className={cn(
+              "flex h-[245px] items-center justify-center p-4",
+              stat === "utm" && "h-[212px]",
+            )}
+          >
             <p className="text-sm text-muted-foreground">No data available</p>
           </div>
         )}
