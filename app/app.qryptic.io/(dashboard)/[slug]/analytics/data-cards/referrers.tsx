@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 import { useMemo, useState } from "react";
 import { type Event } from "@/types/analytics";
-import { Globe, Link2, Lock } from "lucide-react";
+import { Globe, Link2, Lock, Tag } from "lucide-react";
 import { groupBy } from "@/lib/formatters/group-by";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ProgressNumTab } from "@/components/charts/progress-num-tab";
@@ -119,7 +119,11 @@ export const ReferrerData = ({
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Globe className="text-muted-foreground" size={15} />
+          {stat === "utm" ? (
+            <Tag size={15} className="text-muted-foreground" />
+          ) : (
+            <Globe className="text-muted-foreground" size={15} />
+          )}
         </div>
         {stat === "utm" && (
           <div className="flex items-center space-x-1 border-b bg-zinc-50 px-4 py-1 dark:bg-zinc-950">
