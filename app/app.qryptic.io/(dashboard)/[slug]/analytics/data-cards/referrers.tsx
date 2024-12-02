@@ -176,7 +176,7 @@ export const ReferrerData = ({
           </div>
         ) : events.length ? (
           <ScrollArea className={cn("h-[245px]", stat === "utm" && "h-[212px]")}>
-            <div className="py-3">
+            <div className="h-full py-3">
               {stat === "referrerDomain" ? (
                 referrerDomains.map((item, i) => (
                   <ProgressNumTab
