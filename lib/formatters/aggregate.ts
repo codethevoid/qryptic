@@ -16,7 +16,7 @@ type Event = { createdAt: Date; type: "click" | "scan" };
 const getIntervals = (date: DateRange) => {
   if (!date.from || !date.to) return { intervals: [], key: "" };
 
-  const diffInDays = differenceInDays(date.to, date.from);
+  const diffInDays = differenceInDays(new Date(date.to), new Date(date.from));
 
   if (diffInDays === 0) {
     // const isTodaysDate = isToday(date.from as Date);
@@ -35,10 +35,10 @@ const getIntervals = (date: DateRange) => {
 
   // Group by day for up to 9 months
   if (diffInDays <= 270) {
-    const isTodaysDate = isToday(date.from);
+    const isTodaysDate = isToday(new Date(date.from));
     const days = eachDayOfInterval({
-      start: date.from,
-      end: isTodaysDate ? new Date() : date.to,
+      start: new Date(date.from),
+      end: isTodaysDate ? new Date() : new Date(date.to),
     });
     return { intervals: days, key: "MM-dd-yyyy" }; // Daily key
   }
@@ -54,8 +54,8 @@ const getIntervals = (date: DateRange) => {
 
   // Group by month for periods longer than 9 months
   const months = eachMonthOfInterval({
-    start: date.from,
-    end: date.to,
+    start: new Date(date.from),
+    end: new Date(date.to),
   });
   return { intervals: months, key: "yyyy-MM-01" }; // Monthly key
 };
@@ -74,7 +74,7 @@ export const aggregateEvents = (
     const intervalKey = format(interval, key);
 
     const eventsForInterval = events.filter((e) => {
-      const eventKey = format(e.createdAt, key);
+      const eventKey = format(new Date(e.createdAt), key);
       return eventKey === intervalKey;
     });
 

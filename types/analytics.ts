@@ -28,9 +28,9 @@ export type Event = {
   os: string;
   referrer: string;
   referrerDomain: string;
-  utmSource: string | null;
-  utmMedium: string | null;
-  utmCampaign: string | null;
-  utmTerm: string | null;
-  utmContent: string | null;
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmTerm: string;
+  utmContent: string;
 };

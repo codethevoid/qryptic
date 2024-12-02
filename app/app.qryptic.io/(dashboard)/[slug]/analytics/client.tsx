@@ -12,6 +12,7 @@ import { LinksData } from "@/app/app.qryptic.io/(dashboard)/[slug]/analytics/dat
 import { ReferrerData } from "@/app/app.qryptic.io/(dashboard)/[slug]/analytics/data-cards/referrers";
 import { LocationData } from "@/app/app.qryptic.io/(dashboard)/[slug]/analytics/data-cards/location";
 import { UserAgentData } from "@/app/app.qryptic.io/(dashboard)/[slug]/analytics/data-cards/user-agent";
+import { OsData } from "./data-cards/os";
 
 export const AnalyticsClient = () => {
   const [timeFrame, setTimeFrame] = useState<TimeFrame>("today");
@@ -31,6 +32,11 @@ export const AnalyticsClient = () => {
   const [browser, setBrowser] = useState<string | undefined>(undefined);
   const [os, setOs] = useState<string | undefined>(undefined);
   const [deviceType, setDeviceType] = useState<string | undefined>(undefined);
+  const [utmSource, setUtmSource] = useState<string>("");
+  const [utmMedium, setUtmMedium] = useState<string>("");
+  const [utmCampaign, setUtmCampaign] = useState<string>("");
+  const [utmTerm, setUtmTerm] = useState<string>("");
+  const [utmContent, setUtmContent] = useState<string>("");
 
   const { data, isLoading, error } = useAnalytics({
     from: date?.from as Date,
@@ -44,9 +50,12 @@ export const AnalyticsClient = () => {
     browser,
     os,
     deviceType,
+    utmSource,
+    utmMedium,
+    utmCampaign,
+    utmTerm,
+    utmContent,
   });
-
-  console.log(data);
 
   return (
     <>
@@ -71,9 +80,9 @@ export const AnalyticsClient = () => {
           </div>
         </div>
       </div>
-      <div className="mt-6 space-y-6 max-[768px]:mt-3">
+      <div className="mt-6 space-y-4 max-[768px]:mt-3">
         <AnalyticsChart events={data} date={date} isLoading={isLoading} />
-        <div className="grid grid-cols-2 gap-6 max-[800px]:grid-cols-1">
+        <div className="grid grid-cols-2 gap-4 max-[800px]:grid-cols-1">
           <LinksData
             events={data}
             isLoading={isLoading}
@@ -89,7 +98,19 @@ export const AnalyticsClient = () => {
             setReferrer={setReferrer}
             referrerDomain={referrerDomain}
             setReferrerDomain={setReferrerDomain}
+            utmSource={utmSource}
+            setUtmSource={setUtmSource}
+            utmMedium={utmMedium}
+            setUtmMedium={setUtmMedium}
+            utmCampaign={utmCampaign}
+            setUtmCampaign={setUtmCampaign}
+            utmTerm={utmTerm}
+            setUtmTerm={setUtmTerm}
+            utmContent={utmContent}
+            setUtmContent={setUtmContent}
           />
+        </div>
+        <div className="grid grid-cols-3 gap-4 max-[800px]:grid-cols-1">
           <LocationData
             events={data}
             country={country}
@@ -103,11 +124,10 @@ export const AnalyticsClient = () => {
             isLoading={isLoading}
             browser={browser}
             setBrowser={setBrowser}
-            os={os}
-            setOs={setOs}
             deviceType={deviceType}
             setDeviceType={setDeviceType}
           />
+          <OsData events={data} isLoading={isLoading} os={os} setOs={setOs} />
         </div>
       </div>
     </>

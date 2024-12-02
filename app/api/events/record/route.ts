@@ -109,11 +109,11 @@ export const POST = async (req: NextRequest) => {
       cpu: ua.cpu.architecture || "Unknown",
       referrer: referrer || "(direct)",
       referrerDomain: referrer ? getDomain(referrer) : "(direct)",
-      utmSource: utmSource || null,
-      utmMedium: utmMedium || null,
-      utmCampaign: utmCampaign || null,
-      utmTerm: utmTerm || null,
-      utmContent: utmContent || null,
+      utmSource: utmSource || "",
+      utmMedium: utmMedium || "",
+      utmCampaign: utmCampaign || "",
+      utmTerm: utmTerm || "",
+      utmContent: utmContent || "",
     };
 
     await prisma.event.create({ data: eventData });

@@ -15,6 +15,11 @@ type Params = {
   browser?: string;
   os?: string;
   deviceType?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
+  utmContent?: string;
 };
 
 export const useAnalytics = ({
@@ -29,6 +34,11 @@ export const useAnalytics = ({
   browser = "",
   os = "",
   deviceType = "",
+  utmSource = "",
+  utmMedium = "",
+  utmCampaign = "",
+  utmTerm = "",
+  utmContent = "",
 }: Params) => {
   const { slug } = useParams();
 
@@ -44,6 +54,11 @@ export const useAnalytics = ({
   searchParams.append("browser", browser);
   searchParams.append("os", os);
   searchParams.append("deviceType", deviceType);
+  searchParams.append("utmSource", utmSource);
+  searchParams.append("utmMedium", utmMedium);
+  searchParams.append("utmCampaign", utmCampaign);
+  searchParams.append("utmTerm", utmTerm);
+  searchParams.append("utmContent", utmContent);
 
   const { data, isLoading, error } = useSWR<Event[]>(
     `/api/analytics/${slug}?${searchParams}`,

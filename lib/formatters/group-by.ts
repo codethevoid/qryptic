@@ -9,7 +9,12 @@ type Key =
   | "city"
   | "browser"
   | "os"
-  | "deviceType";
+  | "deviceType"
+  | "utmSource"
+  | "utmMedium"
+  | "utmCampaign"
+  | "utmTerm"
+  | "utmContent";
 
 const stripDestination = (destination: string) => {
   // remove https://, http://, and www. from destination
@@ -41,7 +46,9 @@ export const groupBy = (events: Event[], key: Key) => {
   //   return !["Unknown", "unknown"].includes(event[key]);
   // });
 
-  const filteredEvents = events.filter((event) => !["Unknown", "unknown"].includes(event[key]));
+  const filteredEvents = events.filter(
+    (event) => !["Unknown", "unknown", null, ""].includes(event[key]),
+  );
 
   filteredEvents.forEach((event) => {
     // if key is city, we can get duplicate cities with different countries

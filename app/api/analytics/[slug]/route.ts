@@ -16,6 +16,11 @@ export const GET = withTeam(async ({ req, team }) => {
     const browser = req.nextUrl.searchParams.get("browser") || "";
     const os = req.nextUrl.searchParams.get("os") || "";
     const deviceType = req.nextUrl.searchParams.get("deviceType") || "";
+    const utmSource = req.nextUrl.searchParams.get("utmSource") || "";
+    const utmMedium = req.nextUrl.searchParams.get("utmMedium") || "";
+    const utmCampaign = req.nextUrl.searchParams.get("utmCampaign") || "";
+    const utmTerm = req.nextUrl.searchParams.get("utmTerm") || "";
+    const utmContent = req.nextUrl.searchParams.get("utmContent") || "";
 
     if (!from || !to) {
       return NextResponse.json({ error: "Missing date parameters" }, { status: 400 });
@@ -34,6 +39,11 @@ export const GET = withTeam(async ({ req, team }) => {
         ...(browser && { browser }),
         ...(os && { os }),
         ...(deviceType && { deviceType }),
+        ...(utmSource && { utmSource }),
+        ...(utmMedium && { utmMedium }),
+        ...(utmCampaign && { utmCampaign }),
+        ...(utmTerm && { utmTerm }),
+        ...(utmContent && { utmContent }),
       },
       select: {
         id: true,
