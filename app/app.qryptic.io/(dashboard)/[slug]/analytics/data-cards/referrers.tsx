@@ -327,7 +327,7 @@ export const ReferrerData = ({
                   />
                 ))
               ) : (
-                <div className="flex h-[212px] items-center justify-center p-4">
+                <div className="flex h-full w-full items-center justify-center">
                   <p className="text-sm text-muted-foreground">No data available</p>
                 </div>
               )}
