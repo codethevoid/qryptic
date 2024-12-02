@@ -177,176 +177,160 @@ export const ReferrerData = ({
         ) : events.length ? (
           <ScrollArea className={cn("h-[245px]", stat === "utm" && "h-[212px]")}>
             <div className="py-3">
-              {stat === "referrerDomain"
-                ? referrerDomains.map((item, i) => (
-                    <ProgressNumTab
-                      key={item.label}
-                      label={item.label}
-                      count={item.count}
-                      url={item.url}
-                      icon={<Globe size={16} className="text-muted-foreground" />}
-                      onlyIcon={item.label === "direct"}
-                      percent={
-                        i === 0
+              {stat === "referrerDomain" ? (
+                referrerDomains.map((item, i) => (
+                  <ProgressNumTab
+                    key={item.label}
+                    label={item.label}
+                    count={item.count}
+                    url={item.url}
+                    icon={<Globe size={16} className="text-muted-foreground" />}
+                    onlyIcon={item.label === "direct"}
+                    percent={
+                      i === 0
+                        ? 100
+                        : item.percent === referrerDomains[0].percent
                           ? 100
-                          : item.percent === referrerDomains[0].percent
-                            ? 100
-                            : item.percent
+                          : item.percent
+                    }
+                    selected={referrerDomain === item.label}
+                    onClick={() => {
+                      // filter events by referrerDomain
+                      if (referrerDomain === item.label) {
+                        setReferrerDomain(undefined);
+                      } else {
+                        setReferrerDomain(item.label);
                       }
-                      selected={referrerDomain === item.label}
-                      onClick={() => {
-                        // filter events by referrerDomain
-                        if (referrerDomain === item.label) {
-                          setReferrerDomain(undefined);
-                        } else {
-                          setReferrerDomain(item.label);
-                        }
-                      }}
-                    />
-                  ))
-                : stat === "referrer"
-                  ? referrers.map((item, i) => (
-                      <ProgressNumTab
-                        key={item.label}
-                        label={stripDestination(item.label)}
-                        count={item.count}
-                        percent={
-                          i === 0 ? 100 : item.percent === referrers[0].percent ? 100 : item.percent
-                        }
-                        url={item.url}
-                        icon={<Globe size={16} className="text-muted-foreground" />}
-                        onlyIcon={item.label === "direct"}
-                        selected={referrer === item.label}
-                        onClick={() => {
-                          if (referrer === item.label) {
-                            setReferrer(undefined);
-                          } else {
-                            setReferrer(item.label);
-                          }
-                        }}
-                      />
-                    ))
-                  : utmStat === "source"
-                    ? utmSources.map((item, i) => (
-                        <ProgressNumTab
-                          key={item.label}
-                          label={item.label}
-                          count={item.count}
-                          showIcon={false}
-                          percent={
-                            i === 0
-                              ? 100
-                              : item.percent === utmSources[0].percent
-                                ? 100
-                                : item.percent
-                          }
-                          selected={utmSource === item.label}
-                          onClick={() => {
-                            if (utmSource === item.label) {
-                              setUtmSource("");
-                            } else {
-                              setUtmSource(item.label);
-                            }
-                          }}
-                        />
-                      ))
-                    : utmStat === "medium"
-                      ? utmMediums.map((item, i) => (
-                          <ProgressNumTab
-                            key={item.label}
-                            label={item.label}
-                            count={item.count}
-                            showIcon={false}
-                            percent={
-                              i === 0
-                                ? 100
-                                : item.percent === utmSources[0].percent
-                                  ? 100
-                                  : item.percent
-                            }
-                            selected={utmMedium === item.label}
-                            onClick={() => {
-                              if (utmMedium === item.label) {
-                                setUtmMedium("");
-                              } else {
-                                setUtmMedium(item.label);
-                              }
-                            }}
-                          />
-                        ))
-                      : utmStat === "campaign"
-                        ? utmCampaigns.map((item, i) => (
-                            <ProgressNumTab
-                              key={item.label}
-                              label={item.label}
-                              count={item.count}
-                              showIcon={false}
-                              percent={
-                                i === 0
-                                  ? 100
-                                  : item.percent === utmCampaigns[0].percent
-                                    ? 100
-                                    : item.percent
-                              }
-                              selected={utmCampaign === item.label}
-                              onClick={() => {
-                                if (utmCampaign === item.label) {
-                                  setUtmCampaign("");
-                                } else {
-                                  setUtmCampaign(item.label);
-                                }
-                              }}
-                            />
-                          ))
-                        : utmStat === "term"
-                          ? utmTerms.map((item, i) => (
-                              <ProgressNumTab
-                                key={item.label}
-                                label={item.label}
-                                count={item.count}
-                                showIcon={false}
-                                percent={
-                                  i === 0
-                                    ? 100
-                                    : item.percent === utmTerms[0].percent
-                                      ? 100
-                                      : item.percent
-                                }
-                                selected={utmTerm === item.label}
-                                onClick={() => {
-                                  if (utmTerm === item.label) {
-                                    setUtmTerm("");
-                                  } else {
-                                    setUtmTerm(item.label);
-                                  }
-                                }}
-                              />
-                            ))
-                          : utmStat === "content"
-                            ? utmContents.map((item, i) => (
-                                <ProgressNumTab
-                                  key={item.label}
-                                  label={item.label}
-                                  count={item.count}
-                                  showIcon={false}
-                                  percent={
-                                    i === 0
-                                      ? 100
-                                      : item.percent === utmContents[0].percent
-                                        ? 100
-                                        : item.percent
-                                  }
-                                  selected={utmContent === item.label}
-                                  onClick={() => {
-                                    if (utmContent === item.label) {
-                                      setUtmContent("");
-                                    } else {
-                                      setUtmContent(item.label);
-                                    }
-                                  }}
-                                />
-                              ))
-                            : ""}
+                    }}
+                  />
+                ))
+              ) : stat === "referrer" ? (
+                referrers.map((item, i) => (
+                  <ProgressNumTab
+                    key={item.label}
+                    label={stripDestination(item.label)}
+                    count={item.count}
+                    percent={
+                      i === 0 ? 100 : item.percent === referrers[0].percent ? 100 : item.percent
+                    }
+                    url={item.url}
+                    icon={<Globe size={16} className="text-muted-foreground" />}
+                    onlyIcon={item.label === "direct"}
+                    selected={referrer === item.label}
+                    onClick={() => {
+                      if (referrer === item.label) {
+                        setReferrer(undefined);
+                      } else {
+                        setReferrer(item.label);
+                      }
+                    }}
+                  />
+                ))
+              ) : utmStat === "source" && utmSources.length ? (
+                utmSources.map((item, i) => (
+                  <ProgressNumTab
+                    key={item.label}
+                    label={item.label}
+                    count={item.count}
+                    showIcon={false}
+                    percent={
+                      i === 0 ? 100 : item.percent === utmSources[0].percent ? 100 : item.percent
+                    }
+                    selected={utmSource === item.label}
+                    onClick={() => {
+                      if (utmSource === item.label) {
+                        setUtmSource("");
+                      } else {
+                        setUtmSource(item.label);
+                      }
+                    }}
+                  />
+                ))
+              ) : utmStat === "medium" && utmMediums.length ? (
+                utmMediums.map((item, i) => (
+                  <ProgressNumTab
+                    key={item.label}
+                    label={item.label}
+                    count={item.count}
+                    showIcon={false}
+                    percent={
+                      i === 0 ? 100 : item.percent === utmSources[0].percent ? 100 : item.percent
+                    }
+                    selected={utmMedium === item.label}
+                    onClick={() => {
+                      if (utmMedium === item.label) {
+                        setUtmMedium("");
+                      } else {
+                        setUtmMedium(item.label);
+                      }
+                    }}
+                  />
+                ))
+              ) : utmStat === "campaign" && utmCampaigns.length ? (
+                utmCampaigns.map((item, i) => (
+                  <ProgressNumTab
+                    key={item.label}
+                    label={item.label}
+                    count={item.count}
+                    showIcon={false}
+                    percent={
+                      i === 0 ? 100 : item.percent === utmCampaigns[0].percent ? 100 : item.percent
+                    }
+                    selected={utmCampaign === item.label}
+                    onClick={() => {
+                      if (utmCampaign === item.label) {
+                        setUtmCampaign("");
+                      } else {
+                        setUtmCampaign(item.label);
+                      }
+                    }}
+                  />
+                ))
+              ) : utmStat === "term" && utmTerms.length ? (
+                utmTerms.map((item, i) => (
+                  <ProgressNumTab
+                    key={item.label}
+                    label={item.label}
+                    count={item.count}
+                    showIcon={false}
+                    percent={
+                      i === 0 ? 100 : item.percent === utmTerms[0].percent ? 100 : item.percent
+                    }
+                    selected={utmTerm === item.label}
+                    onClick={() => {
+                      if (utmTerm === item.label) {
+                        setUtmTerm("");
+                      } else {
+                        setUtmTerm(item.label);
+                      }
+                    }}
+                  />
+                ))
+              ) : utmStat === "content" && utmContents.length ? (
+                utmContents.map((item, i) => (
+                  <ProgressNumTab
+                    key={item.label}
+                    label={item.label}
+                    count={item.count}
+                    showIcon={false}
+                    percent={
+                      i === 0 ? 100 : item.percent === utmContents[0].percent ? 100 : item.percent
+                    }
+                    selected={utmContent === item.label}
+                    onClick={() => {
+                      if (utmContent === item.label) {
+                        setUtmContent("");
+                      } else {
+                        setUtmContent(item.label);
+                      }
+                    }}
+                  />
+                ))
+              ) : (
+                <div className="flex h-[212px] items-center justify-center p-4">
+                  <p className="text-sm text-muted-foreground">No data available</p>
+                </div>
+              )}
             </div>
           </ScrollArea>
         ) : (
