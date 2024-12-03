@@ -18,9 +18,11 @@ export const parseReq = (req: NextRequest) => {
 
   // this is an object containing all the search params (ex: ?key=value&key2=value2)
   // but we convert this to a string for easier use
-  const searchParams = req.nextUrl.searchParams.toString();
-  const searchParamsString = searchParams.length > 0 ? `?${searchParams}` : "";
+  const searchParams = req.nextUrl.searchParams;
+  const paramsCopy = new URLSearchParams(searchParams);
+  paramsCopy.delete("qr");
+  const searchString = paramsCopy.toString();
+  const searchParamsString = searchString.length > 0 ? `?${searchString}` : "";
   const fullPath = `${path}${searchParamsString}`;
-
   return { domain, path, fullPath, searchParams: searchParamsString, slug };
 };

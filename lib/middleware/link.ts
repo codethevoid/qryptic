@@ -1,19 +1,18 @@
-import "server-only";
 import { NextRequest, NextResponse, userAgent } from "next/server";
 import { parseReq } from "@/lib/middleware/utils";
 import { protocol, rootDomain } from "@/utils/qryptic/domains";
 import { qrypticHeaders } from "@/utils/qryptic/qryptic-headers";
 import { MiddlewareLink } from "@/types/links";
-import { constructURL } from "@/utils/construct-url";
 import { waitUntil } from "@vercel/functions";
 import { recordEvent } from "@/lib/middleware/utils/record-event";
 import { detectBot } from "@/lib/middleware/utils/detect-bot";
 import { isPasswordCorrect } from "@/lib/middleware/utils/is-password-correct";
+import { getFinalURL } from "./utils/get-final-url";
 
 const baseURL = `${protocol}${rootDomain}`;
 
 export const linkMiddleware = async (req: NextRequest) => {
-  const { domain, slug } = parseReq(req);
+  const { domain, slug, searchParams } = parseReq(req);
   if (!domain) return NextResponse.next();
 
   if (!slug) {
@@ -30,9 +29,12 @@ export const linkMiddleware = async (req: NextRequest) => {
       const domainData = data.domainData;
       if (domainData.destination) {
         // redirect to default destination
-        return NextResponse.redirect(constructURL(domainData.destination), {
-          headers: { "x-robots-tag": "googlebot: noindex", ...qrypticHeaders },
-        });
+        return NextResponse.redirect(
+          getFinalURL(domainData.destination, searchParams),
+          {
+            headers: { "x-robots-tag": "googlebot: noindex", ...qrypticHeaders },
+          },
+        );
       }
       // if default destination does not exist, show a message to the user
       // that this domain uses Qryptic but does not have a default destination
@@ -77,7 +79,7 @@ export const linkMiddleware = async (req: NextRequest) => {
       const domainData = data.domainData;
       if (domainData.destination) {
         // redirect to domain default destination
-        return NextResponse.redirect(constructURL(domainData.destination), {
+        return NextResponse.redirect(getFinalURL(domainData.destination, searchParams), {
           headers: { "x-robots-tag": "googlebot: noindex" },
         });
       }
@@ -147,7 +149,7 @@ export const linkMiddleware = async (req: NextRequest) => {
   if (expiresAt && new Date(expiresAt).getTime() < new Date().getTime()) {
     // first we check for expiration URL on the link level
     if (expired) {
-      return NextResponse.redirect(constructURL(expired), {
+      return NextResponse.redirect(getFinalURL(expired, searchParams), {
         headers: {
           ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
           ...qrypticHeaders,
@@ -156,7 +158,7 @@ export const linkMiddleware = async (req: NextRequest) => {
     }
     // now we check for expiration URL on the domain level
     if (domainData.destination) {
-      return NextResponse.redirect(constructURL(domainData.destination), {
+      return NextResponse.redirect(getFinalURL(domainData.destination, searchParams), {
         headers: {
           ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
           ...qrypticHeaders,
@@ -188,9 +190,15 @@ export const linkMiddleware = async (req: NextRequest) => {
   if (country && geo && geo[country]) {
     const { destination: geoDestination } = geo[country];
     // record event
-    waitUntil(recordEvent({ req, linkId: id, finalUrl: constructURL(geoDestination) }));
+    waitUntil(
+      recordEvent({
+        req,
+        linkId: id,
+        finalUrl: getFinalURL(geoDestination, searchParams),
+      }),
+    );
     // redirect to geo destination
-    return NextResponse.redirect(constructURL(geoDestination), {
+    return NextResponse.redirect(getFinalURL(geoDestination, searchParams), {
       headers: {
         ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
         ...qrypticHeaders,
@@ -201,9 +209,9 @@ export const linkMiddleware = async (req: NextRequest) => {
   // check for ios or android destination
   if (ios && userAgent(req)?.os.name === "iOS") {
     // record event
-    waitUntil(recordEvent({ req, linkId: id, finalUrl: constructURL(ios) }));
+    waitUntil(recordEvent({ req, linkId: id, finalUrl: getFinalURL(ios, searchParams) }));
     // redirect to ios destination
-    return NextResponse.redirect(constructURL(ios), {
+    return NextResponse.redirect(getFinalURL(ios, searchParams), {
       headers: {
         ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
         ...qrypticHeaders,
@@ -211,9 +219,9 @@ export const linkMiddleware = async (req: NextRequest) => {
     });
   } else if (android && userAgent(req)?.os.name === "Android") {
     // record event
-    waitUntil(recordEvent({ req, linkId: id, finalUrl: constructURL(android) }));
+    waitUntil(recordEvent({ req, linkId: id, finalUrl: getFinalURL(android, searchParams) }));
     // redirect to android destination
-    return NextResponse.redirect(constructURL(android), {
+    return NextResponse.redirect(getFinalURL(android, searchParams), {
       headers: {
         ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
         ...qrypticHeaders,
@@ -224,7 +232,7 @@ export const linkMiddleware = async (req: NextRequest) => {
   // check for cloaked link
   if (shouldCloak) {
     // record events
-    waitUntil(recordEvent({ req, linkId: id, finalUrl: destination }));
+    waitUntil(recordEvent({ req, linkId: id, finalUrl: getFinalURL(destination, searchParams) }));
     // rewrite to cloaked URL
     return NextResponse.rewrite(new URL(`/${domain}/${slug}/cloaked`, req.url), {
       headers: {
@@ -235,8 +243,14 @@ export const linkMiddleware = async (req: NextRequest) => {
   }
 
   // record event and redirect to destination
-  waitUntil(recordEvent({ req, linkId: id, finalUrl: destination }));
-  return NextResponse.redirect(destination, {
+  waitUntil(
+    recordEvent({
+      req,
+      linkId: id,
+      finalUrl: getFinalURL(destination, searchParams),
+    }),
+  );
+  return NextResponse.redirect(getFinalURL(destination, searchParams), {
     headers: {
       ...(!shouldIndex && { "x-robots-tag": "googlebot: noindex" }),
       ...qrypticHeaders,
