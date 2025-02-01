@@ -52,7 +52,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           select: { id: true, email: true, name: true, image: true, hashedPassword: true },
         });
         if (!user) return null;
-        // if (!user.credentialsAuth || !user.hashedPassword) return null;
+        // if (!user.credentialsAuth || !user.hashedPassword) return null
         if (!user.hashedPassword) return null;
         const isValid = await bcrypt.compare(password, user.hashedPassword);
         if (!isValid) return null;
