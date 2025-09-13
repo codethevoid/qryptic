@@ -133,7 +133,7 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
           {plans.map((plan, index) => (
             <Card
               key={plan.id}
