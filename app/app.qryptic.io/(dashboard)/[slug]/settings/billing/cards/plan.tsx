@@ -187,9 +187,9 @@ export const PlanCard = ({
                     ) : (
                       <>
                         <CancelButton />
-                        <Button size="sm" onClick={() => setIsChangePlanOpen(true)}>
-                          Change plan
-                        </Button>
+                        {/*<Button size="sm" onClick={() => setIsChangePlanOpen(true)}>*/}
+                        {/*  Change plan*/}
+                        {/*</Button>*/}
                       </>
                     )}
                   </>

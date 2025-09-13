@@ -30,12 +30,13 @@ export const UsageClient = () => {
     return (
       <Button
         size="sm"
-        disabled={team?.plan.name === "Business"}
+        // disabled={team?.plan.name === "Business"}
+        disabled={team?.plan.name === 'Pro'}
         onClick={() => {
           if (team?.plan.isFree) {
             setIsUpgradeOpen(true);
           } else {
-            setIsChangePlanOpen(true);
+            // setIsChangePlanOpen(true);
           }
         }}
       >
@@ -148,7 +149,7 @@ export const UsageClient = () => {
         </div>
       </div>
       <Upgrade isOpen={isUpgradeOpen} setIsOpen={() => setIsUpgradeOpen(false)} />
-      <ChangePlan isOpen={isChangePlanOpen} setIsOpen={() => setIsChangePlanOpen(false)} />
+      {/*<ChangePlan isOpen={isChangePlanOpen} setIsOpen={() => setIsChangePlanOpen(false)} />*/}
     </>
   );
 };
