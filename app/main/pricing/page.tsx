@@ -1,10 +1,8 @@
 import prisma from "@/db/prisma";
 import { Plan, Price } from "@prisma/client";
 import { PricingTiers } from "@/app/main/pricing/components/tiers";
-import { Compare } from "@/app/main/pricing/components/compare";
 import { PricingFaq } from "./components/faq";
 import { constructMetadata } from "@/utils/construct-metadata";
-import { GetStarted } from "../(landing)/components/get-started";
 import { FinalCta } from "../(landing)/components/final-cta";
 
 export const metadata = constructMetadata({
@@ -25,7 +23,7 @@ const PricingPage = async () => {
   return (
     <div className="space-y-20 py-20 max-sm:py-16">
       <PricingTiers plans={plans} />
-      <Compare plans={plans} />
+      {/*<Compare plans={plans} />*/}
       <PricingFaq />
       {/* <StartNow /> */}
       {/* <GetStarted /> */}

@@ -91,20 +91,20 @@ export const Upgrade = ({ isOpen, setIsOpen }: UpgradeProps) => {
                 >
                   Pro
                 </TabsTrigger>
-                <TabsTrigger
-                  className="w-full data-[state=active]:bg-zinc-100 data-[state=active]:shadow-none dark:data-[state=active]:bg-zinc-900"
-                  value={plans[1].name}
-                  onClick={() => setSelectedPlan(plans[1])}
-                >
-                  Business
-                </TabsTrigger>
-                <TabsTrigger
-                  className="w-full data-[state=active]:bg-zinc-100 data-[state=active]:shadow-none dark:data-[state=active]:bg-zinc-900"
-                  value={plans[2].name}
-                  onClick={() => setSelectedPlan(plans[2])}
-                >
-                  Enterprise
-                </TabsTrigger>
+                {/*<TabsTrigger*/}
+                {/*  className="w-full data-[state=active]:bg-zinc-100 data-[state=active]:shadow-none dark:data-[state=active]:bg-zinc-900"*/}
+                {/*  value={plans[1].name}*/}
+                {/*  onClick={() => setSelectedPlan(plans[1])}*/}
+                {/*>*/}
+                {/*  Business*/}
+                {/*</TabsTrigger>*/}
+                {/*<TabsTrigger*/}
+                {/*  className="w-full data-[state=active]:bg-zinc-100 data-[state=active]:shadow-none dark:data-[state=active]:bg-zinc-900"*/}
+                {/*  value={plans[2].name}*/}
+                {/*  onClick={() => setSelectedPlan(plans[2])}*/}
+                {/*>*/}
+                {/*  Enterprise*/}
+                {/*</TabsTrigger>*/}
               </TabsList>
               <div className="mt-4">
                 <PricingCard

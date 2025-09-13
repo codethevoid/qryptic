@@ -73,10 +73,10 @@ export const PricingCard = ({ plan, interval, setInterval }: PricingCardProps) =
             icon={<CheckIcon size={15} />}
             feature={`${getAnalytics(plan.analytics)} analytical data`}
           />
-          <Feature icon={<CheckIcon size={15} />} feature={`${plan.domains} custom domains`} />
+          <Feature icon={<CheckIcon size={15} />} feature={`${plan.domains > 100 ? 'Unlimited' : ''} custom domains`} />
           <Feature
             icon={<CheckIcon size={15} />}
-            feature={`${plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
+            feature={`${plan.seats > 100 ? 'Unlimited' : plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
           />
           {/*<Feature icon={<Bot size={15} />} feature="AI features" />*/}
           <Feature icon={<CheckIcon size={15} />} feature="Advanced link controls" />

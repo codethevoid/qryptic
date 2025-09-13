@@ -133,11 +133,11 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-4 max-[1100px]:grid-cols-2 max-sm:grid-cols-1">
+        <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
           {plans.map((plan, index) => (
             <Card
               key={plan.id}
-              className={`w-full rounded-none rounded-xl border shadow-sm max-[876px]:mx-auto max-[876px]:max-w-[500px]`}
+              className={`w-full rounded-xl border shadow-sm max-[876px]:mx-auto max-[876px]:max-w-[500px]`}
             >
               <CardHeader className="pb-3">
                 <div className="relative flex w-full items-center justify-between">
@@ -194,11 +194,11 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                   />
                   <Feature
                     icon={<CheckIcon size={15} />}
-                    feature={`${plan.domains} Custom domain${plan.domains > 1 ? "s" : ""}`}
+                    feature={`${plan.domains > 100 ? 'Unlimited' : plan.domains} custom domain${plan.domains > 1 ? "s" : ""}`}
                   />
                   <Feature
                     icon={<CheckIcon size={15} />}
-                    feature={`${plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
+                    feature={`${plan.seats > 100 ? 'Unlimited' : plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
                   />
 
                   {/*{plan.qrCustomization && (*/}
