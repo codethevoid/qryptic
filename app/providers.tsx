@@ -10,7 +10,7 @@ type ProvidersProps = {
 
 export const Providers = ({ children }: ProvidersProps) => {
   return (
-    <ThemeProvider defaultTheme="dark" attribute="class" enableSystem disableTransitionOnChange>
+    <ThemeProvider defaultTheme="light" attribute="class" enableSystem disableTransitionOnChange>
       <TooltipProvider>{children}</TooltipProvider>
     </ThemeProvider>
   );
