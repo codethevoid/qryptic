@@ -133,7 +133,7 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
             </p>
           </div>
         </div>
-        <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+        <div className="mx-auto grid max-w-2xl gap-4 md:grid-cols-2">
           {plans.map((plan, index) => (
             <Card
               key={plan.id}
@@ -181,11 +181,11 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                 <div className="flex flex-col space-y-1.5">
                   <Feature
                     icon={<CheckIcon size={15} />}
-                    feature={`${plan.links.toLocaleString("en-us")} QR codes/mo`}
+                    feature={`${plan.links > 20 ? "1M" : plan.links.toLocaleString("en-us")} links/mo`}
                   />
                   <Feature
                     icon={<CheckIcon size={15} />}
-                    feature={`${plan.links.toLocaleString("en-us")} links/mo`}
+                    feature={`${plan.links > 20 ? "1M" : plan.links.toLocaleString("en-us")} QR codes/mo`}
                   />
                   <Feature icon={<CheckIcon size={15} />} feature="Unlimited event tracking" />
                   <Feature
@@ -194,11 +194,11 @@ export const PricingTiers = ({ plans }: PricingTierProps) => {
                   />
                   <Feature
                     icon={<CheckIcon size={15} />}
-                    feature={`${plan.domains > 100 ? 'Unlimited' : plan.domains} custom domain${plan.domains > 1 ? "s" : ""}`}
+                    feature={`${plan.domains > 100 ? "Unlimited" : plan.domains} custom domain${plan.domains > 1 ? "s" : ""}`}
                   />
                   <Feature
                     icon={<CheckIcon size={15} />}
-                    feature={`${plan.seats > 100 ? 'Unlimited' : plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
+                    feature={`${plan.seats > 100 ? "Unlimited" : plan.seats} platform seat${plan.seats > 1 ? "s" : ""}`}
                   />
 
                   {/*{plan.qrCustomization && (*/}
